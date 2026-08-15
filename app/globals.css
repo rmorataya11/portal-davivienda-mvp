@@ -1,26 +1,118 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f3f5;
+  --foreground: #141f25;
+  --surface: #ffffff;
+  --surface-strong: #2a3239;
+  --surface-dark: #141f25;
+  --surface-dark-muted: #2c2c2c;
+  --text-muted: #707070;
+  --text-soft: #8e8e8e;
+  --accent: #e1251b;
+  --accent-strong: #e1111c;
+  --accent-dark: #870412;
+  --border-soft: #d8dce1;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-roboto);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-roboto), Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.marketplace-shell {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.88), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 18%),
+    var(--background);
+}
+
+.dark-orbit::before,
+.dark-orbit::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  border: 48px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.dark-orbit::before {
+  width: 360px;
+  height: 360px;
+  top: -180px;
+  right: -120px;
+}
+
+.dark-orbit::after {
+  width: 320px;
+  height: 320px;
+  bottom: -190px;
+  left: -150px;
+}
+
+.hero-scene {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 28%),
+    radial-gradient(circle at 68% 22%, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0) 22%),
+    linear-gradient(120deg, rgba(151, 117, 92, 0.22), rgba(53, 64, 74, 0.22)),
+    linear-gradient(135deg, #d6d0c8 0%, #f4efe8 20%, #c8b39b 48%, #c3c8ce 100%);
+}
+
+.hero-scene::before,
+.hero-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-scene::before {
+  background:
+    linear-gradient(90deg, transparent 0%, transparent 76%, rgba(0, 0, 0, 0.12) 76%, rgba(0, 0, 0, 0.12) 77%, transparent 77%),
+    linear-gradient(180deg, transparent 0%, transparent 60%, rgba(0, 0, 0, 0.08) 60%, rgba(0, 0, 0, 0.08) 61%, transparent 61%);
+  opacity: 0.7;
+}
+
+.hero-scene::after {
+  background:
+    radial-gradient(circle at 64% 72%, rgba(56, 72, 39, 0.78), rgba(56, 72, 39, 0) 16%),
+    radial-gradient(circle at 77% 78%, rgba(28, 44, 69, 0.72), rgba(28, 44, 69, 0) 14%),
+    radial-gradient(circle at 60% 28%, rgba(112, 79, 52, 0.42), rgba(112, 79, 52, 0) 18%);
+}
+
+.media-placeholder {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0)),
+    linear-gradient(135deg, #b9b9b9, #9f9f9f);
+}
+
+.media-placeholder--warm {
+  background:
+    radial-gradient(circle at 24% 24%, rgba(248, 214, 161, 0.6), rgba(248, 214, 161, 0) 22%),
+    linear-gradient(135deg, #6a3f1f 0%, #9d5c31 24%, #d9aa6a 58%, #4b2f16 100%);
 }
