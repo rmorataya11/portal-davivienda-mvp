@@ -1,44 +1,56 @@
 import Link from "next/link";
 
 import { navItems } from "./data";
-import { ActionLink } from "@/components/ui/action-link";
+
+function DaviviendaLogo() {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="relative h-5 w-5 shrink-0">
+        <span className="absolute left-[1px] top-[7px] h-[10px] w-[15px] rounded-[999px] bg-[#F6B400]" />
+        <span className="absolute left-[2px] top-[2px] h-[7px] w-[13px] rounded-t-[999px] rounded-b-[4px] bg-[#B30D14] rotate-[-8deg]" />
+        <span className="absolute left-[9px] top-[3px] h-[9px] w-[8px] rounded-t-[999px] rounded-b-[3px] bg-[#E1251B] rotate-[20deg]" />
+      </div>
+      <span className="text-[13px] font-medium tracking-[0.22em] text-white">DAVIVIENDA</span>
+    </div>
+  );
+}
 
 export function MarketplaceHeader() {
   return (
-    <header className="relative z-20 mx-auto flex w-full max-w-[1366px] justify-center px-4 pt-6 sm:px-6 lg:px-10">
-      <div className="flex w-full max-w-[1240px] items-center gap-4 rounded-[30px] bg-[#C30D13] px-5 py-4 text-white shadow-[0_18px_48px_rgba(135,4,18,0.22)] lg:px-8">
-        <Link href="#inicio" className="flex shrink-0 items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F5B400] text-[11px] font-black text-[#870412]">
-            D
-          </div>
-          <span className="text-xl font-medium tracking-[0.18em]">DAVIVIENDA</span>
+    <header className="static mx-auto flex w-full max-w-[1366px] justify-center px-4 pt-6 sm:px-6 lg:px-10">
+      <div className="flex min-h-[88px] w-full max-w-[1301px] items-center rounded-[40px] bg-[linear-gradient(270deg,#E1111C_0%,#870412_100%)] px-6 text-white lg:px-8">
+        <Link href="#inicio" className="flex shrink-0 items-center">
+          <DaviviendaLogo />
         </Link>
 
-        <nav className="ml-4 hidden items-center gap-7 lg:flex">
+        <nav className="relative ml-8 hidden items-end gap-8 border-b border-white/35 pb-2 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className={`relative pb-2 text-sm transition-colors ${item.active ? "font-medium text-white" : "text-white/88 hover:text-white"}`}
+              className={`relative pb-1.5 text-[13px] font-medium leading-none transition-colors ${item.active ? "text-white" : "text-white/90 hover:text-white"}`}
             >
               {item.label}
               {item.active ? (
-                <span className="absolute inset-x-0 -bottom-px h-[3px] rounded-full bg-white" />
+                <span className="absolute inset-x-0 -bottom-[10px] h-0.5 rounded-full bg-white" />
               ) : null}
             </Link>
           ))}
         </nav>
 
-        <div className="ml-auto hidden items-center gap-3 sm:flex">
-          <ActionLink href="#crear-cuenta" className="bg-transparent px-5 text-white shadow-none hover:bg-white/8">
+        <div className="ml-auto hidden items-center gap-8 sm:flex">
+          <Link
+            href="#crear-cuenta"
+            className="text-[14px] font-medium text-white transition-opacity hover:opacity-85"
+          >
             Crear cuenta
-          </ActionLink>
-          <ActionLink
+          </Link>
+          <Link
             href="#iniciar-sesion"
-            className="min-w-[146px] bg-white px-6 text-[#141F25] shadow-none hover:bg-[#F2F3F5]"
+            className="inline-flex min-h-[42px] min-w-[156px] items-center justify-center rounded-full bg-white px-7 text-[14px] font-bold text-[#404040] transition-colors hover:bg-[#F2F3F5]"
           >
             Iniciar sesión
-          </ActionLink>
+          </Link>
         </div>
       </div>
     </header>
