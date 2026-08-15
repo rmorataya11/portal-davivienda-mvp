@@ -17,7 +17,7 @@ function DaviviendaLogo() {
 
 export function MarketplaceHeader() {
   return (
-    <header className="static mx-auto flex w-full max-w-[1366px] justify-center px-4 pt-6 sm:px-6 lg:px-10">
+    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-6 sm:px-6 lg:px-10">
       <div className="flex min-h-[88px] w-full max-w-[1301px] items-center rounded-[40px] bg-[linear-gradient(270deg,#E1111C_0%,#870412_100%)] px-6 text-white lg:px-8">
         <Link href="#inicio" className="flex shrink-0 items-center">
           <DaviviendaLogo />
@@ -47,7 +47,7 @@ export function MarketplaceHeader() {
           </Link>
           <Link
             href="#iniciar-sesion"
-            className="inline-flex min-h-[42px] min-w-[156px] items-center justify-center rounded-full bg-white px-7 text-[14px] font-bold text-[#404040] transition-colors hover:bg-[#F2F3F5]"
+            className="inline-flex min-h-[42px] min-w-[156px] items-center justify-center rounded-full bg-white px-7 text-[14px] font-bold !text-[#404040] transition-colors hover:bg-[#F2F3F5]"
           >
             Iniciar sesión
           </Link>
