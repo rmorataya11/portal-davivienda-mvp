@@ -10,7 +10,7 @@ import { ValuePropositionSection } from "./sections/value-proposition-section";
 export function HomePage() {
   return (
     <main className="marketplace-shell min-h-screen">
-      <MarketplaceHeader />
+      <MarketplaceHeader activeHref="/" />
       <HeroSection />
       <PartnerStrip />
       <ValuePropositionSection />
