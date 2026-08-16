@@ -4,30 +4,31 @@ export function HeroSection() {
   return (
     <section id="inicio" className="relative overflow-hidden pb-10">
       <div className="hero-scene relative mx-auto h-[810px] w-full max-w-[1366px] overflow-hidden">
-        <div className="absolute left-14 top-[152px] z-10 h-[570px] w-[620px] rounded-[32px] bg-white shadow-[0_24px_80px_rgba(20,31,37,0.12)]">
-          <p className="absolute left-[52px] top-9 w-[234px] text-left text-[20px] leading-6 font-normal tracking-[0.4px] text-[#E1251B]">
+        <div className="absolute left-14 top-[152px] z-10 flex h-[570px] w-[620px] flex-col rounded-[32px] bg-white px-[52px] pb-[48px] pt-9 shadow-[0_24px_80px_rgba(20,31,37,0.12)]">
+          <p className="w-[234px] text-left text-[20px] leading-6 font-normal tracking-[0.4px] text-[#E1251B]">
             Open Banking Davivienda
           </p>
-          <h1 className="absolute left-[54px] top-[84px] w-[512px] text-left text-[49px] font-bold leading-[44px] tracking-[0.98px] text-[#404040]">
+          <h1 className="mt-3 w-[512px] text-left text-[49px] font-bold leading-[44px] tracking-[0.98px] text-[#404040]">
             Conecte su negocio al ecosistema financiero y escale sus operaciones.
           </h1>
-          <p className="absolute left-[54px] top-[331px] w-[512px] text-left text-[20px] leading-6 font-normal tracking-[0.4px] text-[#404040]">
+          <p className="mt-[54px] w-[512px] text-left text-[20px] leading-6 font-normal tracking-[0.4px] text-[#404040]">
             Las APIs Davivienda le permiten procesar ventas, pagar a proveedores y conciliar saldos en tiempo real.
             Cree experiencias financieras únicas para sus clientes.
           </p>
-
-          <Link
-            href="#crear-cuenta"
-            className="absolute left-[154px] top-[382px] inline-flex h-12 w-[313px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white"
-          >
-            Crear cuenta gratuita
-          </Link>
-          <Link
-            href="#catalogo"
-            className="absolute left-[154px] top-[462px] inline-flex h-12 w-[312px] items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-normal text-[#2C2C2C]"
-          >
-            Explorar catálogo de APIs
-          </Link>
+          <div className="mt-auto flex flex-col items-center gap-8">
+            <Link
+              href="#crear-cuenta"
+              className="inline-flex h-12 w-[313px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white"
+            >
+              Crear cuenta gratuita
+            </Link>
+            <Link
+              href="#catalogo"
+              className="inline-flex h-12 w-[312px] items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-normal text-[#2C2C2C]"
+            >
+              Explorar catálogo de APIs
+            </Link>
+          </div>
         </div>
 
         <div className="absolute inset-y-0 right-0 hidden w-[58%] lg:block">
