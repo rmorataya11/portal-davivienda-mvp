@@ -71,32 +71,28 @@ export function CatalogPage() {
       </section>
 
       <section className="px-0 pb-16 pt-4">
-        <div className="mx-auto max-w-[1366px] bg-[linear-gradient(90deg,#4B4B4B_0%,#2A2A2A_62%,#121212_100%)] px-10 py-12">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-[760px]">
-              <h2 className="text-[54px] font-bold leading-[1.08] tracking-[-0.03em] text-white">
-                ¿Listo para su primera llamada?
-              </h2>
-              <p className="mt-6 max-w-[720px] text-[24px] leading-9 text-white/86">
-                Cree su cuenta de desarrollador, genere credenciales de Sandbox y reciba su primer 200 OK en cuestión
-                de minutos.
-              </p>
-            </div>
+        <div className="mx-auto h-[287px] max-w-[1366px] bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)]">
+          <div className="relative h-full">
+            <h2 className="absolute left-14 top-[84px] w-[596px] text-[40px] font-bold leading-6 tracking-[0.8px] text-white">
+              ¿Listo para su primera llamada?
+            </h2>
+            <p className="absolute left-14 top-[157px] w-[691px] text-[20px] leading-6 tracking-[0.4px] text-white">
+              Cree su cuenta de desarrollador, genere credenciales de Sandbox y reciba su primer 200 OK en cuestión
+              de minutos.
+            </p>
 
-            <div className="flex items-center gap-6">
-              <Link
-                href="#crear-cuenta"
-                className="inline-flex h-12 min-w-[210px] items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white"
-              >
-                Crear cuenta
-              </Link>
-              <Link
-                href="#iniciar-sesion"
-                className="inline-flex h-12 min-w-[210px] items-center justify-center rounded-full bg-white px-7 text-[15px] font-semibold text-[#404040]"
-              >
-                Iniciar sesión
-              </Link>
-            </div>
+            <Link
+              href="#crear-cuenta"
+              className="absolute left-[796px] top-[90px] inline-flex h-12 w-[204px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white"
+            >
+              Crear cuenta
+            </Link>
+            <Link
+              href="#iniciar-sesion"
+              className="absolute left-[1032px] top-[90px] inline-flex h-12 w-[209px] items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-medium text-[#404040]"
+            >
+              Iniciar sesión
+            </Link>
           </div>
         </div>
       </section>
