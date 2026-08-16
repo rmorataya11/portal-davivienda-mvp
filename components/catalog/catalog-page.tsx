@@ -24,7 +24,7 @@ export function CatalogPage() {
       </section>
 
       <section className="pb-16">
-        <div className="mx-auto max-w-[1366px] rounded-t-[16px] border-t border-[#2C2C2C] bg-white">
+        <div className="mx-auto max-w-[1366px] bg-white">
           <div className="px-6 py-6">
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-2 text-[16px] font-medium text-[#2C2C2C]">
