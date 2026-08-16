@@ -1,11 +1,11 @@
-import { CtaBanner } from "./cta-banner";
-import { HeroSection } from "./hero-section";
-import { MarketplaceFooter } from "./marketplace-footer";
-import { MarketplaceHeader } from "./marketplace-header";
-import { PartnerStrip } from "./partner-strip";
-import { StepsSection } from "./steps-section";
-import { UseCasesSection } from "./use-cases-section";
-import { ValuePropositionSection } from "./value-proposition-section";
+import { CtaBanner } from "./sections/cta-banner";
+import { HeroSection } from "./sections/hero-section";
+import { MarketplaceFooter } from "./sections/marketplace-footer";
+import { MarketplaceHeader } from "./sections/marketplace-header";
+import { PartnerStrip } from "./sections/partner-strip";
+import { StepsSection } from "./sections/steps-section";
+import { UseCasesSection } from "./sections/use-cases-section";
+import { ValuePropositionSection } from "./sections/value-proposition-section";
 
 export function HomePage() {
   return (

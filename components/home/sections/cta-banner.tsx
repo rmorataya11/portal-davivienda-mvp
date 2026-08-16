@@ -1,6 +1,6 @@
 import { ActionLink } from "@/components/ui/action-link";
 
-import { LightBulbIcon } from "./icons";
+import { LightBulbIcon } from "../icons";
 
 export function CtaBanner() {
   return (
