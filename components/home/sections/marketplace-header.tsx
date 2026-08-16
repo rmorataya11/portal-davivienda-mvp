@@ -7,7 +7,7 @@ export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string })
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-6 sm:px-6 lg:px-10">
       <div className="flex min-h-[88px] w-full max-w-[1301px] items-center rounded-[40px] bg-[linear-gradient(270deg,#E1111C_0%,#870412_100%)] px-6 text-white lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center">
+        <Link href="/" transitionTypes={["marketplace-nav"]} className="flex shrink-0 items-center">
           <DaviviendaLogo />
         </Link>
 
@@ -19,6 +19,7 @@ export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string })
               <Link
                 key={item.label}
                 href={item.href}
+                transitionTypes={["marketplace-nav"]}
                 className={`relative pb-1.5 text-[13px] font-medium leading-none transition-colors ${isActive ? "text-white" : "text-white/90 hover:text-white"}`}
               >
                 {item.label}
