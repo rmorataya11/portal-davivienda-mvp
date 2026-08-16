@@ -11,12 +11,12 @@ export function CatalogPage() {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[126px]">
-        <div className="mx-auto max-w-[1366px] px-10 py-10">
-          <h1 className="max-w-[980px] text-[56px] font-bold leading-[1.08] tracking-[-0.03em] text-[#404040]">
+      <section className="pt-[152px]">
+        <div className="mx-auto max-w-[1366px] px-[58px] pb-[52px]">
+          <h1 className="w-[1254px] text-[40px] font-bold leading-[44px] tracking-[0.8px] text-[#404040]">
             Encuentre el producto ideal para su negocio
           </h1>
-          <p className="mt-8 max-w-[1040px] text-[24px] leading-9 text-[#404040]">
+          <p className="mt-[32px] w-[1254px] text-[20px] leading-6 tracking-[0.4px] text-[#404040]">
             Explore nuestras APIs y descubra la que mejor se ajusta a lo que quiere lograr. Cuando encuentre la
             indicada, cuéntenos y le acompañamos para empezar.
           </p>
@@ -25,23 +25,23 @@ export function CatalogPage() {
 
       <section className="pb-16">
         <div className="mx-auto max-w-[1366px] bg-white">
-          <div className="px-6 py-6">
+          <div className="px-[56px] py-4">
             <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-2 text-[16px] font-medium text-[#2C2C2C]">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-[6px] border border-[#2C2C2C] text-xs">
+              <div className="flex items-center gap-2 text-[16px] leading-7 font-medium tracking-[0.32px] text-[#404040]">
+                <span className="inline-flex h-[30px] w-8 items-center justify-center text-xs text-[#404040]">
                   ≡
                 </span>
                 <span>Catálogo de APIs</span>
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-11 min-w-[420px] items-center rounded-full border border-[#C9CDD2] bg-white px-4 text-[#8E8E8E]">
+                <div className="flex h-10 w-[408px] items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E]">
                   <span className="mr-3 text-lg">⌕</span>
                   <span className="text-sm">Filtra por nombre, etiqueta o endpoint...</span>
                 </div>
                 <button
                   type="button"
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#C9CDD2] text-[#707070]"
+                  className="inline-flex h-[22px] w-6 items-center justify-center text-[#8E8E8E]"
                 >
                   ⌘
                 </button>
@@ -49,10 +49,10 @@ export function CatalogPage() {
                   <button
                     key={category}
                     type="button"
-                    className={`inline-flex h-11 items-center justify-center rounded-full border px-5 text-sm font-medium transition-colors ${
+                    className={`inline-flex h-10 items-center justify-center rounded-[32px] border px-5 text-sm font-medium transition-colors ${
                       index === 0
-                        ? "border-[#2C2C2C] bg-white text-[#2C2C2C]"
-                        : "border-[#C9CDD2] bg-white text-[#707070] hover:border-[#2C2C2C] hover:text-[#2C2C2C]"
+                        ? "w-[93px] border-[#404040] bg-white text-[#404040]"
+                        : "border-[#404040] bg-white text-[#404040] hover:border-[#2C2C2C] hover:text-[#2C2C2C]"
                     }`}
                   >
                     {category}
@@ -60,7 +60,7 @@ export function CatalogPage() {
                 ))}
               </div>
 
-              <div className="grid gap-4 lg:grid-cols-3">
+              <div className="grid gap-[15px] lg:grid-cols-[repeat(3,408px)]">
                 {apiCatalogItems.map((api) => (
                   <ApiCard key={api.name} api={api} />
                 ))}
