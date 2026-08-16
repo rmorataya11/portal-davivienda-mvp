@@ -7,11 +7,17 @@
   --surface-strong: #2a3239;
   --surface-dark: #141f25;
   --surface-dark-muted: #2c2c2c;
+  --surface-success: #effcf5;
+  --foreground-strong: #404040;
+  --foreground-ink: #0d0d0d;
+  --foreground-black: #000000;
   --text-muted: #707070;
   --text-soft: #8e8e8e;
   --accent: #e1251b;
   --accent-strong: #e1111c;
   --accent-dark: #870412;
+  --accent-success: #347659;
+  --accent-success-strong: #55b685;
   --border-soft: #d8dce1;
 }
 
