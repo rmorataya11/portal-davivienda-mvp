@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { ApiCatalogItem } from "./content/apis";
 
 export function ApiCard({ api }: { api: ApiCatalogItem }) {
+  const detailHref = api.slug ? `/catalogo-apis/${api.slug}` : "#";
+
   return (
     <article className="group flex h-[348px] w-[408px] flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#404040] hover:shadow-[0_24px_56px_rgba(20,31,37,0.12)]">
       <div className="flex items-start justify-between gap-4">
@@ -26,8 +28,13 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
           <span>{api.category}</span>
         </div>
         <Link
-          href="#"
-          className="inline-flex h-10 w-[157px] items-center justify-center rounded-[20px] border border-[#000000] text-[14px] font-medium text-[#000000] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#E1251B] hover:bg-[#E1251B] hover:text-white"
+          href={detailHref}
+          aria-disabled={!api.slug}
+          className={`inline-flex h-10 w-[157px] items-center justify-center rounded-[20px] border text-[14px] font-medium transition-all duration-300 ease-out ${
+            api.slug
+              ? "border-[#000000] text-[#000000] hover:-translate-y-0.5 hover:border-[#E1251B] hover:bg-[#E1251B] hover:text-white"
+              : "pointer-events-none border-[#B8B8B8] text-[#B8B8B8]"
+          }`}
         >
           Conocer esta API
         </Link>
