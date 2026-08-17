@@ -6,17 +6,17 @@ export function ValuePropositionSection() {
   const [firstCard, secondCard, thirdCard, fourthCard] = valueCards;
 
   return (
-    <section className="pb-16">
+    <section className="px-4 pb-16 sm:px-6 lg:px-0">
       <div className="mx-auto max-w-[1366px]">
-        <div className="dark-orbit relative h-[712px] overflow-hidden bg-[#141F25]">
-          <div className="absolute left-[58px] top-[55px]">
-            <p className="w-[180px] text-[24px] leading-7 font-normal tracking-[0.48px] text-white">Por qué Davivienda</p>
-            <h2 className="mt-3 w-[741px] text-[32px] leading-8 font-bold tracking-[0.64px] text-white">
+        <div className="dark-orbit relative overflow-hidden rounded-[32px] bg-[#141F25] px-6 py-10 sm:px-8 sm:py-12 lg:h-[712px] lg:rounded-none">
+          <div className="lg:absolute lg:left-[58px] lg:top-[55px]">
+            <p className="w-full max-w-[180px] text-[24px] leading-7 font-normal tracking-[0.48px] text-white">Por qué Davivienda</p>
+            <h2 className="mt-3 max-w-[741px] text-[28px] leading-8 font-bold tracking-[0.64px] text-white sm:text-[32px]">
               Pensado para acompañar a su negocio
             </h2>
           </div>
 
-          <div className="absolute left-14 top-[196px] flex gap-[18px]">
+          <div className="mt-10 grid gap-[18px] lg:absolute lg:left-14 lg:top-[196px] lg:mt-0 lg:grid-cols-[302px_302px_616px]">
             <TallValueCard card={firstCard} />
             <TallValueCard card={secondCard} />
             <div className="flex flex-col gap-[18px]">

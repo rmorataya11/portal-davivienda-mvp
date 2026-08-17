@@ -12,11 +12,11 @@ export function CatalogPage() {
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
       <section className="pt-[152px]">
-        <div className="mx-auto max-w-[1366px] px-[58px] pb-[52px]">
-          <h1 className="w-[1254px] text-[40px] font-bold leading-[44px] tracking-[0.8px] text-[#404040]">
+        <div className="mx-auto max-w-[1366px] px-4 pb-10 sm:px-6 lg:px-[58px] lg:pb-[52px]">
+          <h1 className="max-w-[1254px] text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-[#404040] sm:text-[40px] sm:leading-[44px]">
             Encuentre el producto ideal para su negocio
           </h1>
-          <p className="mt-[32px] w-[1254px] text-[20px] leading-6 tracking-[0.4px] text-[#404040]">
+          <p className="mt-6 max-w-[1254px] text-[17px] leading-7 tracking-[0.02em] text-[#404040] sm:mt-[32px] sm:text-[20px] sm:leading-6">
             Explore nuestras APIs y descubra la que mejor se ajusta a lo que quiere lograr. Cuando encuentre la
             indicada, cuéntenos y le acompañamos para empezar.
           </p>
@@ -25,7 +25,7 @@ export function CatalogPage() {
 
       <section className="pb-16">
         <div className="mx-auto max-w-[1366px] bg-white">
-          <div className="px-[56px] py-4">
+          <div className="px-4 py-4 sm:px-6 lg:px-[56px]">
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-2 text-[16px] leading-7 font-medium tracking-[0.32px] text-[#404040]">
                 <span className="inline-flex h-[30px] w-8 items-center justify-center text-xs text-[#404040]">
@@ -35,7 +35,7 @@ export function CatalogPage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-10 w-[408px] items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E] transition-colors duration-300 hover:border-[#404040] hover:text-[#404040]">
+                <div className="flex h-10 w-full items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E] transition-colors duration-300 hover:border-[#404040] hover:text-[#404040] sm:w-[408px]">
                   <span className="mr-3 text-lg">⌕</span>
                   <span className="text-sm">Filtra por nombre, etiqueta o endpoint...</span>
                 </div>
@@ -60,7 +60,7 @@ export function CatalogPage() {
                 ))}
               </div>
 
-              <div className="grid gap-[15px] lg:grid-cols-[repeat(3,408px)]">
+              <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
                 {apiCatalogItems.map((api) => (
                   <ApiCard key={api.name} api={api} />
                 ))}
@@ -71,28 +71,30 @@ export function CatalogPage() {
       </section>
 
       <section className="px-0 pb-16 pt-4">
-        <div className="mx-auto h-[287px] max-w-[1366px] bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)]">
-          <div className="relative h-full">
-            <h2 className="absolute left-14 top-[84px] w-[596px] text-[40px] font-bold leading-6 tracking-[0.8px] text-white">
+        <div className="mx-auto max-w-[1366px] bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)] px-6 py-10 sm:px-10 lg:h-[287px] lg:px-0 lg:py-0">
+          <div className="flex flex-col gap-8 lg:relative lg:h-full">
+            <h2 className="max-w-[596px] text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-white sm:text-[40px] sm:leading-6 lg:absolute lg:left-14 lg:top-[84px]">
               ¿Listo para su primera llamada?
             </h2>
-            <p className="absolute left-14 top-[157px] w-[691px] text-[20px] leading-6 tracking-[0.4px] text-white">
+            <p className="max-w-[691px] text-[17px] leading-7 tracking-[0.02em] text-white sm:text-[20px] sm:leading-6 lg:absolute lg:left-14 lg:top-[157px]">
               Cree su cuenta de desarrollador, genere credenciales de Sandbox y reciba su primer 200 OK en cuestión
               de minutos.
             </p>
 
-            <Link
-              href="#crear-cuenta"
-              className="absolute left-[796px] top-[90px] inline-flex h-12 w-[204px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
-            >
-              Crear cuenta
-            </Link>
-            <Link
-              href="#iniciar-sesion"
-              className="absolute left-[1032px] top-[90px] inline-flex h-12 w-[209px] items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-medium text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#404040] hover:bg-[#F6F6F6] hover:shadow-[0_14px_28px_rgba(20,31,37,0.12)]"
-            >
-              Iniciar sesión
-            </Link>
+            <div className="flex flex-col gap-3 sm:flex-row lg:absolute lg:left-[796px] lg:top-[90px] lg:gap-8">
+              <Link
+                href="#crear-cuenta"
+                className="inline-flex h-12 w-full items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[204px]"
+              >
+                Crear cuenta
+              </Link>
+              <Link
+                href="#iniciar-sesion"
+                className="inline-flex h-12 w-full items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white px-6 text-[15px] font-medium text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#404040] hover:bg-[#F6F6F6] hover:shadow-[0_14px_28px_rgba(20,31,37,0.12)] sm:w-[209px]"
+              >
+                Iniciar sesión
+              </Link>
+            </div>
           </div>
         </div>
       </section>

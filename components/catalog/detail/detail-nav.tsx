@@ -41,7 +41,7 @@ export function DetailNav({ sections }: { sections: DetailNavSection[] }) {
   }, [sections]);
 
   return (
-    <div className="sticky top-[118px] z-30 rounded-full border border-[#D8DCE1] bg-white/92 px-3 py-3 shadow-[0_14px_36px_rgba(20,31,37,0.08)] backdrop-blur">
+    <div className="sticky top-[96px] z-30 rounded-[28px] border border-[#D8DCE1] bg-white/92 px-3 py-3 shadow-[0_14px_36px_rgba(20,31,37,0.08)] backdrop-blur sm:top-[112px] lg:top-[118px] lg:rounded-full">
       <nav className="flex flex-wrap gap-2">
         {sections.map((section) => {
           const isActive = section.id === activeSection;

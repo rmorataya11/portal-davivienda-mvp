@@ -92,7 +92,7 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
       <section className="pt-[152px]">
-        <div className="mx-auto max-w-[1366px] px-[56px]">
+        <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
           <Link
             href="/catalogo-apis"
             className="inline-flex items-center gap-2 text-[14px] font-medium tracking-[0.28px] text-[#707070] transition-colors duration-300 hover:text-[#E1251B]"
@@ -103,12 +103,12 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
 
           <section
             id="overview"
-            className="relative mt-6 overflow-hidden rounded-[32px] bg-[linear-gradient(125deg,#141F25_0%,#2A3239_52%,#870412_100%)] px-5 py-5 text-white shadow-[0_24px_70px_rgba(20,31,37,0.14)] sm:px-8 sm:py-8"
+            className="relative mt-6 overflow-hidden rounded-[32px] bg-[linear-gradient(125deg,#141F25_0%,#2A3239_52%,#870412_100%)] px-4 py-4 text-white shadow-[0_24px_70px_rgba(20,31,37,0.14)] sm:px-8 sm:py-8"
           >
             <div className="absolute -right-20 top-[-40px] h-[240px] w-[240px] rounded-full border border-white/10" />
             <div className="absolute right-16 top-16 h-[110px] w-[110px] rounded-full bg-[#E1251B]/14 blur-3xl" />
 
-            <div className="relative grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
+            <div className="relative grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_330px]">
               <div className="h-full rounded-[28px] border border-white/10 bg-white/3 px-1 py-1">
                 <div className="flex h-full flex-col rounded-[24px] px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8">
                   <div className="flex flex-wrap items-center gap-4">
@@ -179,7 +179,7 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
                 </div>
               </aside>
 
-              <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-[repeat(4,minmax(0,1fr))_1.75fr]">
+              <div className="grid gap-4 sm:grid-cols-2 xl:col-span-2 xl:grid-cols-[repeat(4,minmax(0,1fr))_1.75fr]">
                 <QuickMetric label="Producto" value="Tesorería" />
                 <QuickMetric label="Uso ideal" value="B2B" />
                 <QuickMetric label="Cobertura" value="Saldos + movimientos" />
@@ -200,13 +200,13 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
       </section>
 
       <section className="py-8">
-        <div className="mx-auto max-w-[1366px] px-[56px]">
+        <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
           <DetailNav sections={detailSections} />
         </div>
       </section>
 
       <section id="value" className="pb-16">
-        <div className="mx-auto grid max-w-[1366px] gap-5 px-[56px] lg:grid-cols-2">
+        <div className="mx-auto grid max-w-[1366px] gap-5 px-4 sm:px-6 lg:px-[56px] lg:grid-cols-2">
           <SectionCard eyebrow="Valor" title="Qué puede lograr">
             <ItemGrid items={api.benefits} />
           </SectionCard>
@@ -218,7 +218,7 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
       </section>
 
       <section id="integration" className="pb-16">
-        <div className="mx-auto grid max-w-[1366px] gap-5 px-[56px] lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="mx-auto grid max-w-[1366px] gap-5 px-4 sm:px-6 lg:px-[56px] lg:grid-cols-[0.9fr_1.1fr]">
           <SectionCard eyebrow="Integración" title="Cómo empezar">
             <p className="text-[16px] leading-7 tracking-[0.32px] text-[#707070]">
               Todo lo necesario para preparar su primer consumo de la API y pasar de exploración a integración real.
@@ -273,7 +273,7 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
       </section>
 
       <section id="technical" className="pb-16">
-        <div className="mx-auto max-w-[1366px] px-[56px]">
+        <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
           <SectionCard eyebrow="Técnico" title="Explore la integración">
             <TechnicalTabs
               authentication={api.authentication}
@@ -288,8 +288,8 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
       </section>
 
       <section id="next-steps" className="pb-16">
-        <div className="mx-auto max-w-[1366px] px-[56px]">
-          <div className="rounded-[32px] bg-[linear-gradient(90deg,#404040_0%,#0D0D0D_100%)] px-8 py-8 text-white shadow-[0_24px_70px_rgba(20,31,37,0.12)]">
+        <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
+          <div className="rounded-[32px] bg-[linear-gradient(90deg,#404040_0%,#0D0D0D_100%)] px-5 py-6 text-white shadow-[0_24px_70px_rgba(20,31,37,0.12)] sm:px-8 sm:py-8">
             <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
                 <p className="text-[14px] font-medium uppercase tracking-[0.26em] text-white/64">Siguiente paso</p>
