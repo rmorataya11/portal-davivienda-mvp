@@ -9,12 +9,7 @@ export function MarketplaceFooter() {
       <div className="mx-auto max-w-[1366px]">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.7fr_0.8fr_0.8fr]">
           <div className="max-w-[360px]">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F5B400] text-xs font-black text-[#870412]">
-                D
-              </div>
-              <span className="text-[33px] font-medium tracking-[0.08em] text-[#E1251B]">DAVIVIENDA</span>
-            </div>
+            <div className="text-[33px] font-medium uppercase tracking-[0.08em] text-[#E1251B]">logo</div>
             <p className="mt-7 text-[15px] leading-8 text-[#404040]">
               Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras
               sobre infraestructura bancaria de grado empresarial.

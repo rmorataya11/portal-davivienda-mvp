@@ -1,13 +1,11 @@
 import type { ValueCard } from "../content/types";
 
 export function WideValueCard({ card }: { card: ValueCard }) {
-  const Icon = card.icon;
-
   return (
     <article className="group relative h-[188px] w-[616px] rounded-[32px] bg-white transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(20,31,37,0.12)]">
       <span className="absolute left-5 top-6 text-[24px] leading-none font-normal text-[#8E8E8E]">{card.step}</span>
       <div className="absolute left-[49px] top-[47px] flex h-[95px] w-[95px] items-center justify-center rounded-full bg-[#404040] text-white transition-colors duration-300 group-hover:bg-[#E1251B]">
-        <Icon className="h-[42px] w-[42px]" />
+        <span className="h-[42px] w-[42px] rounded-full border border-white/45" />
       </div>
       <div className="absolute left-[192px] top-[27px] w-[376px]">
         <h3 className="w-[244px] text-[20px] leading-7 font-medium tracking-[0.4px] text-[#404040]">{card.title}</h3>

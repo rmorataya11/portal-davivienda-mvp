@@ -9,12 +9,10 @@ export function UseCaseCard({
   card: UseCaseCard;
   highlightWarmMedia?: boolean;
 }) {
-  const Icon = card.icon;
-
   return (
     <article className="group flex h-[600px] flex-col rounded-[32px] bg-white px-4 pb-6 pt-4 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_26px_60px_rgba(20,31,37,0.14)]">
       <div className="flex items-center gap-2 text-[16px] leading-6 font-medium tracking-[0.32px] text-[#404040]">
-        <Icon className="h-[22px] w-[22px] text-[#404040]" />
+        <span className="h-[22px] w-[22px] rounded-[6px] border border-[#404040]/30 bg-[#F2F3F5]" />
         <span>{card.category}</span>
       </div>
       <div
