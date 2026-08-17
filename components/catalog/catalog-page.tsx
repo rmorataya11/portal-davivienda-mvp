@@ -35,13 +35,13 @@ export function CatalogPage() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-10 w-[408px] items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E]">
+                <div className="flex h-10 w-[408px] items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E] transition-colors duration-300 hover:border-[#404040] hover:text-[#404040]">
                   <span className="mr-3 text-lg">⌕</span>
                   <span className="text-sm">Filtra por nombre, etiqueta o endpoint...</span>
                 </div>
                 <button
                   type="button"
-                  className="inline-flex h-[22px] w-6 items-center justify-center text-[#8E8E8E]"
+                  className="inline-flex h-[22px] w-6 items-center justify-center text-[#8E8E8E] transition-colors duration-300 hover:text-[#404040]"
                 >
                   ⌘
                 </button>
@@ -49,10 +49,10 @@ export function CatalogPage() {
                   <button
                     key={category}
                     type="button"
-                    className={`inline-flex h-10 items-center justify-center rounded-[32px] border px-5 text-sm font-medium transition-colors ${
+                    className={`inline-flex h-10 items-center justify-center rounded-[32px] border px-5 text-sm font-medium transition-all duration-300 ease-out ${
                       index === 0
-                        ? "w-[93px] border-[#404040] bg-white text-[#404040]"
-                        : "border-[#404040] bg-white text-[#404040] hover:border-[#2C2C2C] hover:text-[#2C2C2C]"
+                        ? "w-[93px] border-[#404040] bg-white text-[#404040] hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(20,31,37,0.08)]"
+                        : "border-[#404040] bg-white text-[#404040] hover:-translate-y-0.5 hover:border-[#2C2C2C] hover:bg-[#404040] hover:text-white hover:shadow-[0_12px_24px_rgba(20,31,37,0.08)]"
                     }`}
                   >
                     {category}
@@ -83,13 +83,13 @@ export function CatalogPage() {
 
             <Link
               href="#crear-cuenta"
-              className="absolute left-[796px] top-[90px] inline-flex h-12 w-[204px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white"
+              className="absolute left-[796px] top-[90px] inline-flex h-12 w-[204px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
             >
               Crear cuenta
             </Link>
             <Link
               href="#iniciar-sesion"
-              className="absolute left-[1032px] top-[90px] inline-flex h-12 w-[209px] items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-medium text-[#404040]"
+              className="absolute left-[1032px] top-[90px] inline-flex h-12 w-[209px] items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-medium text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#404040] hover:bg-[#F6F6F6] hover:shadow-[0_14px_28px_rgba(20,31,37,0.12)]"
             >
               Iniciar sesión
             </Link>

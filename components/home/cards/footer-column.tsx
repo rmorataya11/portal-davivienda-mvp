@@ -7,7 +7,9 @@ export function FooterColumn({ title, links }: { title: string; links: string[] 
       <ul className="mt-7 space-y-6 text-[15px] text-[#404040]">
         {links.map((link) => (
           <li key={link}>
-            <Link href="#">{link}</Link>
+            <Link href="#" className="transition-colors duration-300 hover:text-[#E1251B]">
+              {link}
+            </Link>
           </li>
         ))}
       </ul>

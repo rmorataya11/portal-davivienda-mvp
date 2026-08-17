@@ -6,9 +6,9 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
   const Icon = api.icon;
 
   return (
-    <article className="flex h-[348px] w-[408px] flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px]">
+    <article className="group flex h-[348px] w-[408px] flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#404040] hover:shadow-[0_24px_56px_rgba(20,31,37,0.12)]">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex h-[60px] w-[60px] items-center justify-center rounded-[8px] bg-[#F2F3F5] text-[#404040]">
+        <div className="flex h-[60px] w-[60px] items-center justify-center rounded-[8px] bg-[#F2F3F5] text-[#404040] transition-colors duration-300 group-hover:bg-[#404040] group-hover:text-white">
           <Icon className="h-6 w-6" />
         </div>
         <div className="inline-flex h-7 w-[116px] items-center justify-center gap-2 rounded-[24px] bg-[#EFFCF5] text-[12px] font-medium text-[#347659]">
@@ -29,7 +29,7 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
         </div>
         <Link
           href="#"
-          className="inline-flex h-10 w-[157px] items-center justify-center rounded-[20px] border border-[#000000] text-[14px] font-medium text-[#000000]"
+          className="inline-flex h-10 w-[157px] items-center justify-center rounded-[20px] border border-[#000000] text-[14px] font-medium text-[#000000] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#E1251B] hover:bg-[#E1251B] hover:text-white"
         >
           Conocer esta API
         </Link>

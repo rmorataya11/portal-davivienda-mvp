@@ -27,9 +27,15 @@ export function MarketplaceFooter() {
         </div>
 
         <div className="mt-14 flex flex-col gap-4 border-t border-black/8 pt-6 text-sm text-[#404040] sm:flex-row sm:justify-end sm:gap-10">
-          <Link href="#terminos">Términos</Link>
-          <Link href="#privacidad">Privacidad</Link>
-          <Link href="#seguridad">Seguridad</Link>
+          <Link href="#terminos" className="transition-colors duration-300 hover:text-[#E1251B]">
+            Términos
+          </Link>
+          <Link href="#privacidad" className="transition-colors duration-300 hover:text-[#E1251B]">
+            Privacidad
+          </Link>
+          <Link href="#seguridad" className="transition-colors duration-300 hover:text-[#E1251B]">
+            Seguridad
+          </Link>
         </div>
       </div>
     </footer>

@@ -16,7 +16,7 @@ export function StepsSection() {
           </div>
           <Link
             href="#catalogo"
-            className="mt-3 inline-flex h-12 w-[257px] items-center justify-center rounded-[32px] bg-[#E1251B] text-[15px] font-semibold text-white"
+            className="mt-3 inline-flex h-12 w-[257px] items-center justify-center rounded-[32px] bg-[#E1251B] text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.26)]"
           >
             Explorar productos
           </Link>
