@@ -17,10 +17,10 @@ export function ValuePropositionSection() {
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-[18px] lg:absolute lg:left-14 lg:top-[196px] lg:mt-0 lg:grid-cols-[302px_302px_616px]">
+          <div className="mt-10 grid gap-[18px] lg:absolute lg:left-14 lg:top-[196px] lg:mt-0 lg:auto-rows-[188px] lg:grid-cols-[302px_302px_616px]">
             <TallValueCard card={firstCard} />
             <TallValueCard card={secondCard} />
-            <div className="flex flex-col gap-[18px]">
+            <div className="grid gap-[18px] lg:auto-rows-[188px]">
               <WideValueCard card={thirdCard} />
               <WideValueCard card={fourthCard} />
             </div>

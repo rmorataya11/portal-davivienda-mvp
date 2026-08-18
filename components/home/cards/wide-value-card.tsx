@@ -2,7 +2,7 @@ import type { ValueCard } from "../content/types";
 
 export function WideValueCard({ card }: { card: ValueCard }) {
   return (
-    <article className="group flex min-h-[220px] w-full flex-col rounded-[32px] bg-white p-6 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(20,31,37,0.12)] sm:flex-row sm:items-center sm:gap-8 lg:h-[188px] lg:w-[616px]">
+    <article className="group flex min-h-[220px] w-full flex-col rounded-[32px] bg-white p-6 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_22px_48px_rgba(20,31,37,0.12)] sm:flex-row sm:items-center sm:gap-8 lg:h-full lg:min-h-0 lg:w-[616px]">
       <div className="sm:min-w-[111px]">
         <span className="text-[24px] leading-none font-normal text-[#8E8E8E]">{card.step}</span>
       </div>
