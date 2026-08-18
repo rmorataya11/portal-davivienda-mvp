@@ -17,7 +17,7 @@ export function HeroSection() {
           </p>
           <div className="mt-8 flex flex-col items-stretch gap-4 sm:gap-5 lg:mt-auto lg:items-center lg:gap-8">
             <Link
-              href="#crear-cuenta"
+              href="/crear-cuenta"
               className="inline-flex h-12 w-full items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.28)] sm:w-[313px]"
             >
               Crear cuenta gratuita

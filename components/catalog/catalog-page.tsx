@@ -80,13 +80,13 @@ export function CatalogPage() {
 
             <div className="flex flex-col gap-3 sm:flex-row lg:absolute lg:left-[796px] lg:top-[90px] lg:gap-8">
               <Link
-                href="#crear-cuenta"
+                href="/crear-cuenta"
                 className="inline-flex h-12 w-full items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[204px]"
               >
                 Crear cuenta
               </Link>
               <Link
-                href="#iniciar-sesion"
+                href="/iniciar-sesion"
                 className="inline-flex h-12 w-full items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white px-6 text-[15px] font-medium text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#404040] hover:bg-[#F6F6F6] hover:shadow-[0_14px_28px_rgba(20,31,37,0.12)] sm:w-[209px]"
               >
                 Iniciar sesión
