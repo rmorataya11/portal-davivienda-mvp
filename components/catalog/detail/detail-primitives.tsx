@@ -22,33 +22,6 @@ export function ItemGrid({ items }: { items: string[] }) {
   );
 }
 
-export function QuickMetric({
-  label,
-  value,
-  tone = "light",
-}: Readonly<{
-  label: string;
-  value: string;
-  tone?: "light" | "dark";
-}>) {
-  return (
-    <div
-      className={`rounded-[22px] px-5 py-5 transition-all duration-300 ease-out hover:-translate-y-0.5 ${
-        tone === "dark"
-          ? "border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.04))] shadow-[0_14px_36px_rgba(0,0,0,0.12)]"
-          : "border border-[#D8DCE1] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] shadow-[0_14px_36px_rgba(20,31,37,0.06)]"
-      }`}
-    >
-      <p className={`text-[13px] font-medium uppercase tracking-[0.18em] ${tone === "dark" ? "text-white/62" : "text-[#8E8E8E]"}`}>
-        {label}
-      </p>
-      <p className={`mt-3 text-[24px] font-bold tracking-[0.48px] ${tone === "dark" ? "text-white" : "text-[#404040]"}`}>
-        {value}
-      </p>
-    </div>
-  );
-}
-
 export function DetailSectionCard({
   title,
   eyebrow,

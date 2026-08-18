@@ -1,9 +1,10 @@
 import Link from "next/link";
 
 import type { ApiDetail } from "../content/apis";
-import { QuickMetric } from "./detail-primitives";
 
 export function DetailHero({ api }: { api: ApiDetail }) {
+  const primaryEndpoint = api.endpoints[0];
+
   return (
     <section
       id="overview"
@@ -12,9 +13,9 @@ export function DetailHero({ api }: { api: ApiDetail }) {
       <div className="absolute -right-20 top-[-40px] h-[240px] w-[240px] rounded-full border border-white/10" />
       <div className="absolute right-16 top-16 h-[110px] w-[110px] rounded-full bg-[#E1251B]/14 blur-3xl" />
 
-      <div className="relative grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_330px]">
-        <div className="h-full rounded-[28px] border border-white/10 bg-white/3 px-1 py-1">
-          <div className="flex h-full flex-col rounded-[24px] px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8">
+      <div className="relative grid items-start gap-6">
+        <div className="rounded-[28px] border border-white/10 bg-white/3 px-1 py-1">
+          <div className="rounded-[24px] px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8">
             <div className="flex flex-wrap items-center gap-4">
               {api.heroImageSrc ? (
                 <div className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-[10px] border border-white/14 bg-white/10">
@@ -40,7 +41,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               {api.intro}
             </p>
 
-            <div className="mt-auto flex flex-wrap gap-3 pt-8 sm:gap-4 sm:pt-10">
+            <div className="mt-8 flex flex-wrap gap-3 sm:mt-10 sm:gap-4">
               <Link
                 href="#technical"
                 className="inline-flex h-11 min-w-[190px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.24)] sm:h-12 sm:min-w-[226px] sm:px-7 sm:text-[15px]"
@@ -60,45 +61,63 @@ export function DetailHero({ api }: { api: ApiDetail }) {
         <aside>
           <div className="rounded-[28px] border border-white/12 bg-white/8 px-7 py-7 backdrop-blur-[2px]">
             <p className="text-[14px] font-medium uppercase tracking-[0.26em] text-white/64">Resumen rápido</p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <QuickMetric label="Auth" value="Segura" tone="dark" />
-              <QuickMetric label="Endpoints" value={String(api.endpoints.length)} tone="dark" />
-              <div className="sm:col-span-2">
-                <QuickMetric label="Primera llamada" value="Rápida" tone="dark" />
+            <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-[0.95fr_0.95fr_1.4fr_1.15fr]">
+              <div className="rounded-[20px] border border-white/12 bg-white/6 px-4 py-4">
+                <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-white/62">Acceso</p>
+                <p className="mt-3 text-[24px] font-bold tracking-[0.48px] text-white">Bearer + API key</p>
+                <p className="mt-2 text-[13px] leading-6 text-white/68">Token, client id y trazabilidad por request.</p>
+              </div>
+              <div className="rounded-[20px] border border-white/12 bg-white/6 px-4 py-4">
+                <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-white/62">Cobertura</p>
+                <p className="mt-3 text-[24px] font-bold tracking-[0.48px] text-white">3 flujos</p>
+                <p className="mt-2 text-[13px] leading-6 text-white/68">Saldos, movimientos y reportes corporativos.</p>
+              </div>
+              <div className="rounded-[20px] border border-white/12 bg-white/6 px-5 py-5">
+                <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-white/62">Primer consumo sugerido</p>
+                <p className="mt-3 text-[24px] font-bold tracking-[0.48px] text-white">
+                  {primaryEndpoint ? `${primaryEndpoint.method} ${primaryEndpoint.path}` : "GET /balances"}
+                </p>
+                <p className="mt-2 text-[14px] leading-6 text-white/72">
+                  {primaryEndpoint?.description ?? "Use Sandbox para validar saldos consolidados antes de ampliar el flujo."}
+                </p>
+              </div>
+              <div className="rounded-[20px] border border-white/12 bg-white/6 px-5 py-5">
+                <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-white/62">Ambientes</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {api.environments.map((environment) => (
+                    <span
+                      key={environment}
+                      className="inline-flex items-center rounded-full border border-white/12 bg-white/10 px-3 py-2 text-[13px] font-medium text-white"
+                    >
+                      {environment.replace(" para pruebas funcionales", "").replace(" para operaciones autorizadas", "")}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-5 text-[14px] leading-7 tracking-[0.28px] text-white/74">
+                  Diseñada para equipos de tesorería, finanzas corporativas y plataformas que integran banca empresarial.
+                </p>
               </div>
             </div>
-            <div className="mt-3 rounded-[20px] border border-white/12 bg-white/6 px-5 py-5">
-              <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-white/62">Ambientes</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {api.environments.map((environment) => (
-                  <span
-                    key={environment}
-                    className="inline-flex items-center rounded-full border border-white/12 bg-white/10 px-3 py-2 text-[13px] font-medium text-white"
-                  >
-                    {environment.replace(" para pruebas funcionales", "").replace(" para operaciones autorizadas", "")}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <p className="mt-6 text-[16px] leading-7 tracking-[0.32px] text-white/74">
-              Diseñada para equipos de tesorería, finanzas corporativas y plataformas que integran banca empresarial.
-            </p>
           </div>
         </aside>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:col-span-2 xl:grid-cols-[repeat(4,minmax(0,1fr))_1.75fr]">
-          <QuickMetric label="Producto" value="Tesorería" />
-          <QuickMetric label="Uso ideal" value="B2B" />
-          <QuickMetric label="Cobertura" value="Saldos + movimientos" />
-          <QuickMetric label="Valor" value="Liquidez en tiempo real" />
-          <div className="rounded-[24px] bg-white px-6 py-5 text-[#404040] shadow-[0_18px_50px_rgba(20,31,37,0.08)]">
-            <p className="text-[13px] font-medium uppercase tracking-[0.2em] text-[#8E8E8E]">Qué encontrará aquí</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <span className="rounded-full bg-[#F2F3F5] px-3 py-2 text-[13px] font-medium text-[#404040]">Casos de uso reales</span>
-              <span className="rounded-full bg-[#F2F3F5] px-3 py-2 text-[13px] font-medium text-[#404040]">Requisitos de integración</span>
-              <span className="rounded-full bg-[#F2F3F5] px-3 py-2 text-[13px] font-medium text-[#404040]">Request y response</span>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            { label: "Producto", value: "Tesorería" },
+            { label: "Uso ideal", value: "B2B" },
+            { label: "Cobertura", value: "Saldos + movimientos" },
+            { label: "Valor", value: "Liquidez en tiempo real" },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-[22px] bg-white px-5 py-4 text-[#404040] shadow-[0_18px_50px_rgba(20,31,37,0.08)]"
+            >
+              <p className="text-[13px] font-medium uppercase tracking-[0.2em] text-[#8E8E8E]">{item.label}</p>
+              <p className="mt-3 max-w-[170px] text-[20px] font-bold leading-8 tracking-[0.4px] text-[#2A3239]">
+                {item.value}
+              </p>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
