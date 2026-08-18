@@ -13,7 +13,6 @@ import { DetailSectionCard } from "./detail/detail-primitives";
 import { TechnicalTabs } from "./detail/technical-tabs";
 
 const detailSections = [
-  { id: "overview", label: "Resumen" },
   { id: "value", label: "Insights" },
   { id: "technical", label: "Técnico" },
   { id: "next-steps", label: "Siguiente paso" },

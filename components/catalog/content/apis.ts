@@ -27,6 +27,7 @@ export type ApiError = {
 export type ApiDetail = ApiCatalogItem & {
   slug: string;
   heroImageSrc?: string;
+  heroSceneSrc?: string;
   heroDescription: string;
   intro: string;
   benefits: string[];
@@ -108,6 +109,7 @@ export const apiDetails: ApiDetail[] = [
       "Optimice la liquidez corporativa y la toma de decisiones en tiempo real. Integre la posición consolidada de fondos de su empresa directamente con sus sistemas centrales.",
     category: "Cuentas",
     status: "Producción",
+    heroSceneSrc: "/treasury-hero-illustration.svg",
     heroDescription:
       "Consulte saldos, movimientos y posiciones consolidadas para tomar decisiones de tesorería con más velocidad y trazabilidad.",
     intro:

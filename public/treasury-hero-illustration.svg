@@ -1,0 +1,74 @@
+<svg width="640" height="480" viewBox="0 0 640 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="outerBg" x1="46" y1="34" x2="586" y2="452" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2A333B"/>
+      <stop offset="1" stop-color="#7C1120"/>
+    </linearGradient>
+    <linearGradient id="innerBg" x1="86" y1="70" x2="540" y2="392" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B343C"/>
+      <stop offset="1" stop-color="#A50D1A"/>
+    </linearGradient>
+    <linearGradient id="glassPanel" x1="117" y1="114" x2="507" y2="362" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="balanceCard" x1="152" y1="154" x2="319" y2="260" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.06"/>
+    </linearGradient>
+    <linearGradient id="trackingCard" x1="335" y1="154" x2="479" y2="262" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E1251B" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#870412" stop-opacity="0.28"/>
+    </linearGradient>
+    <radialGradient id="redGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(430 314) rotate(90) scale(126 160)">
+      <stop stop-color="#E1251B" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#E1251B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="26" y="22" width="588" height="436" rx="36" fill="url(#outerBg)"/>
+  <rect x="26" y="22" width="588" height="436" rx="36" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2"/>
+  <rect x="50" y="48" width="540" height="384" rx="28" fill="#FFFFFF" fill-opacity="0.03"/>
+  <rect x="50" y="48" width="540" height="384" rx="28" stroke="#FFFFFF" stroke-opacity="0.1"/>
+  <circle cx="552" cy="72" r="76" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <circle cx="572" cy="138" r="54" stroke="#FFFFFF" stroke-opacity="0.09"/>
+
+  <rect x="74" y="78" width="494" height="334" rx="22" fill="url(#innerBg)"/>
+  <rect x="74" y="78" width="494" height="334" rx="22" fill="url(#redGlow)"/>
+
+  <rect x="102" y="128" width="456" height="228" rx="28" fill="url(#glassPanel)"/>
+  <rect x="102" y="128" width="456" height="228" rx="28" stroke="#FFFFFF" stroke-opacity="0.12"/>
+
+  <rect x="134" y="166" width="210" height="138" rx="22" fill="url(#balanceCard)"/>
+  <rect x="134" y="166" width="210" height="138" rx="22" stroke="#FFFFFF" stroke-opacity="0.1"/>
+  <text x="162" y="202" fill="#FFFFFF" fill-opacity="0.62" font-family="Roboto, Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="0.16em">SALDO DISPONIBLE</text>
+  <text x="162" y="262" fill="#FFFFFF" font-family="Roboto, Arial, sans-serif" font-size="44" font-weight="700">$245K</text>
+  <rect x="162" y="272" width="92" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.22"/>
+  <rect x="162" y="288" width="66" height="8" rx="4" fill="#FFFFFF" fill-opacity="0.14"/>
+
+  <rect x="352" y="166" width="186" height="104" rx="22" fill="url(#trackingCard)"/>
+  <rect x="352" y="166" width="186" height="104" rx="22" stroke="#FFFFFF" stroke-opacity="0.12"/>
+  <text x="378" y="202" fill="#FFFFFF" fill-opacity="0.62" font-family="Roboto, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.14em">TRAZABILIDAD</text>
+  <text x="378" y="244" fill="#FFFFFF" font-family="Roboto, Arial, sans-serif" font-size="24" font-weight="700">Tiempo real</text>
+
+  <rect x="330" y="286" width="100" height="28" rx="14" fill="#E1251B" fill-opacity="0.24"/>
+  <text x="351" y="304" fill="#FFFFFF" font-family="Roboto, Arial, sans-serif" font-size="12" font-weight="700">PRODUCCION</text>
+  <rect x="444" y="286" width="96" height="28" rx="14" fill="#FFFFFF" fill-opacity="0.08"/>
+  <text x="468" y="304" fill="#FFFFFF" fill-opacity="0.84" font-family="Roboto, Arial, sans-serif" font-size="12" font-weight="700">SANDBOX</text>
+
+  <rect x="134" y="336" width="372" height="58" rx="18" fill="#FFFFFF" fill-opacity="0.05"/>
+  <rect x="134" y="336" width="372" height="58" rx="18" stroke="#FFFFFF" stroke-opacity="0.09"/>
+  <path d="M174 365H230" stroke="#FFFFFF" stroke-opacity="0.34" stroke-width="4" stroke-linecap="round"/>
+  <path d="M270 365H326" stroke="#FFFFFF" stroke-opacity="0.34" stroke-width="4" stroke-linecap="round"/>
+  <path d="M366 365H422" stroke="#FFFFFF" stroke-opacity="0.34" stroke-width="4" stroke-linecap="round"/>
+  <g>
+    <circle cx="170" cy="365" r="11" fill="#55B685">
+    </circle>
+    <circle cx="266" cy="365" r="11" fill="#FF3B1F">
+    </circle>
+    <circle cx="362" cy="365" r="11" fill="#55B685">
+    </circle>
+    <circle cx="458" cy="365" r="11" fill="#FF3B1F">
+    </circle>
+  </g>
+</svg>

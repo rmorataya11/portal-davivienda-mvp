@@ -15,45 +15,57 @@ export function DetailHero({ api }: { api: ApiDetail }) {
 
       <div className="relative grid items-start gap-6">
         <div className="rounded-[28px] border border-white/10 bg-white/3 px-1 py-1">
-          <div className="rounded-[24px] px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8">
-            <div className="flex flex-wrap items-center gap-4">
-              {api.heroImageSrc ? (
-                <div className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-[10px] border border-white/14 bg-white/10">
-                  <img src={api.heroImageSrc} alt="" className="h-6 w-6 object-contain" />
-                </div>
-              ) : null}
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-5 py-2 text-[14px] font-medium text-[#347659]">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#55B685]" />
-                {api.status}
-              </span>
-              <span className="inline-flex items-center rounded-full bg-white/10 px-5 py-2 text-[14px] font-medium text-white">
-                {api.category}
-              </span>
+          <div className="grid gap-6 rounded-[24px] px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-end">
+            <div>
+              <div className="flex flex-wrap items-center gap-4">
+                {api.heroImageSrc ? (
+                  <div className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-[10px] border border-white/14 bg-white/10">
+                    <img src={api.heroImageSrc} alt="" className="h-6 w-6 object-contain" />
+                  </div>
+                ) : null}
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-5 py-2 text-[14px] font-medium text-[#347659]">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#55B685]" />
+                  {api.status}
+                </span>
+                <span className="inline-flex items-center rounded-full bg-white/10 px-5 py-2 text-[14px] font-medium text-white">
+                  {api.category}
+                </span>
+              </div>
+
+              <h1 className="mt-7 max-w-[760px] text-[40px] font-bold leading-[44px] tracking-[0.8px] text-white sm:mt-8 sm:text-[52px] sm:leading-[56px] sm:tracking-[1.04px]">
+                {api.name}
+              </h1>
+              <p className="mt-5 max-w-[760px] text-[18px] leading-7 tracking-[0.36px] text-white/90 sm:mt-6 sm:text-[22px] sm:leading-8 sm:tracking-[0.44px]">
+                {api.heroDescription}
+              </p>
+              <p className="mt-6 max-w-[760px] text-[16px] leading-7 tracking-[0.32px] text-white/72 sm:mt-8 sm:text-[18px] sm:leading-8 sm:tracking-[0.36px]">
+                {api.intro}
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3 sm:mt-10 sm:gap-4">
+                <Link
+                  href="#technical"
+                  className="inline-flex h-11 min-w-[190px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.24)] sm:h-12 sm:min-w-[226px] sm:px-7 sm:text-[15px]"
+                >
+                  Ver ejemplo técnico
+                </Link>
+                <Link
+                  href="#next-steps"
+                  className="inline-flex h-11 min-w-[170px] items-center justify-center rounded-[30px] border border-white/24 bg-white/6 px-6 text-[14px] font-medium text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-white/10 sm:h-12 sm:min-w-[210px] sm:px-7 sm:text-[15px]"
+                >
+                  Solicitar acceso
+                </Link>
+              </div>
             </div>
 
-            <h1 className="mt-7 max-w-[760px] text-[40px] font-bold leading-[44px] tracking-[0.8px] text-white sm:mt-8 sm:text-[52px] sm:leading-[56px] sm:tracking-[1.04px]">
-              {api.name}
-            </h1>
-            <p className="mt-5 max-w-[760px] text-[18px] leading-7 tracking-[0.36px] text-white/90 sm:mt-6 sm:text-[22px] sm:leading-8 sm:tracking-[0.44px]">
-              {api.heroDescription}
-            </p>
-            <p className="mt-6 max-w-[760px] text-[16px] leading-7 tracking-[0.32px] text-white/72 sm:mt-8 sm:text-[18px] sm:leading-8 sm:tracking-[0.36px]">
-              {api.intro}
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3 sm:mt-10 sm:gap-4">
-              <Link
-                href="#technical"
-                className="inline-flex h-11 min-w-[190px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.24)] sm:h-12 sm:min-w-[226px] sm:px-7 sm:text-[15px]"
-              >
-                Ver ejemplo técnico
-              </Link>
-              <Link
-                href="#next-steps"
-                className="inline-flex h-11 min-w-[170px] items-center justify-center rounded-[30px] border border-white/24 bg-white/6 px-6 text-[14px] font-medium text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-white/10 sm:h-12 sm:min-w-[210px] sm:px-7 sm:text-[15px]"
-              >
-                Solicitar acceso
-              </Link>
+            <div className="hidden xl:block">
+              <div className="rounded-[26px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-3 shadow-[0_20px_48px_rgba(0,0,0,0.18)]">
+                <img
+                  src={api.heroSceneSrc ?? "/treasury-hero-illustration.svg"}
+                  alt={`Ilustración ambientada para ${api.name}`}
+                  className="h-[290px] w-full rounded-[20px] object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
