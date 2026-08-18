@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 import type { ApiDetail } from "../content/apis";
 
 export function DetailHero({ api }: { api: ApiDetail }) {
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const primaryEndpoint = api.endpoints[0];
   const summaryItems = [
     {
@@ -111,27 +115,53 @@ export function DetailHero({ api }: { api: ApiDetail }) {
 
         <aside>
           <div className="rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.018))] px-5 py-5 backdrop-blur-[2px] sm:px-6 sm:py-6">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-white/58">Resumen ejecutivo</p>
                 <h2 className="mt-2 text-[26px] font-bold tracking-[0.4px] text-white">Lo esencial para evaluar esta API</h2>
               </div>
-              <p className="max-w-[340px] text-[14px] leading-6 text-white/62">
-                Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.
-              </p>
+              <button
+                type="button"
+                onClick={() => setIsSummaryOpen((current) => !current)}
+                className="inline-flex h-11 w-11 shrink-0 self-center items-center justify-center rounded-full border border-white/10 bg-white/8 text-white transition-all duration-300 hover:bg-white/12"
+                aria-expanded={isSummaryOpen}
+                aria-label={isSummaryOpen ? "Ocultar resumen ejecutivo" : "Mostrar resumen ejecutivo"}
+              >
+                <svg
+                  className={`h-4 w-4 transition-transform duration-300 ${isSummaryOpen ? "rotate-180" : ""}`}
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
             </div>
 
-            <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-              {summaryItems.map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018))] px-5 py-5"
-                >
-                  <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-white/56">{item.label}</p>
-                  <p className="mt-3 text-[22px] font-bold leading-8 tracking-[0.24px] text-white">{item.value}</p>
-                  <p className="mt-3 text-[13px] leading-6 text-white/66">{item.detail}</p>
+            <div
+              className={`grid overflow-hidden transition-[grid-template-rows,opacity,margin] duration-300 ease-out ${
+                isSummaryOpen ? "mt-6 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <div className="overflow-hidden">
+                <p className="max-w-[340px] text-[14px] leading-6 text-white/62">
+                  Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.
+                </p>
+
+                <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                  {summaryItems.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018))] px-5 py-5"
+                    >
+                      <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-white/56">{item.label}</p>
+                      <p className="mt-3 text-[22px] font-bold leading-8 tracking-[0.24px] text-white">{item.value}</p>
+                      <p className="mt-3 text-[13px] leading-6 text-white/66">{item.detail}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </aside>
