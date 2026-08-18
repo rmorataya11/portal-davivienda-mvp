@@ -6,17 +6,15 @@ import { PageContainer } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
 import { DetailFinalCta } from "./detail/detail-final-cta";
+import { DetailInsightsTabs } from "./detail/detail-insights-tabs";
 import { DetailNav } from "./detail/detail-nav";
 import { DetailHero } from "./detail/detail-hero";
-import { DetailIntegrationSection } from "./detail/detail-integration-section";
 import { DetailSectionCard } from "./detail/detail-primitives";
-import { DetailValueSection } from "./detail/detail-value-section";
 import { TechnicalTabs } from "./detail/technical-tabs";
 
 const detailSections = [
   { id: "overview", label: "Resumen" },
-  { id: "value", label: "Valor" },
-  { id: "integration", label: "Integración" },
+  { id: "value", label: "Insights" },
   { id: "technical", label: "Técnico" },
   { id: "next-steps", label: "Siguiente paso" },
 ];
@@ -45,9 +43,7 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
         </PageContainer>
       </section>
 
-      <DetailValueSection api={api} />
-
-      <DetailIntegrationSection api={api} />
+      <DetailInsightsTabs api={api} />
 
       <section id="technical" className="pb-16">
         <PageContainer>
