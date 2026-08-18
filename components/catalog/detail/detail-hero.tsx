@@ -37,15 +37,15 @@ export function DetailHero({ api }: { api: ApiDetail }) {
   return (
     <section
       id="overview"
-      className="relative mt-6 overflow-hidden rounded-[32px] bg-[linear-gradient(125deg,#141F25_0%,#283238_48%,#7F1120_100%)] px-4 py-4 text-white shadow-[0_28px_80px_rgba(20,31,37,0.18)] sm:px-7 sm:py-7"
+      className="relative mt-6 overflow-hidden rounded-[32px] bg-[linear-gradient(125deg,rgba(20,31,37,0.96)_0%,rgba(40,50,56,0.93)_48%,rgba(127,17,32,0.82)_100%)] px-4 py-4 text-white shadow-[0_28px_80px_rgba(20,31,37,0.18)] sm:px-7 sm:py-7"
     >
       <div className="absolute -right-20 top-[-40px] h-[240px] w-[240px] rounded-full border border-white/10" />
       <div className="absolute right-16 top-16 h-[110px] w-[110px] rounded-full bg-[#E1251B]/14 blur-3xl" />
       <div className="absolute inset-x-10 bottom-0 h-24 bg-[radial-gradient(circle_at_center,rgba(225,37,27,0.14),transparent_72%)]" />
 
       <div className="relative grid items-start gap-5">
-        <div className="rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-1">
-          <div className="grid gap-8 rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,25,30,0.52),rgba(18,25,30,0.22))] px-5 pb-5 pt-8 sm:px-7 sm:pb-7 sm:pt-9 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-center">
+        <div className="rounded-[30px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-1">
+          <div className="grid gap-8 rounded-[26px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,25,30,0.4),rgba(18,25,30,0.14))] px-5 pb-5 pt-8 sm:px-7 sm:pb-7 sm:pt-9 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-center">
             <div>
               <div className="flex flex-wrap items-center gap-4">
                 {api.heroImageSrc ? (
@@ -89,7 +89,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
             </div>
 
             <div className="hidden xl:block">
-              <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.03))] p-3 shadow-[0_22px_52px_rgba(0,0,0,0.2)]">
+              <div className="rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.075),rgba(255,255,255,0.025))] p-3 shadow-[0_22px_52px_rgba(0,0,0,0.16)]">
                 <div className="mb-3 flex items-center justify-between rounded-[18px] bg-black/10 px-4 py-3">
                   <div>
                     <p className="text-[12px] font-medium uppercase tracking-[0.18em] text-white/58">Visual de producto</p>
@@ -110,7 +110,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
         </div>
 
         <aside>
-          <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.03))] px-5 py-5 backdrop-blur-[2px] sm:px-6 sm:py-6">
+          <div className="rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.018))] px-5 py-5 backdrop-blur-[2px] sm:px-6 sm:py-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-white/58">Resumen ejecutivo</p>
@@ -125,7 +125,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               {summaryItems.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-[22px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-5 py-5"
+                  className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.018))] px-5 py-5"
                 >
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-white/56">{item.label}</p>
                   <p className="mt-3 text-[22px] font-bold leading-8 tracking-[0.24px] text-white">{item.value}</p>
@@ -140,7 +140,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
           {quickFacts.map((item) => (
             <div
               key={item.label}
-              className="rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,249,251,0.96))] px-5 py-4 text-[#404040] shadow-[0_18px_44px_rgba(20,31,37,0.08)]"
+              className="rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(248,249,251,0.78))] px-5 py-4 text-[#404040] shadow-[0_18px_44px_rgba(20,31,37,0.08)] backdrop-blur-[2px]"
             >
               <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{item.label}</p>
               <p className="mt-2 max-w-[176px] text-[22px] font-bold leading-8 tracking-[0.2px] text-[#202A31]">
