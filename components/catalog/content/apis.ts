@@ -16,6 +16,21 @@ export type ApiEndpoint = {
   method: "GET" | "POST" | "PUT" | "DELETE";
   path: string;
   description: string;
+  playground: {
+    httpUrl: string;
+    contentType: string;
+    credentialsLabel: string;
+    parameters: Array<{
+      name: string;
+      type: string;
+      required?: boolean;
+      location: "query" | "body" | "header";
+      description: string;
+    }>;
+    requestBody: string;
+    responseStatus: string;
+    responseBody: string;
+  };
 };
 
 export type ApiError = {
@@ -141,16 +156,135 @@ export const apiDetails: ApiDetail[] = [
         method: "GET",
         path: "/treasury/v1/balances",
         description: "Consulta saldos consolidados y disponibles por cuenta.",
+        playground: {
+          httpUrl: "https://api.davivienda.com/treasury/v1/balances",
+          contentType: "application/json",
+          credentialsLabel: "ApiKeyAuth",
+          parameters: [
+            {
+              name: "accountId",
+              type: "string",
+              required: true,
+              location: "query",
+              description: "Identificador de la cuenta empresarial a consultar.",
+            },
+            {
+              name: "Authorization",
+              type: "Bearer token",
+              required: true,
+              location: "header",
+              description: "Token de acceso para autorizar el consumo.",
+            },
+          ],
+          requestBody: `{
+  "accountId": "987654321"
+}`,
+          responseStatus: "200 OK",
+          responseBody: `{
+  "accountId": "987654321",
+  "currency": "USD",
+  "availableBalance": 245000.45,
+  "bookBalance": 251320.45,
+  "updatedAt": "2026-08-16T18:10:00Z"
+}`,
+        },
       },
       {
         method: "GET",
         path: "/treasury/v1/movements",
         description: "Devuelve movimientos por rango de fechas y criterios de búsqueda.",
+        playground: {
+          httpUrl: "https://api.davivienda.com/treasury/v1/movements",
+          contentType: "application/json",
+          credentialsLabel: "ApiKeyAuth",
+          parameters: [
+            {
+              name: "accountId",
+              type: "string",
+              required: true,
+              location: "query",
+              description: "Cuenta objetivo de la consulta.",
+            },
+            {
+              name: "fromDate",
+              type: "date",
+              required: true,
+              location: "query",
+              description: "Fecha inicial del rango de búsqueda.",
+            },
+            {
+              name: "toDate",
+              type: "date",
+              required: true,
+              location: "query",
+              description: "Fecha final del rango de búsqueda.",
+            },
+          ],
+          requestBody: `{
+  "accountId": "987654321",
+  "fromDate": "2026-08-01",
+  "toDate": "2026-08-16"
+}`,
+          responseStatus: "200 OK",
+          responseBody: `{
+  "accountId": "987654321",
+  "movements": [
+    {
+      "date": "2026-08-16",
+      "type": "credit",
+      "amount": 12500.00,
+      "reference": "ABONO-CORP-001"
+    }
+  ]
+}`,
+        },
       },
       {
         method: "POST",
         path: "/treasury/v1/reports",
         description: "Solicita reportes de tesorería para procesos de conciliación y auditoría.",
+        playground: {
+          httpUrl: "https://api.davivienda.com/treasury/v1/reports",
+          contentType: "application/json",
+          credentialsLabel: "ApiKeyAuth",
+          parameters: [
+            {
+              name: "reportType",
+              type: "string",
+              required: true,
+              location: "body",
+              description: "Tipo de reporte corporativo que desea generar.",
+            },
+            {
+              name: "accountIds",
+              type: "string[]",
+              required: true,
+              location: "body",
+              description: "Listado de cuentas incluidas en el reporte.",
+            },
+            {
+              name: "dateRange",
+              type: "object",
+              required: true,
+              location: "body",
+              description: "Rango de fechas aplicado a la generación del reporte.",
+            },
+          ],
+          requestBody: `{
+  "reportType": "conciliation",
+  "accountIds": ["987654321", "123456789"],
+  "dateRange": {
+    "from": "2026-08-01",
+    "to": "2026-08-16"
+  }
+}`,
+          responseStatus: "202 Accepted",
+          responseBody: `{
+  "reportId": "rpt-20260816-001",
+  "status": "processing",
+  "estimatedReadyAt": "2026-08-16T18:20:00Z"
+}`,
+        },
       },
     ],
     sampleRequest: `curl --request GET \\

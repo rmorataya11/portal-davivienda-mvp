@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { ApiDetail, ApiEndpoint, ApiError } from "../content/apis";
+import { EndpointPlayground } from "./endpoint-playground";
 
 type TabId = "overview" | "endpoints" | "request" | "response" | "errors";
 
@@ -14,22 +15,6 @@ type TechnicalTabsProps = {
   sampleResponse: string;
   errors: ApiError[];
 };
-
-function methodClasses(method: ApiEndpoint["method"]) {
-  if (method === "POST") {
-    return "bg-[#E1251B] text-white";
-  }
-
-  if (method === "PUT") {
-    return "bg-[#FFF4E8] text-[#8A4B00]";
-  }
-
-  if (method === "DELETE") {
-    return "bg-[#FFE9E9] text-[#A11B1B]";
-  }
-
-  return "bg-[#EFFCF5] text-[#347659]";
-}
 
 function CopyButton({ content }: { content: string }) {
   const [copied, setCopied] = useState(false);
@@ -61,22 +46,6 @@ function CodePanel({ title, code }: { title: string; code: string }) {
       <pre className="overflow-x-auto px-6 py-6 text-[14px] leading-7 text-white">
         <code>{code}</code>
       </pre>
-    </div>
-  );
-}
-
-function EndpointCard({ endpoint }: { endpoint: ApiEndpoint }) {
-  return (
-    <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(20,31,37,0.08)]">
-      <div className="flex flex-wrap items-center gap-4">
-        <span
-          className={`inline-flex min-w-[78px] items-center justify-center rounded-full px-4 py-2 text-[13px] font-bold tracking-[0.26px] ${methodClasses(endpoint.method)}`}
-        >
-          {endpoint.method}
-        </span>
-        <code className="text-[16px] font-medium tracking-[0.12px] text-[#0D0D0D]">{endpoint.path}</code>
-      </div>
-      <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">{endpoint.description}</p>
     </div>
   );
 }
@@ -185,11 +154,7 @@ export function TechnicalTabs({
         ) : null}
 
         {activeTab === "endpoints" ? (
-          <div className="space-y-4">
-            {endpoints.map((endpoint) => (
-              <EndpointCard key={`${endpoint.method}-${endpoint.path}`} endpoint={endpoint} />
-            ))}
-          </div>
+          <EndpointPlayground endpoints={endpoints} />
         ) : null}
 
         {activeTab === "request" ? <CodePanel title="Request de ejemplo" code={sampleRequest} /> : null}
