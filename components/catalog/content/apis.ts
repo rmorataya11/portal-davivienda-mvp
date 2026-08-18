@@ -4,6 +4,7 @@ export type ApiCatalogItem = {
   description: string;
   category: string;
   status: "Producción";
+  imageSrc?: string;
 };
 
 export type ApiDetailSection = {
@@ -25,6 +26,7 @@ export type ApiError = {
 
 export type ApiDetail = ApiCatalogItem & {
   slug: string;
+  heroImageSrc?: string;
   heroDescription: string;
   intro: string;
   benefits: string[];

@@ -8,9 +8,11 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
   return (
     <article className="group flex min-h-[348px] w-full flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#404040] hover:shadow-[0_24px_56px_rgba(20,31,37,0.12)] lg:w-[408px]">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex h-[60px] w-[60px] items-center justify-center rounded-[8px] bg-[#F2F3F5] text-[#404040] transition-colors duration-300 group-hover:bg-[#404040] group-hover:text-white">
-          <span className="h-6 w-6 rounded-[6px] border border-current/40" />
-        </div>
+        {api.imageSrc ? (
+          <div className="flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-[8px] bg-[#F2F3F5] transition-colors duration-300 group-hover:bg-[#404040]">
+            <img src={api.imageSrc} alt="" className="h-6 w-6 object-contain" />
+          </div>
+        ) : null}
         <div className="inline-flex h-7 w-[116px] items-center justify-center gap-2 rounded-[24px] bg-[#EFFCF5] text-[12px] font-medium text-[#347659]">
           <span className="h-2 w-2 rounded-full bg-[#55B685]" />
           {api.status}
@@ -23,10 +25,7 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
       <p className="mt-3 max-w-[373px] text-[16px] leading-5 tracking-[0.32px] text-[#8E8E8E]">{api.description}</p>
 
       <div className="mt-auto flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3 text-[16px] leading-7 tracking-[0.32px] text-[#8E8E8E]">
-          <span className="text-lg">⌁</span>
-          <span>{api.category}</span>
-        </div>
+        <div className="text-[16px] leading-7 tracking-[0.32px] text-[#8E8E8E]">{api.category}</div>
         <Link
           href={detailHref}
           aria-disabled={!api.slug}

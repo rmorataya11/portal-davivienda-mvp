@@ -29,15 +29,11 @@ export function CatalogPage() {
           <div className="px-4 py-4 sm:px-6 lg:px-[56px]">
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-2 text-[16px] leading-7 font-medium tracking-[0.32px] text-[#404040]">
-                <span className="inline-flex h-[30px] w-8 items-center justify-center text-xs text-[#404040]">
-                  ≡
-                </span>
                 <span>Catálogo de APIs</span>
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex h-10 w-full items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E] transition-colors duration-300 hover:border-[#404040] hover:text-[#404040] sm:w-[408px]">
-                  <span className="mr-3 text-lg">⌕</span>
                   <span className="text-sm">Filtra por nombre, etiqueta o endpoint...</span>
                 </div>
                 <button

@@ -8,6 +8,7 @@ export type ValueCard = {
   step: string;
   title: string;
   description: string;
+  imageSrc?: string;
   wide?: boolean;
 };
 
@@ -15,6 +16,7 @@ export type UseCaseCard = {
   category: string;
   title: string;
   description: string;
+  imageSrc?: string;
   mediaTone?: "warm" | "neutral";
 };
 

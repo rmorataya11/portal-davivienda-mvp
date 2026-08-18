@@ -32,7 +32,6 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
             href="/catalogo-apis"
             className="inline-flex items-center gap-2 text-[14px] font-medium tracking-[0.28px] text-[#707070] transition-colors duration-300 hover:text-[#E1251B]"
           >
-            <span aria-hidden="true">←</span>
             Volver al catálogo
           </Link>
 

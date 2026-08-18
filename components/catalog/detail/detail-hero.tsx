@@ -16,7 +16,11 @@ export function DetailHero({ api }: { api: ApiDetail }) {
         <div className="h-full rounded-[28px] border border-white/10 bg-white/3 px-1 py-1">
           <div className="flex h-full flex-col rounded-[24px] px-4 pb-4 pt-7 sm:px-5 sm:pb-5 sm:pt-8">
             <div className="flex flex-wrap items-center gap-4">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/14 bg-white/10" />
+              {api.heroImageSrc ? (
+                <div className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-[10px] border border-white/14 bg-white/10">
+                  <img src={api.heroImageSrc} alt="" className="h-6 w-6 object-contain" />
+                </div>
+              ) : null}
               <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-5 py-2 text-[14px] font-medium text-[#347659]">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#55B685]" />
                 {api.status}
