@@ -12,6 +12,7 @@ The navbar is an inset pill: `max-w-[1301px]` with `lg:px-10`. Content sections 
 - Do **not** wrap those blocks in `PageContainer` (`lg:px-[56px]` makes them narrower than the nav).
 - Use `PageContainer` only for small inset chrome such as back links.
 - Do not make the navbar full-bleed to match content. Keep the pill inset; make sections wider.
+- **Exception:** auth forms (`/crear-cuenta`, `/iniciar-sesion`) stay compact and centered (`max-w-[760px]`). Do not stretch them to `SectionContainer`.
 
 ```tsx
 // ❌ BAD — section ends up narrower than the navbar

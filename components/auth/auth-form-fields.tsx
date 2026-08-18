@@ -1,7 +1,11 @@
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const controlClassName =
-  "h-12 w-full rounded-[10px] border border-[#D5DAE0] bg-white px-4 text-[15px] text-[#141F25] outline-none transition-colors placeholder:text-[#A8AEB5] focus:border-[#E1251B]";
+  "h-12 w-full rounded-[10px] border bg-white px-4 text-[15px] text-[#141F25] outline-none transition-[border-color,box-shadow] placeholder:text-[#A8AEB5] hover:border-[#B8BFC6] focus:border-[#E1251B] focus:shadow-[0_0_0_3px_rgba(225,37,27,0.12)]";
+
+function fieldBorder(error?: string) {
+  return error ? "border-[#E1251B]" : "border-[#D5DAE0]";
+}
 
 export function FieldLabel({
   htmlFor,
@@ -20,22 +24,46 @@ export function FieldLabel({
   );
 }
 
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) {
+    return null;
+  }
+
+  return (
+    <p id={id} className="mt-1.5 text-[13px] leading-5 text-[#E1251B]">
+      {message}
+    </p>
+  );
+}
+
 export function TextField({
   id,
   label,
   required,
+  error,
   className = "",
   ...props
 }: InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   required?: boolean;
+  error?: string;
 }) {
+  const errorId = id ? `${id}-error` : undefined;
+
   return (
     <div className={className}>
       <FieldLabel htmlFor={id} required={required}>
         {label}
       </FieldLabel>
-      <input id={id} required={required} className={`mt-2 ${controlClassName}`} {...props} />
+      <input
+        id={id}
+        required={required}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? errorId : undefined}
+        className={`mt-2 ${controlClassName} ${fieldBorder(error)}`}
+        {...props}
+      />
+      <FieldError id={errorId ?? ""} message={error} />
     </div>
   );
 }
@@ -44,15 +72,19 @@ export function SelectField({
   id,
   label,
   required,
-  placeholder = "-",
+  error,
+  placeholder = "Seleccione",
   children,
   className = "",
   ...props
 }: SelectHTMLAttributes<HTMLSelectElement> & {
   label: string;
   required?: boolean;
+  error?: string;
   placeholder?: string;
 }) {
+  const errorId = id ? `${id}-error` : undefined;
+
   return (
     <div className={className}>
       <FieldLabel htmlFor={id} required={required}>
@@ -62,7 +94,9 @@ export function SelectField({
         <select
           id={id}
           required={required}
-          className={`${controlClassName} appearance-none pr-11 ${props.value ? "text-[#141F25]" : "text-[#A8AEB5]"}`}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
+          className={`${controlClassName} appearance-none pr-11 ${fieldBorder(error)}`}
           {...props}
         >
           <option value="">{placeholder}</option>
@@ -77,6 +111,7 @@ export function SelectField({
           <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
+      <FieldError id={errorId ?? ""} message={error} />
     </div>
   );
 }
@@ -86,20 +121,37 @@ export function TextAreaField({
   label,
   hint,
   required,
+  error,
   className = "",
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label: string;
   hint?: string;
   required?: boolean;
+  error?: string;
 }) {
+  const errorId = id ? `${id}-error` : undefined;
+  const hintId = id ? `${id}-hint` : undefined;
+
   return (
     <div className={className}>
       <FieldLabel htmlFor={id} required={required}>
         {label}
       </FieldLabel>
-      {hint ? <p className="mt-1 text-[14px] leading-6 text-[#8A9096]">{hint}</p> : null}
-      <textarea id={id} required={required} className={`mt-2 min-h-[160px] ${controlClassName} h-auto py-3`} {...props} />
+      {hint ? (
+        <p id={hintId} className="mt-1 text-[14px] leading-6 text-[#8A9096]">
+          {hint}
+        </p>
+      ) : null}
+      <textarea
+        id={id}
+        required={required}
+        aria-invalid={Boolean(error)}
+        aria-describedby={[hint ? hintId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") || undefined}
+        className={`mt-2 min-h-[148px] ${controlClassName} h-auto py-3 ${fieldBorder(error)}`}
+        {...props}
+      />
+      <FieldError id={errorId ?? ""} message={error} />
     </div>
   );
 }
