@@ -14,17 +14,6 @@ export function DetailFinalCta({ api }: { api: ApiDetail }) {
                 Lleve esta API de evaluación a integración real
               </h2>
               <p className="mt-5 max-w-[780px] text-[18px] leading-8 tracking-[0.24px] text-white/76">{api.supportNote}</p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <span className="rounded-full border border-white/14 bg-white/6 px-4 py-2 text-[14px] font-medium text-white/88">
-                  Sandbox guiado
-                </span>
-                <span className="rounded-full border border-white/14 bg-white/6 px-4 py-2 text-[14px] font-medium text-white/88">
-                  Soporte de integración
-                </span>
-                <span className="rounded-full border border-white/14 bg-white/6 px-4 py-2 text-[14px] font-medium text-white/88">
-                  Paso a producción
-                </span>
-              </div>
             </div>
 
             <div className="rounded-[26px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] p-5 backdrop-blur-[2px]">
