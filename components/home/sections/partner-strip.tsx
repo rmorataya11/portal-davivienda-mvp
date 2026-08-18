@@ -1,7 +1,9 @@
+import { FullBleedContainer } from "@/components/ui/layout";
+
 export function PartnerStrip() {
   return (
     <section className="px-4 pb-16 sm:px-6 lg:px-0">
-      <div className="mx-auto max-w-[1366px]">
+      <FullBleedContainer>
         <div className="rounded-[32px] bg-white px-6 py-8 lg:relative lg:ml-[57px] lg:h-[216px] lg:w-[1252px] lg:px-0 lg:py-0">
           <p className="text-[18px] leading-6 font-normal tracking-[0.4px] text-[#8E8E8E] lg:absolute lg:left-6 lg:top-[26px] lg:w-[635px] lg:text-[20px] lg:leading-4">
             Impulsando desde startups tecnológicas hasta grandes corporativos
@@ -26,7 +28,7 @@ export function PartnerStrip() {
             </div>
           </div>
         </div>
-      </div>
+      </FullBleedContainer>
     </section>
   );
 }

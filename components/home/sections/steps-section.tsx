@@ -1,12 +1,13 @@
 import Link from "next/link";
 
+import { PageContainer } from "@/components/ui/layout";
 import { StepCard } from "../cards/step-card";
 import { stepCards } from "../content/steps";
 
 export function StepsSection() {
   return (
     <section id="catalogo" className="pb-20 pt-1">
-      <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
+      <PageContainer>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="w-[74px] text-[24px] leading-7 font-normal tracking-[0.48px] text-[#E1251B]">Cómo funciona</p>
@@ -27,7 +28,7 @@ export function StepsSection() {
             <StepCard key={card.step} card={card} />
           ))}
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }

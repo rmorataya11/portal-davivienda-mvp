@@ -1,3 +1,4 @@
+import { FullBleedContainer } from "@/components/ui/layout";
 import { TallValueCard } from "../cards/tall-value-card";
 import { WideValueCard } from "../cards/wide-value-card";
 import { valueCards } from "../content/value-proposition";
@@ -7,7 +8,7 @@ export function ValuePropositionSection() {
 
   return (
     <section className="px-4 pb-16 sm:px-6 lg:px-0">
-      <div className="mx-auto max-w-[1366px]">
+      <FullBleedContainer>
         <div className="dark-orbit relative overflow-hidden rounded-[32px] bg-[#141F25] px-6 py-10 sm:px-8 sm:py-12 lg:h-[712px] lg:rounded-none">
           <div className="lg:absolute lg:left-[58px] lg:top-[55px]">
             <p className="w-full max-w-[180px] text-[24px] leading-7 font-normal tracking-[0.48px] text-white">Por qué Davivienda</p>
@@ -25,7 +26,7 @@ export function ValuePropositionSection() {
             </div>
           </div>
         </div>
-      </div>
+      </FullBleedContainer>
     </section>
   );
 }

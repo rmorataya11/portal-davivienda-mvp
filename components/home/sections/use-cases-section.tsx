@@ -1,4 +1,5 @@
 import { SectionHeading } from "@/components/ui/section-heading";
+import { PageContainer } from "@/components/ui/layout";
 
 import { UseCaseCard } from "../cards/use-case-card";
 import { useCaseCards } from "../content/use-cases";
@@ -6,7 +7,7 @@ import { useCaseCards } from "../content/use-cases";
 export function UseCasesSection() {
   return (
     <section id="casos-de-uso" className="pb-16 pt-2">
-      <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[57px]">
+      <PageContainer className="lg:px-[57px]">
         <SectionHeading
           title="Inspírese con lo que puede lograr"
           description="Historias reales de negocio que puede hacer realidad. Elija la que más se parezca a su idea y descubra cómo darle vida."
@@ -17,7 +18,7 @@ export function UseCasesSection() {
             <UseCaseCard key={card.title} card={card} highlightWarmMedia={card.mediaTone === "warm" && index === 0} />
           ))}
         </div>
-      </div>
+      </PageContainer>
     </section>
   );
 }
