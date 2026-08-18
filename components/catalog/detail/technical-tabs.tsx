@@ -84,21 +84,7 @@ export function TechnicalTabs({
 
   return (
     <div className="rounded-[28px] bg-white px-6 py-6 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
-      <div className="rounded-[24px] bg-[linear-gradient(180deg,#F8F9FB_0%,#F3F5F7_100%)] p-4">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Centro técnico</p>
-            <p className="mt-2 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
-              Revise la integración, explore endpoints y copie ejemplos de consumo para acelerar su implementación.
-            </p>
-          </div>
-          <span className="inline-flex items-center rounded-full bg-white px-4 py-2 text-[13px] font-medium text-[#30383F] shadow-[0_8px_20px_rgba(20,31,37,0.04)]">
-            Ejemplos listos para copiar
-          </span>
-        </div>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTab;
 
