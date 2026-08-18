@@ -1,0 +1,29 @@
+---
+description: Page sections must be slightly wider than the navbar
+alwaysApply: true
+---
+
+# Section width vs navbar
+
+The navbar is an inset pill: `max-w-[1301px]` with `lg:px-10`. Content sections must **protrude a bit past the navbar**, not sit narrower than it.
+
+- Wrap page sections (heroes, cards, CTAs, technical blocks) in `SectionContainer` from `@/components/ui/layout`.
+- `SectionContainer` is `max-w-[1366px]` with `px-3 sm:px-5 lg:px-0`.
+- Do **not** wrap those blocks in `PageContainer` (`lg:px-[56px]` makes them narrower than the nav).
+- Use `PageContainer` only for small inset chrome such as back links.
+- Do not make the navbar full-bleed to match content. Keep the pill inset; make sections wider.
+
+```tsx
+// ❌ BAD — section ends up narrower than the navbar
+<PageContainer>
+  <DetailHero />
+</PageContainer>
+
+// ✅ GOOD
+<PageContainer>
+  <Link href="...">Volver</Link>
+</PageContainer>
+<SectionContainer>
+  <DetailHero />
+</SectionContainer>
+```

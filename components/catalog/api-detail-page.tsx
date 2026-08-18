@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
-import { PageContainer } from "@/components/ui/layout";
+import { PageContainer, SectionContainer } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
 import { DetailFinalCta } from "./detail/detail-final-cta";
@@ -22,9 +22,11 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
           >
             Volver al catálogo
           </Link>
-
-          <DetailHero api={api} />
         </PageContainer>
+
+        <SectionContainer>
+          <DetailHero api={api} />
+        </SectionContainer>
       </section>
 
       <DetailInsightsTabs api={api} />

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
-import { PageContainer } from "@/components/ui/layout";
+import { PageContainer, SectionContainer } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
 import { DetailSectionCard } from "./detail/detail-primitives";
@@ -21,8 +21,10 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
           >
             Volver al detalle de la API
           </Link>
+        </PageContainer>
 
-          <div className="mt-6 rounded-[32px] bg-[linear-gradient(120deg,#1C252C_0%,#10161A_56%,#7F1120_100%)] px-6 py-7 text-white shadow-[0_24px_70px_rgba(20,31,37,0.14)] sm:px-8 sm:py-8">
+        <SectionContainer className="mt-6">
+          <div className="rounded-[32px] bg-[linear-gradient(120deg,#1C252C_0%,#10161A_56%,#7F1120_100%)] px-6 py-7 text-white shadow-[0_24px_70px_rgba(20,31,37,0.14)] sm:px-8 sm:py-8">
             <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-white/58">Detalle técnico</p>
             <h1 className="mt-4 text-[36px] font-bold tracking-[0.36px] sm:text-[44px]">Explore la integración de {api.name}</h1>
             <p className="mt-4 max-w-[820px] text-[18px] leading-8 tracking-[0.24px] text-white/76">
@@ -30,11 +32,11 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
               hacia una integración más realista.
             </p>
           </div>
-        </PageContainer>
+        </SectionContainer>
       </section>
 
       <section className="pb-16">
-        <PageContainer>
+        <SectionContainer>
           <DetailSectionCard eyebrow="Técnico" title="Detalle técnico de esta API">
             <TechnicalTabs
               authentication={api.authentication}
@@ -45,7 +47,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
               errors={api.errors}
             />
           </DetailSectionCard>
-        </PageContainer>
+        </SectionContainer>
       </section>
 
       <MarketplaceFooter />

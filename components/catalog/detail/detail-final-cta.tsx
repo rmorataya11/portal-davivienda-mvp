@@ -1,11 +1,13 @@
 import Link from "next/link";
 
+import { SectionContainer } from "@/components/ui/layout";
+
 import type { ApiDetail } from "../content/apis";
 
 export function DetailFinalCta({ api }: { api: ApiDetail }) {
   return (
     <section id="next-steps" className="pb-16">
-      <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
+      <SectionContainer>
         <div className="overflow-hidden rounded-[32px] bg-[linear-gradient(110deg,#1C252C_0%,#10161A_52%,#7F1120_100%)] px-5 py-6 text-white shadow-[0_24px_70px_rgba(20,31,37,0.12)] sm:px-8 sm:py-8">
           <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-center">
             <div>
@@ -41,7 +43,7 @@ export function DetailFinalCta({ api }: { api: ApiDetail }) {
             </div>
           </div>
         </div>
-      </div>
+      </SectionContainer>
     </section>
   );
 }

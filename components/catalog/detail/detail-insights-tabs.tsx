@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { SectionContainer } from "@/components/ui/layout";
+
 import type { ApiDetail } from "../content/apis";
 import { DetailSectionCard, ItemGrid } from "./detail-primitives";
 
@@ -19,7 +21,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
 
   return (
     <section id="value" className="pt-10 pb-16">
-      <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
+      <SectionContainer>
         <DetailSectionCard eyebrow="Insights" title="Explore cómo aprovechar esta API">
           <div className="rounded-[24px] bg-[linear-gradient(180deg,#F8F9FB_0%,#F3F5F7_100%)] p-4">
             <div>
@@ -157,7 +159,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
             ) : null}
           </div>
         </DetailSectionCard>
-      </div>
+      </SectionContainer>
     </section>
   );
 }
