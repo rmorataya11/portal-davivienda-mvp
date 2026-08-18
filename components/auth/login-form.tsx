@@ -61,7 +61,7 @@ export function LoginForm() {
 
   if (submitted) {
     return (
-      <div>
+      <div className="w-full max-w-[480px]">
         <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Sesión iniciada</p>
         <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">Bienvenido de nuevo</h1>
         <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
@@ -79,8 +79,11 @@ export function LoginForm() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-[440px]">
-      <h1 className="text-[34px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[40px]">Hola de nuevo</h1>
+    <div className="w-full max-w-[480px]">
+      <div className="h-1.5 w-14 rounded-full bg-[#E1251B]" />
+      <h1 className="mt-5 text-[34px] font-bold leading-[1.12] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+        Hola de nuevo
+      </h1>
       <p className="mt-3 text-[16px] leading-7 text-[#6A7178]">Nos alegra verle. Ingrese para continuar.</p>
 
       <form className="mt-8 space-y-5" noValidate onSubmit={handleSubmit}>
@@ -130,35 +133,19 @@ export function LoginForm() {
         </button>
       </form>
 
-      <div className="relative mt-8 overflow-hidden rounded-[20px] border border-[#E1251B]/18 bg-[#FFF8F8] px-5 py-5">
-        <div className="absolute -right-8 -top-10 h-24 w-24 rounded-full bg-[#E1251B]/8" />
-        <div className="relative flex items-start gap-3">
-          <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E1251B]/10 text-[#E1251B]">
-            <KeyIcon />
-          </span>
-          <div>
-            <p className="text-[16px] font-bold text-[#141F25]">¿Aún no tiene cuenta?</p>
-            <p className="mt-1 text-[14px] leading-6 text-[#6A7178]">
-              Regístrese, elija el producto que le interesa y le acompañamos para empezar.
-            </p>
-            <Link
-              href="/crear-cuenta"
-              className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[13px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-            >
-              + Crear cuenta
-            </Link>
-          </div>
-        </div>
+      <div className="mt-8 rounded-[18px] border border-[#E7EAEE] bg-[#F8F9FB] px-5 py-5">
+        <div className="h-1.5 w-10 rounded-full bg-[#E1251B]" />
+        <p className="mt-4 text-[16px] font-bold text-[#141F25]">¿Aún no tiene cuenta?</p>
+        <p className="mt-1 text-[14px] leading-6 text-[#6A7178]">
+          Regístrese, elija el producto que le interesa y le acompañamos para empezar.
+        </p>
+        <Link
+          href="/crear-cuenta"
+          className="mt-4 inline-flex h-10 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[13px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
+        >
+          Crear cuenta
+        </Link>
       </div>
     </div>
-  );
-}
-
-function KeyIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <circle cx="6" cy="6" r="2.4" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M7.7 7.7L13.2 13.2M11.2 11.2L12.6 11.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
   );
 }
