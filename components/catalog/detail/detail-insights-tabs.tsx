@@ -22,16 +22,13 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
       <div className="mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px]">
         <DetailSectionCard eyebrow="Insights" title="Explore cómo aprovechar esta API">
           <div className="rounded-[24px] bg-[linear-gradient(180deg,#F8F9FB_0%,#F3F5F7_100%)] p-4">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div>
               <div>
                 <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Vista de negocio</p>
                 <p className="mt-2 max-w-[720px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                   Cambie entre valor, aplicación, preparación técnica y journey recomendado desde un mismo bloque.
                 </p>
               </div>
-              <span className="inline-flex items-center rounded-full bg-white px-4 py-2 text-[13px] font-medium text-[#30383F] shadow-[0_8px_20px_rgba(20,31,37,0.04)]">
-                Cambie de perspectiva
-              </span>
             </div>
           </div>
 
