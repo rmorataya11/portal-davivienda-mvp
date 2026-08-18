@@ -1,4 +1,6 @@
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+"use client";
+
+import { useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 
 const controlClassName =
   "h-12 w-full rounded-[10px] border bg-white px-4 text-[15px] text-[#141F25] outline-none transition-[border-color,box-shadow] placeholder:text-[#A8AEB5] hover:border-[#B8BFC6] focus:border-[#E1251B] focus:shadow-[0_0_0_3px_rgba(225,37,27,0.12)]";
@@ -65,6 +67,78 @@ export function TextField({
       />
       <FieldError id={errorId ?? ""} message={error} />
     </div>
+  );
+}
+
+export function PasswordField({
+  id,
+  label,
+  required,
+  error,
+  className = "",
+  ...props
+}: InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  required?: boolean;
+  error?: string;
+}) {
+  const [visible, setVisible] = useState(false);
+  const errorId = id ? `${id}-error` : undefined;
+
+  return (
+    <div className={className}>
+      <FieldLabel htmlFor={id} required={required}>
+        {label}
+      </FieldLabel>
+      <div className="relative mt-2">
+        <input
+          id={id}
+          required={required}
+          autoComplete="current-password"
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
+          className={`${controlClassName} pr-12 ${fieldBorder(error)}`}
+          {...props}
+          type={visible ? "text" : "password"}
+        />
+        <button
+          type="button"
+          onClick={() => setVisible((current) => !current)}
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#6A7178] transition-colors hover:text-[#141F25]"
+          aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
+        >
+          {visible ? <EyeOffIcon /> : <EyeIcon />}
+        </button>
+      </div>
+      <FieldError id={errorId ?? ""} message={error} />
+    </div>
+  );
+}
+
+function EyeIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M2.5 10s2.8-5.5 7.5-5.5S17.5 10 17.5 10s-2.8 5.5-7.5 5.5S2.5 10 2.5 10Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <circle cx="10" cy="10" r="2.2" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function EyeOffIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M3 3.5L17 16.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M8.2 7.4A2.8 2.8 0 0 1 12.6 11.8M5.2 5.8C3.5 7 2.5 10 2.5 10s2.8 5.5 7.5 5.5c1.5 0 2.8-.4 3.9-1M14.7 13.3C16.3 12.1 17.5 10 17.5 10s-2.8-5.5-7.5-5.5c-.6 0-1.1.06-1.6.16"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
 
