@@ -36,9 +36,6 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
       <div className="grid xl:grid-cols-[220px_minmax(0,1fr)_340px]">
         <aside className="border-b border-[#E7EAEE] bg-[#FAFBFC] xl:border-b-0 xl:border-r">
           <div className="px-4 py-4">
-            <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Overview</p>
-          </div>
-          <div className="border-t border-[#EEF1F4] px-4 py-4">
             <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#6A7178]">Paths</p>
             <div className="mt-3 space-y-2">
               {endpoints.map((endpoint) => {
