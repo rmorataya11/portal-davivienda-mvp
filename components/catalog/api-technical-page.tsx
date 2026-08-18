@@ -13,7 +13,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[152px] pb-8">
+      <section className="pt-[132px] pb-8">
         <PageContainer>
           <Link
             href={`/catalogo-apis/${api.slug}`}
