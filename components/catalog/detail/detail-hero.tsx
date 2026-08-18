@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 import type { ApiDetail } from "../content/apis";
@@ -76,38 +75,15 @@ export function DetailHero({ api }: { api: ApiDetail }) {
                 {api.intro}
               </p>
 
-              <div className="mt-9 flex flex-wrap gap-3 sm:gap-4">
-                <Link
-                  href="#technical"
-                  className="inline-flex h-11 min-w-[190px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.24)] sm:h-12 sm:min-w-[226px] sm:px-7 sm:text-[15px]"
-                >
-                  Ver ejemplo técnico
-                </Link>
-                <Link
-                  href="#next-steps"
-                  className="inline-flex h-11 min-w-[170px] items-center justify-center rounded-[30px] border border-white/24 bg-white/6 px-6 text-[14px] font-medium text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-white/10 sm:h-12 sm:min-w-[210px] sm:px-7 sm:text-[15px]"
-                >
-                  Solicitar acceso
-                </Link>
-              </div>
             </div>
 
             <div className="hidden xl:block">
-              <div className="rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.075),rgba(255,255,255,0.025))] p-3 shadow-[0_22px_52px_rgba(0,0,0,0.16)]">
-                <div className="mb-3 flex items-center justify-between rounded-[18px] bg-black/10 px-4 py-3">
-                  <div>
-                    <p className="text-[12px] font-medium uppercase tracking-[0.18em] text-white/58">Visual de producto</p>
-                    <p className="mt-1 text-[15px] font-medium text-white/88">Escena orientada a liquidez y trazabilidad.</p>
-                  </div>
-                  <span className="rounded-full border border-white/12 bg-white/8 px-3 py-2 text-[12px] font-medium text-white/84">
-                    Banca empresarial
-                  </span>
+              <div className="rounded-[28px] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-4 shadow-[0_22px_52px_rgba(0,0,0,0.14)]">
+                <div className="flex h-[312px] w-full items-center justify-center rounded-[22px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] px-8 text-center">
+                  <p className="max-w-[240px] text-[18px] font-medium leading-8 tracking-[0.24px] text-white/72">
+                    (poner algun tipo de imagen con relacion a la API)
+                  </p>
                 </div>
-                <img
-                  src={api.heroSceneSrc ?? "/treasury-hero-illustration.svg"}
-                  alt={`Ilustración ambientada para ${api.name}`}
-                  className="h-[296px] w-full rounded-[22px] object-cover"
-                />
               </div>
             </div>
           </div>
