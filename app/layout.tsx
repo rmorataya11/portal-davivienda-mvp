@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+
+import { MarketplaceAssistant } from "@/components/assistant/marketplace-assistant";
+
 import "./globals.css";
 
 const roboto = Roboto({
@@ -17,7 +20,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${roboto.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <MarketplaceAssistant />
+      </body>
     </html>
   );
 }
