@@ -41,7 +41,7 @@ export function DetailNav({ sections }: { sections: DetailNavSection[] }) {
   }, [sections]);
 
   return (
-    <div className="sticky top-[96px] z-30 rounded-[28px] border border-[#D8DCE1] bg-white/92 px-3 py-3 shadow-[0_14px_36px_rgba(20,31,37,0.08)] backdrop-blur sm:top-[112px] lg:top-[118px] lg:rounded-full">
+    <div className="sticky top-[96px] z-30 rounded-[28px] border border-[#E3E7EC] bg-white/90 px-3 py-3 shadow-[0_16px_36px_rgba(20,31,37,0.08)] backdrop-blur sm:top-[112px] lg:top-[118px] lg:rounded-full">
       <nav className="flex flex-wrap gap-2">
         {sections.map((section) => {
           const isActive = section.id === activeSection;
@@ -52,8 +52,8 @@ export function DetailNav({ sections }: { sections: DetailNavSection[] }) {
               href={`#${section.id}`}
               className={`inline-flex h-10 items-center justify-center rounded-full px-5 text-[14px] font-medium transition-all duration-300 ease-out ${
                 isActive
-                  ? "bg-[#E1251B] text-white shadow-[0_10px_24px_rgba(225,37,27,0.22)]"
-                  : "bg-white text-[#404040] hover:-translate-y-0.5 hover:bg-[#F2F3F5] hover:shadow-[0_8px_18px_rgba(20,31,37,0.06)]"
+                  ? "bg-[#202A31] text-white shadow-[0_12px_26px_rgba(20,31,37,0.14)]"
+                  : "bg-transparent text-[#5F676E] hover:-translate-y-0.5 hover:bg-[#F5F6F8] hover:text-[#30383F]"
               }`}
             >
               {section.label}
