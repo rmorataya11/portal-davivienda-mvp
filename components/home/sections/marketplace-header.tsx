@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AuthNav } from "./auth-nav";
 import { navItems } from "../content/navigation";
 import { DaviviendaLogo } from "../shared/davivienda-logo";
 
@@ -36,20 +37,7 @@ export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string })
             })}
           </nav>
 
-          <div className="ml-auto hidden items-center gap-8 sm:flex lg:flex">
-            <Link
-              href="/crear-cuenta"
-              className="hidden text-[14px] font-medium text-white transition-all duration-300 hover:opacity-85 md:block"
-            >
-              Crear cuenta
-            </Link>
-            <Link
-              href="/iniciar-sesion"
-              className="inline-flex min-h-[40px] min-w-[132px] items-center justify-center rounded-full bg-white px-5 text-[13px] font-bold !text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#F2F3F5] hover:shadow-[0_14px_34px_rgba(20,31,37,0.16)] lg:min-h-[42px] lg:min-w-[156px] lg:px-7 lg:text-[14px]"
-            >
-              Iniciar sesión
-            </Link>
-          </div>
+          <AuthNav />
         </div>
 
         <nav className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">

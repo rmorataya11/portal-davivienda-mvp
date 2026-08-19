@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 
+import { AuthProvider } from "@/components/auth/auth-provider";
 import { MarketplaceAssistant } from "@/components/assistant/marketplace-assistant";
 
 import "./globals.css";
@@ -21,8 +22,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${roboto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        {children}
-        <MarketplaceAssistant />
+        <AuthProvider>
+          {children}
+          <MarketplaceAssistant />
+        </AuthProvider>
       </body>
     </html>
   );

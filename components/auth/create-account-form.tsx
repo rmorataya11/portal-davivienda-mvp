@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { getAuthErrorMessage } from "@/lib/firebase/errors";
+import { registerDeveloper } from "@/lib/firebase/register";
 
-import { SelectField, TextAreaField, TextField } from "./auth-form-fields";
+import { PasswordField, SelectField, TextAreaField, TextField } from "./auth-form-fields";
 import { caseReasons, environments, identificationTypes } from "./content/create-account";
 
 const ACCEPTED_TYPES = ["application/pdf", "image/png", "image/jpeg"];
@@ -29,6 +31,7 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
   const [fileError, setFileError] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -70,6 +73,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
     const nextErrors: FieldErrors = {};
     const email = String(form.get("email") ?? "").trim();
     const idNumber = String(form.get("idNumber") ?? "").trim();
+    const password = String(form.get("password") ?? "");
+    const confirmPassword = String(form.get("confirmPassword") ?? "");
 
     if (!email) {
       nextErrors.email = "Ingrese su correo electrónico.";
@@ -83,6 +88,18 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
 
     if (!idNumber) {
       nextErrors.idNumber = "Ingrese el número de identificación.";
+    }
+
+    if (!password) {
+      nextErrors.password = "Ingrese una contraseña.";
+    } else if (password.length < 8) {
+      nextErrors.password = "La contraseña debe tener al menos 8 caracteres.";
+    }
+
+    if (!confirmPassword) {
+      nextErrors.confirmPassword = "Confirme su contraseña.";
+    } else if (password !== confirmPassword) {
+      nextErrors.confirmPassword = "Las contraseñas no coinciden.";
     }
 
     if (!String(form.get("companyName") ?? "").trim()) {
@@ -120,10 +137,12 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
     return nextErrors;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const nextErrors = validate(new FormData(event.currentTarget));
+    const formData = new FormData(event.currentTarget);
+    const nextErrors = validate(formData);
     setErrors(nextErrors);
+    setFormError("");
 
     if (Object.keys(nextErrors).length > 0) {
       const firstField = Object.keys(nextErrors)[0];
@@ -132,26 +151,43 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
     }
 
     setIsSubmitting(true);
-    window.setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      await registerDeveloper({
+        email: String(formData.get("email") ?? "").trim(),
+        password: String(formData.get("password") ?? ""),
+        idType: String(formData.get("idType") ?? ""),
+        idNumber: String(formData.get("idNumber") ?? "").trim(),
+        companyName: String(formData.get("companyName") ?? "").trim(),
+        reason: String(formData.get("reason") ?? ""),
+        environment: String(formData.get("environment") ?? ""),
+        product: String(formData.get("product") ?? ""),
+        subject: String(formData.get("subject") ?? "").trim(),
+        description: String(formData.get("description") ?? "").trim(),
+        attachmentName: file?.name,
+      });
       setSubmitted(true);
-    }, 700);
+    } catch (error) {
+      setFormError(getAuthErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (submitted) {
     return (
       <div className="py-4 sm:py-6">
-        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Solicitud enviada</p>
-        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">Recibimos sus datos</h1>
+        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Cuenta activa</p>
+        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">Ya puede empezar</h1>
         <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
-          Un integrante del equipo revisará su interés y le acompañará en los siguientes pasos para activar su cuenta
-          de desarrollador.
+          Su cuenta quedó activa y guardamos su solicitud de sandbox. Cuando conectemos Apigee, las credenciales
+          aparecerán en el portal para que pruebe la API.
         </p>
         <Link
-          href="/"
+          href="/catalogo-apis"
           className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
         >
-          Volver al inicio
+          Ir al catálogo
         </Link>
       </div>
     );
@@ -182,6 +218,29 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
             error={errors.email}
             onChange={() => clearError("email")}
           />
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <PasswordField
+              id="password"
+              name="password"
+              label="Contraseña"
+              required
+              autoComplete="new-password"
+              placeholder="Mínimo 8 caracteres"
+              error={errors.password}
+              onChange={() => clearError("password")}
+            />
+            <PasswordField
+              id="confirmPassword"
+              name="confirmPassword"
+              label="Confirmar contraseña"
+              required
+              autoComplete="new-password"
+              placeholder="Repita su contraseña"
+              error={errors.confirmPassword}
+              onChange={() => clearError("confirmPassword")}
+            />
+          </div>
 
           <div className="grid gap-6 md:grid-cols-2">
             <SelectField
@@ -394,7 +453,7 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
               disabled={isSubmitting}
               className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
             >
-              {isSubmitting ? "Enviando..." : "Enviar solicitud"}
+              {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
               {isSubmitting ? null : <span aria-hidden="true">→</span>}
             </button>
             <p className="text-[15px] text-[#5B636A]">
@@ -404,6 +463,7 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
               </Link>
             </p>
           </div>
+          {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
         </FormSection>
       </form>
     </>

@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type FormEvent } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
+import { getFirebaseAuth } from "@/lib/firebase/client";
+import { getAuthErrorMessage } from "@/lib/firebase/errors";
+
+import { useAuth } from "./auth-provider";
 import { PasswordField, TextField } from "./auth-form-fields";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -10,9 +16,11 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type FieldErrors = Record<string, string>;
 
 export function LoginForm() {
+  const router = useRouter();
+  const { user, loading } = useAuth();
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -26,7 +34,13 @@ export function LoginForm() {
     });
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace("/catalogo-apis");
+    }
+  }, [loading, router, user]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const email = String(form.get("email") ?? "").trim();
@@ -46,6 +60,7 @@ export function LoginForm() {
     }
 
     setErrors(nextErrors);
+    setFormError("");
 
     if (Object.keys(nextErrors).length > 0) {
       document.getElementById(Object.keys(nextErrors)[0])?.focus();
@@ -53,29 +68,15 @@ export function LoginForm() {
     }
 
     setIsSubmitting(true);
-    window.setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-    }, 700);
-  }
 
-  if (submitted) {
-    return (
-      <div className="w-full max-w-[480px]">
-        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Sesión iniciada</p>
-        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">Bienvenido de nuevo</h1>
-        <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
-          Este es un mock: aún no hay autenticación real. Cuando conectemos Firebase, esta pantalla pasará al catálogo
-          con su sesión activa.
-        </p>
-        <Link
-          href="/catalogo-apis"
-          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-        >
-          Ir al catálogo
-        </Link>
-      </div>
-    );
+    try {
+      await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
+      router.push("/catalogo-apis");
+    } catch (error) {
+      setFormError(getAuthErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -122,6 +123,8 @@ export function LoginForm() {
             ¿Olvidó su contraseña?
           </Link>
         </div>
+
+        {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
 
         <button
           type="submit"

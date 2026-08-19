@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
 import { SurfaceCard } from "@/components/ui/layout";
+import { getFirebaseAuth } from "@/lib/firebase/client";
+import { getAuthErrorMessage } from "@/lib/firebase/errors";
 
 import { TextField } from "./auth-form-fields";
 
@@ -16,7 +19,7 @@ export function RecoverPasswordPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const email = String(new FormData(event.currentTarget).get("email") ?? "").trim();
 
@@ -32,10 +35,22 @@ export function RecoverPasswordPage() {
 
     setError("");
     setIsSubmitting(true);
-    window.setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      await sendPasswordResetEmail(getFirebaseAuth(), email);
       setSubmitted(true);
-    }, 700);
+    } catch (resetError) {
+      const code = typeof resetError === "object" && resetError && "code" in resetError ? String(resetError.code) : "";
+
+      if (code === "auth/user-not-found") {
+        setSubmitted(true);
+        return;
+      }
+
+      setError(getAuthErrorMessage(resetError));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -52,8 +67,8 @@ export function RecoverPasswordPage() {
                   Revise su bandeja
                 </h1>
                 <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
-                  Si el correo está registrado, le enviaremos un enlace para restablecer su contraseña. Esto es un mock:
-                  todavía no se dispara un correo real.
+                  Si el correo está registrado, le enviaremos un enlace para restablecer su contraseña. Revise también
+                  la carpeta de spam.
                 </p>
                 <Link
                   href="/iniciar-sesion"
