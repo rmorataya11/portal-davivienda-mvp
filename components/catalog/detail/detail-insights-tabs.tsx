@@ -118,8 +118,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                   <div className="rounded-[22px] bg-[linear-gradient(135deg,#202A31_0%,#334049_100%)] px-6 py-5 text-white shadow-[0_18px_40px_rgba(20,31,37,0.12)]">
                     <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-white/58">Ideal para</p>
                     <p className="mt-3 text-[18px] leading-8 tracking-[0.24px] text-white/88">
-                      Equipos que necesitan liquidez visible, conciliación rápida y automatización en sus flujos
-                      internos.
+                      {api.idealFor}
                     </p>
                   </div>
                 </div>

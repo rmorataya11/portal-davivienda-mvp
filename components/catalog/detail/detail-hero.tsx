@@ -15,13 +15,13 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     },
     {
       label: "Cobertura",
-      value: "3 flujos",
-      detail: "Saldos, movimientos y reportes corporativos.",
+      value: api.coverage.value,
+      detail: api.coverage.detail,
     },
     {
       label: "Primer consumo",
       value: primaryEndpoint ? `${primaryEndpoint.method} ${primaryEndpoint.path}` : "GET /balances",
-      detail: primaryEndpoint?.description ?? "Use Sandbox para validar saldos consolidados antes de ampliar el flujo.",
+      detail: primaryEndpoint?.description ?? "Use Sandbox para validar el flujo base antes de ampliar la integración.",
     },
     {
       label: "Ambientes",
@@ -30,12 +30,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     },
   ];
 
-  const quickFacts = [
-    { label: "Producto", value: "Tesorería" },
-    { label: "Uso ideal", value: "B2B corporativo" },
-    { label: "Cobertura", value: "Saldos + movimientos" },
-    { label: "Valor", value: "Liquidez en tiempo real" },
-  ];
+  const quickFacts = api.quickFacts;
 
   return (
     <section

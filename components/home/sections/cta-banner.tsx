@@ -11,7 +11,7 @@ export function CtaBanner() {
           <p className="mt-6 max-w-[640px] text-lg leading-8 text-white/82">
             Encuentre el producto ideal para su negocio y dé el primer paso. Estamos listos para acompañarle.
           </p>
-          <ActionLink href="#catalogo" className="mt-8 min-w-[230px]">
+          <ActionLink href="/catalogo-apis" className="mt-8 min-w-[230px]">
             Explorar productos
           </ActionLink>
         </div>
