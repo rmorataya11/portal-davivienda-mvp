@@ -13,7 +13,7 @@ The navbar is an inset pill: `max-w-[1301px]` with `lg:px-10`. Content sections 
 - Use `PageContainer` only for small inset chrome such as back links.
 - Do not make the navbar full-bleed to match content. Keep the pill inset; make sections wider.
 - **Exception — crear cuenta / recuperar clave:** compact and centered (`max-w-[760px]`). Do not stretch them to `SectionContainer`.
-- **Exception — iniciar sesión:** split layout (`max-w-[1366px]`, dark panel + form). Keep the marketplace header; do not copy a different navbar.
+- **Exception — iniciar sesión:** compact centered split (`max-w-[420px]` on mobile, `max-w-[920px]` on desktop). Do not stretch it to `1366px` or full viewport height.
 
 ```tsx
 // ❌ BAD — section ends up narrower than the navbar

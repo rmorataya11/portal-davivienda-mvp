@@ -80,17 +80,17 @@ export function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-[480px]">
-      <Link href="/" className="text-[14px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
+    <div className="w-full">
+      <Link href="/" className="text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
         Volver al inicio
       </Link>
-      <div className="mt-6 h-1.5 w-14 rounded-full bg-[#E1251B]" />
-      <h1 className="mt-5 text-[34px] font-bold leading-[1.12] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+      <div className="mt-4 h-1 w-12 rounded-full bg-[#E1251B] sm:mt-5" />
+      <h1 className="mt-3 text-[26px] font-bold leading-[1.15] tracking-[0.2px] text-[#141F25] sm:mt-4 sm:text-[30px]">
         Hola de nuevo
       </h1>
-      <p className="mt-3 text-[16px] leading-7 text-[#6A7178]">Nos alegra verle. Ingrese para continuar.</p>
+      <p className="mt-2 text-[14px] leading-6 text-[#6A7178] sm:text-[15px]">Nos alegra verle. Ingrese para continuar.</p>
 
-      <form className="mt-8 space-y-5" noValidate onSubmit={handleSubmit}>
+      <form className="mt-5 space-y-4 sm:mt-6" noValidate onSubmit={handleSubmit}>
         <TextField
           id="email"
           name="email"
@@ -132,22 +132,21 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
+          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none sm:h-12 sm:text-[15px]"
         >
           {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
           {isSubmitting ? null : <span aria-hidden="true">→</span>}
         </button>
       </form>
 
-      <div className="mt-8 rounded-[18px] border border-[#E7EAEE] bg-[#F8F9FB] px-5 py-5">
-        <div className="h-1.5 w-10 rounded-full bg-[#E1251B]" />
-        <p className="mt-4 text-[16px] font-bold text-[#141F25]">¿Aún no tiene cuenta?</p>
-        <p className="mt-1 text-[14px] leading-6 text-[#6A7178]">
+      <div className="mt-5 rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB] px-4 py-4 sm:mt-6 sm:px-5 sm:py-4">
+        <p className="text-[15px] font-bold text-[#141F25]">¿Aún no tiene cuenta?</p>
+        <p className="mt-1 text-[13px] leading-5 text-[#6A7178] sm:text-[14px] sm:leading-6">
           Regístrese, elija el producto que le interesa y le acompañamos para empezar.
         </p>
         <Link
           href="/crear-cuenta"
-          className="mt-4 inline-flex h-10 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[13px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
+          className="mt-3 inline-flex h-9 items-center justify-center rounded-full border border-[#E1251B] bg-white px-4 text-[13px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
         >
           Crear cuenta
         </Link>
