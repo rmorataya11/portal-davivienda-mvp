@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
-import { CreateAccountPage } from "@/components/auth/create-account-page";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { ContractingRequestPage } from "@/components/contracting/contracting-request-page";
 
 export const metadata: Metadata = {
-  title: "Crear cuenta | Davivienda API Marketplace",
-  description: "Regístrese para solicitar acceso a las APIs de Davivienda y comenzar su integración.",
+  title: "Solicitud de contratación | Davivienda API Marketplace",
+  description: "Solicite el paso a pruebas extendidas o producción de una API ya validada en sandbox.",
 };
 
-export default async function CrearCuentaRoute({
+export default async function SolicitudContratacionRoute({
   searchParams,
 }: {
   searchParams: Promise<{ producto?: string | string[] }>;
@@ -19,5 +19,5 @@ export default async function CrearCuentaRoute({
     (item) => item.name === requestedProduct || item.slug === requestedProduct,
   );
 
-  return <CreateAccountPage initialProduct={matchedProduct?.name ?? ""} />;
+  return <ContractingRequestPage productName={matchedProduct?.name ?? ""} />;
 }

@@ -7,6 +7,7 @@ import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
 import { registerDeveloper } from "@/lib/firebase/register";
+import { getLoginHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
 
 import { PasswordField, SelectField, TextAreaField, TextField } from "./auth-form-fields";
 import { caseReasons, environments, identificationTypes } from "./content/create-account";
@@ -19,10 +20,9 @@ type FieldErrors = Record<string, string>;
 
 type CreateAccountFormProps = {
   initialProduct?: string;
-  nextPath?: string;
 };
 
-export function CreateAccountForm({ initialProduct = "", nextPath }: CreateAccountFormProps) {
+export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProps) {
   const router = useRouter();
   const productOptions = useMemo(
     () => Array.from(new Map(apiCatalogItems.map((item) => [item.name, item.name])).values()),
@@ -170,8 +170,9 @@ export function CreateAccountForm({ initialProduct = "", nextPath }: CreateAccou
         attachmentName: file?.name,
       });
 
-      if (nextPath) {
-        router.push(nextPath);
+      const destination = resolveAuthReturnPath();
+      if (destination) {
+        router.replace(destination);
         return;
       }
 
@@ -467,7 +468,16 @@ export function CreateAccountForm({ initialProduct = "", nextPath }: CreateAccou
             </button>
             <p className="text-[15px] text-[#5B636A]">
               ¿Ya tiene cuenta?{" "}
-              <Link href="/iniciar-sesion" className="font-medium text-[#141F25] transition-colors hover:text-[#E1251B]">
+              <Link
+                href={getLoginHref(resolveAuthReturnPath())}
+                onClick={() => {
+                  const destination = resolveAuthReturnPath();
+                  if (destination) {
+                    rememberReturnPath(destination);
+                  }
+                }}
+                className="font-medium text-[#141F25] transition-colors hover:text-[#E1251B]"
+              >
                 Inicie sesión
               </Link>
             </p>

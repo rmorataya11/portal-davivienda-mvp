@@ -32,6 +32,12 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
               Acceda a la consola visual de endpoints, ejemplos de request/response y criterios técnicos para avanzar
               hacia una integración más realista.
             </p>
+            <Link
+              href={`/solicitud-contratacion?producto=${api.slug}`}
+              className="mt-7 inline-flex h-12 items-center justify-center rounded-[30px] bg-white px-6 text-[15px] font-semibold text-[#141F25] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#F2F3F5]"
+            >
+              Solicitar contratación
+            </Link>
           </div>
         </SectionContainer>
       </section>

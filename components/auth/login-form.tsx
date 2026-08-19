@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
+import { getSignupHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
 
 import { useAuth } from "./auth-provider";
 import { PasswordField, TextField } from "./auth-form-fields";
@@ -18,9 +19,26 @@ type FieldErrors = Record<string, string>;
 export function LoginForm() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const destinationRef = useRef<string>("/");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const destination = resolveAuthReturnPath();
+    if (destination) {
+      destinationRef.current = destination;
+      rememberReturnPath(destination);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loading || !user) {
+      return;
+    }
+
+    router.replace(destinationRef.current);
+  }, [loading, router, user]);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -33,12 +51,6 @@ export function LoginForm() {
       return next;
     });
   }
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.replace("/");
-    }
-  }, [loading, router, user]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -68,16 +80,20 @@ export function LoginForm() {
     }
 
     setIsSubmitting(true);
+    const destination = resolveAuthReturnPath() ?? destinationRef.current;
+    destinationRef.current = destination;
 
     try {
       await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
-      router.push("/");
+      router.replace(destination);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }
   }
+
+  const signupReturnTo = destinationRef.current === "/" ? undefined : destinationRef.current;
 
   return (
     <div className="w-full">
@@ -145,7 +161,12 @@ export function LoginForm() {
           Regístrese, elija el producto que le interesa y le acompañamos para empezar.
         </p>
         <Link
-          href="/crear-cuenta"
+          href={getSignupHref(signupReturnTo)}
+          onClick={() => {
+            if (signupReturnTo) {
+              rememberReturnPath(signupReturnTo);
+            }
+          }}
           className="mt-3 inline-flex h-9 items-center justify-center rounded-full border border-[#E1251B] bg-white px-4 text-[13px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
         >
           Crear cuenta

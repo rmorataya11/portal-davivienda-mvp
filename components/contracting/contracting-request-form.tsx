@@ -1,0 +1,310 @@
+"use client";
+
+import Link from "next/link";
+import { useState, type FormEvent, type ReactNode } from "react";
+
+import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
+
+import { destinationEnvironments, industries, monthlyVolumes } from "./content/contracting";
+import { RadioGroup } from "./radio-group";
+import { TermsModal } from "./terms-modal";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
+
+type FieldErrors = Record<string, string>;
+
+export function ContractingRequestForm({ productName = "" }: { productName?: string }) {
+  const [environment, setEnvironment] = useState("");
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
+
+  function clearError(field: string) {
+    setErrors((current) => {
+      if (!current[field]) {
+        return current;
+      }
+
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
+  }
+
+  function validate(form: FormData) {
+    const nextErrors: FieldErrors = {};
+    const email = String(form.get("technicalEmail") ?? "").trim();
+    const phone = String(form.get("technicalPhone") ?? "").trim();
+
+    if (!String(form.get("companyName") ?? "").trim()) {
+      nextErrors.companyName = "Ingrese la razón social o el nombre de la empresa.";
+    }
+
+    if (!String(form.get("taxId") ?? "").trim()) {
+      nextErrors.taxId = "Ingrese el NIT o la identificación fiscal.";
+    }
+
+    if (!form.get("industry")) {
+      nextErrors.industry = "Seleccione la industria o el sector.";
+    }
+
+    if (!String(form.get("useCase") ?? "").trim()) {
+      nextErrors.useCase = "Describa brevemente el caso de uso.";
+    }
+
+    if (!form.get("volume")) {
+      nextErrors.volume = "Seleccione el volumen estimado de transacciones.";
+    }
+
+    if (!form.get("environment")) {
+      nextErrors.environment = "Seleccione el ambiente destino.";
+    }
+
+    if (!String(form.get("technicalName") ?? "").trim()) {
+      nextErrors.technicalName = "Ingrese el nombre del contacto técnico.";
+    }
+
+    if (!email) {
+      nextErrors.technicalEmail = "Ingrese el correo del contacto técnico.";
+    } else if (!EMAIL_PATTERN.test(email)) {
+      nextErrors.technicalEmail = "Ingrese un correo válido, por ejemplo nombre@empresa.com.";
+    }
+
+    if (!phone) {
+      nextErrors.technicalPhone = "Ingrese el teléfono del contacto técnico.";
+    } else if (!PHONE_PATTERN.test(phone)) {
+      nextErrors.technicalPhone = "Ingrese un teléfono válido.";
+    }
+
+    if (!form.get("terms")) {
+      nextErrors.terms = "Debe aceptar los términos y condiciones.";
+    }
+
+    return nextErrors;
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const nextErrors = validate(new FormData(event.currentTarget));
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      document.getElementById(Object.keys(nextErrors)[0])?.focus();
+      return;
+    }
+
+    setIsSubmitting(true);
+    window.setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }, 700);
+  }
+
+  if (submitted) {
+    return (
+      <div className="py-4 sm:py-6">
+        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Solicitud recibida</p>
+        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">
+          Su solicitud fue recibida, le contactaremos
+        </h1>
+        <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
+          Un integrante del equipo revisará el caso de uso, el volumen estimado y el ambiente solicitado para continuar
+          el proceso hacia producción.
+        </p>
+        <Link
+          href="/catalogo-apis"
+          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
+        >
+          Volver al catálogo
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="border-b border-[#E7EAEE] pb-8">
+        <h1 className="text-[34px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+          Solicitud de contratación
+        </h1>
+        <p className="mt-4 text-[16px] leading-7 tracking-[0.2px] text-[#6A7178]">
+          Si ya validó una API en sandbox y quiere avanzar a producción, complete estos datos. Los campos con asterisco
+          (*) son obligatorios.
+        </p>
+        {productName ? (
+          <p className="mt-4 rounded-[12px] bg-[#F8F9FB] px-4 py-3 text-[14px] text-[#404040]">
+            Producto de interés: <span className="font-semibold text-[#141F25]">{productName}</span>
+          </p>
+        ) : null}
+      </div>
+
+      <form className="mt-8 space-y-10" noValidate onSubmit={handleSubmit}>
+        <input type="hidden" name="product" value={productName} />
+
+        <FormSection title="Empresa">
+          <TextField
+            id="companyName"
+            name="companyName"
+            label="Razón social / Nombre de la empresa"
+            required
+            autoComplete="organization"
+            placeholder="Mi Empresa S.A.S."
+            error={errors.companyName}
+            onChange={() => clearError("companyName")}
+          />
+          <TextField
+            id="taxId"
+            name="taxId"
+            label="NIT / identificación fiscal"
+            required
+            placeholder="900123456-7"
+            error={errors.taxId}
+            onChange={() => clearError("taxId")}
+          />
+          <SelectField
+            id="industry"
+            name="industry"
+            label="Industria / sector"
+            required
+            error={errors.industry}
+            onChange={() => clearError("industry")}
+          >
+            {industries.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </SelectField>
+        </FormSection>
+
+        <FormSection title="Uso y volumen">
+          <TextAreaField
+            id="useCase"
+            name="useCase"
+            label="Caso de uso"
+            required
+            rows={5}
+            hint="Describa de forma breve qué problema resuelve y cómo usará la API."
+            placeholder="Conciliar saldos corporativos en tiempo real para tesorería..."
+            error={errors.useCase}
+            onChange={() => clearError("useCase")}
+          />
+          <SelectField
+            id="volume"
+            name="volume"
+            label="Volumen estimado de transacciones/mes"
+            required
+            error={errors.volume}
+            onChange={() => clearError("volume")}
+          >
+            {monthlyVolumes.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </SelectField>
+          <RadioGroup
+            legend="Ambiente destino"
+            name="environment"
+            required
+            error={errors.environment}
+            value={environment}
+            options={destinationEnvironments}
+            onChange={(value) => {
+              setEnvironment(value);
+              clearError("environment");
+            }}
+          />
+        </FormSection>
+
+        <FormSection title="Contacto técnico">
+          <TextField
+            id="technicalName"
+            name="technicalName"
+            label="Nombre"
+            required
+            autoComplete="name"
+            placeholder="Ana Gómez"
+            error={errors.technicalName}
+            onChange={() => clearError("technicalName")}
+          />
+          <div className="grid gap-6 md:grid-cols-2">
+            <TextField
+              id="technicalEmail"
+              name="technicalEmail"
+              type="email"
+              label="Email"
+              required
+              autoComplete="email"
+              placeholder="ana.gomez@empresa.com"
+              error={errors.technicalEmail}
+              onChange={() => clearError("technicalEmail")}
+            />
+            <TextField
+              id="technicalPhone"
+              name="technicalPhone"
+              type="tel"
+              label="Teléfono"
+              required
+              autoComplete="tel"
+              placeholder="+57 300 123 4567"
+              error={errors.technicalPhone}
+              onChange={() => clearError("technicalPhone")}
+            />
+          </div>
+        </FormSection>
+
+        <FormSection title="Confirmación">
+          <div>
+            <div className="flex items-start gap-3 text-[15px] text-[#404040]">
+              <input
+                id="terms"
+                type="checkbox"
+                name="terms"
+                required
+                onChange={() => clearError("terms")}
+                className="mt-0.5 h-[18px] w-[18px] shrink-0 rounded-[4px] border border-[#C9CED4] accent-[#E1251B]"
+              />
+              <p>
+                <label htmlFor="terms" className="cursor-pointer">
+                  Acepto los{" "}
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setTermsOpen(true)}
+                  className="font-semibold text-[#E1251B] underline-offset-2 hover:underline"
+                >
+                  términos y condiciones
+                </button>{" "}
+                <span className="text-[#E1251B]">*</span>
+              </p>
+            </div>
+            {errors.terms ? <p className="mt-2 pl-8 text-[13px] text-[#E1251B]">{errors.terms}</p> : null}
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
+          >
+            {isSubmitting ? "Enviando..." : "Enviar solicitud"}
+            {isSubmitting ? null : <span aria-hidden="true">→</span>}
+          </button>
+        </FormSection>
+      </form>
+
+      <TermsModal open={termsOpen} onClose={() => setTermsOpen(false)} />
+    </>
+  );
+}
+
+function FormSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="space-y-5">
+      <h2 className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{title}</h2>
+      {children}
+    </section>
+  );
+}

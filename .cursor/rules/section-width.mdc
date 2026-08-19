@@ -12,7 +12,7 @@ The navbar is an inset pill: `max-w-[1301px]` with `lg:px-10`. Content sections 
 - Do **not** wrap those blocks in `PageContainer` (`lg:px-[56px]` makes them narrower than the nav).
 - Use `PageContainer` only for small inset chrome such as back links.
 - Do not make the navbar full-bleed to match content. Keep the pill inset; make sections wider.
-- **Exception — crear cuenta / recuperar clave:** compact and centered (`max-w-[760px]`). Do not stretch them to `SectionContainer`.
+- **Exception — crear cuenta / recuperar clave / solicitud de contratación:** compact and centered (`max-w-[760px]`). Do not stretch them to `SectionContainer`.
 - **Exception — iniciar sesión:** compact centered split (`max-w-[420px]` on mobile, `max-w-[920px]` on desktop). Do not stretch it to `1366px` or full viewport height.
 
 ```tsx

@@ -34,10 +34,10 @@ export function DetailFinalCta({ api }: { api: ApiDetail }) {
                   Ver detalle técnico
                 </Link>
                 <Link
-                  href="#"
+                  href={`/solicitud-contratacion?producto=${api.slug}`}
                   className="inline-flex h-12 min-w-[220px] items-center justify-center rounded-[30px] border border-white/30 px-6 text-[15px] font-medium text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-white hover:bg-white/6"
                 >
-                  Hablar con un experto
+                  Solicitar contratación
                 </Link>
               </div>
             </div>

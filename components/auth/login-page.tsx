@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
 import { LoginForm } from "./login-form";
@@ -55,7 +56,9 @@ export function LoginPage() {
           </aside>
 
           <div className="flex items-start px-5 py-6 sm:px-7 sm:py-7 lg:px-8 lg:py-8 xl:px-10">
-            <LoginForm />
+            <Suspense fallback={<div className="h-64 w-full max-w-[480px] animate-pulse rounded-[18px] bg-[#F2F3F5]" />}>
+              <LoginForm />
+            </Suspense>
           </div>
         </div>
       </section>
