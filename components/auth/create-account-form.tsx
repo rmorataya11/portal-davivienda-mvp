@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState, type FormEvent, type ReactNode } from "react";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
@@ -18,9 +19,11 @@ type FieldErrors = Record<string, string>;
 
 type CreateAccountFormProps = {
   initialProduct?: string;
+  nextPath?: string;
 };
 
-export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProps) {
+export function CreateAccountForm({ initialProduct = "", nextPath }: CreateAccountFormProps) {
+  const router = useRouter();
   const productOptions = useMemo(
     () => Array.from(new Map(apiCatalogItems.map((item) => [item.name, item.name])).values()),
     [],
@@ -166,6 +169,12 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
         description: String(formData.get("description") ?? "").trim(),
         attachmentName: file?.name,
       });
+
+      if (nextPath) {
+        router.push(nextPath);
+        return;
+      }
+
       setSubmitted(true);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));

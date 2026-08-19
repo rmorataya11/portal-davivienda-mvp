@@ -1,4 +1,4 @@
-import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
+import Link from "next/link";
 
 import { LoginForm } from "./login-form";
 
@@ -8,13 +8,11 @@ const loginHighlights = [
   "Un equipo cercano para cuando lo necesite",
 ];
 
-export function LoginPage({ nextPath = "/catalogo-apis" }: { nextPath?: string }) {
+export function LoginPage() {
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
-      <MarketplaceHeader />
-
-      <section className="px-3 pb-6 pt-[118px] sm:px-5 sm:pt-[128px] lg:px-0 lg:pb-8 lg:pt-[132px]">
-        <div className="mx-auto grid min-h-[calc(100vh-168px)] max-w-[1366px] overflow-hidden rounded-[28px] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.08)] lg:grid-cols-2 lg:rounded-[32px]">
+      <section className="px-3 py-6 sm:px-5 lg:px-8 lg:py-8">
+        <div className="mx-auto grid min-h-[calc(100vh-48px)] max-w-[1366px] overflow-hidden rounded-[28px] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.08)] lg:min-h-[calc(100vh-64px)] lg:grid-cols-2 lg:rounded-[32px]">
           <div className="bg-[#141F25] px-5 py-6 text-white lg:hidden">
             <p className="text-[12px] font-bold uppercase tracking-[0.28em] text-white/80">Developers</p>
             <p className="mt-3 max-w-[420px] text-[22px] font-bold leading-7 tracking-[0.2px]">
@@ -28,9 +26,12 @@ export function LoginPage({ nextPath = "/catalogo-apis" }: { nextPath?: string }
             <div className="pointer-events-none absolute -right-16 bottom-[-90px] h-[280px] w-[280px] rounded-full border border-white/8" />
 
             <div className="relative">
-              <div className="inline-flex h-11 items-center rounded-[10px] border border-white/14 bg-white/8 px-3 text-[12px] font-medium uppercase tracking-[0.22em] text-white/90">
+              <Link
+                href="/"
+                className="inline-flex h-11 items-center rounded-[10px] border border-white/14 bg-white/8 px-3 text-[12px] font-medium uppercase tracking-[0.22em] text-white/90 transition-colors hover:bg-white/12"
+              >
                 logo
-              </div>
+              </Link>
               <p className="mt-3 text-[12px] font-bold uppercase tracking-[0.28em] text-white">Developers</p>
             </div>
 
@@ -54,7 +55,7 @@ export function LoginPage({ nextPath = "/catalogo-apis" }: { nextPath?: string }
           </aside>
 
           <div className="flex items-start px-5 py-8 sm:px-10 sm:py-10 lg:px-16 lg:pt-[72px] lg:pb-14">
-            <LoginForm nextPath={nextPath} />
+            <LoginForm />
           </div>
         </div>
       </section>

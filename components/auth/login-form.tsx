@@ -15,7 +15,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FieldErrors = Record<string, string>;
 
-export function LoginForm({ nextPath = "/catalogo-apis" }: { nextPath?: string }) {
+export function LoginForm() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -36,9 +36,9 @@ export function LoginForm({ nextPath = "/catalogo-apis" }: { nextPath?: string }
 
   useEffect(() => {
     if (!loading && user) {
-      router.replace(nextPath);
+      router.replace("/");
     }
-  }, [loading, nextPath, router, user]);
+  }, [loading, router, user]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,7 +71,7 @@ export function LoginForm({ nextPath = "/catalogo-apis" }: { nextPath?: string }
 
     try {
       await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
-      router.push(nextPath);
+      router.push("/");
     } catch (error) {
       setFormError(getAuthErrorMessage(error));
     } finally {
@@ -81,7 +81,10 @@ export function LoginForm({ nextPath = "/catalogo-apis" }: { nextPath?: string }
 
   return (
     <div className="w-full max-w-[480px]">
-      <div className="h-1.5 w-14 rounded-full bg-[#E1251B]" />
+      <Link href="/" className="text-[14px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
+        Volver al inicio
+      </Link>
+      <div className="mt-6 h-1.5 w-14 rounded-full bg-[#E1251B]" />
       <h1 className="mt-5 text-[34px] font-bold leading-[1.12] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
         Hola de nuevo
       </h1>

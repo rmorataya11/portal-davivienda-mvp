@@ -1,6 +1,6 @@
-export function getSafeInternalPath(path: string | undefined, fallback = "/catalogo-apis") {
+export function getSafeInternalPath(path: string | undefined) {
   if (!path || !path.startsWith("/") || path.startsWith("//") || path.includes("://")) {
-    return fallback;
+    return undefined;
   }
 
   return path;
