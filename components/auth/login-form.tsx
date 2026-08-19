@@ -15,7 +15,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FieldErrors = Record<string, string>;
 
-export function LoginForm() {
+export function LoginForm({ nextPath = "/catalogo-apis" }: { nextPath?: string }) {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -36,9 +36,9 @@ export function LoginForm() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.replace("/catalogo-apis");
+      router.replace(nextPath);
     }
-  }, [loading, router, user]);
+  }, [loading, nextPath, router, user]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,7 +71,7 @@ export function LoginForm() {
 
     try {
       await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
-      router.push("/catalogo-apis");
+      router.push(nextPath);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));
     } finally {

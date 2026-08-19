@@ -8,7 +8,7 @@ const loginHighlights = [
   "Un equipo cercano para cuando lo necesite",
 ];
 
-export function LoginPage() {
+export function LoginPage({ nextPath = "/catalogo-apis" }: { nextPath?: string }) {
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader />
@@ -54,7 +54,7 @@ export function LoginPage() {
           </aside>
 
           <div className="flex items-start px-5 py-8 sm:px-10 sm:py-10 lg:px-16 lg:pt-[72px] lg:pb-14">
-            <LoginForm />
+            <LoginForm nextPath={nextPath} />
           </div>
         </div>
       </section>

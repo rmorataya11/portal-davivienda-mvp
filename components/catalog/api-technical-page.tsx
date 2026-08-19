@@ -6,6 +6,7 @@ import { PageContainer, SectionContainer } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
 import { DetailSectionCard } from "./detail/detail-primitives";
+import { TechnicalAccessGate } from "./detail/technical-access-gate";
 import { TechnicalTabs } from "./detail/technical-tabs";
 
 export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
@@ -37,16 +38,18 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
 
       <section className="pb-16">
         <SectionContainer>
-          <DetailSectionCard eyebrow="Técnico" title="Detalle técnico de esta API">
-            <TechnicalTabs
-              authentication={api.authentication}
-              requirements={api.requirements}
-              endpoints={api.endpoints}
-              sampleRequest={api.sampleRequest}
-              sampleResponse={api.sampleResponse}
-              errors={api.errors}
-            />
-          </DetailSectionCard>
+          <TechnicalAccessGate api={api}>
+            <DetailSectionCard eyebrow="Técnico" title="Detalle técnico de esta API">
+              <TechnicalTabs
+                authentication={api.authentication}
+                requirements={api.requirements}
+                endpoints={api.endpoints}
+                sampleRequest={api.sampleRequest}
+                sampleResponse={api.sampleResponse}
+                errors={api.errors}
+              />
+            </DetailSectionCard>
+          </TechnicalAccessGate>
         </SectionContainer>
       </section>
 
