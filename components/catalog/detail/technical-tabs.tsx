@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { ApiDetail, ApiEndpoint, ApiError } from "../content/apis";
 import { EndpointPlayground } from "./endpoint-playground";
 
-type TabId = "overview" | "endpoints" | "request" | "response" | "errors";
+type TabId = "overview" | "endpoints" | "request" | "response" | "errors" | "credentials";
 
 type TechnicalTabsProps = {
   authentication: ApiDetail["authentication"];
@@ -14,9 +14,10 @@ type TechnicalTabsProps = {
   sampleRequest: string;
   sampleResponse: string;
   errors: ApiError[];
+  slug?: string;
 };
 
-function CopyButton({ content }: { content: string }) {
+function CopyButton({ content, tone = "dark" }: { content: string; tone?: "dark" | "light" }) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -29,7 +30,11 @@ function CopyButton({ content }: { content: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="inline-flex h-9 items-center justify-center rounded-full border border-white/14 px-4 text-[13px] font-medium text-white transition-all duration-300 hover:bg-white/8"
+      className={`inline-flex h-9 items-center justify-center rounded-full border px-4 text-[13px] font-medium transition-all duration-300 ${
+        tone === "light"
+          ? "border-[#D5DAE0] text-[#404040] hover:bg-[#F3F5F7]"
+          : "border-white/14 text-white hover:bg-white/8"
+      }`}
     >
       {copied ? "Copiado" : "Copiar"}
     </button>
@@ -46,6 +51,41 @@ function CodePanel({ title, code }: { title: string; code: string }) {
       <pre className="overflow-x-auto px-6 py-6 text-[14px] leading-7 text-white">
         <code>{code}</code>
       </pre>
+    </div>
+  );
+}
+
+function CredentialRow({
+  label,
+  value,
+  secret,
+}: {
+  label: string;
+  value: string;
+  secret?: boolean;
+}) {
+  const [visible, setVisible] = useState(!secret);
+
+  return (
+    <div className="rounded-[18px] border border-[#E3E7EC] bg-white px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{label}</p>
+        <div className="flex items-center gap-2">
+          {secret ? (
+            <button
+              type="button"
+              onClick={() => setVisible((current) => !current)}
+              className="text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]"
+            >
+              {visible ? "Ocultar" : "Mostrar"}
+            </button>
+          ) : null}
+          <CopyButton content={value} tone="light" />
+        </div>
+      </div>
+      <p className="mt-3 break-all font-mono text-[14px] leading-7 text-[#141F25]">
+        {visible ? value : "•".repeat(Math.min(value.length, 28))}
+      </p>
     </div>
   );
 }
@@ -71,8 +111,18 @@ export function TechnicalTabs({
   sampleRequest,
   sampleResponse,
   errors,
+  slug,
 }: TechnicalTabsProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const sandboxKey = slug ? slug.replace(/-/g, "").slice(0, 8) : "tesoreria";
+
+  const mockCredentials = {
+    environment: "Sandbox",
+    clientId: `davi_sandbox_${sandboxKey}_8f2a1c94`,
+    clientSecret: `sk_sandbox_${sandboxKey}_9c4e7b21d6a0`,
+    apiKey: `ak_sandbox_${sandboxKey.toUpperCase()}_Q8M2L1`,
+    baseUrl: "https://sandbox.api.davivienda.com",
+  };
 
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "overview", label: "Overview" },
@@ -80,6 +130,7 @@ export function TechnicalTabs({
     { id: "request", label: "Request" },
     { id: "response", label: "Response" },
     { id: "errors", label: "Errores" },
+    { id: "credentials", label: "Credenciales" },
   ];
 
   return (
@@ -152,6 +203,42 @@ export function TechnicalTabs({
             {errors.map((error) => (
               <ErrorCard key={error.code} error={error} />
             ))}
+          </div>
+        ) : null}
+
+        {activeTab === "credentials" ? (
+          <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-4 py-2 text-[13px] font-medium text-[#347659]">
+                  <span className="h-2 w-2 rounded-full bg-[#55B685]" />
+                  {mockCredentials.environment}
+                </span>
+                <p className="text-[14px] text-[#6A7178]">Mock de credenciales para pruebas. No usar en producción.</p>
+              </div>
+              <CredentialRow label="Client ID" value={mockCredentials.clientId} />
+              <CredentialRow label="Client secret" value={mockCredentials.clientSecret} secret />
+              <CredentialRow label="API key" value={mockCredentials.apiKey} secret />
+              <CredentialRow label="Base URL" value={mockCredentials.baseUrl} />
+            </div>
+
+            <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
+              <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">Cómo usarlas</h3>
+              <ul className="mt-4 space-y-4 text-[16px] leading-7 tracking-[0.24px] text-[#3C444B]">
+                <li className="flex gap-3">
+                  <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
+                  Envíe el Client ID y el secret para obtener el Bearer token.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
+                  Incluya la API key en la cabecera x-api-key de cada request.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
+                  Estas claves solo aplican a sandbox. Para producción, solicite contratación.
+                </li>
+              </ul>
+            </div>
           </div>
         ) : null}
       </div>

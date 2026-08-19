@@ -53,6 +53,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
                 sampleRequest={api.sampleRequest}
                 sampleResponse={api.sampleResponse}
                 errors={api.errors}
+                slug={api.slug}
               />
             </DetailSectionCard>
           </TechnicalAccessGate>
