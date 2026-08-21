@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
+
 import type { ApiDetail, ApiEndpoint, ApiError } from "../content/apis";
 import { EndpointPlayground } from "./endpoint-playground";
 
@@ -15,6 +17,12 @@ type TechnicalTabsProps = {
   sampleResponse: string;
   errors: ApiError[];
   slug?: string;
+};
+
+type ProvisionedCredentials = {
+  consumerKey: string;
+  expiresAt: string;
+  baseUrl: string;
 };
 
 function CopyButton({ content, tone = "dark" }: { content: string; tone?: "dark" | "light" }) {
@@ -113,16 +121,59 @@ export function TechnicalTabs({
   errors,
   slug,
 }: TechnicalTabsProps) {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
-  const sandboxKey = slug ? slug.replace(/-/g, "").slice(0, 8) : "tesoreria";
+  const [credentials, setCredentials] = useState<ProvisionedCredentials | null>(null);
+  const [isProvisioning, setIsProvisioning] = useState(false);
+  const [provisionError, setProvisionError] = useState("");
 
-  const mockCredentials = {
-    environment: "Sandbox",
-    clientId: `davi_sandbox_${sandboxKey}_8f2a1c94`,
-    clientSecret: `sk_sandbox_${sandboxKey}_9c4e7b21d6a0`,
-    apiKey: `ak_sandbox_${sandboxKey.toUpperCase()}_Q8M2L1`,
-    baseUrl: "https://sandbox.api.davivienda.com",
-  };
+  async function handleProvisionCredentials() {
+    if (!user?.email) {
+      setProvisionError("No encontramos una sesión activa para provisionar credenciales.");
+      return;
+    }
+
+    setIsProvisioning(true);
+    setProvisionError("");
+
+    try {
+      const response = await fetch("/api/apigee/provision", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+        }),
+      });
+
+      const payload = (await response.json()) as
+        | {
+            consumerKey?: string;
+            expiresAt?: string;
+            hostname?: string;
+            basePath?: string;
+            message?: string;
+          }
+        | undefined;
+
+      if (!response.ok || !payload?.consumerKey || !payload.hostname || !payload.basePath || !payload.expiresAt) {
+        throw new Error(payload?.message || "No fue posible obtener las credenciales de sandbox.");
+      }
+
+      setCredentials({
+        consumerKey: payload.consumerKey,
+        expiresAt: payload.expiresAt,
+        baseUrl: `https://${payload.hostname}${payload.basePath}`,
+      });
+    } catch (error) {
+      setProvisionError(error instanceof Error ? error.message : "No fue posible obtener las credenciales de sandbox.");
+    } finally {
+      setIsProvisioning(false);
+    }
+  }
+
+  const formattedExpiry = formatExpiration(credentials?.expiresAt);
 
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "overview", label: "Overview" },
@@ -212,14 +263,40 @@ export function TechnicalTabs({
               <div className="flex flex-wrap items-center gap-3">
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-4 py-2 text-[13px] font-medium text-[#347659]">
                   <span className="h-2 w-2 rounded-full bg-[#55B685]" />
-                  {mockCredentials.environment}
+                  Sandbox
                 </span>
-                <p className="text-[14px] text-[#6A7178]">Mock de credenciales para pruebas. No usar en producción.</p>
+                <p className="text-[14px] text-[#6A7178]">
+                  Genere credenciales reales en Apigee para consumir el proxy publicado.
+                </p>
               </div>
-              <CredentialRow label="Client ID" value={mockCredentials.clientId} />
-              <CredentialRow label="Client secret" value={mockCredentials.clientSecret} secret />
-              <CredentialRow label="API key" value={mockCredentials.apiKey} secret />
-              <CredentialRow label="Base URL" value={mockCredentials.baseUrl} />
+              <div className="rounded-[18px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-5 py-5">
+                <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Provisionar acceso</p>
+                <p className="mt-3 text-[15px] leading-7 text-[#3C444B]">
+                  {credentials
+                    ? "Ya generó credenciales para esta sesión. Si necesita otra app de sandbox, puede volver a provisionar."
+                    : "Haga clic para crear el developer app en Apigee y recibir el consumer key real de sandbox."}
+                </p>
+                <button
+                  type="button"
+                  onClick={handleProvisionCredentials}
+                  disabled={isProvisioning}
+                  className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:translate-y-0 disabled:bg-[#C9CED4]"
+                >
+                  {isProvisioning ? "Provisionando..." : credentials ? "Provisionar otra app" : "Obtener credenciales reales"}
+                </button>
+                {provisionError ? <p className="mt-3 text-[13px] text-[#E1251B]">{provisionError}</p> : null}
+              </div>
+              {credentials ? (
+                <>
+                  <CredentialRow label="Consumer key / API key" value={credentials.consumerKey} secret />
+                  <CredentialRow label="Base URL" value={credentials.baseUrl} />
+                  <CredentialRow label="Expira" value={formattedExpiry} />
+                </>
+              ) : (
+                <div className="rounded-[18px] border border-dashed border-[#D5DAE0] bg-white px-5 py-5 text-[14px] leading-7 text-[#6A7178]">
+                  Todavía no hay credenciales provisionadas para mostrar.
+                </div>
+              )}
             </div>
 
             <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
@@ -227,15 +304,16 @@ export function TechnicalTabs({
               <ul className="mt-4 space-y-4 text-[16px] leading-7 tracking-[0.24px] text-[#3C444B]">
                 <li className="flex gap-3">
                   <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                  Envíe el Client ID y el secret para obtener el Bearer token.
+                  Use el valor de <span className="font-mono text-[14px]">consumerKey</span> en la cabecera{" "}
+                  <span className="font-mono text-[14px]">x-api-key</span>.
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                  Incluya la API key en la cabecera x-api-key de cada request.
+                  Llame el proxy directamente en la URL base entregada por el portal.
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                  Estas claves solo aplican a sandbox. Para producción, solicite contratación.
+                  Estas credenciales solo aplican a sandbox. Para producción, solicite contratación.
                 </li>
               </ul>
             </div>
@@ -244,4 +322,21 @@ export function TechnicalTabs({
       </div>
     </div>
   );
+}
+
+function formatExpiration(value: string | undefined) {
+  if (!value) {
+    return "No disponible";
+  }
+
+  const numeric = Number(value);
+
+  if (!Number.isFinite(numeric)) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("es-CO", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(numeric));
 }
