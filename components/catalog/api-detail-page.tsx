@@ -8,6 +8,7 @@ import type { ApiDetail } from "./content/apis";
 import { DetailFinalCta } from "./detail/detail-final-cta";
 import { DetailInsightsTabs } from "./detail/detail-insights-tabs";
 import { DetailHero } from "./detail/detail-hero";
+import { ApiAppsSection } from "./detail/api-apps-section";
 
 export function ApiDetailPage({ api }: { api: ApiDetail }) {
   return (
@@ -25,6 +26,8 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
           <DetailHero api={api} />
         </SectionContainer>
       </section>
+
+      <ApiAppsSection slug={api.slug} apiName={api.name} />
 
       <DetailInsightsTabs api={api} />
 
