@@ -283,10 +283,10 @@ export function MarketplaceAssistant() {
           setIsOpen(true);
           setPanelView("chat");
         }}
-        className="fixed bottom-5 right-5 z-[70] inline-flex h-14 items-center gap-3 rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white shadow-[0_20px_44px_rgba(225,37,27,0.28)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] sm:bottom-7 sm:right-7"
+        aria-label="Abrir asistente"
+        className="fixed bottom-5 right-5 z-[70] inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#E1251B] text-[15px] font-bold tracking-[0.4px] text-white shadow-[0_20px_44px_rgba(225,37,27,0.28)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] sm:bottom-7 sm:right-7"
       >
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/18 text-[13px]">Q&A</span>
-        <span className="hidden sm:inline">Asistente</span>
+        Q&A
       </button>
 
       {isOpen ? (
