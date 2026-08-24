@@ -41,6 +41,8 @@ export function appUsageStats(app: DeveloperApp) {
   }
 
   const callsLast30Days = 180 + (hash % 4820);
+  const weeklyTotal = Math.max(48, Math.round(callsLast30Days / 4.3));
+  const weekdayShare = [0.15, 0.16, 0.15, 0.17, 0.14, 0.12, 0.11];
 
   return {
     callsLast30Days,
@@ -48,7 +50,10 @@ export function appUsageStats(app: DeveloperApp) {
     avgLatencyMs: 120 + (hash % 260),
     consumedCop: Math.round(callsLast30Days * 42),
     budgetCop: 2_500_000,
-    weekActivity: Array.from({ length: 7 }, (_, index) => 18 + ((hash >> (index * 4)) % 82)),
+    weekActivity: weekdayShare.map((share, index) => {
+      const variance = 0.82 + (((hash + index * 19) % 36) / 100);
+      return Math.max(8, Math.round(weeklyTotal * share * variance));
+    }),
   };
 }
 

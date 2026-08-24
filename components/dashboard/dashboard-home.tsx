@@ -7,8 +7,7 @@ import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
 
 import { AppCard } from "./app-card";
 import { useDeveloperApps } from "./apps-provider";
-
-const WEEK_LABELS = ["L", "M", "X", "J", "V", "S", "D"];
+import { WeekActivityChart } from "./week-activity-chart";
 
 export function DashboardHome() {
   const { user } = useAuth();
@@ -26,11 +25,10 @@ export function DashboardHome() {
   const consumedRatio = Math.min(consumedCop / budgetCop, 1);
   const weekActivity =
     stats.length > 0
-      ? WEEK_LABELS.map((_, index) =>
-          Math.round(stats.reduce((sum, item) => sum + item.weekActivity[index], 0) / stats.length),
+      ? [0, 1, 2, 3, 4, 5, 6].map((index) =>
+          stats.reduce((sum, item) => sum + item.weekActivity[index], 0),
         )
-      : WEEK_LABELS.map(() => 12);
-  const maxWeek = Math.max(...weekActivity, 1);
+      : [0, 0, 0, 0, 0, 0, 0];
   const sandboxCount = apps.filter((app) => app.status === "sandbox").length;
 
   return (
@@ -77,18 +75,7 @@ export function DashboardHome() {
           </div>
 
           <div className="border-t border-[#E7EAEE] bg-[#F8F9FB] px-6 py-7 sm:px-8 lg:border-t-0 lg:border-l">
-            <p className="text-[13px] font-medium text-[#8E8E8E]">Actividad de la semana</p>
-            <div className="mt-6 flex h-[120px] items-end gap-2">
-              {weekActivity.map((value, index) => (
-                <div key={WEEK_LABELS[index]} className="flex h-full flex-1 flex-col justify-end">
-                  <div
-                    className="w-full rounded-full bg-[#E1251B]/80"
-                    style={{ height: `${Math.max((value / maxWeek) * 100, 8)}%` }}
-                  />
-                  <span className="mt-2 text-center text-[11px] text-[#8E8E8E]">{WEEK_LABELS[index]}</span>
-                </div>
-              ))}
-            </div>
+            <WeekActivityChart values={weekActivity} />
           </div>
         </div>
       </section>
