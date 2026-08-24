@@ -12,8 +12,6 @@ import { getLoginHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/n
 import { PasswordField, SelectField, TextAreaField, TextField } from "./auth-form-fields";
 import { caseReasons, environments, identificationTypes } from "./content/create-account";
 
-const ACCEPTED_TYPES = ["application/pdf", "image/png", "image/jpeg"];
-const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FieldErrors = Record<string, string>;
@@ -30,9 +28,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
   );
 
   const [product, setProduct] = useState(initialProduct);
-  const [file, setFile] = useState<File | null>(null);
-  const [fileError, setFileError] = useState("");
-  const [isDragging, setIsDragging] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,28 +43,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
       delete next[field];
       return next;
     });
-  }
-
-  function applyFile(nextFile: File | undefined) {
-    if (!nextFile) {
-      return;
-    }
-
-    const isAllowedType = ACCEPTED_TYPES.includes(nextFile.type) || /\.(pdf|png|jpe?g)$/i.test(nextFile.name);
-    if (!isAllowedType) {
-      setFileError("Solo se permiten archivos PDF, PNG o JPG.");
-      setFile(null);
-      return;
-    }
-
-    if (nextFile.size > MAX_FILE_BYTES) {
-      setFileError("El archivo no puede superar 10 MB.");
-      setFile(null);
-      return;
-    }
-
-    setFileError("");
-    setFile(nextFile);
   }
 
   function validate(form: FormData) {
@@ -167,7 +140,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
         product: String(formData.get("product") ?? ""),
         subject: String(formData.get("subject") ?? "").trim(),
         description: String(formData.get("description") ?? "").trim(),
-        attachmentName: file?.name,
       });
 
       const destination = resolveAuthReturnPath();
@@ -406,57 +378,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
             {errors.privacy ? <p className="pl-8 text-[13px] text-[#E1251B]">{errors.privacy}</p> : null}
           </div>
 
-          <div>
-            <p className="text-[15px] font-bold tracking-[0.2px] text-[#141F25]">Archivos adjuntos</p>
-            <label
-              htmlFor="attachments"
-              onDragOver={(event) => {
-                event.preventDefault();
-                setIsDragging(true);
-              }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={(event) => {
-                event.preventDefault();
-                setIsDragging(false);
-                applyFile(event.dataTransfer.files[0]);
-              }}
-              className={`mt-2 flex min-h-[132px] cursor-pointer flex-col items-center justify-center rounded-[12px] border border-dashed px-6 py-7 text-center transition-colors ${
-                isDragging ? "border-[#E1251B] bg-[#E1251B]/4" : "border-[#C9CED6] bg-white hover:border-[#E1251B]/50"
-              }`}
-            >
-              <UploadIcon />
-              <p className="mt-3 text-[15px] font-medium text-[#E1251B]">Elegir un archivo o arrastrar y soltar uno aquí</p>
-              <p className="mt-1 text-[13px] text-[#6A7178]">PDF, PNG o JPG · máx 10 MB</p>
-            </label>
-            <input
-              id="attachments"
-              name="attachments"
-              type="file"
-              accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
-              className="sr-only"
-              onChange={(event) => applyFile(event.target.files?.[0])}
-            />
-            {file ? (
-              <div className="mt-3 flex items-center justify-between gap-3 rounded-[10px] border border-[#E7EAEE] bg-[#F8F9FB] px-4 py-3">
-                <div className="min-w-0">
-                  <p className="truncate text-[14px] font-medium text-[#141F25]">{file.name}</p>
-                  <p className="text-[12px] text-[#6A7178]">{(file.size / (1024 * 1024)).toFixed(1)} MB</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFile(null);
-                    setFileError("");
-                  }}
-                  className="shrink-0 text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]"
-                >
-                  Quitar
-                </button>
-              </div>
-            ) : null}
-            {fileError ? <p className="mt-2 text-[13px] text-[#E1251B]">{fileError}</p> : null}
-          </div>
-
           <div className="flex flex-col items-start gap-4 pt-1 sm:flex-row sm:items-center">
             <button
               type="submit"
@@ -495,20 +416,5 @@ function FormSection({ title, children }: { title: string; children: ReactNode }
       <h2 className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{title}</h2>
       {children}
     </section>
-  );
-}
-
-function UploadIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <rect x="5" y="8" width="14" height="14" rx="2.2" stroke="#2A3239" strokeWidth="1.6" />
-      <path
-        d="M11 12V5.5M11 5.5L8.2 8.2M11 5.5L13.8 8.2"
-        stroke="#2A3239"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

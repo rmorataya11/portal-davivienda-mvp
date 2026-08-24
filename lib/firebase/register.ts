@@ -16,7 +16,6 @@ export type RegisterDeveloperInput = {
   product: string;
   subject: string;
   description: string;
-  attachmentName?: string;
 };
 
 export async function registerDeveloper(input: RegisterDeveloperInput) {
@@ -43,7 +42,6 @@ export async function registerDeveloper(input: RegisterDeveloperInput) {
       reason: input.reason,
       subject: input.subject,
       description: input.description,
-      attachmentName: input.attachmentName ?? null,
       status: "pending_apigee",
       createdAt: serverTimestamp(),
     });
