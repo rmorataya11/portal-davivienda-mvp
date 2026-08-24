@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
@@ -187,9 +187,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
         </p>
       </div>
 
-      <form className="mt-8 space-y-10" noValidate onSubmit={handleSubmit}>
-        <FormSection title="Sus datos">
-          <TextField
+      <form className="mt-8 space-y-6" noValidate onSubmit={handleSubmit}>
+        <TextField
             id="email"
             name="email"
             type="email"
@@ -261,10 +260,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
             error={errors.companyName}
             onChange={() => clearError("companyName")}
           />
-        </FormSection>
 
-        <FormSection title="Qué necesita">
-          <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
             <SelectField
               id="reason"
               name="reason"
@@ -335,10 +332,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
             error={errors.description}
             onChange={() => clearError("description")}
           />
-        </FormSection>
 
-        <FormSection title="Confirmación">
-          <div className="space-y-3">
+        <div className="space-y-3">
             <label className="flex cursor-pointer items-start gap-3 text-[15px] text-[#404040]">
               <input
                 id="terms"
@@ -378,11 +373,11 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
             {errors.privacy ? <p className="pl-8 text-[13px] text-[#E1251B]">{errors.privacy}</p> : null}
           </div>
 
-          <div className="flex flex-col items-start gap-4 pt-1 sm:flex-row sm:items-center">
+          <div className="flex flex-col items-center gap-4 pt-2 text-center">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
+              className="inline-flex h-12 min-w-[220px] items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
             >
               {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
               {isSubmitting ? null : <span aria-hidden="true">→</span>}
@@ -403,18 +398,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
               </Link>
             </p>
           </div>
-          {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
-        </FormSection>
+          {formError ? <p className="text-center text-[13px] text-[#E1251B]">{formError}</p> : null}
       </form>
     </>
-  );
-}
-
-function FormSection({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="space-y-5">
-      <h2 className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{title}</h2>
-      {children}
-    </section>
   );
 }
