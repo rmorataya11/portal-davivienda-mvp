@@ -13,9 +13,13 @@ export function FullBleedContainer({ children, className = "" }: LayoutProps) {
   return <div className={`mx-auto max-w-[1366px] ${className}`}>{children}</div>;
 }
 
-/** Page sections that should sit slightly wider than the navbar (`max-w-[1301px]`). */
+/** Page sections aligned to the navbar pill (`max-w-[1301px]` + the same horizontal padding). */
 export function SectionContainer({ children, className = "" }: LayoutProps) {
-  return <div className={`mx-auto max-w-[1366px] px-3 sm:px-5 lg:px-0 ${className}`}>{children}</div>;
+  return (
+    <div className={`flex justify-center px-3 sm:px-5 lg:px-10 ${className}`}>
+      <div className="w-full max-w-[1301px]">{children}</div>
+    </div>
+  );
 }
 
 export function SurfaceCard({ children, className = "" }: LayoutProps) {

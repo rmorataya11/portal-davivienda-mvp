@@ -1,17 +1,17 @@
 ---
-description: Page sections must be slightly wider than the navbar
+description: Page sections must match the navbar width
 alwaysApply: true
 ---
 
 # Section width vs navbar
 
-The navbar is an inset pill: `max-w-[1301px]` with `lg:px-10`. Content sections must **protrude a bit past the navbar**, not sit narrower than it.
+The navbar is an inset pill: `max-w-[1301px]` with `px-3 sm:px-5 lg:px-10`. Content sections must **match that width**, not sit wider than the nav.
 
 - Wrap page sections (heroes, cards, CTAs, technical blocks) in `SectionContainer` from `@/components/ui/layout`.
-- `SectionContainer` is `max-w-[1366px]` with `px-3 sm:px-5 lg:px-0`.
-- Do **not** wrap those blocks in `PageContainer` (`lg:px-[56px]` makes them narrower than the nav).
+- `SectionContainer` uses the same padding and `max-w-[1301px]` as the navbar pill.
+- Do **not** wrap those blocks in `PageContainer` (`lg:px-[56px]` makes them narrower than the nav) or `FullBleedContainer` (`max-w-[1366px]` makes them wider).
 - Use `PageContainer` only for small inset chrome such as back links.
-- Do not make the navbar full-bleed to match content. Keep the pill inset; make sections wider.
+- Do not make the navbar full-bleed to match content. Keep the pill inset; keep sections the same width as the pill.
 - **Exception — crear cuenta / recuperar clave / solicitud de contratación:** compact and centered (`max-w-[760px]`). Do not stretch them to `SectionContainer`.
 - **Exception — iniciar sesión:** compact centered split (`max-w-[420px]` on mobile, `max-w-[920px]` on desktop). Do not stretch it to `1366px` or full viewport height.
 
@@ -20,6 +20,11 @@ The navbar is an inset pill: `max-w-[1301px]` with `lg:px-10`. Content sections 
 <PageContainer>
   <DetailHero />
 </PageContainer>
+
+// ❌ BAD — section ends up wider than the navbar
+<FullBleedContainer>
+  <DetailHero />
+</FullBleedContainer>
 
 // ✅ GOOD
 <PageContainer>

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
-import { PageContainer, SectionContainer } from "@/components/ui/layout";
+import { SectionContainer } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
 import { DetailFinalCta } from "./detail/detail-final-cta";
@@ -15,16 +15,13 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
       <section className="pt-[132px]">
-        <PageContainer>
+        <SectionContainer>
           <Link
             href="/catalogo-apis"
             className="inline-flex items-center gap-2 text-[14px] font-medium tracking-[0.28px] text-[#707070] transition-colors duration-300 hover:text-[#E1251B]"
           >
             Volver al catálogo
           </Link>
-        </PageContainer>
-
-        <SectionContainer>
           <DetailHero api={api} />
         </SectionContainer>
       </section>
