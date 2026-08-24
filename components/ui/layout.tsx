@@ -13,11 +13,11 @@ export function FullBleedContainer({ children, className = "" }: LayoutProps) {
   return <div className={`mx-auto max-w-[1366px] ${className}`}>{children}</div>;
 }
 
-/** Page sections aligned to the navbar pill (`max-w-[1301px]` + the same horizontal padding). */
+/** Page sections inset inside the navbar pill (`max-w-[1200px]`, more padding than the nav). */
 export function SectionContainer({ children, className = "" }: LayoutProps) {
   return (
-    <div className={`flex justify-center px-3 sm:px-5 lg:px-10 ${className}`}>
-      <div className="w-full max-w-[1301px]">{children}</div>
+    <div className={`flex justify-center px-5 sm:px-8 lg:px-16 ${className}`}>
+      <div className="w-full max-w-[1200px]">{children}</div>
     </div>
   );
 }
