@@ -73,7 +73,7 @@ export function CreateAppForm() {
 
       <div className="mt-6 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
         <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Nueva aplicación</p>
-        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">
+        <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
           {lockedProduct ? `Cree una app para ${lockedProduct.name}` : "Cree una app de sandbox"}
         </h1>
         <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />

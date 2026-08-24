@@ -23,26 +23,3 @@ export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: strin
     </nav>
   );
 }
-
-export function MarketplaceMobileNav({ activeHref = "/" }: { activeHref?: string }) {
-  return (
-    <nav className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">
-      {navItems.map((item) => {
-        const isActive = item.href === activeHref;
-
-        return (
-          <Link
-            key={item.label}
-            href={item.href}
-            transitionTypes={["marketplace-nav"]}
-            className={`inline-flex shrink-0 rounded-full px-4 py-2 text-[13px] font-medium transition-all duration-300 ${
-              isActive ? "bg-white text-[#870412]" : "bg-white/10 text-white/90"
-            }`}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
-}

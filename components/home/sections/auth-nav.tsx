@@ -17,12 +17,12 @@ export function AuthNav() {
   const returnTo = getApiContextFromPath(pathname)?.returnTo;
 
   if (loading) {
-    return <div className="ml-auto h-10 w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:min-h-[42px] lg:w-[156px]" />;
+    return <div className="h-10 w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:min-h-[42px] lg:w-[156px]" />;
   }
 
   if (user) {
     return (
-      <div className="ml-auto flex items-center gap-3 sm:gap-5">
+      <div className="flex items-center gap-3 sm:gap-5">
         <span className="hidden max-w-[180px] truncate text-[13px] font-medium text-white/80 sm:inline lg:text-[14px]">
           {user.email}
         </span>
@@ -41,11 +41,11 @@ export function AuthNav() {
   }
 
   return (
-    <div className="ml-auto flex items-center gap-4 sm:gap-8">
+    <div className="flex items-center gap-4 sm:gap-8">
       <AuthReturnLink
         href={signupHref}
         returnTo={returnTo}
-        className="hidden text-[14px] font-medium text-white transition-all duration-300 hover:opacity-85 md:block"
+        className="text-[14px] font-medium text-white transition-all duration-300 hover:opacity-85"
       >
         Crear cuenta
       </AuthReturnLink>

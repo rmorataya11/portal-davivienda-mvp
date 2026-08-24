@@ -6,7 +6,7 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
   const detailHref = api.slug ? `/catalogo-apis/${api.slug}` : "#";
 
   return (
-    <article className="group flex min-h-[348px] w-full flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#404040] hover:shadow-[0_24px_56px_rgba(20,31,37,0.12)] lg:w-[408px]">
+    <article className="group flex min-h-[348px] w-full flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#404040] hover:shadow-[0_24px_56px_rgba(20,31,37,0.12)]">
       <div className="flex items-start justify-between gap-4">
         {api.imageSrc ? (
           <div className="flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-[8px] bg-[#F2F3F5] transition-colors duration-300 group-hover:bg-[#404040]">

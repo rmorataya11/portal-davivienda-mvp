@@ -121,7 +121,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
     return (
       <div className="py-4 sm:py-6">
         <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Solicitud recibida</p>
-        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">
+        <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
           Su solicitud fue recibida, le contactaremos
         </h1>
         <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
@@ -141,7 +141,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
   return (
     <>
       <div className="border-b border-[#E7EAEE] pb-8">
-        <h1 className="text-[34px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+        <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
           Solicitud de contratación
         </h1>
         <p className="mt-4 text-[16px] leading-7 tracking-[0.2px] text-[#6A7178]">

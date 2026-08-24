@@ -15,7 +15,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[132px] pb-8">
+      <section className="pt-[104px] pb-8 sm:pt-[120px] lg:pt-[132px]">
         <SectionContainer>
           <Link
             href={`/catalogo-apis/${api.slug}`}
@@ -25,11 +25,11 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
           </Link>
           <div className="mt-6 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
             <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Detalle técnico</p>
-            <h1 className="mt-4 text-[36px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[44px]">
+            <h1 className="mt-4 text-[26px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[36px] lg:text-[44px]">
               Explore la integración de {api.name}
             </h1>
             <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
-            <p className="mt-4 max-w-[820px] text-[18px] leading-8 tracking-[0.24px] text-[#6A7178]">
+            <p className="mt-4 max-w-[820px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
               Acceda a la consola visual de endpoints, ejemplos de request/response y criterios técnicos para avanzar
               hacia una integración más realista.
             </p>

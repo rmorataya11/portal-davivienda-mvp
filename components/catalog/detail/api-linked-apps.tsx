@@ -115,10 +115,10 @@ export function ApiLinkedApps({
                 key={app.id}
                 type="button"
                 onClick={() => linkProduct(app.id, slug)}
-                className="flex w-full items-center justify-between rounded-[14px] border border-[#E7EAEE] px-4 py-3 text-left text-[14px] text-[#141F25] transition-colors hover:border-[#E1251B]"
+                className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] px-4 py-3 text-left text-[14px] text-[#141F25] transition-colors hover:border-[#E1251B]"
               >
-                <span>{app.name}</span>
-                <span className="text-[13px] font-medium text-[#E1251B]">Vincular a esta API</span>
+                <span className="min-w-0 truncate">{app.name}</span>
+                <span className="shrink-0 text-[13px] font-medium text-[#E1251B]">Vincular a esta API</span>
               </button>
             ))}
           </div>

@@ -11,7 +11,7 @@ export function CatalogPage() {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[152px]">
+      <section className="pt-[104px] sm:pt-[120px] lg:pt-[140px]">
         <PageContainer className="pb-10 lg:px-[58px] lg:pb-[52px]">
           <h1 className="max-w-[1254px] text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-[#404040] sm:text-[40px] sm:leading-[44px]">
             Encuentre el producto ideal para su negocio

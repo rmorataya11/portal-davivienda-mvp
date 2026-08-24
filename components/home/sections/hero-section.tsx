@@ -2,16 +2,16 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <section id="inicio" className="relative overflow-hidden pb-10 pt-[118px] sm:pt-[132px] lg:pt-0">
-      <div className="hero-scene relative mx-auto min-h-[760px] w-full max-w-[1366px] overflow-hidden px-4 py-6 sm:min-h-[700px] sm:px-6 sm:py-8 lg:h-[810px] lg:px-0 lg:py-0">
+    <section id="inicio" className="relative overflow-hidden pb-10 pt-[104px] sm:pt-[120px] lg:pt-0">
+      <div className="hero-scene relative mx-auto w-full max-w-[1366px] overflow-hidden px-4 py-6 sm:px-6 sm:py-8 lg:h-[810px] lg:px-0 lg:py-0">
         <div className="z-10 flex w-full max-w-[620px] flex-col rounded-[28px] bg-white px-6 pb-8 pt-8 shadow-[0_24px_80px_rgba(20,31,37,0.12)] transition-shadow duration-300 ease-out hover:shadow-[0_28px_96px_rgba(20,31,37,0.16)] sm:px-9 sm:pb-10 lg:absolute lg:left-14 lg:top-[152px] lg:h-[570px] lg:w-[620px] lg:rounded-[32px] lg:px-[52px] lg:pb-[48px] lg:pt-9">
-          <p className="w-full max-w-[234px] text-left text-[18px] leading-6 font-normal tracking-[0.4px] text-[#E1251B] sm:text-[20px]">
+          <p className="w-full max-w-[234px] text-left text-[16px] leading-6 font-normal tracking-[0.4px] text-[#E1251B] sm:text-[20px]">
             Open Banking Davivienda
           </p>
-          <h1 className="mt-3 max-w-[512px] text-left text-[34px] font-bold leading-[1.06] tracking-[0.02em] text-[#404040] sm:text-[42px] lg:text-[49px] lg:leading-[44px] lg:tracking-[0.98px]">
+          <h1 className="mt-3 max-w-[512px] text-left text-[28px] font-bold leading-[1.1] tracking-[0.02em] text-[#404040] sm:text-[40px] lg:text-[49px] lg:leading-[44px] lg:tracking-[0.98px]">
             Conecte su negocio al ecosistema financiero y escale sus operaciones.
           </h1>
-          <p className="mt-8 max-w-[512px] text-left text-[17px] leading-7 font-normal tracking-[0.02em] text-[#404040] sm:text-[18px] lg:mt-[54px] lg:text-[20px] lg:leading-6 lg:tracking-[0.4px]">
+          <p className="mt-6 max-w-[512px] text-left text-[16px] leading-7 font-normal tracking-[0.02em] text-[#404040] sm:mt-8 sm:text-[18px] lg:mt-[54px] lg:text-[20px] lg:leading-6 lg:tracking-[0.4px]">
             Las APIs Davivienda le permiten procesar ventas, pagar a proveedores y conciliar saldos en tiempo real.
             Cree experiencias financieras únicas para sus clientes.
           </p>
@@ -31,7 +31,7 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="relative mt-8 min-h-[280px] sm:min-h-[340px] lg:absolute lg:inset-y-0 lg:right-0 lg:mt-0 lg:block lg:w-[58%]">
+        <div className="pointer-events-none hidden lg:absolute lg:inset-y-0 lg:right-0 lg:block lg:w-[58%]">
           <div className="absolute right-[9%] top-[17%] h-[320px] w-[240px] rounded-[26px] bg-white/34 shadow-[0_18px_60px_rgba(20,31,37,0.12)] backdrop-blur-[2px]" />
           <div className="absolute right-[15%] top-[23%] h-[272px] w-[188px] rounded-[18px] border border-white/55 bg-white/10" />
           <div className="absolute right-[24%] top-[22%] rotate-[-5deg] rounded-md bg-[#F5D3DB] px-4 py-2 text-xs font-semibold text-[#404040] shadow-md">

@@ -153,7 +153,7 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
   return (
     <>
       <div className="border-b border-[#E7EAEE] pb-8">
-        <h1 className="text-[34px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+        <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
           Regístrese y empecemos
         </h1>
         <p className="mt-4 text-[16px] leading-7 tracking-[0.2px] text-[#6A7178]">

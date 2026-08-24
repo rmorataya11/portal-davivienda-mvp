@@ -15,7 +15,7 @@ export function ApiDetailPage({ api }: { api: ApiDetail }) {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[132px]">
+      <section className="pt-[104px] sm:pt-[120px] lg:pt-[132px]">
         <SectionContainer>
           <Link
             href="/catalogo-apis"

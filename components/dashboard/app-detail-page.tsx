@@ -22,7 +22,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
   if (!app) {
     return (
       <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-8">
-        <h1 className="text-[32px] font-bold text-[#141F25]">No encontramos esta aplicación</h1>
+        <h1 className="text-[26px] font-bold text-[#141F25] sm:text-[32px]">No encontramos esta aplicación</h1>
         <p className="mt-3 text-[16px] leading-7 text-[#6A7178]">
           Puede que haya iniciado sesión con otra cuenta o que la app se haya creado en otro navegador.
         </p>
@@ -52,7 +52,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Aplicación</p>
-            <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[40px]">{app.name}</h1>
+            <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">{app.name}</h1>
             <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
           </div>
           <AppStatusBadge status={app.status} />
@@ -63,10 +63,10 @@ export function AppDetailPage({ appId }: { appId: string }) {
       </div>
 
       <div className="mt-6 overflow-hidden rounded-[28px] border border-[#E7EAEE] bg-white">
-        <div className="grid sm:grid-cols-[1.2fr_1fr_1fr]">
+        <div className="grid md:grid-cols-[1.2fr_1fr_1fr]">
           <div className="px-5 py-5 sm:px-6">
             <p className="text-[13px] text-[#8E8E8E]">Consumido este mes</p>
-            <p className="mt-2 text-[32px] font-bold tracking-[0.2px] text-[#141F25]">
+            <p className="mt-2 text-[28px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[32px]">
               {formatMoneyCop(stats.consumedCop)}
             </p>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#F2F3F5]">
@@ -158,9 +158,9 @@ export function AppDetailPage({ appId }: { appId: string }) {
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border-t border-[#E7EAEE] px-5 py-5 sm:border-t-0 sm:border-l sm:px-6">
+    <div className="border-t border-[#E7EAEE] px-5 py-5 md:border-t-0 md:border-l md:px-6">
       <p className="text-[13px] text-[#8E8E8E]">{label}</p>
-      <p className="mt-2 text-[28px] font-bold tracking-[0.2px] text-[#141F25]">{value}</p>
+      <p className="mt-2 text-[24px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[28px]">{value}</p>
     </div>
   );
 }

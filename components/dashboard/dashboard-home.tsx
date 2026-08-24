@@ -36,7 +36,7 @@ export function DashboardHome() {
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[15px] text-[#6A7178]">Hola{greetingName ? `, ${greetingName}` : ""}</p>
-          <h1 className="mt-1 text-[34px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+          <h1 className="mt-1 text-[28px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
             Su espacio de trabajo
           </h1>
           <p className="mt-3 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
@@ -55,7 +55,7 @@ export function DashboardHome() {
         <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
           <div className="px-6 py-7 sm:px-8 sm:py-8">
             <p className="text-[13px] font-medium text-[#8E8E8E]">Consumo de los últimos 30 días</p>
-            <p className="mt-3 text-[42px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[48px]">
+            <p className="mt-3 text-[34px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[42px] lg:text-[48px]">
               {formatMoneyCop(consumedCop)}
             </p>
             <p className="mt-3 text-[15px] text-[#6A7178]">

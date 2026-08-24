@@ -5,7 +5,7 @@ export function CtaBanner() {
     <section className="px-4 pb-16 pt-1 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-[1366px] overflow-hidden rounded-[2px] bg-[linear-gradient(90deg,#4B4B4B_0%,#2A2A2A_60%,#121212_100%)] px-6 py-12 sm:px-10 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-12">
         <div>
-          <h2 className="max-w-[580px] text-[36px] font-bold leading-[1.16] text-white sm:text-[54px]">
+          <h2 className="max-w-[580px] text-[28px] font-bold leading-[1.16] text-white sm:text-[42px] lg:text-[54px]">
             ¿Conversamos sobre su próxima idea?
           </h2>
           <p className="mt-6 max-w-[640px] text-lg leading-8 text-white/82">

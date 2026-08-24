@@ -57,13 +57,13 @@ export function RecoverPasswordPage() {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader />
 
-      <section className="pt-[132px] pb-16">
+      <section className="pt-[104px] pb-16 sm:pt-[120px] lg:pt-[132px]">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6">
           <SurfaceCard className="px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10">
             {submitted ? (
               <div>
                 <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Correo enviado</p>
-                <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">
+                <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
                   Revise su bandeja
                 </h1>
                 <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
@@ -79,7 +79,7 @@ export function RecoverPasswordPage() {
               </div>
             ) : (
               <>
-                <h1 className="text-[34px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+                <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
                   Recuperar contraseña
                 </h1>
                 <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">

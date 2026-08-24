@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import { AuthNav } from "./auth-nav";
-import { MarketplaceDesktopNav, MarketplaceMobileNav } from "./marketplace-nav";
+import { MarketplaceDesktopNav } from "./marketplace-nav";
+import { MarketplaceMobileMenu } from "./marketplace-mobile-menu";
 import { DaviviendaLogo } from "../shared/davivienda-logo";
 
 export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string }) {
@@ -18,10 +19,13 @@ export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string })
           </Link>
 
           <MarketplaceDesktopNav activeHref={activeHref} />
-          <AuthNav />
-        </div>
 
-        <MarketplaceMobileNav activeHref={activeHref} />
+          <div className="ml-auto hidden lg:flex">
+            <AuthNav />
+          </div>
+
+          <MarketplaceMobileMenu activeHref={activeHref} className="ml-auto lg:hidden" />
+        </div>
       </div>
     </header>
   );

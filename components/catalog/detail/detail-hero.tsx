@@ -56,14 +56,14 @@ export function DetailHero({ api }: { api: ApiDetail }) {
                 </span>
               </div>
 
-              <h1 className="mt-8 max-w-[700px] text-[40px] font-bold leading-[44px] tracking-[0.6px] text-[#141F25] sm:text-[54px] sm:leading-[58px] sm:tracking-[0.9px]">
+              <h1 className="mt-8 max-w-[700px] text-[30px] font-bold leading-[1.12] tracking-[0.4px] text-[#141F25] sm:text-[44px] sm:leading-[48px] sm:tracking-[0.9px] lg:text-[54px] lg:leading-[58px]">
                 {api.name}
               </h1>
               <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
-              <p className="mt-6 max-w-[720px] text-[19px] leading-8 tracking-[0.22px] text-[#404040] sm:text-[23px] sm:leading-9">
+              <p className="mt-6 max-w-[720px] text-[17px] leading-7 tracking-[0.22px] text-[#404040] sm:text-[21px] sm:leading-9 lg:text-[23px]">
                 {api.heroDescription}
               </p>
-              <p className="mt-7 max-w-[660px] text-[16px] leading-8 tracking-[0.24px] text-[#6A7178] sm:text-[18px]">
+              <p className="mt-7 max-w-[660px] text-[15px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
                 {api.intro}
               </p>
             </div>
@@ -85,7 +85,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Resumen ejecutivo</p>
-                <h2 className="mt-2 text-[26px] font-bold tracking-[0.4px] text-[#141F25]">Lo esencial para evaluar esta API</h2>
+                <h2 className="mt-2 text-[22px] font-bold tracking-[0.4px] text-[#141F25] sm:text-[26px]">Lo esencial para evaluar esta API</h2>
               </div>
               <button
                 type="button"
@@ -137,7 +137,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-4 text-[#404040] shadow-[0_10px_28px_rgba(20,31,37,0.04)]"
             >
               <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{item.label}</p>
-              <p className="mt-2 max-w-[176px] text-[22px] font-bold leading-8 tracking-[0.2px] text-[#202A31]">
+              <p className="mt-2 text-[20px] font-bold leading-7 tracking-[0.2px] text-[#202A31] sm:text-[22px] sm:leading-8">
                 {item.value}
               </p>
             </div>

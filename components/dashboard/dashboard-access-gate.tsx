@@ -20,7 +20,7 @@ export function DashboardAccessGate({ children }: { children: ReactNode }) {
     return (
       <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-8 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-10">
         <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Mis apps</p>
-        <h1 className="mt-4 text-[34px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[40px]">
+        <h1 className="mt-4 text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
           Inicie sesión o cree una cuenta para ver este contenido
         </h1>
         <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />

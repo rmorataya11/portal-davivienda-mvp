@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/dashboard" />
-      <section className="pt-[132px] pb-16">
+      <section className="pt-[104px] pb-16 sm:pt-[120px] lg:pt-[132px]">
         <SectionContainer>
           <DashboardAccessGate>{children}</DashboardAccessGate>
         </SectionContainer>

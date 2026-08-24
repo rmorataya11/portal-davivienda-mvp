@@ -60,7 +60,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
               <div className="grid gap-5 lg:grid-cols-[0.28fr_0.72fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Valor</p>
-                  <h3 className="mt-2 text-[30px] font-bold tracking-[0.4px] text-[#30383F]">Qué puede lograr</h3>
+                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">Qué puede lograr</h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />
                   <p className="mt-5 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                     Beneficios directos para equipos que priorizan visibilidad, conciliación y agilidad operativa.
@@ -74,7 +74,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
               <div className="grid gap-5 lg:grid-cols-[0.28fr_0.72fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Aplicación</p>
-                  <h3 className="mt-2 text-[30px] font-bold tracking-[0.4px] text-[#30383F]">Casos de uso</h3>
+                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">Casos de uso</h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />
                   <p className="mt-5 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                     Escenarios concretos donde esta API agrega valor en backoffice, reporting y operación diaria.
@@ -88,7 +88,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
               <div className="grid gap-5 lg:grid-cols-[0.32fr_0.68fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Integración</p>
-                  <h3 className="mt-2 text-[30px] font-bold tracking-[0.4px] text-[#30383F]">Cómo empezar</h3>
+                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">Cómo empezar</h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />
                   <p className="mt-5 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                     Todo lo necesario para preparar su primer consumo de la API y pasar de exploración a integración
@@ -129,7 +129,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
               <div className="grid gap-5 lg:grid-cols-[0.32fr_0.68fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Journey</p>
-                  <h3 className="mt-2 text-[30px] font-bold tracking-[0.4px] text-[#30383F]">
+                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">
                     Ruta de integración sugerida
                   </h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />

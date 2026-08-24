@@ -293,10 +293,10 @@ export function MarketplaceAssistant() {
         <div className="fixed inset-0 z-[80] bg-transparent sm:bg-[#141F25]/10">
           <div className="flex h-full justify-end">
             <div className="flex h-[100dvh] w-full max-w-[520px] flex-col overflow-hidden border-l border-[#E7EAEE] bg-white/98 shadow-[-28px_0_80px_rgba(20,31,37,0.18)] backdrop-blur-sm">
-              <div className="flex items-center justify-between border-b border-[#E7EAEE] px-5 py-4">
-                <div>
+              <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E7EAEE] px-5 py-4">
+                <div className="min-w-0">
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{context.title}</p>
-                  <h2 className="mt-1 text-[24px] font-bold tracking-[0.2px] text-[#202A31]">{context.prompt}</h2>
+                  <h2 className="mt-1 text-[20px] font-bold tracking-[0.2px] text-[#202A31] sm:text-[24px]">{context.prompt}</h2>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <div className="flex items-center gap-2">
