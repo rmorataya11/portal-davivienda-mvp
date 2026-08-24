@@ -19,5 +19,10 @@ export default async function SolicitudContratacionRoute({
     (item) => item.name === requestedProduct || item.slug === requestedProduct,
   );
 
-  return <ContractingRequestPage productName={matchedProduct?.name ?? ""} />;
+  return (
+    <ContractingRequestPage
+      productName={matchedProduct?.name ?? ""}
+      productSlug={matchedProduct?.slug ?? ""}
+    />
+  );
 }
