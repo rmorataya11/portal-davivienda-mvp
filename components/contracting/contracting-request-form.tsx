@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent, type ReactNode } from "react";
 
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
+import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 
 import { destinationEnvironments, industries, monthlyVolumes } from "./content/contracting";
 import { RadioGroup } from "./radio-group";
@@ -15,6 +18,15 @@ const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 type FieldErrors = Record<string, string>;
 
 export function ContractingRequestForm({ productName = "" }: { productName?: string }) {
+  const searchParams = useSearchParams();
+  const { getApp, markContracting } = useDeveloperApps();
+  const appId = searchParams.get("app") ?? "";
+  const linkedApp = appId ? getApp(appId) : undefined;
+  const linkedProducts = apiCatalogItems
+    .filter((item) => linkedApp?.productSlugs.includes(item.slug))
+    .map((item) => item.name)
+    .join(", ");
+  const displayProduct = linkedProducts || productName;
   const [environment, setEnvironment] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,6 +109,9 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
 
     setIsSubmitting(true);
     window.setTimeout(() => {
+      if (linkedApp) {
+        markContracting(linkedApp.id);
+      }
       setIsSubmitting(false);
       setSubmitted(true);
     }, 700);
@@ -114,10 +129,10 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           el proceso hacia producción.
         </p>
         <Link
-          href="/catalogo-apis"
+          href={linkedApp ? `/dashboard/apps/${linkedApp.id}` : "/dashboard"}
           className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
         >
-          Volver al catálogo
+          Ir a mis aplicaciones
         </Link>
       </div>
     );
@@ -133,7 +148,17 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           Si ya validó una API en sandbox y quiere avanzar a producción, complete estos datos. Los campos con asterisco
           (*) son obligatorios.
         </p>
-        {productName ? (
+        {linkedApp ? (
+          <p className="mt-4 rounded-[12px] bg-[#F8F9FB] px-4 py-3 text-[14px] text-[#404040]">
+            Aplicación: <span className="font-semibold text-[#141F25]">{linkedApp.name}</span>
+            {displayProduct ? (
+              <>
+                <br />
+                Productos: <span className="font-semibold text-[#141F25]">{displayProduct}</span>
+              </>
+            ) : null}
+          </p>
+        ) : productName ? (
           <p className="mt-4 rounded-[12px] bg-[#F8F9FB] px-4 py-3 text-[14px] text-[#404040]">
             Producto de interés: <span className="font-semibold text-[#141F25]">{productName}</span>
           </p>
@@ -141,7 +166,8 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
       </div>
 
       <form className="mt-8 space-y-10" noValidate onSubmit={handleSubmit}>
-        <input type="hidden" name="product" value={productName} />
+        <input type="hidden" name="product" value={displayProduct} />
+        {linkedApp ? <input type="hidden" name="appId" value={linkedApp.id} /> : null}
 
         <FormSection title="Empresa">
           <TextField

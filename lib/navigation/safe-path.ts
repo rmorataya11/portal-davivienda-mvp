@@ -106,15 +106,22 @@ export function getLoginHref(returnTo?: string) {
 export function getAuthHrefs(pathname: string | null) {
   const context = getApiContextFromPath(pathname);
 
-  if (!context) {
+  if (context) {
     return {
-      loginHref: getLoginHref(),
-      signupHref: getSignupHref(),
+      loginHref: getLoginHref(context.returnTo),
+      signupHref: getSignupHref(context.returnTo),
+    };
+  }
+
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/solicitud-contratacion")) {
+    return {
+      loginHref: getLoginHref(pathname),
+      signupHref: getSignupHref(pathname),
     };
   }
 
   return {
-    loginHref: getLoginHref(context.returnTo),
-    signupHref: getSignupHref(context.returnTo),
+    loginHref: getLoginHref(),
+    signupHref: getSignupHref(),
   };
 }

@@ -31,7 +31,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -142,37 +141,13 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
         description: String(formData.get("description") ?? "").trim(),
       });
 
-      const destination = resolveAuthReturnPath();
-      if (destination) {
-        router.replace(destination);
-        return;
-      }
-
-      setSubmitted(true);
+      const destination = resolveAuthReturnPath() ?? "/dashboard";
+      router.replace(destination);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  if (submitted) {
-    return (
-      <div className="py-4 sm:py-6">
-        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Cuenta activa</p>
-        <h1 className="mt-3 text-[32px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px]">Ya puede empezar</h1>
-        <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
-          Su cuenta quedó activa y guardamos su solicitud de sandbox. Cuando conectemos Apigee, las credenciales
-          aparecerán en el portal para que pruebe la API.
-        </p>
-        <Link
-          href="/catalogo-apis"
-          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-        >
-          Ir al catálogo
-        </Link>
-      </div>
-    );
   }
 
   return (

@@ -55,6 +55,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
                 sampleResponse={api.sampleResponse}
                 errors={api.errors}
                 slug={api.slug}
+                apiName={api.name}
               />
             </DetailSectionCard>
           </TechnicalAccessGate>

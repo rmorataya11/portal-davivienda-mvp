@@ -11,10 +11,11 @@ export const metadata: Metadata = {
 export default async function SolicitudContratacionRoute({
   searchParams,
 }: {
-  searchParams: Promise<{ producto?: string | string[] }>;
+  searchParams: Promise<{ producto?: string | string[]; app?: string | string[] }>;
 }) {
   const params = await searchParams;
   const requestedProduct = Array.isArray(params.producto) ? params.producto[0] : params.producto;
+  const requestedApp = Array.isArray(params.app) ? params.app[0] : params.app;
   const matchedProduct = apiCatalogItems.find(
     (item) => item.name === requestedProduct || item.slug === requestedProduct,
   );
@@ -23,6 +24,7 @@ export default async function SolicitudContratacionRoute({
     <ContractingRequestPage
       productName={matchedProduct?.name ?? ""}
       productSlug={matchedProduct?.slug ?? ""}
+      appId={requestedApp ?? ""}
     />
   );
 }

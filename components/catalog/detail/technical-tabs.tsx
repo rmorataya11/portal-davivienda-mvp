@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 
-import { useAuth } from "@/components/auth/auth-provider";
-
 import type { ApiDetail, ApiEndpoint, ApiError } from "../content/apis";
+import { CredentialsPanel } from "./credentials-panel";
 import { EndpointPlayground } from "./endpoint-playground";
 
 type TabId = "overview" | "endpoints" | "request" | "response" | "errors" | "credentials";
@@ -17,15 +16,10 @@ type TechnicalTabsProps = {
   sampleResponse: string;
   errors: ApiError[];
   slug?: string;
+  apiName?: string;
 };
 
-type ProvisionedCredentials = {
-  consumerKey: string;
-  expiresAt: string;
-  baseUrl: string;
-};
-
-function CopyButton({ content, tone = "dark" }: { content: string; tone?: "dark" | "light" }) {
+function CopyButton({ content }: { content: string }) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -38,11 +32,7 @@ function CopyButton({ content, tone = "dark" }: { content: string; tone?: "dark"
     <button
       type="button"
       onClick={handleCopy}
-      className={`inline-flex h-9 items-center justify-center rounded-full border px-4 text-[13px] font-medium transition-all duration-300 ${
-        tone === "light"
-          ? "border-[#D5DAE0] text-[#404040] hover:bg-[#F3F5F7]"
-          : "border-white/14 text-white hover:bg-white/8"
-      }`}
+      className="inline-flex h-9 items-center justify-center rounded-full border border-white/14 px-4 text-[13px] font-medium text-white transition-all duration-300 hover:bg-white/8"
     >
       {copied ? "Copiado" : "Copiar"}
     </button>
@@ -59,41 +49,6 @@ function CodePanel({ title, code }: { title: string; code: string }) {
       <pre className="overflow-x-auto px-6 py-6 text-[14px] leading-7 text-white">
         <code>{code}</code>
       </pre>
-    </div>
-  );
-}
-
-function CredentialRow({
-  label,
-  value,
-  secret,
-}: {
-  label: string;
-  value: string;
-  secret?: boolean;
-}) {
-  const [visible, setVisible] = useState(!secret);
-
-  return (
-    <div className="rounded-[18px] border border-[#E3E7EC] bg-white px-5 py-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{label}</p>
-        <div className="flex items-center gap-2">
-          {secret ? (
-            <button
-              type="button"
-              onClick={() => setVisible((current) => !current)}
-              className="text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]"
-            >
-              {visible ? "Ocultar" : "Mostrar"}
-            </button>
-          ) : null}
-          <CopyButton content={value} tone="light" />
-        </div>
-      </div>
-      <p className="mt-3 break-all font-mono text-[14px] leading-7 text-[#141F25]">
-        {visible ? value : "•".repeat(Math.min(value.length, 28))}
-      </p>
     </div>
   );
 }
@@ -120,60 +75,9 @@ export function TechnicalTabs({
   sampleResponse,
   errors,
   slug,
+  apiName,
 }: TechnicalTabsProps) {
-  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
-  const [credentials, setCredentials] = useState<ProvisionedCredentials | null>(null);
-  const [isProvisioning, setIsProvisioning] = useState(false);
-  const [provisionError, setProvisionError] = useState("");
-
-  async function handleProvisionCredentials() {
-    if (!user?.email) {
-      setProvisionError("No encontramos una sesión activa para provisionar credenciales.");
-      return;
-    }
-
-    setIsProvisioning(true);
-    setProvisionError("");
-
-    try {
-      const response = await fetch("/api/apigee/provision", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user.email,
-        }),
-      });
-
-      const payload = (await response.json()) as
-        | {
-            consumerKey?: string;
-            expiresAt?: string;
-            hostname?: string;
-            basePath?: string;
-            message?: string;
-          }
-        | undefined;
-
-      if (!response.ok || !payload?.consumerKey || !payload.hostname || !payload.basePath || !payload.expiresAt) {
-        throw new Error(payload?.message || "No fue posible obtener las credenciales de sandbox.");
-      }
-
-      setCredentials({
-        consumerKey: payload.consumerKey,
-        expiresAt: payload.expiresAt,
-        baseUrl: `https://${payload.hostname}${payload.basePath}`,
-      });
-    } catch (error) {
-      setProvisionError(error instanceof Error ? error.message : "No fue posible obtener las credenciales de sandbox.");
-    } finally {
-      setIsProvisioning(false);
-    }
-  }
-
-  const formattedExpiry = formatExpiration(credentials?.expiresAt);
 
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "overview", label: "Overview" },
@@ -257,86 +161,10 @@ export function TechnicalTabs({
           </div>
         ) : null}
 
-        {activeTab === "credentials" ? (
-          <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-4 py-2 text-[13px] font-medium text-[#347659]">
-                  <span className="h-2 w-2 rounded-full bg-[#55B685]" />
-                  Sandbox
-                </span>
-                <p className="text-[14px] text-[#6A7178]">
-                  Genere credenciales reales en Apigee para consumir el proxy publicado.
-                </p>
-              </div>
-              <div className="rounded-[18px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-5 py-5">
-                <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Provisionar acceso</p>
-                <p className="mt-3 text-[15px] leading-7 text-[#3C444B]">
-                  {credentials
-                    ? "Ya generó credenciales para esta sesión. Si necesita otra app de sandbox, puede volver a provisionar."
-                    : "Haga clic para crear el developer app en Apigee y recibir el consumer key real de sandbox."}
-                </p>
-                <button
-                  type="button"
-                  onClick={handleProvisionCredentials}
-                  disabled={isProvisioning}
-                  className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:translate-y-0 disabled:bg-[#C9CED4]"
-                >
-                  {isProvisioning ? "Provisionando..." : credentials ? "Provisionar otra app" : "Obtener credenciales reales"}
-                </button>
-                {provisionError ? <p className="mt-3 text-[13px] text-[#E1251B]">{provisionError}</p> : null}
-              </div>
-              {credentials ? (
-                <>
-                  <CredentialRow label="Consumer key / API key" value={credentials.consumerKey} secret />
-                  <CredentialRow label="Base URL" value={credentials.baseUrl} />
-                  <CredentialRow label="Expira" value={formattedExpiry} />
-                </>
-              ) : (
-                <div className="rounded-[18px] border border-dashed border-[#D5DAE0] bg-white px-5 py-5 text-[14px] leading-7 text-[#6A7178]">
-                  Todavía no hay credenciales provisionadas para mostrar.
-                </div>
-              )}
-            </div>
-
-            <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-              <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">Cómo usarlas</h3>
-              <ul className="mt-4 space-y-4 text-[16px] leading-7 tracking-[0.24px] text-[#3C444B]">
-                <li className="flex gap-3">
-                  <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                  Use el valor de <span className="font-mono text-[14px]">consumerKey</span> en la cabecera{" "}
-                  <span className="font-mono text-[14px]">x-api-key</span>.
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                  Llame el proxy directamente en la URL base entregada por el portal.
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                  Estas credenciales solo aplican a sandbox. Para producción, solicite contratación.
-                </li>
-              </ul>
-            </div>
-          </div>
+        {activeTab === "credentials" && slug ? (
+          <CredentialsPanel slug={slug} apiName={apiName ?? "esta API"} />
         ) : null}
       </div>
     </div>
   );
-}
-
-function formatExpiration(value: string | undefined) {
-  if (!value) {
-    return "No disponible";
-  }
-
-  const numeric = Number(value);
-
-  if (!Number.isFinite(numeric)) {
-    return value;
-  }
-
-  return new Intl.DateTimeFormat("es-CO", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(numeric));
 }

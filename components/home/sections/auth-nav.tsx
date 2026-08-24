@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
@@ -21,9 +22,19 @@ export function AuthNav() {
   }
 
   if (user) {
+    const isAppsActive = pathname.startsWith("/dashboard");
+
     return (
       <div className="ml-auto flex items-center gap-3 sm:gap-5">
-        <span className="hidden max-w-[180px] truncate text-[13px] font-medium text-white/90 sm:inline lg:text-[14px]">
+        <Link
+          href="/dashboard"
+          className={`text-[13px] font-semibold lg:text-[14px] ${
+            isAppsActive ? "text-white" : "text-white/90 transition-colors hover:text-white"
+          }`}
+        >
+          Mis apps
+        </Link>
+        <span className="hidden max-w-[180px] truncate text-[13px] font-medium text-white/80 sm:inline lg:text-[14px]">
           {user.email}
         </span>
         <button

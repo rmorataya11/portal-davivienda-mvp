@@ -19,7 +19,7 @@ type FieldErrors = Record<string, string>;
 export function LoginForm() {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const destinationRef = useRef<string>("/");
+  const destinationRef = useRef<string>("/dashboard");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -93,7 +93,7 @@ export function LoginForm() {
     }
   }
 
-  const signupReturnTo = destinationRef.current === "/" ? undefined : destinationRef.current;
+  const signupReturnTo = destinationRef.current === "/dashboard" ? undefined : destinationRef.current;
 
   return (
     <div className="w-full">

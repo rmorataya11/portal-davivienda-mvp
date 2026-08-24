@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { MarketplaceAssistant } from "@/components/assistant/marketplace-assistant";
+import { AppsProvider } from "@/components/dashboard/apps-provider";
 
 import "./globals.css";
 
@@ -23,8 +24,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="es" className={`${roboto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <AuthProvider>
-          {children}
-          <MarketplaceAssistant />
+          <AppsProvider>
+            {children}
+            <MarketplaceAssistant />
+          </AppsProvider>
         </AuthProvider>
       </body>
     </html>
