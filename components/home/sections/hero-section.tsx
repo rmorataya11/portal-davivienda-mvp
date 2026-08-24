@@ -4,27 +4,27 @@ export function HeroSection() {
   return (
     <section id="inicio" className="relative overflow-hidden pb-10 pt-[104px] sm:pt-[120px] lg:pt-0">
       <div className="hero-scene relative mx-auto w-full max-w-[1366px] overflow-hidden px-4 py-6 sm:px-6 sm:py-8 lg:h-[810px] lg:px-0 lg:py-0">
-        <div className="z-10 flex w-full max-w-[620px] flex-col rounded-[28px] bg-white px-6 pb-8 pt-8 shadow-[0_24px_80px_rgba(20,31,37,0.12)] transition-shadow duration-300 ease-out hover:shadow-[0_28px_96px_rgba(20,31,37,0.16)] sm:px-9 sm:pb-10 lg:absolute lg:left-14 lg:top-[152px] lg:h-[570px] lg:w-[620px] lg:rounded-[32px] lg:px-[52px] lg:pb-[48px] lg:pt-9">
-          <p className="w-full max-w-[234px] text-left text-[16px] leading-6 font-normal tracking-[0.4px] text-[#E1251B] sm:text-[20px]">
+        <div className="z-10 flex w-full max-w-[620px] flex-col rounded-[28px] bg-white px-8 pb-5 pt-7 shadow-[0_24px_80px_rgba(20,31,37,0.12)] transition-shadow duration-300 ease-out hover:shadow-[0_28px_96px_rgba(20,31,37,0.16)] sm:px-10 sm:pb-6 sm:pt-7 lg:absolute lg:left-14 lg:top-[152px] lg:h-[530px] lg:w-[620px] lg:rounded-[32px] lg:px-[52px] lg:pb-[36px] lg:pt-9">
+          <p className="text-left text-[16px] leading-6 font-normal tracking-[0.4px] text-[#E1251B] sm:text-[20px]">
             Open Banking Davivienda
           </p>
-          <h1 className="mt-3 max-w-[512px] text-left text-[28px] font-bold leading-[1.1] tracking-[0.02em] text-[#404040] sm:text-[40px] lg:text-[49px] lg:leading-[44px] lg:tracking-[0.98px]">
+          <h1 className="mt-6 max-w-[396px] text-left text-[28px] font-bold leading-[1.14] tracking-[0.4px] text-[#404040] sm:max-w-[430px] sm:text-[34px] sm:leading-[1.12] sm:tracking-[0.6px] lg:max-w-[512px] lg:text-[40px] lg:leading-[44px] lg:tracking-[0.8px]">
             Conecte su negocio al ecosistema financiero y escale sus operaciones.
           </h1>
-          <p className="mt-6 max-w-[512px] text-left text-[16px] leading-7 font-normal tracking-[0.02em] text-[#404040] sm:mt-8 sm:text-[18px] lg:mt-[54px] lg:text-[20px] lg:leading-6 lg:tracking-[0.4px]">
+          <p className="mt-[23px] max-w-[396px] text-left text-[16px] leading-6 font-normal tracking-[0.4px] text-[#404040] sm:max-w-[430px] sm:text-[18px] lg:mt-6 lg:max-w-[512px] lg:text-[20px] lg:leading-6">
             Las APIs Davivienda le permiten procesar ventas, pagar a proveedores y conciliar saldos en tiempo real.
             Cree experiencias financieras únicas para sus clientes.
           </p>
-          <div className="mt-8 flex flex-col items-stretch gap-4 sm:gap-5 lg:mt-auto lg:items-center lg:gap-8">
+          <div className="mt-12 flex flex-col items-stretch gap-5 lg:mt-9 lg:items-center lg:gap-7">
             <Link
               href="/crear-cuenta"
-              className="inline-flex h-12 w-full items-center justify-center rounded-[30px] bg-[#E1251B] text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.28)] sm:w-[313px]"
+              className="inline-flex h-12 w-full max-w-[342px] self-center items-center justify-center rounded-[30px] bg-[#E1251B] text-[16px] font-bold tracking-[0.36px] text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_38px_rgba(225,37,27,0.28)] sm:text-[18px] lg:w-[313px] lg:max-w-none"
             >
               Crear cuenta gratuita
             </Link>
             <Link
               href="#catalogo"
-              className="inline-flex h-12 w-full items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[15px] font-normal text-[#2C2C2C] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#404040] hover:bg-[#F7F7F7] hover:shadow-[0_14px_30px_rgba(20,31,37,0.1)] sm:w-[312px]"
+              className="inline-flex h-12 w-full max-w-[342px] self-center items-center justify-center rounded-[30px] border border-[#2C2C2C] bg-white text-[16px] font-normal tracking-[0.36px] text-[#2C2C2C] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#404040] hover:bg-[#F7F7F7] hover:shadow-[0_14px_30px_rgba(20,31,37,0.1)] sm:text-[18px] lg:w-[313px] lg:max-w-none"
             >
               Explorar catálogo de APIs
             </Link>
