@@ -113,7 +113,7 @@ export function TechnicalTabs({
 
       <div className="mt-8">
         {activeTab === "overview" ? (
-          <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
             <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
               <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">Autenticación y seguridad</h3>
               <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">{authentication.description}</p>
@@ -154,7 +154,7 @@ export function TechnicalTabs({
         {activeTab === "response" ? <CodePanel title="Response de ejemplo" code={sampleResponse} /> : null}
 
         {activeTab === "errors" ? (
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-4 xl:grid-cols-2">
             {errors.map((error) => (
               <ErrorCard key={error.code} error={error} />
             ))}

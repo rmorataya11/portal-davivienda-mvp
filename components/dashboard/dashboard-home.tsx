@@ -52,7 +52,7 @@ export function DashboardHome() {
       </div>
 
       <section className="mt-8 overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.06)]">
-        <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="grid xl:grid-cols-[1.15fr_0.85fr]">
           <div className="px-6 py-7 sm:px-8 sm:py-8">
             <p className="text-[13px] font-medium text-[#8E8E8E]">Consumo de los últimos 30 días</p>
             <p className="mt-3 text-[34px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[42px] lg:text-[48px]">
@@ -74,20 +74,20 @@ export function DashboardHome() {
             </p>
           </div>
 
-          <div className="border-t border-[#E7EAEE] bg-[#F8F9FB] px-6 py-7 sm:px-8 lg:border-t-0 lg:border-l">
+          <div className="border-t border-[#E7EAEE] bg-[#F8F9FB] px-6 py-7 sm:px-8 xl:border-t-0 xl:border-l">
             <WeekActivityChart values={weekActivity} />
           </div>
         </div>
       </section>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
         <MiniStat label="Aplicaciones" value={String(apps.length)} />
         <MiniStat label="En sandbox" value={String(sandboxCount)} />
         <MiniStat label="Llamadas / 30 días" value={totalCalls.toLocaleString("es-CO")} />
       </div>
 
       {apps.length === 0 ? (
-        <div className="mt-8 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-12 text-center shadow-[0_18px_50px_rgba(20,31,37,0.06)]">
+        <div className="mt-8 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-10 text-center shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:py-12">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFF1F0] text-[28px] font-bold text-[#E1251B]">
             +
           </div>

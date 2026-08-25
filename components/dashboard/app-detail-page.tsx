@@ -84,7 +84,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <div className="rounded-[28px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
           <h2 className="text-[22px] font-bold text-[#141F25]">Credenciales de sandbox</h2>
           <p className="mt-2 text-[14px] leading-6 text-[#6A7178]">

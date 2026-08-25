@@ -39,7 +39,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     >
       <div className="relative grid items-start gap-5">
         <div className="rounded-[30px] border border-[#E7EAEE] bg-[#F8F9FB] p-1">
-          <div className="grid gap-8 rounded-[26px] border border-[#E7EAEE] bg-white px-5 pb-5 pt-8 sm:px-7 sm:pb-7 sm:pt-9 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-center">
+          <div className="grid gap-8 rounded-[26px] border border-[#E7EAEE] bg-white px-5 pb-5 pt-8 sm:px-7 sm:pb-7 sm:pt-9 2xl:grid-cols-[minmax(0,1fr)_360px] 2xl:items-center">
             <div>
               <div className="flex flex-wrap items-center gap-4">
                 {api.heroImageSrc ? (
@@ -56,11 +56,11 @@ export function DetailHero({ api }: { api: ApiDetail }) {
                 </span>
               </div>
 
-              <h1 className="mt-8 max-w-[700px] text-[30px] font-bold leading-[1.12] tracking-[0.4px] text-[#141F25] sm:text-[44px] sm:leading-[48px] sm:tracking-[0.9px] lg:text-[54px] lg:leading-[58px]">
+              <h1 className="mt-8 max-w-[700px] text-[30px] font-bold leading-[1.12] tracking-[0.4px] text-[#141F25] sm:text-[40px] sm:leading-[44px] sm:tracking-[0.8px] xl:text-[48px] xl:leading-[52px] 2xl:text-[54px] 2xl:leading-[58px]">
                 {api.name}
               </h1>
               <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
-              <p className="mt-6 max-w-[720px] text-[17px] leading-7 tracking-[0.22px] text-[#404040] sm:text-[21px] sm:leading-9 lg:text-[23px]">
+              <p className="mt-6 max-w-[720px] text-[17px] leading-7 tracking-[0.22px] text-[#404040] sm:text-[20px] sm:leading-8 xl:text-[22px] xl:leading-9 2xl:text-[23px]">
                 {api.heroDescription}
               </p>
               <p className="mt-7 max-w-[660px] text-[15px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
@@ -68,7 +68,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               </p>
             </div>
 
-            <div className="hidden xl:block">
+            <div className="hidden 2xl:block">
               <div className="rounded-[28px] border border-[#E7EAEE] bg-[#F8F9FB] p-4">
                 <div className="flex h-[312px] w-full items-center justify-center rounded-[22px] border border-dashed border-[#D5DAE0] bg-white px-8 text-center">
                   <p className="max-w-[240px] text-[16px] font-medium leading-7 tracking-[0.24px] text-[#8A9096]">
@@ -116,7 +116,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
                   Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.
                 </p>
 
-                <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                <div className="mt-6 grid gap-3 md:grid-cols-2 2xl:grid-cols-4">
                   {summaryItems.map((item) => (
                     <div key={item.label} className="rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-5">
                       <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{item.label}</p>
@@ -130,7 +130,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
           </div>
         </aside>
 
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
           {quickFacts.map((item) => (
             <div
               key={item.label}

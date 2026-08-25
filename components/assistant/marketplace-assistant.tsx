@@ -292,7 +292,7 @@ export function MarketplaceAssistant() {
       {isOpen ? (
         <div className="fixed inset-0 z-[80] bg-transparent sm:bg-[#141F25]/10">
           <div className="flex h-full justify-end">
-            <div className="flex h-[100dvh] w-full max-w-[520px] flex-col overflow-hidden border-l border-[#E7EAEE] bg-white/98 shadow-[-28px_0_80px_rgba(20,31,37,0.18)] backdrop-blur-sm">
+            <div className="flex h-[100dvh] w-full max-w-[480px] flex-col overflow-hidden border-l border-[#E7EAEE] bg-white/98 shadow-[-28px_0_80px_rgba(20,31,37,0.18)] backdrop-blur-sm lg:max-w-[520px]">
               <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E7EAEE] px-5 py-4">
                 <div className="min-w-0">
                   <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{context.title}</p>
@@ -368,7 +368,7 @@ export function MarketplaceAssistant() {
                     </div>
 
                     <div className="border-t border-[#E7EAEE] px-5 py-4">
-                      <div className="flex gap-3 rounded-[28px] border border-[#E3E7EC] bg-[#FBFCFD] p-3">
+                      <div className="flex flex-col gap-3 rounded-[28px] border border-[#E3E7EC] bg-[#FBFCFD] p-3 sm:flex-row">
                         <textarea
                           value={draft}
                           onChange={(event) => setDraft(event.target.value)}
@@ -378,7 +378,7 @@ export function MarketplaceAssistant() {
                         <button
                           type="button"
                           onClick={handleSubmit}
-                          className="inline-flex h-12 items-center justify-center self-end rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-[#E1111C]"
+                          className="inline-flex h-12 items-center justify-center self-stretch rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors duration-300 hover:bg-[#E1111C] sm:self-end"
                         >
                           Enviar
                         </button>

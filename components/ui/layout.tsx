@@ -6,7 +6,7 @@ type LayoutProps = {
 };
 
 export function PageContainer({ children, className = "" }: LayoutProps) {
-  return <div className={`mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-[56px] ${className}`}>{children}</div>;
+  return <div className={`mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-8 xl:px-[56px] ${className}`}>{children}</div>;
 }
 
 export function FullBleedContainer({ children, className = "" }: LayoutProps) {
@@ -16,7 +16,7 @@ export function FullBleedContainer({ children, className = "" }: LayoutProps) {
 /** Page sections inset inside the navbar pill (`max-w-[1200px]`, more padding than the nav). */
 export function SectionContainer({ children, className = "" }: LayoutProps) {
   return (
-    <div className={`flex justify-center px-5 sm:px-8 lg:px-16 ${className}`}>
+    <div className={`flex justify-center px-5 sm:px-8 lg:px-12 xl:px-16 ${className}`}>
       <div className="w-full max-w-[1200px]">{children}</div>
     </div>
   );
