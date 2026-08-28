@@ -1,9 +1,6 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
-import { PageBreadcrumb } from "@/components/ui/page-breadcrumb";
-import { SectionContainer } from "@/components/ui/layout";
-
+import { HeaderOffset } from "./header-offset";
 import { AuthNav } from "./auth-nav";
 import { MarketplaceDesktopNav } from "./marketplace-nav";
 import { MarketplaceMobileMenu } from "./marketplace-mobile-menu";
@@ -34,13 +31,7 @@ export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string })
         </div>
       </header>
 
-      <div className="pt-[104px] sm:pt-[120px] lg:pt-[132px]">
-        <SectionContainer>
-          <Suspense fallback={null}>
-            <PageBreadcrumb />
-          </Suspense>
-        </SectionContainer>
-      </div>
+      <HeaderOffset />
     </>
   );
 }
