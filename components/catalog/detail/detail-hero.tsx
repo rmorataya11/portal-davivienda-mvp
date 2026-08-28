@@ -62,7 +62,6 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     {
       label: "Acceso",
       value: "Bearer + API key",
-      detail: "Token, client id y trazabilidad por request.",
     },
     {
       label: "Cobertura",
@@ -77,7 +76,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     {
       label: "Ambientes",
       value: "Sandbox y Producción",
-      detail: "Del descubrimiento funcional al consumo autorizado.",
+      detail: "Del descubrimiento funcional al consumo automatizado.",
     },
   ];
 
@@ -122,13 +121,16 @@ export function DetailHero({ api }: { api: ApiDetail }) {
         </div>
       </section>
 
-      <aside className="rounded-2xl bg-white px-5 py-6 sm:px-8 sm:py-8">
+      <aside className="rounded-2xl border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-8">
         <div className="flex items-start justify-between gap-4">
-          <div>
+          <div className="min-w-0">
             <p className="text-[13px] font-medium text-[#E1251B]">Resumen Ejecutivo</p>
             <h2 className="mt-2 text-[22px] font-bold tracking-[0.3px] text-[#404040] sm:text-[26px]">
               Lo esencial para evaluar esta API
             </h2>
+            <p className="mt-2 max-w-[640px] text-[14px] font-normal leading-6 text-[#8E8E8E] sm:text-[15px]">
+              Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.
+            </p>
           </div>
           <button
             type="button"
@@ -151,22 +153,31 @@ export function DetailHero({ api }: { api: ApiDetail }) {
 
         <div
           className={`grid overflow-hidden transition-[grid-template-rows,opacity,margin] duration-300 ease-out ${
-            isSummaryOpen ? "mt-4 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
+            isSummaryOpen ? "mt-6 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
           }`}
         >
           <div className="overflow-hidden">
-            <p className="max-w-[640px] text-[14px] font-normal leading-6 text-[#8E8E8E] sm:text-[15px]">
-              Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.
-            </p>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {summaryItems.map((item) => (
-                <div key={item.label} className="rounded-[16px] border border-[#E7EAEE] px-5 py-5">
+                <div key={item.label} className="flex min-h-[132px] flex-col rounded-[16px] border border-[#E7EAEE] px-5 py-5">
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">{item.label}</p>
                   <p className="mt-3 text-[18px] font-bold leading-7 tracking-[0.2px] text-[#404040] sm:text-[20px]">
                     {item.value}
                   </p>
-                  <p className="mt-2 text-[13px] font-normal leading-6 text-[#8E8E8E]">{item.detail}</p>
+                  {"detail" in item && item.detail ? (
+                    <p className="mt-auto pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E]">{item.detail}</p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+
+            <div className="my-6 h-px bg-[#E7EAEE]" />
+
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {api.quickFacts.map((item) => (
+                <div key={item.label} className="rounded-[16px] bg-[#F5F6F8] px-5 py-4">
+                  <p className="text-[13px] font-normal text-[#8E8E8E]">{item.label}</p>
+                  <p className="mt-2 text-[16px] font-bold tracking-[0.2px] text-[#404040] sm:text-[18px]">{item.value}</p>
                 </div>
               ))}
             </div>
