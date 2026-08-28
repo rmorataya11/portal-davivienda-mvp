@@ -41,14 +41,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
 
   return (
     <div>
-      <Link
-        href="/dashboard"
-        className="inline-flex items-center gap-2 text-[14px] font-medium tracking-[0.28px] text-[#707070] transition-colors duration-300 hover:text-[#E1251B]"
-      >
-        Volver al dashboard
-      </Link>
-
-      <div className="mt-6 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
+      <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Aplicación</p>

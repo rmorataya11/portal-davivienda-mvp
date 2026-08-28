@@ -30,7 +30,7 @@ export function ContractingRequestPage({
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[104px] pb-16 sm:pt-[120px] lg:pt-[132px]">
+      <section className="pt-4 pb-16">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6">
           <SurfaceCard className="px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10">
             <ContractingAccessGate returnTo={returnTo}>

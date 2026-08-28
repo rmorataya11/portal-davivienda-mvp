@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { ContractingRequestLink } from "@/components/contracting/contracting-request-link";
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
@@ -15,15 +13,9 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
-      <section className="pt-[104px] pb-8 sm:pt-[120px] lg:pt-[132px]">
+      <section className="pt-4 pb-8">
         <SectionContainer>
-          <Link
-            href={`/catalogo-apis/${api.slug}`}
-            className="inline-flex items-center gap-2 text-[14px] font-medium tracking-[0.28px] text-[#707070] transition-colors duration-300 hover:text-[#E1251B]"
-          >
-            Volver al detalle de la API
-          </Link>
-          <div className="mt-6 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
+          <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
             <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Detalle técnico</p>
             <h1 className="mt-4 text-[26px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[36px] lg:text-[44px]">
               Explore la integración de {api.name}

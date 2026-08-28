@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <section id="inicio" className="relative overflow-hidden pb-10 pt-[104px] sm:pt-[120px] lg:pt-0">
+    <section id="inicio" className="relative overflow-hidden pb-10 pt-4">
       <div className="hero-scene relative mx-auto w-full max-w-[1366px] overflow-hidden px-4 py-6 sm:px-6 sm:py-8 xl:min-h-[680px] xl:px-8 xl:py-0 2xl:h-[810px] 2xl:px-0">
-        <div className="z-10 flex w-full max-w-[620px] flex-col rounded-[28px] bg-white px-8 pb-5 pt-7 shadow-[0_24px_80px_rgba(20,31,37,0.12)] transition-shadow duration-300 ease-out hover:shadow-[0_28px_96px_rgba(20,31,37,0.16)] sm:px-10 sm:pb-6 sm:pt-7 xl:absolute xl:left-10 xl:top-[128px] xl:w-[560px] xl:rounded-[32px] xl:px-10 xl:pb-8 xl:pt-8 2xl:left-14 2xl:top-[152px] 2xl:h-[530px] 2xl:w-[620px] 2xl:px-[52px] 2xl:pb-[36px] 2xl:pt-9">
+        <div className="z-10 flex w-full max-w-[620px] flex-col rounded-[28px] bg-white px-8 pb-5 pt-7 shadow-[0_24px_80px_rgba(20,31,37,0.12)] transition-shadow duration-300 ease-out hover:shadow-[0_28px_96px_rgba(20,31,37,0.16)] sm:px-10 sm:pb-6 sm:pt-7 xl:absolute xl:left-10 xl:top-8 xl:w-[560px] xl:rounded-[32px] xl:px-10 xl:pb-8 xl:pt-8 2xl:left-14 2xl:top-10 2xl:h-[530px] 2xl:w-[620px] 2xl:px-[52px] 2xl:pb-[36px] 2xl:pt-9">
           <p className="text-left text-[16px] leading-6 font-normal tracking-[0.4px] text-[#E1251B] sm:text-[20px]">
             Open Banking Davivienda
           </p>
