@@ -19,3 +19,9 @@ export type CreateAppInput = {
   description: string;
   productSlugs: string[];
 };
+
+export type UpdateAppInput = {
+  name: string;
+  description: string;
+  productSlugs: string[];
+};

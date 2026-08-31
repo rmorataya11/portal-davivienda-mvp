@@ -1,17 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { CredentialField } from "@/components/ui/credential-field";
 import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
 import { formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
 
+import { AppDeleteControl, AppEditForm } from "./app-edit-form";
 import { AppStatusBadge } from "./app-status-badge";
 import { useDeveloperApps } from "./apps-provider";
 
 export function AppDetailPage({ appId }: { appId: string }) {
   const { getApp, ready } = useDeveloperApps();
+  const [isEditing, setIsEditing] = useState(false);
 
   if (!ready) {
     return <div className="h-64 animate-pulse rounded-[24px] bg-white" />;
@@ -48,11 +51,29 @@ export function AppDetailPage({ appId }: { appId: string }) {
             <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">{app.name}</h1>
             <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
           </div>
-          <AppStatusBadge status={app.status} />
+          <div className="flex flex-col items-end gap-3">
+            <AppStatusBadge status={app.status} />
+            {!isEditing ? (
+              <div className="flex flex-wrap justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(true)}
+                  className="inline-flex h-11 items-center justify-center rounded-full border border-[#404040] bg-white px-5 text-[14px] font-medium text-[#404040] transition-all duration-300 hover:border-[#E1251B] hover:text-[#E1251B]"
+                >
+                  Editar
+                </button>
+                <AppDeleteControl appId={app.id} appName={app.name} />
+              </div>
+            ) : null}
+          </div>
         </div>
-        <p className="mt-4 max-w-[720px] text-[16px] leading-7 text-[#6A7178]">
-          {app.description || "Esta aplicación todavía no tiene una descripción."}
-        </p>
+        {isEditing ? (
+          <AppEditForm app={app} onCancel={() => setIsEditing(false)} />
+        ) : (
+          <p className="mt-4 max-w-[720px] text-[16px] leading-7 text-[#6A7178]">
+            {app.description || "Esta aplicación todavía no tiene una descripción."}
+          </p>
+        )}
       </div>
 
       <div className="mt-6 overflow-hidden rounded-[28px] border border-[#E7EAEE] bg-white">

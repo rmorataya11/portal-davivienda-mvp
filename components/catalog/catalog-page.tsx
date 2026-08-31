@@ -2,9 +2,8 @@ import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
 import { FullBleedContainer, PageContainer } from "@/components/ui/layout";
 
-import { ApiCard } from "./api-card";
+import { CatalogBrowser } from "./catalog-browser";
 import { CatalogSignupCta } from "./catalog-signup-cta";
-import { apiCatalogItems, apiCategories } from "./content/apis";
 
 export function CatalogPage() {
   return (
@@ -26,42 +25,7 @@ export function CatalogPage() {
       <section className="pb-16">
         <FullBleedContainer className="bg-white">
           <div className="px-4 py-4 sm:px-6 lg:px-[56px]">
-            <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-2 text-[16px] leading-7 font-medium tracking-[0.32px] text-[#404040]">
-                <span>Catálogo de APIs</span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="flex h-10 w-full items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E] transition-colors duration-300 hover:border-[#404040] hover:text-[#404040] sm:w-[408px]">
-                  <span className="text-sm">Filtra por nombre, etiqueta o endpoint...</span>
-                </div>
-                <button
-                  type="button"
-                  className="inline-flex h-[22px] w-6 items-center justify-center text-[#8E8E8E] transition-colors duration-300 hover:text-[#404040]"
-                >
-                  ⌘
-                </button>
-                {apiCategories.map((category, index) => (
-                  <button
-                    key={category}
-                    type="button"
-                    className={`inline-flex h-10 items-center justify-center rounded-[32px] border px-5 text-sm font-medium transition-all duration-300 ease-out ${
-                      index === 0
-                        ? "w-[93px] border-[#404040] bg-white text-[#404040] hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(20,31,37,0.08)]"
-                        : "border-[#404040] bg-white text-[#404040] hover:-translate-y-0.5 hover:border-[#2C2C2C] hover:bg-[#404040] hover:text-white hover:shadow-[0_12px_24px_rgba(20,31,37,0.08)]"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-
-              <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
-                {apiCatalogItems.map((api) => (
-                  <ApiCard key={api.name} api={api} />
-                ))}
-              </div>
-            </div>
+            <CatalogBrowser />
           </div>
         </FullBleedContainer>
       </section>

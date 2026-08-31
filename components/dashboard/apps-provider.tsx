@@ -5,12 +5,14 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { useAuth } from "@/components/auth/auth-provider";
 import { createDeveloperAppRecord } from "@/lib/developer-apps/factory";
 import { loadDeveloperApps, saveDeveloperApps } from "@/lib/developer-apps/storage";
-import type { CreateAppInput, DeveloperApp } from "@/lib/developer-apps/types";
+import type { CreateAppInput, DeveloperApp, UpdateAppInput } from "@/lib/developer-apps/types";
 
 type AppsContextValue = {
   apps: DeveloperApp[];
   ready: boolean;
   createApp: (input: CreateAppInput) => DeveloperApp;
+  updateApp: (appId: string, input: UpdateAppInput) => DeveloperApp | undefined;
+  deleteApp: (appId: string) => void;
   getApp: (id: string) => DeveloperApp | undefined;
   linkProduct: (appId: string, productSlug: string) => void;
   markContracting: (appId: string) => void;
@@ -61,6 +63,33 @@ export function AppsProvider({ children }: { children: ReactNode }) {
 
   const getApp = useCallback((id: string) => apps.find((app) => app.id === id), [apps]);
 
+  const updateApp = useCallback(
+    (appId: string, input: UpdateAppInput) => {
+      const current = apps.find((app) => app.id === appId);
+      if (!current) {
+        return undefined;
+      }
+
+      const nextApp: DeveloperApp = {
+        ...current,
+        name: input.name,
+        description: input.description,
+        productSlugs: input.productSlugs,
+      };
+
+      persist(apps.map((app) => (app.id === appId ? nextApp : app)));
+      return nextApp;
+    },
+    [apps, persist],
+  );
+
+  const deleteApp = useCallback(
+    (appId: string) => {
+      persist(apps.filter((app) => app.id !== appId));
+    },
+    [apps, persist],
+  );
+
   const linkProduct = useCallback(
     (appId: string, productSlug: string) => {
       persist(
@@ -88,11 +117,13 @@ export function AppsProvider({ children }: { children: ReactNode }) {
       apps,
       ready,
       createApp,
+      updateApp,
+      deleteApp,
       getApp,
       linkProduct,
       markContracting,
     }),
-    [apps, createApp, getApp, linkProduct, markContracting, ready],
+    [apps, createApp, deleteApp, getApp, linkProduct, markContracting, ready, updateApp],
   );
 
   return <AppsContext.Provider value={value}>{children}</AppsContext.Provider>;
