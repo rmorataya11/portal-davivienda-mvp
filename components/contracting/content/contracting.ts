@@ -17,3 +17,8 @@ export const destinationEnvironments = [
   { value: "pruebas-extendidas", label: "Pruebas extendidas" },
   { value: "produccion", label: "Producción" },
 ];
+
+export const ipWhitelistOptions = [
+  { value: "si", label: "Sí" },
+  { value: "no", label: "No" },
+];

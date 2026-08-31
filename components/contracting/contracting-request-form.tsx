@@ -1,14 +1,17 @@
 "use client";
 
+import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { getFirebaseDb } from "@/lib/firebase/client";
 
-import { destinationEnvironments, industries, monthlyVolumes } from "./content/contracting";
+import { destinationEnvironments, industries, ipWhitelistOptions, monthlyVolumes } from "./content/contracting";
 import { RadioGroup } from "./radio-group";
 import { TermsModal } from "./terms-modal";
 
@@ -17,8 +20,15 @@ const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 
 type FieldErrors = Record<string, string>;
 
+function generateRequestId() {
+  const year = new Date().getFullYear();
+  const shortStamp = Date.now().toString(36).toUpperCase().slice(-8);
+  return `SOL-${year}-${shortStamp}`;
+}
+
 export function ContractingRequestForm({ productName = "" }: { productName?: string }) {
   const searchParams = useSearchParams();
+  const { user } = useAuth();
   const { getApp, markContracting } = useDeveloperApps();
   const appId = searchParams.get("app") ?? "";
   const linkedApp = appId ? getApp(appId) : undefined;
@@ -27,11 +37,40 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
     .map((item) => item.name)
     .join(", ");
   const displayProduct = linkedProducts || productName;
+  const [companyName, setCompanyName] = useState("");
   const [environment, setEnvironment] = useState("");
+  const [needsIpWhitelist, setNeedsIpWhitelist] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [termsOpen, setTermsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    let cancelled = false;
+
+    getDoc(doc(getFirebaseDb(), "users", user.uid))
+      .then((snapshot) => {
+        if (cancelled) {
+          return;
+        }
+
+        const profileName = snapshot.data()?.companyName;
+        if (typeof profileName === "string" && profileName.trim()) {
+          setCompanyName((current) => current || profileName);
+        }
+      })
+      .catch(() => {
+        // El usuario puede completar la razón social manualmente.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -74,6 +113,14 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
       nextErrors.environment = "Seleccione el ambiente destino.";
     }
 
+    if (!form.get("needsIpWhitelist")) {
+      nextErrors.needsIpWhitelist = "Indique si necesita whitelist de IPs para producción.";
+    }
+
+    if (form.get("needsIpWhitelist") === "si" && !String(form.get("ipRanges") ?? "").trim()) {
+      nextErrors.ipRanges = "Ingrese el rango o los rangos de IP a autorizar.";
+    }
+
     if (!String(form.get("technicalName") ?? "").trim()) {
       nextErrors.technicalName = "Ingrese el nombre del contacto técnico.";
     }
@@ -94,17 +141,31 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
       nextErrors.terms = "Debe aceptar los términos y condiciones.";
     }
 
+    if (!form.get("dataAccuracy")) {
+      nextErrors.dataAccuracy = "Debe confirmar que la información suministrada es veraz y completa.";
+    }
+
     return nextErrors;
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const nextErrors = validate(new FormData(event.currentTarget));
+    const formElement = event.currentTarget;
+    const nextErrors = validate(new FormData(formElement));
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
       document.getElementById(Object.keys(nextErrors)[0])?.focus();
       return;
+    }
+
+    const requestIdInput = formElement.elements.namedItem("requestId");
+    const submittedAtInput = formElement.elements.namedItem("submittedAt");
+    if (requestIdInput instanceof HTMLInputElement) {
+      requestIdInput.value = generateRequestId();
+    }
+    if (submittedAtInput instanceof HTMLInputElement) {
+      submittedAtInput.value = new Date().toISOString();
     }
 
     setIsSubmitting(true);
@@ -168,8 +229,11 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
       <form className="mt-8 space-y-10" noValidate onSubmit={handleSubmit}>
         <input type="hidden" name="product" value={displayProduct} />
         {linkedApp ? <input type="hidden" name="appId" value={linkedApp.id} /> : null}
+        <input type="hidden" name="accountEmail" value={user?.email ?? ""} />
+        <input type="hidden" name="requestId" defaultValue="" />
+        <input type="hidden" name="submittedAt" defaultValue="" />
 
-        <FormSection title="Empresa">
+        <FormSection>
           <TextField
             id="companyName"
             name="companyName"
@@ -177,8 +241,12 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             required
             autoComplete="organization"
             placeholder="Mi Empresa S.A.S."
+            value={companyName}
             error={errors.companyName}
-            onChange={() => clearError("companyName")}
+            onChange={(event) => {
+              setCompanyName(event.currentTarget.value);
+              clearError("companyName");
+            }}
           />
           <TextField
             id="taxId"
@@ -205,7 +273,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           </SelectField>
         </FormSection>
 
-        <FormSection title="Uso y volumen">
+        <FormSection>
           <TextAreaField
             id="useCase"
             name="useCase"
@@ -243,9 +311,37 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
               clearError("environment");
             }}
           />
+          <RadioGroup
+            legend="¿Necesita whitelist de IPs para producción?"
+            name="needsIpWhitelist"
+            required
+            error={errors.needsIpWhitelist}
+            value={needsIpWhitelist}
+            options={ipWhitelistOptions}
+            onChange={(value) => {
+              setNeedsIpWhitelist(value);
+              clearError("needsIpWhitelist");
+              if (value !== "si") {
+                clearError("ipRanges");
+              }
+            }}
+          />
+          {needsIpWhitelist === "si" ? (
+            <TextAreaField
+              id="ipRanges"
+              name="ipRanges"
+              label="Rango(s) de IP a autorizar"
+              required
+              rows={4}
+              hint="Indique una IP o un rango por línea, por ejemplo 190.25.10.0/24."
+              placeholder={"190.25.10.0/24\n181.49.20.15"}
+              error={errors.ipRanges}
+              onChange={() => clearError("ipRanges")}
+            />
+          ) : null}
         </FormSection>
 
-        <FormSection title="Contacto técnico">
+        <FormSection>
           <TextField
             id="technicalName"
             name="technicalName"
@@ -282,7 +378,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           </div>
         </FormSection>
 
-        <FormSection title="Confirmación">
+        <FormSection>
           <div>
             <div className="flex items-start gap-3 text-[15px] text-[#404040]">
               <input
@@ -310,6 +406,26 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             {errors.terms ? <p className="mt-2 pl-8 text-[13px] text-[#E1251B]">{errors.terms}</p> : null}
           </div>
 
+          <div>
+            <div className="flex items-start gap-3 text-[15px] text-[#404040]">
+              <input
+                id="dataAccuracy"
+                type="checkbox"
+                name="dataAccuracy"
+                required
+                onChange={() => clearError("dataAccuracy")}
+                className="mt-0.5 h-[18px] w-[18px] shrink-0 rounded-[4px] border border-[#C9CED4] accent-[#E1251B]"
+              />
+              <p>
+                <label htmlFor="dataAccuracy" className="cursor-pointer">
+                  Confirmo que la información suministrada es veraz y completa
+                </label>{" "}
+                <span className="text-[#E1251B]">*</span>
+              </p>
+            </div>
+            {errors.dataAccuracy ? <p className="mt-2 pl-8 text-[13px] text-[#E1251B]">{errors.dataAccuracy}</p> : null}
+          </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -326,11 +442,6 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
   );
 }
 
-function FormSection({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="space-y-5">
-      <h2 className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{title}</h2>
-      {children}
-    </section>
-  );
+function FormSection({ children }: { children: ReactNode }) {
+  return <section className="space-y-5">{children}</section>;
 }
