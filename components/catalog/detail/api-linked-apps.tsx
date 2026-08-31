@@ -89,19 +89,14 @@ export function ApiLinkedApps({
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-3">
-        {linkedApps.length > 0 ? (
-          <Link
-            href={`/dashboard/apps/nueva?producto=${slug}`}
-            className="inline-flex h-11 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
-          >
-            Crear otra para esta API
-          </Link>
-        ) : null}
-        <Link href="/dashboard" className="text-[14px] font-medium text-[#E1251B]">
-          Ver todas en Mis apps
+      {linkedApps.length > 0 ? (
+        <Link
+          href={`/dashboard/apps/nueva?producto=${slug}`}
+          className="inline-flex h-11 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
+        >
+          Crear otra para esta API
         </Link>
-      </div>
+      ) : null}
 
       {otherApps.length > 0 ? (
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-5">
