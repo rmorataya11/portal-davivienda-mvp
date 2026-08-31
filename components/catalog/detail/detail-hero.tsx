@@ -55,7 +55,7 @@ function DescriptionText({ text }: { text: string }) {
 }
 
 export function DetailHero({ api }: { api: ApiDetail }) {
-  const [isSummaryOpen, setIsSummaryOpen] = useState(true);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const primaryEndpoint = api.endpoints[0];
   const iconSrc = api.heroImageSrc ?? api.imageSrc;
   const summaryItems = [
