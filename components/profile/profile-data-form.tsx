@@ -12,8 +12,21 @@ const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 
 type FieldErrors = Record<string, string>;
 
+function formatLastSignIn(value?: string) {
+  if (!value) {
+    return "No disponible";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "No disponible";
+  }
+
+  return new Intl.DateTimeFormat("es-CO", { dateStyle: "medium", timeStyle: "short" }).format(date);
+}
+
 export function ProfileDataForm() {
-  const { user, setDisplayName } = useAuth();
+  const { user, setDisplayName, setCompanyName: setAccountCompanyName } = useAuth();
   const [accountName, setAccountName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [idType, setIdType] = useState("");
@@ -123,6 +136,7 @@ export function ProfileDataForm() {
         phone: phone.trim(),
       });
       setDisplayName(accountName.trim());
+      setAccountCompanyName(companyName.trim());
       setSaved(true);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));
@@ -237,6 +251,11 @@ export function ProfileDataForm() {
           setSaved(false);
         }}
       />
+
+      <div className="rounded-[12px] bg-[#F8F9FB] px-4 py-3">
+        <p className="text-[12px] font-medium uppercase tracking-[0.16em] text-[#8E8E8E]">Última sesión iniciada</p>
+        <p className="mt-1 text-[15px] text-[#141F25]">{formatLastSignIn(user?.metadata.lastSignInTime)}</p>
+      </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <button

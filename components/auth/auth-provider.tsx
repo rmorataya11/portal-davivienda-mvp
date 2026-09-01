@@ -10,7 +10,9 @@ type AuthContextValue = {
   user: User | null;
   loading: boolean;
   displayName: string;
+  companyName: string;
   setDisplayName: (name: string) => void;
+  setCompanyName: (name: string) => void;
   signOut: () => Promise<void>;
 };
 
@@ -20,6 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState("");
+  const [companyName, setCompanyName] = useState("");
 
   useEffect(() => {
     const auth = getFirebaseAuth();
@@ -30,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!nextUser) {
         setDisplayName("");
+        setCompanyName("");
       }
     });
   }, []);
@@ -43,9 +47,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     getUserProfile(user.uid)
       .then((profile) => {
-        if (!cancelled && profile?.displayName) {
-          setDisplayName(profile.displayName);
+        if (cancelled || !profile) {
+          return;
         }
+
+        setDisplayName(profile.displayName);
+        setCompanyName(profile.companyName);
       })
       .catch(() => {
         // El menú puede mostrar un nombre genérico hasta que el usuario lo configure.
@@ -61,10 +68,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       loading,
       displayName,
+      companyName,
       setDisplayName,
+      setCompanyName,
       signOut: () => firebaseSignOut(getFirebaseAuth()),
     }),
-    [displayName, loading, user],
+    [companyName, displayName, loading, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -78,12 +87,4 @@ export function useAuth() {
   }
 
   return context;
-}
-
-export function accountLabel(displayName: string) {
-  if (displayName.trim()) {
-    return displayName.trim();
-  }
-
-  return "Mi cuenta";
 }

@@ -4,15 +4,18 @@ import { useState } from "react";
 
 import { ProfileApps } from "./profile-apps";
 import { ProfileBilling } from "./profile-billing";
+import { ProfileDangerZone } from "./profile-danger-zone";
 import { ProfileDataForm } from "./profile-data-form";
+import { ProfileNotifications } from "./profile-notifications";
 import { ProfileRequests } from "./profile-requests";
 import { ProfileSecurity } from "./profile-security";
 
-type TabId = "datos" | "seguridad" | "apps" | "solicitudes" | "facturacion";
+type TabId = "datos" | "seguridad" | "notificaciones" | "apps" | "solicitudes" | "facturacion";
 
 const tabs: Array<{ id: TabId; label: string }> = [
   { id: "datos", label: "Datos de perfil" },
   { id: "seguridad", label: "Seguridad" },
+  { id: "notificaciones", label: "Notificaciones" },
   { id: "apps", label: "Mis Apps" },
   { id: "solicitudes", label: "Solicitudes" },
   { id: "facturacion", label: "Facturación" },
@@ -48,8 +51,14 @@ export function ProfilePage() {
         </div>
 
         <div className="mt-8">
-          {activeTab === "datos" ? <ProfileDataForm /> : null}
+          {activeTab === "datos" ? (
+            <div className="space-y-6">
+              <ProfileDataForm />
+              <ProfileDangerZone />
+            </div>
+          ) : null}
           {activeTab === "seguridad" ? <ProfileSecurity /> : null}
+          {activeTab === "notificaciones" ? <ProfileNotifications /> : null}
           {activeTab === "apps" ? <ProfileApps /> : null}
           {activeTab === "solicitudes" ? <ProfileRequests /> : null}
           {activeTab === "facturacion" ? <ProfileBilling /> : null}

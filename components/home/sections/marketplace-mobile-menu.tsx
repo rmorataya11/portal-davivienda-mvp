@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
-import { accountLabel, useAuth } from "@/components/auth/auth-provider";
+import { useAuth } from "@/components/auth/auth-provider";
+import { AccountAvatar } from "@/components/profile/account-avatar";
+import { accountInitials, accountLabel } from "@/lib/account/display";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
 
 import { navItems } from "../content/navigation";
@@ -19,7 +21,7 @@ export function MarketplaceMobileMenu({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading, displayName, signOut } = useAuth();
+  const { user, loading, displayName, companyName, signOut } = useAuth();
   const [open, setOpen] = useState(false);
 
   const { loginHref, signupHref } = getAuthHrefs(pathname);
@@ -91,13 +93,31 @@ export function MarketplaceMobileMenu({
               <div className="h-11 w-full rounded-full bg-white/15" />
             ) : user ? (
               <div className="flex flex-col gap-3">
-                <span className="truncate text-[14px] font-medium text-white/80">{accountLabel(displayName)}</span>
+                <div className="flex items-center gap-3 px-1">
+                  <AccountAvatar
+                    name={accountInitials(companyName, displayName, user.email)}
+                    size="md"
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate text-[14px] font-semibold text-white">
+                      {companyName.trim() || accountLabel(displayName, companyName)}
+                    </p>
+                    <p className="truncate text-[12px] text-white/70">{user.email}</p>
+                  </div>
+                </div>
                 <Link
                   href="/perfil"
                   onClick={() => setOpen(false)}
                   className="inline-flex h-12 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
                 >
                   Mi cuenta
+                </Link>
+                <Link
+                  href="/solicitud-contratacion"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex h-12 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
+                >
+                  Solicitar contratación
                 </Link>
                 <button
                   type="button"

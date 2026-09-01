@@ -9,6 +9,7 @@ export type UserProfile = {
   idNumber: string;
   phone: string;
   email: string;
+  notifyBeforeExpiration: boolean;
 };
 
 function asString(value: unknown) {
@@ -31,6 +32,7 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
     idNumber: asString(data.idNumber),
     phone: asString(data.phone),
     email: asString(data.email),
+    notifyBeforeExpiration: data.notifyBeforeExpiration === true,
   };
 }
 
@@ -49,4 +51,8 @@ export async function saveUserProfile(
     },
     { merge: true },
   );
+}
+
+export async function saveNotifyBeforeExpiration(uid: string, notifyBeforeExpiration: boolean) {
+  await setDoc(doc(getFirebaseDb(), "users", uid), { notifyBeforeExpiration }, { merge: true });
 }
