@@ -63,6 +63,11 @@ function buildCrumbs(
       return;
     }
 
+    if (segment === "perfil") {
+      crumbs.push({ href, label: "Mi perfil" });
+      return;
+    }
+
     if (segment === "solicitud-contratacion") {
       const product = productSlug ? getApiDetailBySlug(productSlug) : undefined;
       if (product) {

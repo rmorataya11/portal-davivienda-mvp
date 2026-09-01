@@ -92,6 +92,13 @@ export function MarketplaceMobileMenu({
             ) : user ? (
               <div className="flex flex-col gap-3">
                 <span className="truncate text-[14px] font-medium text-white/80">{user.email}</span>
+                <Link
+                  href="/perfil"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex h-12 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
+                >
+                  Mi cuenta
+                </Link>
                 <button
                   type="button"
                   onClick={async () => {

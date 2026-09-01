@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -15,6 +17,37 @@ export function AuthNav() {
   const pathname = usePathname();
   const { loginHref, signupHref } = getAuthHrefs(pathname);
   const returnTo = getApiContextFromPath(pathname)?.returnTo;
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
 
   if (loading) {
     return <div className="h-10 w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:min-h-[42px] lg:w-[156px]" />;
@@ -22,20 +55,52 @@ export function AuthNav() {
 
   if (user) {
     return (
-      <div className="flex items-center gap-3 sm:gap-5">
-        <span className="hidden max-w-[180px] truncate text-[13px] font-medium text-white/80 sm:inline lg:text-[14px]">
-          {user.email}
-        </span>
+      <div ref={menuRef} className="relative">
         <button
           type="button"
-          onClick={async () => {
-            await signOut();
-            router.push("/");
-          }}
-          className={buttonClassName}
+          aria-expanded={open}
+          aria-haspopup="menu"
+          onClick={() => setOpen((current) => !current)}
+          className={`${buttonClassName} gap-2`}
         >
-          Cerrar sesión
+          <span className="max-w-[160px] truncate">{user.email}</span>
+          <svg
+            className={`h-3.5 w-3.5 shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </button>
+
+        {open ? (
+          <div
+            role="menu"
+            className="absolute right-0 z-[80] mt-2 w-[220px] overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-white py-2 shadow-[0_18px_44px_rgba(20,31,37,0.16)]"
+          >
+            <Link
+              href="/perfil"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2.5 text-[14px] font-medium text-[#141F25] transition-colors hover:bg-[#F8F9FB] hover:text-[#E1251B]"
+            >
+              Mi cuenta
+            </Link>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={async () => {
+                setOpen(false);
+                await signOut();
+                router.push("/");
+              }}
+              className="block w-full px-4 py-2.5 text-left text-[14px] font-medium text-[#141F25] transition-colors hover:bg-[#F8F9FB] hover:text-[#E1251B]"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        ) : null}
       </div>
     );
   }

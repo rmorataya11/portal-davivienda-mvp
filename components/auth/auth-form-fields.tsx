@@ -3,7 +3,7 @@
 import { useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 
 const controlClassName =
-  "h-12 w-full rounded-[10px] border bg-white px-4 text-[15px] text-[#141F25] outline-none transition-[border-color,box-shadow] placeholder:text-[#A8AEB5] hover:border-[#B8BFC6] focus:border-[#E1251B] focus:shadow-[0_0_0_3px_rgba(225,37,27,0.12)]";
+  "h-12 w-full rounded-[10px] border bg-white px-4 text-[15px] text-[#141F25] outline-none transition-[border-color,box-shadow] placeholder:text-[#A8AEB5] hover:border-[#B8BFC6] focus:border-[#E1251B] focus:shadow-[0_0_0_3px_rgba(225,37,27,0.12)] disabled:cursor-not-allowed disabled:bg-[#F5F6F8] disabled:text-[#6A7178] disabled:hover:border-[#D5DAE0] read-only:bg-[#F5F6F8] read-only:hover:border-[#D5DAE0]";
 
 function fieldBorder(error?: string) {
   return error ? "border-[#E1251B]" : "border-[#D5DAE0]";

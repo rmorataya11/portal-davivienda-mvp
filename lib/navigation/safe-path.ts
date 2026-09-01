@@ -113,7 +113,11 @@ export function getAuthHrefs(pathname: string | null) {
     };
   }
 
-  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/solicitud-contratacion")) {
+  if (
+    pathname?.startsWith("/dashboard") ||
+    pathname?.startsWith("/solicitud-contratacion") ||
+    pathname?.startsWith("/perfil")
+  ) {
     return {
       loginHref: getLoginHref(pathname),
       signupHref: getSignupHref(pathname),
