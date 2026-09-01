@@ -5,14 +5,13 @@ import { useState } from "react";
 import { ProfileBilling } from "./profile-billing";
 import { ProfileDangerZone } from "./profile-danger-zone";
 import { ProfileDataForm } from "./profile-data-form";
+import { ProfilePasswordCard } from "./profile-password-card";
 import { ProfileRequests } from "./profile-requests";
-import { ProfileSecurity } from "./profile-security";
 
-type TabId = "datos" | "seguridad" | "solicitudes" | "facturacion";
+type TabId = "datos" | "solicitudes" | "facturacion";
 
 const tabs: Array<{ id: TabId; label: string }> = [
   { id: "datos", label: "Datos de perfil" },
-  { id: "seguridad", label: "Seguridad" },
   { id: "solicitudes", label: "Solicitudes" },
   { id: "facturacion", label: "Facturación" },
 ];
@@ -50,12 +49,12 @@ export function ProfilePage() {
           {activeTab === "datos" ? (
             <div className="space-y-10">
               <ProfileDataForm />
-              <div className="border-t border-[#E7EAEE] pt-8">
+              <div className="grid gap-4 border-t border-[#E7EAEE] pt-8 lg:grid-cols-2">
+                <ProfilePasswordCard />
                 <ProfileDangerZone />
               </div>
             </div>
           ) : null}
-          {activeTab === "seguridad" ? <ProfileSecurity /> : null}
           {activeTab === "solicitudes" ? <ProfileRequests /> : null}
           {activeTab === "facturacion" ? <ProfileBilling /> : null}
         </div>

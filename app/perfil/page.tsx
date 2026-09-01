@@ -4,7 +4,7 @@ import { ProfilePage } from "@/components/profile/profile-page";
 
 export const metadata: Metadata = {
   title: "Mi perfil | Davivienda API Marketplace",
-  description: "Administre sus datos, seguridad, aplicaciones, solicitudes y facturación.",
+  description: "Administre sus datos, solicitudes y facturación.",
 };
 
 export default function ProfileRoute() {

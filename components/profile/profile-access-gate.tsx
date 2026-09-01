@@ -25,7 +25,7 @@ export function ProfileAccessGate({ children }: { children: ReactNode }) {
         </h1>
         <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
         <p className="mt-5 max-w-[640px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
-          Mi perfil es privado: ahí están sus datos, seguridad, solicitudes y facturación. Necesita una cuenta de
+          Mi perfil es privado: ahí están sus datos, solicitudes y facturación. Necesita una cuenta de
           desarrollador para entrar.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
