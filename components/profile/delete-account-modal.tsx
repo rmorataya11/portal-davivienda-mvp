@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId } from "react";
 
-export const SUPPORT_HREF = "/#soporte";
+export const SUPPORT_HREF = "/soporte";
 export const SUPPORT_LABEL = "Soporte";
 
 export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -52,7 +52,7 @@ export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: 
           <Link href={SUPPORT_HREF} className="font-semibold text-[#E1251B] underline-offset-2 hover:underline">
             {SUPPORT_LABEL}
           </Link>{" "}
-          (sección Soporte del marketplace, opción Contactar con un experto).
+          (sección Soporte, opción Hable con un experto).
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
           <Link

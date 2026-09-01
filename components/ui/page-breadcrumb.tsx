@@ -68,6 +68,11 @@ function buildCrumbs(
       return;
     }
 
+    if (segment === "soporte") {
+      crumbs.push({ href, label: "Soporte" });
+      return;
+    }
+
     if (segment === "solicitud-contratacion") {
       const product = productSlug ? getApiDetailBySlug(productSlug) : undefined;
       if (product) {
