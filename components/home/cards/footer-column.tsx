@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const hrefByLabel: Record<string, string> = {
   Inicio: "/",
-  "Casos de uso": "/#casos-de-uso",
+  "Guías de Uso": "/guias",
   "Catálogo de APIs": "/catalogo-apis",
   Documentación: "/#documentacion",
   Soporte: "/soporte",
