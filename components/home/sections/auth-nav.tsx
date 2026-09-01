@@ -5,14 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
-import { useAuth } from "@/components/auth/auth-provider";
+import { accountLabel, useAuth } from "@/components/auth/auth-provider";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
 
 const buttonClassName =
   "inline-flex min-h-[40px] min-w-[120px] items-center justify-center rounded-full bg-white px-4 text-[13px] font-bold !text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#F2F3F5] hover:shadow-[0_14px_34px_rgba(20,31,37,0.16)] sm:min-w-[132px] sm:px-5 lg:min-h-[42px] lg:min-w-[156px] lg:px-7 lg:text-[14px]";
 
 export function AuthNav() {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, displayName, signOut } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const { loginHref, signupHref } = getAuthHrefs(pathname);
@@ -63,7 +63,7 @@ export function AuthNav() {
           onClick={() => setOpen((current) => !current)}
           className={`${buttonClassName} gap-2`}
         >
-          <span className="max-w-[160px] truncate">{user.email}</span>
+          <span className="max-w-[140px] truncate">{accountLabel(displayName)}</span>
           <svg
             className={`h-3.5 w-3.5 shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
             viewBox="0 0 16 16"

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
-import { useAuth } from "@/components/auth/auth-provider";
+import { accountLabel, useAuth } from "@/components/auth/auth-provider";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
 
 import { navItems } from "../content/navigation";
@@ -19,7 +19,7 @@ export function MarketplaceMobileMenu({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, displayName, signOut } = useAuth();
   const [open, setOpen] = useState(false);
 
   const { loginHref, signupHref } = getAuthHrefs(pathname);
@@ -91,7 +91,7 @@ export function MarketplaceMobileMenu({
               <div className="h-11 w-full rounded-full bg-white/15" />
             ) : user ? (
               <div className="flex flex-col gap-3">
-                <span className="truncate text-[14px] font-medium text-white/80">{user.email}</span>
+                <span className="truncate text-[14px] font-medium text-white/80">{accountLabel(displayName)}</span>
                 <Link
                   href="/perfil"
                   onClick={() => setOpen(false)}

@@ -13,7 +13,8 @@ const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 type FieldErrors = Record<string, string>;
 
 export function ProfileDataForm() {
-  const { user } = useAuth();
+  const { user, setDisplayName } = useAuth();
+  const [accountName, setAccountName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [idType, setIdType] = useState("");
   const [idNumber, setIdNumber] = useState("");
@@ -37,6 +38,7 @@ export function ProfileDataForm() {
           return;
         }
 
+        setAccountName(profile.displayName);
         setCompanyName(profile.companyName);
         setIdType(profile.idType);
         setIdNumber(profile.idNumber);
@@ -70,6 +72,10 @@ export function ProfileDataForm() {
 
   function validate() {
     const nextErrors: FieldErrors = {};
+
+    if (!accountName.trim()) {
+      nextErrors.displayName = "Ingrese el nombre de la cuenta.";
+    }
 
     if (!companyName.trim()) {
       nextErrors.companyName = "Ingrese el nombre o razón social.";
@@ -110,11 +116,13 @@ export function ProfileDataForm() {
 
     try {
       await saveUserProfile(user.uid, {
+        displayName: accountName.trim(),
         companyName: companyName.trim(),
         idType,
         idNumber: idNumber.trim(),
         phone: phone.trim(),
       });
+      setDisplayName(accountName.trim());
       setSaved(true);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));
@@ -129,6 +137,22 @@ export function ProfileDataForm() {
 
   return (
     <form className="space-y-6" noValidate onSubmit={handleSubmit}>
+      <TextField
+        id="displayName"
+        name="displayName"
+        label="Nombre de la cuenta"
+        required
+        autoComplete="name"
+        placeholder="Ana Gómez"
+        value={accountName}
+        error={errors.displayName}
+        onChange={(event) => {
+          setAccountName(event.currentTarget.value);
+          clearError("displayName");
+          setSaved(false);
+        }}
+      />
+
       <TextField
         id="companyName"
         name="companyName"

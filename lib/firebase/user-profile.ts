@@ -3,6 +3,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { getFirebaseDb } from "./client";
 
 export type UserProfile = {
+  displayName: string;
   companyName: string;
   idType: string;
   idNumber: string;
@@ -24,6 +25,7 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   const data = snapshot.data();
 
   return {
+    displayName: asString(data.displayName),
     companyName: asString(data.companyName),
     idType: asString(data.idType),
     idNumber: asString(data.idNumber),
@@ -34,11 +36,12 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
 
 export async function saveUserProfile(
   uid: string,
-  input: Pick<UserProfile, "companyName" | "idType" | "idNumber" | "phone">,
+  input: Pick<UserProfile, "displayName" | "companyName" | "idType" | "idNumber" | "phone">,
 ) {
   await setDoc(
     doc(getFirebaseDb(), "users", uid),
     {
+      displayName: input.displayName,
       companyName: input.companyName,
       idType: input.idType,
       idNumber: input.idNumber,
