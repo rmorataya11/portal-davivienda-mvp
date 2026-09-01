@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
-import { CredentialField } from "@/components/ui/credential-field";
 import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
 import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
@@ -16,16 +14,13 @@ export function ApiLinkedApps({
   slug,
   apiName,
   returnTo,
-  showKeys = false,
 }: {
   slug: string;
   apiName: string;
   returnTo: string;
-  showKeys?: boolean;
 }) {
   const { user, loading } = useAuth();
   const { apps, ready, linkProduct } = useDeveloperApps();
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   if (loading || !ready) {
     return <div className="h-40 animate-pulse rounded-[24px] bg-white" />;
@@ -60,7 +55,6 @@ export function ApiLinkedApps({
 
   const linkedApps = apps.filter((app) => app.productSlugs.includes(slug));
   const otherApps = apps.filter((app) => !app.productSlugs.includes(slug));
-  const selected = linkedApps.find((app) => app.id === selectedId) ?? linkedApps[0];
 
   return (
     <div className="space-y-4">
@@ -79,12 +73,7 @@ export function ApiLinkedApps({
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {linkedApps.map((app) => (
-            <ApiAppRow
-              key={app.id}
-              app={app}
-              selected={showKeys && selected?.id === app.id}
-              onSelect={showKeys ? () => setSelectedId(app.id) : undefined}
-            />
+            <ApiAppRow key={app.id} app={app} />
           ))}
         </div>
       )}
@@ -119,55 +108,22 @@ export function ApiLinkedApps({
           </div>
         </div>
       ) : null}
-
-      {showKeys && selected ? (
-        <div className="space-y-3">
-          <p className="text-[13px] text-[#6A7178]">
-            Credenciales de <span className="font-semibold text-[#141F25]">{selected.name}</span>
-          </p>
-          <CredentialField label="Consumer key / API key" value={selected.consumerKey} secret />
-          <CredentialField label="Base URL" value={selected.baseUrl} />
-        </div>
-      ) : null}
     </div>
   );
 }
 
-function ApiAppRow({
-  app,
-  selected,
-  onSelect,
-}: {
-  app: DeveloperApp;
-  selected?: boolean;
-  onSelect?: () => void;
-}) {
+function ApiAppRow({ app }: { app: DeveloperApp }) {
   const stats = appUsageStats(app);
 
   return (
-    <div
-      className={`rounded-[22px] border bg-white p-5 ${
-        selected ? "border-[#E1251B] shadow-[0_12px_28px_rgba(225,37,27,0.08)]" : "border-[#E7EAEE]"
-      }`}
-    >
+    <div className="rounded-[22px] border border-[#E7EAEE] bg-white p-5">
       <div className="flex items-start justify-between gap-3">
-        {onSelect ? (
-          <button type="button" onClick={onSelect} className="text-left">
-            <h3 className="text-[18px] font-bold text-[#141F25]">{app.name}</h3>
-          </button>
-        ) : (
-          <h3 className="text-[18px] font-bold text-[#141F25]">{app.name}</h3>
-        )}
+        <h3 className="text-[18px] font-bold text-[#141F25]">{app.name}</h3>
         <AppStatusBadge status={app.status} />
       </div>
       <p className="mt-3 text-[20px] font-bold text-[#141F25]">{formatMoneyCop(stats.consumedCop)}</p>
       <p className="mt-1 text-[13px] text-[#8E8E8E]">{stats.callsLast30Days.toLocaleString("es-CO")} llamadas · 30 días</p>
-      <div className="mt-4 flex flex-wrap gap-3">
-        {onSelect ? (
-          <button type="button" onClick={onSelect} className="text-[13px] font-medium text-[#E1251B]">
-            Ver credenciales
-          </button>
-        ) : null}
+      <div className="mt-4">
         <Link href={`/dashboard/apps/${app.id}`} className="text-[13px] font-medium text-[#E1251B]">
           Abrir app
         </Link>
