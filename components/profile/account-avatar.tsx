@@ -3,12 +3,10 @@ export function AccountAvatar({
   size = "sm",
 }: {
   name: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 }) {
   const classes =
-    size === "md"
-      ? "h-10 w-10 text-[13px]"
-      : "h-7 w-7 text-[11px]";
+    size === "lg" ? "h-16 w-16 text-[18px]" : size === "md" ? "h-10 w-10 text-[13px]" : "h-7 w-7 text-[11px]";
 
   return (
     <span

@@ -54,13 +54,21 @@ export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: 
           </Link>{" "}
           (sección Soporte del marketplace, opción Contactar con un experto).
         </p>
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-7 inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-        >
-          Entendido
-        </button>
+        <div className="mt-7 flex flex-wrap gap-3">
+          <Link
+            href={SUPPORT_HREF}
+            className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
+          >
+            Ir a soporte
+          </Link>
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex h-11 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-6 text-[14px] font-semibold text-[#404040] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#E1251B] hover:text-[#E1251B]"
+          >
+            Entendido
+          </button>
+        </div>
       </div>
     </div>
   );
