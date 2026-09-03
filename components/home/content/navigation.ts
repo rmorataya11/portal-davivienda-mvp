@@ -5,6 +5,6 @@ export const navItems: NavItem[] = [
   { label: "Guías de Uso", href: "/guias" },
   { label: "Catálogo de APIs", href: "/catalogo-apis" },
   { label: "Mis apps", href: "/dashboard" },
-  { label: "Documentación", href: "/#documentacion" },
+  { label: "Documentación", href: "/documentacion" },
   { label: "Soporte", href: "/soporte" },
 ];

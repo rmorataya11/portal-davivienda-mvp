@@ -73,6 +73,11 @@ function buildCrumbs(
       return;
     }
 
+    if (segment === "documentacion") {
+      crumbs.push({ href, label: "Documentación" });
+      return;
+    }
+
     if (segment === "soporte") {
       crumbs.push({ href, label: "Soporte" });
       return;
