@@ -1,13 +1,12 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { onAuthStateChanged, signOut as firebaseSignOut, type User } from "firebase/auth";
 
-import { getFirebaseAuth } from "@/lib/firebase/client";
+import { onAuthChange, signOutUser, type AuthUser } from "@/lib/auth/session";
 import { getUserProfile } from "@/lib/firebase/user-profile";
 
 type AuthContextValue = {
-  user: User | null;
+  user: AuthUser | null;
   loading: boolean;
   displayName: string;
   companyName: string;
@@ -19,15 +18,13 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState("");
   const [companyName, setCompanyName] = useState("");
 
   useEffect(() => {
-    const auth = getFirebaseAuth();
-
-    return onAuthStateChanged(auth, (nextUser) => {
+    return onAuthChange((nextUser) => {
       setUser(nextUser);
       setLoading(false);
 
@@ -71,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       companyName,
       setDisplayName,
       setCompanyName,
-      signOut: () => firebaseSignOut(getFirebaseAuth()),
+      signOut: () => signOutUser(),
     }),
     [companyName, displayName, loading, user],
   );

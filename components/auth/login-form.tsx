@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
-import { getFirebaseAuth } from "@/lib/firebase/client";
+import { signIn } from "@/lib/auth/session";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
 import { getSignupHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
 
@@ -84,7 +83,7 @@ export function LoginForm() {
     destinationRef.current = destination;
 
     try {
-      await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
+      await signIn(email, password);
       router.replace(destination);
     } catch (error) {
       setFormError(getAuthErrorMessage(error));

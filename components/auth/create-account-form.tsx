@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { signUp } from "@/lib/auth/session";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
-import { registerDeveloper } from "@/lib/firebase/register";
 import { getLoginHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
 
 import { PasswordField, SelectField, TextAreaField, TextField } from "./auth-form-fields";
@@ -128,18 +128,26 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
     setIsSubmitting(true);
 
     try {
-      await registerDeveloper({
-        email: String(formData.get("email") ?? "").trim(),
-        password: String(formData.get("password") ?? ""),
-        idType: String(formData.get("idType") ?? ""),
-        idNumber: String(formData.get("idNumber") ?? "").trim(),
-        companyName: String(formData.get("companyName") ?? "").trim(),
-        reason: String(formData.get("reason") ?? ""),
-        environment: String(formData.get("environment") ?? ""),
-        product: String(formData.get("product") ?? ""),
-        subject: String(formData.get("subject") ?? "").trim(),
-        description: String(formData.get("description") ?? "").trim(),
+      const email = String(formData.get("email") ?? "").trim();
+      const password = String(formData.get("password") ?? "");
+      const companyName = String(formData.get("companyName") ?? "").trim();
+
+      const user = await signUp(email, password);
+      const response = await fetch("/api/developers/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          identityUid: user.uid,
+          email: user.email,
+          fullName: companyName,
+          companyName,
+        }),
       });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { message?: string } | null;
+        throw new Error(payload?.message ?? "No pudimos completar el registro. Intente de nuevo.");
+      }
 
       const destination = resolveAuthReturnPath() ?? "/dashboard";
       router.replace(destination);
