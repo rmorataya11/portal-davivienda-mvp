@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { getApiDetailBySlug } from "@/components/catalog/content/apis";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { getGuideBySlug } from "@/lib/guides/guides-content";
 
 const HIDDEN_PATHS = new Set(["/", "/iniciar-sesion", "/crear-cuenta"]);
 
@@ -70,6 +71,11 @@ function buildCrumbs(
 
     if (segment === "guias") {
       crumbs.push({ href, label: "Guías de Uso" });
+      return;
+    }
+
+    if (previous === "guias") {
+      crumbs.push({ href, label: getGuideBySlug(segment)?.title ?? segment });
       return;
     }
 

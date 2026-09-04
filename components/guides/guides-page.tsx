@@ -1,87 +1,10 @@
 import Link from "next/link";
 
+import { GuideIcon } from "@/components/guides/guide-icons";
 import { SectionContainer } from "@/components/ui/layout";
+import { guides } from "@/lib/guides/guides-content";
 
 import { RecommendedPath } from "./recommended-path";
-
-const guides = [
-  {
-    id: "guia-01",
-    number: "01",
-    title: "Autenticación mTLS + OAuth 2.0",
-    category: "SEGURIDAD",
-    level: "intermedio",
-    minutes: 15,
-    endpoint: "POST /oauth/token",
-    description:
-      "La base de todo. Dejamos su certificado y sus llaves bien puestos para que el resto de las integraciones simplemente funcione.",
-    topics: ["generar el CSR y cargar el certificado", "solicitar la llave de acceso", "renovar y revocar llaves"],
-    icon: ShieldIcon,
-  },
-  {
-    id: "guia-02",
-    number: "02",
-    title: "Consentimiento y acceso a cuentas",
-    category: "OPEN BANKING",
-    level: "intermedio",
-    minutes: 20,
-    endpoint: "POST /consents",
-    description:
-      "Cómo pedirle permiso al cliente —con todas las de la ley— para poder leer sus saldos y movimientos.",
-    topics: ["crear la solicitud de permiso", "redirigir y autorizar al usuario", "consultar saldos y movimientos"],
-    icon: BankIcon,
-  },
-  {
-    id: "guia-03",
-    number: "03",
-    title: "Webhooks y notificaciones",
-    category: "EVENTOS",
-    level: "intermedio",
-    minutes: 12,
-    endpoint: "POST /webhooks",
-    description: "Deje de preguntarle al banco a cada rato: que él le avise. Montamos los webhooks de punta a punta.",
-    topics: ["registrar su dirección receptora", "validar la firma HMAC", "manejar reintentos e idempotencia"],
-    icon: BellIcon,
-  },
-  {
-    id: "guia-04",
-    number: "04",
-    title: "Idempotencia y reintentos",
-    category: "OPERACIÓN",
-    level: "básico",
-    minutes: 8,
-    endpoint: null,
-    description: "El truco para que un reintento nunca se convierta en un pago doble. Corto y al grano.",
-    topics: ["generar marcas únicas", "reintentar de forma segura", "interpretar respuestas 409"],
-    icon: RetryIcon,
-  },
-  {
-    id: "guia-05",
-    number: "05",
-    title: "Paso a Producción",
-    category: "PRODUCCIÓN",
-    level: "avanzado",
-    minutes: 18,
-    endpoint: null,
-    description:
-      "La lista de chequeo final antes de salir en vivo: seguridad, acuerdos y monitoreo, sin sorpresas.",
-    topics: ["completar la certificación de seguridad", "firmar el acuerdo de servicio", "homologar y monitorear"],
-    icon: RocketIcon,
-  },
-  {
-    id: "guia-06",
-    number: "06",
-    title: "Manejo de errores y cierre de sesión",
-    category: "OPERACIÓN",
-    level: "básico",
-    minutes: 10,
-    endpoint: "POST /oauth/revoke",
-    description:
-      "Cuando una llamada falla o el token se vence, hay que leer el error, no duplicar la operación y cortar las llaves que ya no sirven.",
-    topics: ["interpretar 4xx y 5xx", "renovar o revocar el token", "registrar el incidente sin perder el rastro"],
-    icon: AlertIcon,
-  },
-];
 
 export function GuidesPage() {
   return (
@@ -105,8 +28,6 @@ export function GuidesPage() {
           <p className="text-[13px] font-medium text-[#8E8E8E]">{guides.length} guías</p>
           <div className="mt-4 grid gap-4">
             {guides.map((guide) => {
-              const Icon = guide.icon;
-
               return (
                 <article
                   key={guide.id}
@@ -120,7 +41,7 @@ export function GuidesPage() {
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-start gap-3">
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-[#FFF1F0] text-[#E1251B]">
-                          <Icon className="h-5 w-5" />
+                          <GuideIcon id={guide.icon} className="h-5 w-5" />
                         </div>
                         <div className="min-w-0">
                           <p className="text-[12px] leading-5 text-[#8E8E8E]">
@@ -152,10 +73,10 @@ export function GuidesPage() {
                     </p>
                     <div className="mt-4 flex justify-end">
                       <Link
-                        href={`#${guide.id}`}
+                        href={`/guias/${guide.slug}`}
                         className="text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
                       >
-                        Empezar →
+                        {guide.article ? "Empezar →" : "Ver ficha →"}
                       </Link>
                     </div>
                   </div>
@@ -166,75 +87,5 @@ export function GuidesPage() {
         </SectionContainer>
       </section>
     </>
-  );
-}
-
-function ShieldIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path
-        d="M12 4 6 6.5v5.2c0 3.6 2.3 6.2 6 7.8 3.7-1.6 6-4.2 6-7.8V6.5L12 4Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function BankIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path d="M4 10h16M12 5 4.8 10h14.4L12 5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-      <path d="M6.5 10v6.5M10.5 10v6.5M13.5 10v6.5M17.5 10v6.5M4.5 16.5h15" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function BellIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path
-        d="M6.5 16.5h11S16.5 13 16.5 10.5a4.5 4.5 0 1 0-9 0C7.5 13 6.5 16.5 6.5 16.5Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-      <path d="M10 18.2a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function RetryIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path d="M7 8.5A6 6 0 1 1 6 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      <path d="M7 4.8V8.5H3.4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function RocketIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path
-        d="M14 6c2.2 1 4.2 3 5.2 5.2-2.2 1-4.2 3-5.2 5.2-2.2-1-4.2-3-5.2-5.2C10 9 12 7 14 6Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-      <circle cx="14" cy="11.2" r="1.4" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8.8 15.2 6 18.5M8.2 17.8 5.5 19" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function AlertIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path d="M12 5 4.8 18.5h14.4L12 5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-      <path d="M12 10v4.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      <circle cx="12" cy="16.4" r="0.8" fill="currentColor" />
-    </svg>
   );
 }

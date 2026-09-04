@@ -33,7 +33,7 @@ const steps = [
     id: 3,
     title: "Configure la seguridad",
     description: "Deje mTLS y OAuth 2.0 listos para que el resto de las integraciones simplemente funcione.",
-    currentHref: "#guia-01",
+    currentHref: "/guias/autenticacion-mtls-oauth",
     currentLabel: "Ver guía de seguridad →",
     doneLabel: "Completado",
     icon: ShieldIcon,
