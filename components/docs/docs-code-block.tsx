@@ -36,6 +36,7 @@ const editorTheme = {
 };
 
 const languageTabs = [
+  { id: "json", label: "JSON", language: "json" },
   { id: "curl", label: "cURL", language: "bash" },
   { id: "javascript", label: "JavaScript", language: "javascript" },
   { id: "python", label: "Python", language: "python" },
@@ -66,9 +67,9 @@ function CopyButton({ content }: { content: string }) {
 export function DocsRequestCode({
   examples,
 }: {
-  examples: { curl: string; javascript: string; python: string };
+  examples: { json: string; curl: string; javascript: string; python: string };
 }) {
-  const [language, setLanguage] = useState<ExampleLanguage>("curl");
+  const [language, setLanguage] = useState<ExampleLanguage>("json");
   const activeTab = languageTabs.find((tab) => tab.id === language) ?? languageTabs[0];
   const code = examples[activeTab.id];
 

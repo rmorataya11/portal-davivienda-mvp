@@ -18,6 +18,7 @@ export type DocsEndpoint = {
   description: string;
   parameters: DocsParameter[];
   requestExamples: {
+    json: string;
     curl: string;
     javascript: string;
     python: string;
@@ -244,6 +245,14 @@ function prettyJson(value: unknown) {
   return JSON.stringify(value, null, 2);
 }
 
+function prettyRequestJson(requestBody: string) {
+  try {
+    return prettyJson(JSON.parse(requestBody));
+  } catch {
+    return requestBody.trim();
+  }
+}
+
 function problemDetails(status: number, title: string, detail: string, instance: string, typeSlug: string) {
   return prettyJson({
     type: `https://api.example.com/problems/${typeSlug}`,
@@ -358,6 +367,7 @@ function toDocsEndpoint(apiId: string, endpoint: ApiEndpoint): DocsEndpoint {
       description: parameter.description,
     })),
     requestExamples: {
+      json: prettyRequestJson(endpoint.playground.requestBody),
       curl: buildCurlExample(endpoint, url),
       javascript: buildJavascriptExample(endpoint, url),
       python: buildPythonExample(endpoint, url),
@@ -367,10 +377,201 @@ function toDocsEndpoint(apiId: string, endpoint: ApiEndpoint): DocsEndpoint {
   };
 }
 
+const consultaMovimientosResponse = `{
+  "code": "OK",
+  "message": "Exito",
+  "listMessage": null,
+  "response": {
+    "contenido": [
+      {
+        "niu": 100099999,
+        "cuenta": "5199988877",
+        "movimiento": {
+          "tipo": "CUENTA CORRIENTE CON INTERESES",
+          "numero": "5199988877",
+          "fecha": "9-01-2025 20:57:01",
+          "nombre": "EMPRESA DE EJEMPLO S.A.",
+          "nombreBeneficiario": "",
+          "tipoTransaccion": "OTROS",
+          "tipoMovimiento": "Cargo",
+          "tipoEjecucion": "",
+          "moneda": "USD",
+          "monto": 500.00,
+          "idInterno": 0,
+          "idInterno2": null,
+          "descripcion": "PAGO DE SERVICIOS",
+          "numeroCheque": "",
+          "detalle": {
+            "confirmacionDetalle": "Detalle no encontrado"
+          }
+        }
+      }
+    ],
+    "pagina": 0,
+    "tamanoPagina": 1,
+    "totalElementos": 11299,
+    "totalPaginas": 11299,
+    "primeraPagina": true,
+    "ultimaPagina": false
+  }
+}`;
+
+const consultaMovimientos: DocsEndpoint = {
+  id: "consulta-movimientos",
+  name: "consulta-movimientos",
+  method: "POST",
+  path: "/conciliacion/bancaempresa/movimientos/",
+  httpUrl: "https://api.davivienda.com/conciliacion/bancaempresa/movimientos/",
+  description: "Consulta los movimientos de una cuenta empresarial, con soporte de filtros por moneda y paginación.",
+  parameters: [
+    {
+      name: "nit",
+      type: "string[]",
+      required: true,
+      description: "NIT de la empresa (array, puede aceptar más de uno)",
+    },
+    {
+      name: "fechaInicial",
+      type: "string (YYYY-MM-DD)",
+      required: true,
+      description: "Fecha inicial del rango de consulta",
+    },
+    {
+      name: "fechaFinal",
+      type: "string (YYYY-MM-DD)",
+      required: true,
+      description: "Fecha final del rango de consulta",
+    },
+    {
+      name: "filtros",
+      type: "array de objetos",
+      required: false,
+      description: "Filtros adicionales, ej. { tipo: 'moneda', valor: 'usd' }",
+    },
+    {
+      name: "paginacion.ASC",
+      type: "boolean",
+      required: true,
+      description: "Orden ascendente (true) o descendente (false)",
+    },
+    {
+      name: "paginacion.pagina",
+      type: "number",
+      required: true,
+      description: "Número de página, empieza en 0",
+    },
+    {
+      name: "paginacion.tamanoPagina",
+      type: "number",
+      required: true,
+      description: "Cantidad de resultados por página",
+    },
+  ],
+  requestExamples: {
+    json: `{
+  "nit": ["90012345601"],
+  "fechaInicial": "2025-01-01",
+  "fechaFinal": "2025-01-09",
+  "filtros": [{ "tipo": "moneda", "valor": "usd" }],
+  "paginacion": { "ASC": true, "pagina": 0, "tamanoPagina": 1 }
+}`,
+    curl: `curl -X POST https://api.davivienda.com/conciliacion/bancaempresa/movimientos/ \\
+  -H "x-api-key: TU_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "nit": ["90012345601"],
+    "fechaInicial": "2025-01-01",
+    "fechaFinal": "2025-01-09",
+    "filtros": [{ "tipo": "moneda", "valor": "usd" }],
+    "paginacion": { "ASC": true, "pagina": 0, "tamanoPagina": 1 }
+  }'`,
+    javascript: `const response = await fetch("https://api.davivienda.com/conciliacion/bancaempresa/movimientos/", {
+  method: "POST",
+  headers: {
+    "x-api-key": "TU_API_KEY",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    nit: ["90012345601"],
+    fechaInicial: "2025-01-01",
+    fechaFinal: "2025-01-09",
+    filtros: [{ tipo: "moneda", valor: "usd" }],
+    paginacion: { ASC: true, pagina: 0, tamanoPagina: 1 }
+  })
+});
+const data = await response.json();`,
+    python: `import requests
+
+response = requests.post(
+    "https://api.davivienda.com/conciliacion/bancaempresa/movimientos/",
+    headers={"x-api-key": "TU_API_KEY", "Content-Type": "application/json"},
+    json={
+        "nit": ["90012345601"],
+        "fechaInicial": "2025-01-01",
+        "fechaFinal": "2025-01-09",
+        "filtros": [{"tipo": "moneda", "valor": "usd"}],
+        "paginacion": {"ASC": True, "pagina": 0, "tamanoPagina": 1}
+    }
+)
+data = response.json()`,
+  },
+  responseExample: consultaMovimientosResponse,
+  responseExamples: [
+    {
+      status: 200,
+      label: "200 OK",
+      kind: "success",
+      body: consultaMovimientosResponse,
+    },
+    {
+      status: 400,
+      label: "400 Bad Request",
+      kind: "error",
+      body: problemDetails(
+        400,
+        "Solicitud inválida",
+        "Falta nit, fechaInicial, fechaFinal o paginacion, o el rango de fechas no es válido.",
+        "/conciliacion/bancaempresa/movimientos/",
+        "invalid-request",
+      ),
+    },
+    {
+      status: 401,
+      label: "401 Unauthorized",
+      kind: "error",
+      body: problemDetails(
+        401,
+        "No autorizado",
+        "La llave de acceso es inválida, expiró o no corresponde a este ambiente.",
+        "/conciliacion/bancaempresa/movimientos/",
+        "unauthorized",
+      ),
+    },
+    {
+      status: 500,
+      label: "500 Internal Server Error",
+      kind: "error",
+      body: problemDetails(
+        500,
+        "Error interno",
+        "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde.",
+        "/conciliacion/bancaempresa/movimientos/",
+        "internal-error",
+      ),
+    },
+  ],
+};
+
 export const docsApis: DocsApi[] = apiDetails.map((api) => ({
   apiId: api.slug,
   apiName: api.name,
-  endpoints: api.endpoints.map((endpoint) => toDocsEndpoint(api.slug, endpoint)),
+  endpoints: api.endpoints.map((endpoint) => {
+    if (api.slug === "api-tesoreria" && endpoint.path === "/treasury/v1/movements") {
+      return consultaMovimientos;
+    }
+
+    return toDocsEndpoint(api.slug, endpoint);
+  }),
 }));
 
 export const defaultDocsEndpointId = docsApis[0]?.endpoints[0]?.id ?? "";
