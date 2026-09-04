@@ -23,6 +23,14 @@ export type DocsEndpoint = {
     python: string;
   };
   responseExample: string;
+  responseExamples: DocsResponseExample[];
+};
+
+export type DocsResponseExample = {
+  status: number;
+  label: string;
+  kind: "success" | "error";
+  body: string;
 };
 
 export type DocsApi = {
@@ -232,6 +240,107 @@ function toFileName(endpoint: ApiEndpoint): string {
   }
 }
 
+function prettyJson(value: unknown) {
+  return JSON.stringify(value, null, 2);
+}
+
+function problemDetails(status: number, title: string, detail: string, instance: string, typeSlug: string) {
+  return prettyJson({
+    type: `https://api.example.com/problems/${typeSlug}`,
+    title,
+    status,
+    detail,
+    instance,
+  });
+}
+
+function successStatus(endpoint: ApiEndpoint) {
+  const raw = endpoint.playground.responseStatus.match(/^(\d{3})/)?.[1];
+  return raw ? Number(raw) : 200;
+}
+
+function buildResponseExamples(endpoint: ApiEndpoint): DocsResponseExample[] {
+  const instance = endpoint.path;
+  const success = successStatus(endpoint);
+  const examples: DocsResponseExample[] = [
+    {
+      status: success,
+      label: endpoint.playground.responseStatus,
+      kind: "success",
+      body: endpoint.playground.responseBody.trim(),
+    },
+  ];
+
+  const hasPathId = endpoint.path.includes("{");
+  const isLookup = endpoint.method === "GET" && hasPathId;
+  const refundsRelatedResource = endpoint.path.includes("/refunds");
+  const readsAccount = endpoint.path.includes("/balances") || endpoint.path.includes("/movements");
+
+  examples.push({
+    status: 400,
+    label: "400 Bad Request",
+    kind: "error",
+    body: problemDetails(
+      400,
+      "Solicitud inválida",
+      endpoint.method === "GET"
+        ? "Falta un parámetro requerido o el valor enviado no es válido para esta consulta."
+        : "El cuerpo de la solicitud está incompleto o no cumple el formato esperado.",
+      instance,
+      "invalid-request",
+    ),
+  });
+
+  examples.push({
+    status: 401,
+    label: "401 Unauthorized",
+    kind: "error",
+    body: problemDetails(
+      401,
+      "No autorizado",
+      "La llave de acceso es inválida, expiró o no corresponde a este ambiente.",
+      instance,
+      "unauthorized",
+    ),
+  });
+
+  if (isLookup || refundsRelatedResource || readsAccount) {
+    examples.push({
+      status: 404,
+      label: "404 Not Found",
+      kind: "error",
+      body: problemDetails(
+        404,
+        "Recurso no encontrado",
+        isLookup
+          ? "No existe un recurso con el identificador indicado."
+          : refundsRelatedResource
+            ? "No se encontró el cobro asociado a esta solicitud de reembolso."
+            : "No se encontró la cuenta indicada en accountId.",
+        instance,
+        "not-found",
+      ),
+    });
+  }
+
+  if (endpoint.method === "POST") {
+    examples.push({
+      status: 500,
+      label: "500 Internal Server Error",
+      kind: "error",
+      body: problemDetails(
+        500,
+        "Error interno",
+        "Ocurrió una incidencia temporal al procesar la operación. Reintente más tarde.",
+        instance,
+        "internal-error",
+      ),
+    });
+  }
+
+  return examples;
+}
+
 function toDocsEndpoint(apiId: string, endpoint: ApiEndpoint): DocsEndpoint {
   const url = resolveHttpUrl(endpoint);
 
@@ -254,6 +363,7 @@ function toDocsEndpoint(apiId: string, endpoint: ApiEndpoint): DocsEndpoint {
       python: buildPythonExample(endpoint, url),
     },
     responseExample: endpoint.playground.responseBody,
+    responseExamples: buildResponseExamples(endpoint),
   };
 }
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { DocsJsonCode, DocsRequestCode } from "@/components/docs/docs-code-block";
+import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
 import { SectionContainer } from "@/components/ui/layout";
 import {
   defaultDocsEndpointId,
@@ -424,7 +424,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         </button>
         {responseOpen ? (
           <div className="mt-3">
-            <DocsJsonCode code={endpoint.responseExample} />
+            <DocsStatusCode key={endpoint.id} examples={endpoint.responseExamples} />
           </div>
         ) : null}
       </div>

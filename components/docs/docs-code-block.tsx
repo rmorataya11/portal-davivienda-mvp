@@ -8,6 +8,8 @@ import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
 import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 
+import type { DocsResponseExample } from "@/lib/mock/mockDocs";
+
 SyntaxHighlighter.registerLanguage("bash", bash);
 SyntaxHighlighter.registerLanguage("javascript", javascript);
 SyntaxHighlighter.registerLanguage("json", json);
@@ -108,6 +110,60 @@ export function DocsJsonCode({ code }: { code: string }) {
       <div className="overflow-x-auto px-4 py-4 sm:px-5">
         <SyntaxHighlighter language="json" style={editorTheme} wrapLongLines={false}>
           {code}
+        </SyntaxHighlighter>
+      </div>
+    </div>
+  );
+}
+
+function statusTabClass(example: DocsResponseExample, isActive: boolean) {
+  if (!isActive) {
+    return "border-transparent text-white/55 hover:bg-white/8 hover:text-white/80";
+  }
+
+  if (example.kind === "success") {
+    return "border-[#55B685] bg-[#55B685]/16 text-[#B7E4C7]";
+  }
+
+  if (example.status === 500) {
+    return "border-[#E1251B] bg-[#E1251B]/16 text-[#FFB4B0]";
+  }
+
+  return "border-[#C47B17] bg-[#C47B17]/16 text-[#F3D4A0]";
+}
+
+export function DocsStatusCode({ examples }: { examples: DocsResponseExample[] }) {
+  const [activeStatus, setActiveStatus] = useState(examples[0]?.status);
+  const active = examples.find((example) => example.status === activeStatus) ?? examples[0];
+
+  if (!active) {
+    return null;
+  }
+
+  return (
+    <div className="overflow-hidden rounded-[18px] border border-[#141F25] bg-[linear-gradient(180deg,#141F25_0%,#1D2930_100%)]">
+      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3 py-2 sm:px-4">
+        <div className="flex min-w-0 items-center gap-1 overflow-x-auto">
+          {examples.map((example) => {
+            const isActive = example.status === active.status;
+
+            return (
+              <button
+                key={example.status}
+                type="button"
+                onClick={() => setActiveStatus(example.status)}
+                className={`inline-flex h-8 shrink-0 items-center rounded-full border px-3 font-mono text-[12px] font-medium transition-colors duration-300 ${statusTabClass(example, isActive)}`}
+              >
+                {example.status}
+              </button>
+            );
+          })}
+        </div>
+        <CopyButton content={active.body} />
+      </div>
+      <div className="overflow-x-auto px-4 py-4 sm:px-5">
+        <SyntaxHighlighter language="json" style={editorTheme} wrapLongLines={false}>
+          {active.body}
         </SyntaxHighlighter>
       </div>
     </div>
