@@ -98,16 +98,16 @@ export function SupportPage() {
               return (
                 <article
                   key={item.id}
-                  className="rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(20,31,37,0.08)] sm:px-6"
+                  className="flex h-full flex-col rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(20,31,37,0.1)] sm:px-6 sm:py-6"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#E1251B] text-white">
                     <Icon />
                   </div>
                   <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[#141F25]">{item.title}</h2>
-                  <p className="mt-2 text-[15px] leading-7 text-[#6A7178]">{item.description}</p>
+                  <p className="mt-2 min-h-14 text-[15px] leading-7 text-[#6A7178]">{item.description}</p>
                   <Link
                     href={item.href}
-                    className="mt-5 inline-flex text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
+                    className="mt-auto pt-5 inline-flex text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
                   >
                     {item.linkLabel}
                   </Link>
@@ -120,7 +120,7 @@ export function SupportPage() {
 
       <section id="preguntas-frecuentes" className="scroll-mt-36 bg-white py-12 sm:py-16">
         <SectionContainer>
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.85fr)] lg:items-start lg:gap-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
             <div>
               <h2 className="text-[24px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[32px]">
                 Preguntas frecuentes
@@ -160,14 +160,14 @@ export function SupportPage() {
               </div>
             </div>
 
-            <aside className="grid gap-4">
-              <section className="rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
+            <aside className="overflow-hidden rounded-[22px] border border-[#E7EAEE] bg-white">
+              <section className="px-5 py-6 sm:px-6">
                 <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#141F25]">Estado del servicio</h2>
                 <ul className="mt-5 space-y-4">
                   {serviceStatus.map((item) => (
                     <li key={item.name} className="flex items-center justify-between gap-3 text-[14px]">
-                      <span className="text-[#404040]">{item.name}</span>
-                      <span className="inline-flex items-center gap-2 font-medium text-[#347659]">
+                      <span className="min-w-0 text-[#404040]">{item.name}</span>
+                      <span className="inline-flex w-[6.25rem] shrink-0 items-center justify-end gap-2 font-medium text-[#347659]">
                         <span className="h-2 w-2 rounded-full bg-[#347659]" aria-hidden="true" />
                         {item.status}
                       </span>
@@ -176,10 +176,7 @@ export function SupportPage() {
                 </ul>
               </section>
 
-              <section
-                id="soporte-prioritario"
-                className="scroll-mt-36 rounded-[22px] bg-[linear-gradient(180deg,#1B2833_0%,#0D1418_100%)] px-5 py-6 sm:px-6"
-              >
+              <section id="soporte-prioritario" className="scroll-mt-36 border-t border-[#E7EAEE] bg-[#141F25] px-5 py-6 sm:px-6">
                 <h2 className="text-[18px] font-bold tracking-[0.2px] text-white">Soporte prioritario 24/7</h2>
                 <p className="mt-3 text-[15px] leading-7 text-white/75">
                   Disponible para clientes en Producción con acuerdo de nivel de servicio.
