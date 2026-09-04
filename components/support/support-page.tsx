@@ -1,11 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import { FaqFeedback } from "@/components/support/faq-feedback";
+import { SupportCaseModal } from "@/components/support/support-case-modal";
+import { SupportChangelog } from "@/components/support/support-changelog";
 import { SectionContainer } from "@/components/ui/layout";
+import { getGuideBySlug } from "@/lib/guides/guides-content";
 
-const faqs = [
+function normalizeSearch(value: string) {
+  return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
+}
+
+type SupportFaq = {
+  id: string;
+  question: string;
+  answer: string;
+  guideSlug?: string;
+};
+
+function FaqGuideLink({ slug }: { slug: string }) {
+  const guide = getGuideBySlug(slug);
+
+  if (!guide) {
+    return null;
+  }
+
+  return (
+    <p className="mt-4">
+      <Link
+        href={`/guias/${guide.slug}`}
+        className="text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
+      >
+        Ver guía completa: {guide.title} →
+      </Link>
+    </p>
+  );
+}
+
+const faqs: SupportFaq[] = [
   {
     id: "sandbox",
     question: "¿Cómo obtengo acceso al entorno Sandbox?",
@@ -17,6 +51,7 @@ const faqs = [
     question: "¿Qué necesito para pasar a Producción?",
     answer:
       "Valide la integración en Sandbox, cree o seleccione la aplicación en Mis apps y envíe la solicitud de contratación. El equipo revisa la empresa, el caso de uso y, si aplica, la whitelist de IPs antes de emitir credenciales de producción.",
+    guideSlug: "paso-a-produccion",
   },
   {
     id: "rate-limits",
@@ -35,6 +70,7 @@ const faqs = [
     question: "¿Las credenciales de Sandbox sirven en Producción?",
     answer:
       "No. Sandbox y Producción son ambientes separados. Las llaves de prueba no autentican llamadas productivas; cuando la solicitud se apruebe, recibirá credenciales nuevas desde la consola.",
+    guideSlug: "autenticacion-mtls-oauth",
   },
 ];
 
@@ -66,7 +102,7 @@ const quickAccess = [
     id: "caso",
     title: "Abra un caso",
     description: "Cree una solicitud de soporte técnico o comercial.",
-    href: "#soporte-prioritario",
+    href: "#abrir-caso",
     linkLabel: "Crear solicitud →",
     icon: TicketIcon,
   },
@@ -74,6 +110,46 @@ const quickAccess = [
 
 export function SupportPage() {
   const [openFaqId, setOpenFaqId] = useState(faqs[0]?.id ?? "");
+  const [faqQuery, setFaqQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [statusUpdatedLabel, setStatusUpdatedLabel] = useState("");
+  const [caseModalOpen, setCaseModalOpen] = useState(false);
+
+  useEffect(() => {
+    // TODO: reemplazar con timestamp real cuando el monitoreo de Apigee esté conectado.
+    const checkedAt = new Date();
+    const time = checkedAt.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+    setStatusUpdatedLabel(`Actualizado ahora · ${time}`);
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedQuery(faqQuery);
+    }, 180);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [faqQuery]);
+
+  const filteredFaqs = useMemo(() => {
+    const term = normalizeSearch(debouncedQuery);
+
+    if (!term) {
+      return faqs;
+    }
+
+    return faqs.filter((item) => normalizeSearch(`${item.question} ${item.answer}`).includes(term));
+  }, [debouncedQuery]);
+
+  useEffect(() => {
+    if (filteredFaqs.length === 0) {
+      setOpenFaqId("");
+      return;
+    }
+
+    if (openFaqId && !filteredFaqs.some((item) => item.id === openFaqId)) {
+      setOpenFaqId(filteredFaqs[0]?.id ?? "");
+    }
+  }, [filteredFaqs, openFaqId]);
 
   return (
     <>
@@ -105,12 +181,22 @@ export function SupportPage() {
                   </div>
                   <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[#141F25]">{item.title}</h2>
                   <p className="mt-2 min-h-14 text-[15px] leading-7 text-[#6A7178]">{item.description}</p>
-                  <Link
-                    href={item.href}
-                    className="mt-auto pt-5 inline-flex text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
-                  >
-                    {item.linkLabel}
-                  </Link>
+                  {item.id === "caso" ? (
+                    <button
+                      type="button"
+                      onClick={() => setCaseModalOpen(true)}
+                      className="mt-auto inline-flex pt-5 text-left text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
+                    >
+                      {item.linkLabel}
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="mt-auto inline-flex pt-5 text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
+                    >
+                      {item.linkLabel}
+                    </Link>
+                  )}
                 </article>
               );
             })}
@@ -125,44 +211,90 @@ export function SupportPage() {
               <h2 className="text-[24px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[32px]">
                 Preguntas frecuentes
               </h2>
-              <div className="mt-6 overflow-hidden rounded-[22px] border border-[#E7EAEE] bg-white">
-                {faqs.map((item, index) => {
-                  const isOpen = openFaqId === item.id;
 
-                  return (
-                    <div key={item.id} className={index > 0 ? "border-t border-[#E7EAEE]" : ""}>
-                      <h3>
-                        <button
-                          type="button"
-                          id={`faq-button-${item.id}`}
-                          aria-expanded={isOpen}
-                          aria-controls={`faq-panel-${item.id}`}
-                          onClick={() => setOpenFaqId(isOpen ? "" : item.id)}
-                          className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
-                        >
-                          <span className="text-[16px] font-semibold tracking-[0.2px] text-[#141F25]">{item.question}</span>
-                          <ChevronIcon open={isOpen} />
-                        </button>
-                      </h3>
-                      {isOpen ? (
-                        <div
-                          id={`faq-panel-${item.id}`}
-                          role="region"
-                          aria-labelledby={`faq-button-${item.id}`}
-                          className="px-5 pb-5 sm:px-6"
-                        >
-                          <p className="max-w-[640px] text-[15px] leading-7 text-[#6A7178]">{item.answer}</p>
-                        </div>
-                      ) : null}
-                    </div>
-                  );
-                })}
-              </div>
+              <label className="mt-6 flex h-11 items-center rounded-[12px] border border-[#E3E7EC] bg-white px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9]">
+                <SearchIcon />
+                <span className="sr-only">Buscar en preguntas frecuentes</span>
+                <input
+                  type="search"
+                  value={faqQuery}
+                  onChange={(event) => setFaqQuery(event.target.value)}
+                  placeholder="Buscar en preguntas y respuestas..."
+                  className="ml-2 h-full w-full bg-transparent text-[14px] text-[#30383F] outline-none placeholder:text-[#8E8E8E] [&::-webkit-search-cancel-button]:hidden"
+                />
+                {faqQuery ? (
+                  <button
+                    type="button"
+                    onClick={() => setFaqQuery("")}
+                    className="ml-2 inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#8E8E8E] transition-colors hover:text-[#141F25]"
+                    aria-label="Limpiar búsqueda"
+                  >
+                    <ClearIcon />
+                  </button>
+                ) : null}
+              </label>
+
+              {filteredFaqs.length === 0 ? (
+                <div className="mt-6 rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
+                  <p className="text-[15px] leading-7 text-[#6A7178]">
+                    No encontramos preguntas sobre “{debouncedQuery.trim()}”. Pruebe con otras palabras o{" "}
+                    <button
+                      type="button"
+                      onClick={() => setCaseModalOpen(true)}
+                      className="font-semibold text-[#E1251B] hover:text-[#E1111C]"
+                    >
+                      abra un caso
+                    </button>
+                    .
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-6 overflow-hidden rounded-[22px] border border-[#E7EAEE] bg-white">
+                  {filteredFaqs.map((item, index) => {
+                    const isOpen = openFaqId === item.id;
+
+                    return (
+                      <div key={item.id} className={index > 0 ? "border-t border-[#E7EAEE]" : ""}>
+                        <h3>
+                          <button
+                            type="button"
+                            id={`faq-button-${item.id}`}
+                            aria-expanded={isOpen}
+                            aria-controls={`faq-panel-${item.id}`}
+                            onClick={() => setOpenFaqId(isOpen ? "" : item.id)}
+                            className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
+                          >
+                            <span className="text-[16px] font-semibold tracking-[0.2px] text-[#141F25]">{item.question}</span>
+                            <ChevronIcon open={isOpen} />
+                          </button>
+                        </h3>
+                        {isOpen ? (
+                          <div
+                            id={`faq-panel-${item.id}`}
+                            role="region"
+                            aria-labelledby={`faq-button-${item.id}`}
+                            className="px-5 pb-5 sm:px-6"
+                          >
+                            <p className="max-w-[640px] text-[15px] leading-7 text-[#6A7178]">{item.answer}</p>
+                            {item.guideSlug ? <FaqGuideLink slug={item.guideSlug} /> : null}
+                            <FaqFeedback questionId={item.id} onOpenCase={() => setCaseModalOpen(true)} />
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <aside className="overflow-hidden rounded-[22px] border border-[#E7EAEE] bg-white">
               <section className="px-5 py-6 sm:px-6">
-                <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#141F25]">Estado del servicio</h2>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                  <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#141F25]">Estado del servicio</h2>
+                  {statusUpdatedLabel ? (
+                    <p className="text-[12px] text-[#8E8E8E]">{statusUpdatedLabel}</p>
+                  ) : null}
+                </div>
                 <ul className="mt-5 space-y-4">
                   {serviceStatus.map((item) => (
                     <li key={item.name} className="flex items-center justify-between gap-3 text-[14px]">
@@ -192,7 +324,28 @@ export function SupportPage() {
           </div>
         </SectionContainer>
       </section>
+
+      <SupportChangelog />
+
+      <SupportCaseModal open={caseModalOpen} onClose={() => setCaseModalOpen(false)} />
     </>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="none" aria-hidden="true">
+      <circle cx="8.5" cy="8.5" r="5.2" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M12.4 12.4 16 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ClearIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+      <path d="M4 4 12 12M12 4 4 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
   );
 }
 
