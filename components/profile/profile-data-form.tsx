@@ -109,6 +109,7 @@ export function ProfileDataForm() {
         return (await response.json()) as {
           fullName?: string;
           companyName?: string;
+          documentType?: string;
           documentId?: string;
           phone?: string;
           notifyBeforeExpiration?: boolean;
@@ -122,7 +123,7 @@ export function ProfileDataForm() {
         const snapshot: ProfileSnapshot = {
           accountName: profile.fullName ?? "",
           companyName: profile.companyName ?? "",
-          idType: "",
+          idType: profile.documentType ?? "",
           idNumber: profile.documentId ?? "",
           phone: profile.phone ?? "",
         };
@@ -238,6 +239,7 @@ export function ProfileDataForm() {
         body: JSON.stringify({
           fullName: snapshot.accountName,
           companyName: snapshot.companyName,
+          documentType: snapshot.idType,
           documentId: snapshot.idNumber,
           phone: snapshot.phone,
         }),

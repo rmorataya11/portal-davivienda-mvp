@@ -11,6 +11,7 @@ type RouteContext = {
 type ProfilePatchBody = {
   fullName?: unknown;
   companyName?: unknown;
+  documentType?: unknown;
   documentId?: unknown;
   phone?: unknown;
   notifyBeforeExpiration?: unknown;
@@ -47,6 +48,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     const updated = await updateDeveloperProfile(id, {
       fullName: readOptionalString(body.fullName),
       companyName: readOptionalString(body.companyName),
+      documentType: readOptionalString(body.documentType),
       documentId: readOptionalString(body.documentId),
       phone: readOptionalString(body.phone),
       notifyBeforeExpiration:

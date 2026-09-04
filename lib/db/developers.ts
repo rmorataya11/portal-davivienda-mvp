@@ -26,6 +26,7 @@ export type DeveloperProfile = {
   email: string;
   fullName: string;
   companyName: string;
+  documentType: string;
   documentId: string;
   phone: string;
   notifyBeforeExpiration: boolean;
@@ -34,6 +35,7 @@ export type DeveloperProfile = {
 type UpdateDeveloperProfileInput = {
   fullName?: string;
   companyName?: string;
+  documentType?: string;
   documentId?: string;
   phone?: string;
   notifyBeforeExpiration?: boolean;
@@ -45,6 +47,7 @@ type DeveloperRow = {
   email: string;
   full_name: string;
   company_name: string | null;
+  document_type: string | null;
   document_id: string | null;
   phone: string | null;
   notify_before_expiration: boolean;
@@ -57,6 +60,7 @@ function mapDeveloperProfile(row: DeveloperRow): DeveloperProfile {
     email: row.email,
     fullName: row.full_name,
     companyName: row.company_name ?? '',
+    documentType: row.document_type ?? '',
     documentId: row.document_id ?? '',
     phone: row.phone ?? '',
     notifyBeforeExpiration: row.notify_before_expiration === true,
@@ -122,7 +126,7 @@ export async function createDeveloper({
 
 export async function getDeveloperProfile(developerId: string): Promise<DeveloperProfile | null> {
   const result = await query(
-    `SELECT id, identity_uid, email, full_name, company_name, document_id, phone, notify_before_expiration
+    `SELECT id, identity_uid, email, full_name, company_name, document_type, document_id, phone, notify_before_expiration
      FROM developers
      WHERE id::text = $1 OR identity_uid = $1
      LIMIT 1`,
@@ -142,16 +146,18 @@ export async function updateDeveloperProfile(
      SET
        full_name = COALESCE($2, full_name),
        company_name = COALESCE($3, company_name),
-       document_id = COALESCE($4, document_id),
-       phone = COALESCE($5, phone),
-       notify_before_expiration = COALESCE($6, notify_before_expiration),
+       document_type = COALESCE($4, document_type),
+       document_id = COALESCE($5, document_id),
+       phone = COALESCE($6, phone),
+       notify_before_expiration = COALESCE($7, notify_before_expiration),
        updated_at = now()
      WHERE id::text = $1 OR identity_uid = $1
-     RETURNING id, identity_uid, email, full_name, company_name, document_id, phone, notify_before_expiration`,
+     RETURNING id, identity_uid, email, full_name, company_name, document_type, document_id, phone, notify_before_expiration`,
     [
       developerId,
       input.fullName ?? null,
       input.companyName ?? null,
+      input.documentType ?? null,
       input.documentId ?? null,
       input.phone ?? null,
       input.notifyBeforeExpiration ?? null,
