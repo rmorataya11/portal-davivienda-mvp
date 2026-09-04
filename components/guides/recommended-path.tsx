@@ -79,9 +79,6 @@ export function RecommendedPath() {
     return previousDone ? "current" : "locked";
   });
 
-  const currentStep = steps.find((_, index) => states[index] === "current");
-  const allDone = states.every((state) => state === "completed");
-
   function persistManual(next: { securityDone: boolean; firstCallDone: boolean }) {
     if (!user) {
       return;
@@ -108,20 +105,7 @@ export function RecommendedPath() {
           <BoltIcon />
           Ruta recomendada
         </p>
-        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-[24px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[32px]">Su primera integración</h2>
-          <Link
-            href={allDone ? "#listado-guias" : (currentStep?.currentHref ?? "/crear-cuenta")}
-            onClick={() => {
-              if (currentStep) {
-                handleStepAction(currentStep.id);
-              }
-            }}
-            className="inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-          >
-            {allDone ? "Ver guías →" : "Empezar ahora →"}
-          </Link>
-        </div>
+        <h2 className="mt-3 text-[24px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[32px]">Su primera integración</h2>
         <p className="mt-3 max-w-[560px] text-[15px] leading-7 text-[#6A7178] sm:text-[16px]">
           Cuatro pasos en orden para pasar de cero a su primera llamada. Le acompañamos en cada uno.
         </p>

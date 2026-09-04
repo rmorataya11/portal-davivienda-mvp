@@ -116,11 +116,7 @@ export function DocsPage() {
     <>
       <section className="bg-white pt-6 pb-8 sm:pt-8 sm:pb-10">
         <SectionContainer>
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#FFF1F0] px-3 py-1.5 text-[13px] font-semibold text-[#E1251B]">
-            <CodeIcon />
-            Documentación técnica
-          </div>
-          <h1 className="mt-5 max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
+          <h1 className="max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
             Explore endpoints como en su editor
           </h1>
           <p className="mt-4 max-w-[680px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">

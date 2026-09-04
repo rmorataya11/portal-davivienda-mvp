@@ -88,11 +88,7 @@ export function GuidesPage() {
     <>
       <section className="bg-white pt-6 pb-12 sm:pt-8 sm:pb-16">
         <SectionContainer>
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#FFF1F0] px-3 py-1.5 text-[13px] font-semibold text-[#E1251B]">
-            <BookIcon />
-            Guías de Uso
-          </div>
-          <h1 className="mt-5 max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
+          <h1 className="max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
             Aprenda a integrar, paso a paso
           </h1>
           <p className="mt-4 max-w-[680px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
@@ -170,16 +166,6 @@ export function GuidesPage() {
         </SectionContainer>
       </section>
     </>
-  );
-}
-
-function BookIcon() {
-  return (
-    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
-      <path d="M3.2 3.2h7.2A1.6 1.6 0 0 1 12 4.8v8H4.4A1.2 1.2 0 0 1 3.2 11.6V3.2Z" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M3.2 3.2A1.2 1.2 0 0 0 2 4.4v7.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M5.2 6h4.4M5.2 8.4h4.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
   );
 }
 
