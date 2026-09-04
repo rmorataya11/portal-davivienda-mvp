@@ -33,22 +33,14 @@ export function DashboardHome() {
 
   return (
     <div>
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-[15px] text-[#6A7178]">Hola{greetingName ? `, ${greetingName}` : ""}</p>
-          <h1 className="mt-1 text-[28px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
-            Su espacio de trabajo
-          </h1>
-          <p className="mt-3 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
-            Revise el consumo, abra una app o cree una nueva para obtener credenciales de sandbox.
-          </p>
-        </div>
-        <Link
-          href="/dashboard/apps/nueva"
-          className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-        >
-          Crear aplicación
-        </Link>
+      <div>
+        <p className="text-[15px] text-[#6A7178]">Hola{greetingName ? `, ${greetingName}` : ""}</p>
+        <h1 className="mt-1 text-[28px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
+          Su espacio de trabajo
+        </h1>
+        <p className="mt-3 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
+          Revise el consumo, abra una app o cree una nueva para obtener credenciales de sandbox.
+        </p>
       </div>
 
       <section className="mt-8 overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.06)]">
