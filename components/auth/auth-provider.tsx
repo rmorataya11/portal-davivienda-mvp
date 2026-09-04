@@ -3,10 +3,16 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { onAuthChange, signOutUser, type AuthUser } from "@/lib/auth/session";
-import { getUserProfile } from "@/lib/firebase/user-profile";
+
+type DeveloperProfileResponse = {
+  id: string;
+  fullName?: string;
+  companyName?: string;
+};
 
 type AuthContextValue = {
   user: AuthUser | null;
+  developerId: string | null;
   loading: boolean;
   displayName: string;
   companyName: string;
@@ -19,6 +25,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [developerId, setDeveloperId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -29,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
 
       if (!nextUser) {
+        setDeveloperId(null);
         setDisplayName("");
         setCompanyName("");
       }
@@ -42,14 +50,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     let cancelled = false;
 
-    getUserProfile(user.uid)
+    fetch(`/api/developers/${user.uid}/profile`)
+      .then(async (response) => {
+        if (!response.ok) {
+          return null;
+        }
+
+        return (await response.json()) as DeveloperProfileResponse;
+      })
       .then((profile) => {
         if (cancelled || !profile) {
           return;
         }
 
-        setDisplayName(profile.displayName);
-        setCompanyName(profile.companyName);
+        setDeveloperId(profile.id);
+        setDisplayName(profile.fullName ?? "");
+        setCompanyName(profile.companyName ?? "");
       })
       .catch(() => {
         // El menú puede mostrar un nombre genérico hasta que el usuario lo configure.
@@ -63,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
+      developerId,
       loading,
       displayName,
       companyName,
@@ -70,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setCompanyName,
       signOut: () => signOutUser(),
     }),
-    [companyName, displayName, loading, user],
+    [companyName, developerId, displayName, loading, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

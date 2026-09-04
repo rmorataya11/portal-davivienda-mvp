@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { sendPasswordResetEmail } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { getFirebaseAuth } from "@/lib/firebase/client";
+import { resetPassword } from "@/lib/auth/session";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
 
 export function ProfilePasswordCard() {
@@ -24,7 +23,7 @@ export function ProfilePasswordCard() {
     setResetState("sending");
 
     try {
-      await sendPasswordResetEmail(getFirebaseAuth(), user.email);
+      await resetPassword(user.email);
       setResetState("sent");
     } catch (error) {
       setResetError(getAuthErrorMessage(error));

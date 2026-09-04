@@ -20,6 +20,49 @@ type CreatedDeveloper = {
   email: string;
 };
 
+export type DeveloperProfile = {
+  id: string;
+  identityUid: string;
+  email: string;
+  fullName: string;
+  companyName: string;
+  documentId: string;
+  phone: string;
+  notifyBeforeExpiration: boolean;
+};
+
+type UpdateDeveloperProfileInput = {
+  fullName?: string;
+  companyName?: string;
+  documentId?: string;
+  phone?: string;
+  notifyBeforeExpiration?: boolean;
+};
+
+type DeveloperRow = {
+  id: string;
+  identity_uid: string;
+  email: string;
+  full_name: string;
+  company_name: string | null;
+  document_id: string | null;
+  phone: string | null;
+  notify_before_expiration: boolean;
+};
+
+function mapDeveloperProfile(row: DeveloperRow): DeveloperProfile {
+  return {
+    id: row.id,
+    identityUid: row.identity_uid,
+    email: row.email,
+    fullName: row.full_name,
+    companyName: row.company_name ?? '',
+    documentId: row.document_id ?? '',
+    phone: row.phone ?? '',
+    notifyBeforeExpiration: row.notify_before_expiration === true,
+  };
+}
+
 function isUniqueViolation(error: unknown): error is { code: string; constraint?: string } {
   return (
     typeof error === 'object' &&
@@ -75,4 +118,46 @@ export async function createDeveloper({
 
     throw error;
   }
+}
+
+export async function getDeveloperProfile(developerId: string): Promise<DeveloperProfile | null> {
+  const result = await query(
+    `SELECT id, identity_uid, email, full_name, company_name, document_id, phone, notify_before_expiration
+     FROM developers
+     WHERE id::text = $1 OR identity_uid = $1
+     LIMIT 1`,
+    [developerId],
+  );
+
+  const row = result.rows[0] as DeveloperRow | undefined;
+  return row ? mapDeveloperProfile(row) : null;
+}
+
+export async function updateDeveloperProfile(
+  developerId: string,
+  input: UpdateDeveloperProfileInput,
+): Promise<DeveloperProfile | null> {
+  const result = await query(
+    `UPDATE developers
+     SET
+       full_name = COALESCE($2, full_name),
+       company_name = COALESCE($3, company_name),
+       document_id = COALESCE($4, document_id),
+       phone = COALESCE($5, phone),
+       notify_before_expiration = COALESCE($6, notify_before_expiration),
+       updated_at = now()
+     WHERE id::text = $1 OR identity_uid = $1
+     RETURNING id, identity_uid, email, full_name, company_name, document_id, phone, notify_before_expiration`,
+    [
+      developerId,
+      input.fullName ?? null,
+      input.companyName ?? null,
+      input.documentId ?? null,
+      input.phone ?? null,
+      input.notifyBeforeExpiration ?? null,
+    ],
+  );
+
+  const row = result.rows[0] as DeveloperRow | undefined;
+  return row ? mapDeveloperProfile(row) : null;
 }

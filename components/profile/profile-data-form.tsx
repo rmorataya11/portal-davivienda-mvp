@@ -6,8 +6,6 @@ import { FieldLabel, SelectField, TextField } from "@/components/auth/auth-form-
 import { identificationTypes } from "@/components/auth/content/create-account";
 import { useAuth } from "@/components/auth/auth-provider";
 import { accountInitials } from "@/lib/account/display";
-import { getAuthErrorMessage } from "@/lib/firebase/errors";
-import { getUserProfile, saveNotifyBeforeExpiration, saveUserProfile } from "@/lib/firebase/user-profile";
 
 import { AccountAvatar } from "./account-avatar";
 
@@ -61,7 +59,7 @@ function SectionTitle({ children }: { children: ReactNode }) {
 }
 
 export function ProfileDataForm() {
-  const { user, setDisplayName, setCompanyName: setAccountCompanyName } = useAuth();
+  const { user, developerId, setDisplayName, setCompanyName: setAccountCompanyName } = useAuth();
   const [accountName, setAccountName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [idType, setIdType] = useState("");
@@ -94,24 +92,39 @@ export function ProfileDataForm() {
   }, [accountName, companyName, idNumber, idType, initial, phone]);
 
   useEffect(() => {
-    if (!user) {
+    const lookupId = developerId ?? user?.uid;
+
+    if (!lookupId) {
       return;
     }
 
     let cancelled = false;
 
-    getUserProfile(user.uid)
+    fetch(`/api/developers/${lookupId}/profile`)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("No se pudo cargar el perfil.");
+        }
+
+        return (await response.json()) as {
+          fullName?: string;
+          companyName?: string;
+          documentId?: string;
+          phone?: string;
+          notifyBeforeExpiration?: boolean;
+        };
+      })
       .then((profile) => {
         if (cancelled) {
           return;
         }
 
         const snapshot: ProfileSnapshot = {
-          accountName: profile?.displayName ?? "",
-          companyName: profile?.companyName ?? "",
-          idType: profile?.idType ?? "",
-          idNumber: profile?.idNumber ?? "",
-          phone: profile?.phone ?? "",
+          accountName: profile.fullName ?? "",
+          companyName: profile.companyName ?? "",
+          idType: "",
+          idNumber: profile.documentId ?? "",
+          phone: profile.phone ?? "",
         };
 
         setAccountName(snapshot.accountName);
@@ -119,7 +132,7 @@ export function ProfileDataForm() {
         setIdType(snapshot.idType);
         setIdNumber(snapshot.idNumber);
         setPhone(snapshot.phone);
-        setNotifyBeforeExpiration(profile?.notifyBeforeExpiration === true);
+        setNotifyBeforeExpiration(profile.notifyBeforeExpiration !== false);
         setInitial(snapshot);
       })
       .catch(() => {
@@ -136,7 +149,7 @@ export function ProfileDataForm() {
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [developerId, user]);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -193,7 +206,8 @@ export function ProfileDataForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!user || !isDirty) {
+    const lookupId = developerId ?? user?.uid;
+    if (!lookupId || !isDirty) {
       return;
     }
 
@@ -218,13 +232,21 @@ export function ProfileDataForm() {
         phone: phone.trim(),
       };
 
-      await saveUserProfile(user.uid, {
-        displayName: snapshot.accountName,
-        companyName: snapshot.companyName,
-        idType: snapshot.idType,
-        idNumber: snapshot.idNumber,
-        phone: snapshot.phone,
+      const response = await fetch(`/api/developers/${lookupId}/profile`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: snapshot.accountName,
+          companyName: snapshot.companyName,
+          documentId: snapshot.idNumber,
+          phone: snapshot.phone,
+        }),
       });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { message?: string } | null;
+        throw new Error(payload?.message ?? "No pudimos guardar el perfil. Intente de nuevo.");
+      }
       setAccountName(snapshot.accountName);
       setCompanyName(snapshot.companyName);
       setIdNumber(snapshot.idNumber);
@@ -234,14 +256,15 @@ export function ProfileDataForm() {
       setAccountCompanyName(snapshot.companyName);
       setSaved(true);
     } catch (error) {
-      setFormError(getAuthErrorMessage(error));
+      setFormError(error instanceof Error ? error.message : "No pudimos guardar el perfil. Intente de nuevo.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   async function handleNotifyToggle() {
-    if (!user || notifySaving) {
+    const lookupId = developerId ?? user?.uid;
+    if (!lookupId || notifySaving) {
       return;
     }
 
@@ -251,10 +274,18 @@ export function ProfileDataForm() {
     setNotifyError("");
 
     try {
-      await saveNotifyBeforeExpiration(user.uid, next);
+      const response = await fetch(`/api/developers/${lookupId}/profile`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notifyBeforeExpiration: next }),
+      });
+
+      if (!response.ok) {
+        throw new Error("No pudimos guardar la preferencia. Intente de nuevo.");
+      }
     } catch (error) {
       setNotifyBeforeExpiration(!next);
-      setNotifyError(getAuthErrorMessage(error));
+      setNotifyError(error instanceof Error ? error.message : "No pudimos guardar la preferencia. Intente de nuevo.");
     } finally {
       setNotifySaving(false);
     }
@@ -291,7 +322,7 @@ export function ProfileDataForm() {
             <p className="mt-1.5 text-[13px] leading-5 text-[#8E8E8E]">Así aparece en el menú del portal.</p>
           </div>
         </div>
-        <p className="text-[13px] text-[#8E8E8E]">Última sesión iniciada: {formatLastSignIn(user?.metadata.lastSignInTime)}</p>
+        <p className="text-[13px] text-[#8E8E8E]">Última sesión iniciada: {formatLastSignIn()}</p>
       </section>
 
       <section className="space-y-4">

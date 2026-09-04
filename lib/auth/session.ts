@@ -2,6 +2,7 @@ import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   type User,
@@ -83,6 +84,14 @@ export async function signIn(
 export async function signOutUser(): Promise<void> {
   try {
     await signOut(auth);
+  } catch (error) {
+    throwAuthError(error);
+  }
+}
+
+export async function resetPassword(email: string): Promise<void> {
+  try {
+    await sendPasswordResetEmail(auth, email);
   } catch (error) {
     throwAuthError(error);
   }

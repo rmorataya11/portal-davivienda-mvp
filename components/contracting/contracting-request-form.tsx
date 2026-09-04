@@ -1,6 +1,5 @@
 "use client";
 
-import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
@@ -9,7 +8,6 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
-import { getFirebaseDb } from "@/lib/firebase/client";
 
 import { destinationEnvironments, industries, ipWhitelistOptions, monthlyVolumes } from "./content/contracting";
 import { RadioGroup } from "./radio-group";
@@ -20,15 +18,9 @@ const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 
 type FieldErrors = Record<string, string>;
 
-function generateRequestId() {
-  const year = new Date().getFullYear();
-  const shortStamp = Date.now().toString(36).toUpperCase().slice(-8);
-  return `SOL-${year}-${shortStamp}`;
-}
-
 export function ContractingRequestForm({ productName = "" }: { productName?: string }) {
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { user, developerId } = useAuth();
   const { getApp, markContracting } = useDeveloperApps();
   const appId = searchParams.get("app") ?? "";
   const linkedApp = appId ? getApp(appId) : undefined;
@@ -43,22 +35,32 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState("");
   const [termsOpen, setTermsOpen] = useState(false);
 
   useEffect(() => {
-    if (!user) {
+    const lookupId = developerId ?? user?.uid;
+
+    if (!lookupId) {
       return;
     }
 
     let cancelled = false;
 
-    getDoc(doc(getFirebaseDb(), "users", user.uid))
-      .then((snapshot) => {
+    fetch(`/api/developers/${lookupId}/profile`)
+      .then(async (response) => {
+        if (!response.ok) {
+          return null;
+        }
+
+        return (await response.json()) as { companyName?: string };
+      })
+      .then((profile) => {
         if (cancelled) {
           return;
         }
 
-        const profileName = snapshot.data()?.companyName;
+        const profileName = profile?.companyName;
         if (typeof profileName === "string" && profileName.trim()) {
           setCompanyName((current) => current || profileName);
         }
@@ -70,7 +72,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [developerId, user]);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -148,34 +150,65 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
     return nextErrors;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formElement = event.currentTarget;
-    const nextErrors = validate(new FormData(formElement));
+    const formData = new FormData(formElement);
+    const nextErrors = validate(formData);
     setErrors(nextErrors);
+    setFormError("");
 
     if (Object.keys(nextErrors).length > 0) {
       document.getElementById(Object.keys(nextErrors)[0])?.focus();
       return;
     }
 
-    const requestIdInput = formElement.elements.namedItem("requestId");
-    const submittedAtInput = formElement.elements.namedItem("submittedAt");
-    if (requestIdInput instanceof HTMLInputElement) {
-      requestIdInput.value = generateRequestId();
-    }
-    if (submittedAtInput instanceof HTMLInputElement) {
-      submittedAtInput.value = new Date().toISOString();
+    const lookupId = developerId ?? user?.uid;
+    if (!lookupId) {
+      setFormError("Debe iniciar sesión para enviar la solicitud.");
+      return;
     }
 
     setIsSubmitting(true);
-    window.setTimeout(() => {
+
+    try {
+      const response = await fetch("/api/contracting-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          developerId: lookupId,
+          razonSocial: String(formData.get("companyName") ?? "").trim(),
+          nit: String(formData.get("taxId") ?? "").trim(),
+          industria: String(formData.get("industry") ?? "").trim(),
+          casoUso: String(formData.get("useCase") ?? "").trim(),
+          volumenEstimado: String(formData.get("volume") ?? "").trim(),
+          ambienteDestino: String(formData.get("environment") ?? "").trim(),
+          ipWhitelist:
+            formData.get("needsIpWhitelist") === "si"
+              ? String(formData.get("ipRanges") ?? "").trim()
+              : undefined,
+          contactoTecnicoNombre: String(formData.get("technicalName") ?? "").trim(),
+          contactoTecnicoEmail: String(formData.get("technicalEmail") ?? "").trim(),
+          aceptaTerminos: formData.get("terms") === "on",
+          confirmaVeracidad: formData.get("dataAccuracy") === "on",
+        }),
+      });
+
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as { message?: string } | null;
+        throw new Error(payload?.message ?? "No pudimos enviar la solicitud. Intente de nuevo.");
+      }
+
       if (linkedApp) {
         markContracting(linkedApp.id);
       }
-      setIsSubmitting(false);
+
       setSubmitted(true);
-    }, 700);
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : "No pudimos enviar la solicitud. Intente de nuevo.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -434,6 +467,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             {isSubmitting ? "Enviando..." : "Enviar solicitud"}
             {isSubmitting ? null : <span aria-hidden="true">→</span>}
           </button>
+          {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
         </FormSection>
       </form>
 

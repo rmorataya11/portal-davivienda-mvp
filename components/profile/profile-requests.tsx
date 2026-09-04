@@ -1,10 +1,8 @@
 "use client";
 
-import { collection, getDocs, query, Timestamp, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { getFirebaseDb } from "@/lib/firebase/client";
 
 type RequestRow = {
   id: string;
@@ -14,21 +12,14 @@ type RequestRow = {
   status: string;
 };
 
-function asString(value: unknown) {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function toIso(value: unknown) {
-  if (typeof value === "string") {
-    return value;
-  }
-
-  if (value instanceof Timestamp) {
-    return value.toDate().toISOString();
-  }
-
-  return "";
-}
+type ContractingRequestResponse = {
+  id: string;
+  casoUso?: string;
+  industria?: string;
+  ambienteDestino?: string;
+  createdAt?: string;
+  status?: string;
+};
 
 function formatDate(value: string) {
   if (!value) {
@@ -46,11 +37,11 @@ function formatDate(value: string) {
 function statusCopy(status: string) {
   const normalized = status.toLowerCase().replace(/\s+/g, "_");
 
-  if (normalized === "aprobada" || normalized === "aprobado") {
+  if (normalized === "aprobada" || normalized === "aprobado" || normalized === "approved") {
     return { label: "Aprobada", className: "bg-[#EFFCF5] text-[#347659]" };
   }
 
-  if (normalized === "rechazada" || normalized === "rechazado") {
+  if (normalized === "rechazada" || normalized === "rechazado" || normalized === "rejected") {
     return { label: "Rechazada", className: "bg-[#FFF1F0] text-[#A11B1B]" };
   }
 
@@ -61,39 +52,47 @@ function statusCopy(status: string) {
   return { label: "En revisión", className: "bg-[#FFF6E8] text-[#A15C12]" };
 }
 
+function folioFromId(id: string) {
+  return `SOL-${id.replace(/-/g, "").slice(0, 8).toUpperCase()}`;
+}
+
 export function ProfileRequests() {
-  const { user } = useAuth();
+  const { user, developerId } = useAuth();
   const [rows, setRows] = useState<RequestRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!user?.email) {
+    const lookupId = developerId ?? user?.uid;
+
+    if (!lookupId) {
       setLoading(false);
       return;
     }
 
     let cancelled = false;
-    const email = user.email;
 
-    getDocs(query(collection(getFirebaseDb(), "solicitudes"), where("accountEmail", "==", email)))
-      .then((snapshot) => {
+    fetch(`/api/contracting-requests?developerId=${encodeURIComponent(lookupId)}`)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("No se pudieron cargar las solicitudes.");
+        }
+
+        return (await response.json()) as ContractingRequestResponse[];
+      })
+      .then((requests) => {
         if (cancelled) {
           return;
         }
 
-        const next = snapshot.docs.map((item) => {
-          const data = item.data();
-          return {
-            id: item.id,
-            folio: asString(data.requestId) || item.id,
-            product: asString(data.product) || "—",
-            submittedAt: toIso(data.submittedAt),
-            status: asString(data.status) || "en_revision",
-          };
-        });
+        const next = requests.map((item) => ({
+          id: item.id,
+          folio: folioFromId(item.id),
+          product: item.casoUso?.trim() || item.industria?.trim() || "—",
+          submittedAt: item.createdAt ?? "",
+          status: item.status || "pending",
+        }));
 
-        next.sort((a, b) => b.submittedAt.localeCompare(a.submittedAt));
         setRows(next);
       })
       .catch(() => {
@@ -110,7 +109,7 @@ export function ProfileRequests() {
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [developerId, user]);
 
   if (loading) {
     return <div className="h-48 animate-pulse rounded-[18px] bg-[#F2F3F5]" />;
