@@ -49,7 +49,7 @@ export function CatalogBrowser() {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Filtra por nombre, etiqueta o endpoint..."
+            placeholder="Filtre por nombre, etiqueta o endpoint..."
             className="h-full w-full bg-transparent text-sm text-[#404040] outline-none placeholder:text-[#8E8E8E]"
           />
         </label>

@@ -23,7 +23,7 @@ export function FaqFeedback({ questionId, onOpenCase }: { questionId: string; on
   if (vote) {
     return (
       <div className="mt-5">
-        <p className="text-[14px] leading-6 text-[#3C444B]">¡Gracias por tu feedback!</p>
+        <p className="text-[14px] leading-6 text-[#3C444B]">¡Gracias por su comentario!</p>
         {vote === "no" ? (
           <button
             type="button"
@@ -39,7 +39,7 @@ export function FaqFeedback({ questionId, onOpenCase }: { questionId: string; on
 
   return (
     <div className="mt-5">
-      <p className="text-[14px] leading-6 text-[#5C656C]">¿Te sirvió esta respuesta?</p>
+      <p className="text-[14px] leading-6 text-[#5C656C]">¿Le sirvió esta respuesta?</p>
       <div className="mt-3 flex flex-wrap gap-2">
         <button
           type="button"

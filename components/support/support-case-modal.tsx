@@ -143,7 +143,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
             <h2 id={titleId} className="text-[24px] font-bold tracking-[0.3px] text-[#141F25]">
               Caso creado
             </h2>
-            <p className="mt-4 text-[15px] leading-7 text-[#5B636A]">Caso creado. Te contactaremos pronto.</p>
+            <p className="mt-4 text-[15px] leading-7 text-[#5B636A]">Caso creado. Le contactaremos pronto.</p>
           </div>
         ) : (
           <>

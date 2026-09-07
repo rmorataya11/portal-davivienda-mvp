@@ -81,7 +81,7 @@ const autenticacionMtlsOauth: GuideArticle = {
       explanation: [
         "mTLS (Mutual TLS) quiere decir exactamente eso: los dos lados muestran certificado. El banco ya tiene el suyo. A usted le toca un certificado de cliente, atado a la aplicación que registró en la consola. La llave privada no sale de su servidor; lo que viaja es una solicitud de firma (CSR) para que la autoridad del banco —o la que ellos indiquen— le devuelva el certificado listo.",
         "En un perfil FAPI 2.0 el certificado no es un adorno: es la prueba de que la aplicación es quien dice ser. Por eso el token endpoint no se autentica con un client_secret en texto plano. Presenta el certificado en el handshake TLS (tls_client_auth, RFC 8705 — el estándar de autenticación mutua-TLS para OAuth 2.0, no el de registro de clientes; el alta en sí es RFC 7591) y, si el banco lo pide, un client_id en el cuerpo para empatar esa identidad con el registro.",
-        "El flujo práctico es de tres movimientos: genera el par de llaves, arma el CSR con los datos de su aplicación, y carga el CSR (o el certificado ya firmado) donde el portal se lo pida. Abajo va el estándar de la industria. Lo que dependa del contrato de Davivienda queda marcado.",
+        "El flujo práctico es de tres movimientos: genere el par de llaves, arme el CSR con los datos de su aplicación y cargue el CSR (o el certificado ya firmado) donde el portal se lo pida. Abajo va el estándar de la industria. Lo que dependa del contrato de Davivienda queda marcado.",
       ],
       pendingNotes: [
         "<!-- PENDIENTE: confirmar con el contrato real de la API de OAuth el host, el endpoint de carga de certificados y si el alta se hace por consola, por API de registro (RFC 7591) o por ambos -->",
@@ -186,7 +186,7 @@ curl --request POST \\
       id: "llave-de-acceso",
       title: "Solicitar la llave de acceso",
       explanation: [
-        "Con el certificado ya aceptado, pide la llave de acceso. En OAuth 2.0 eso es POST /oauth/token con grant_type=client_credentials (RFC 6749 §4.4). No hay usuario en este paso: está pidiendo permiso para que su aplicación hable con el banco, no para leer la cuenta de un cliente. Eso viene en la guía de consentimientos.",
+        "Con el certificado ya aceptado, pida la llave de acceso. En OAuth 2.0 eso es POST /oauth/token con grant_type=client_credentials (RFC 6749 §4.4). No hay usuario en este paso: está pidiendo permiso para que su aplicación hable con el banco, no para leer la cuenta de un cliente. Eso viene en la guía de consentimientos.",
         "El estándar manda application/x-www-form-urlencoded, no JSON. El JSON de al lado es la misma carga útil, escrita como objeto para que se lea fácil. En FAPI 2.0 el secreto no viaja en el body: el autenticador es el certificado que presenta en el handshake (--cert y --key en curl). El client_id solo empató esa identidad con el registro.",
         "La respuesta útil es access_token, token_type=Bearer y expires_in. Guarde la llave en memoria o en un almacén cifrado de su backend. No la deje en el front, no la loguee completa y no la rebase de Sandbox a Producción: son ambientes distintos, certificados distintos, llaves distintas.",
       ],
@@ -346,7 +346,7 @@ curl --request POST \\
           code: "invalid_client",
           cause: "Intentó revocar sin mTLS, o con el certificado de otra aplicación.",
           solution:
-            "Revoca con el mismo certificado que usó para pedir la llave. Si está rotando certificados, revoque antes de dar de baja el viejo.",
+            "Revoque con el mismo certificado que usó para pedir la llave. Si está rotando certificados, revoque antes de dar de baja el viejo.",
         },
         {
           status: "400",
@@ -385,7 +385,7 @@ curl --request POST \\
   checklist: [
     "El par de llaves vive en el servidor; el CSR que subió no incluye la llave privada.",
     "Puede obtener un 200 en POST /oauth/token con --cert y --key, sin client_secret en el body.",
-    "Guarda access_token y expires_in, y renueva antes de que la llave se venza —no cuando la API de negocio ya respondió 401.",
+    "Guarde access_token y expires_in, y renueve antes de que la llave se venza —no cuando la API de negocio ya respondió 401.",
     "Probó POST /oauth/revoke y confirmó que la misma llave ya no autentica una llamada siguiente.",
     "Tiene separado el certificado y el client_id de Sandbox de los de Producción.",
   ],
