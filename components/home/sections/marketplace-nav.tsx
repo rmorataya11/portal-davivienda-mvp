@@ -4,22 +4,27 @@ import { navItems } from "../content/navigation";
 
 export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: string }) {
   return (
-    <nav className="relative ml-8 hidden items-end gap-6 border-b border-white/35 pb-2 lg:flex xl:gap-8">
-      {navItems.map((item) => {
-        const isActive = item.href === activeHref;
+    <nav className="hidden lg:block">
+      <ul className="flex items-center gap-7 border-b border-white/40">
+        {navItems.map((item) => {
+          const isActive = item.href === activeHref;
 
-        return (
-          <Link
-            key={item.label}
-            href={item.href}
-            transitionTypes={["marketplace-nav"]}
-            className={`relative pb-1.5 text-[13px] font-medium leading-none transition-all duration-300 ${isActive ? "text-white" : "text-white/90 hover:text-white hover:drop-shadow-[0_4px_10px_rgba(255,255,255,0.22)]"}`}
-          >
-            {item.label}
-            {isActive ? <span className="absolute inset-x-0 -bottom-[10px] h-0.5 rounded-full bg-white" /> : null}
-          </Link>
-        );
-      })}
+          return (
+            <li key={item.label} className="relative">
+              <Link
+                href={item.href}
+                transitionTypes={["marketplace-nav"]}
+                className={`flex h-8 items-center text-[13px] leading-none whitespace-nowrap ${
+                  isActive ? "font-semibold text-white" : "font-medium text-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+              {isActive ? <span className="absolute inset-x-0 -bottom-px h-[3px] bg-white" /> : null}
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

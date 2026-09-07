@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { FooterColumn } from "../cards/footer-column";
 import { developerLinks, platformLinks, supportLinks } from "../content/footer-links";
+import { DaviviendaLogo } from "../shared/davivienda-logo";
 
 export function MarketplaceFooter() {
   return (
@@ -9,7 +10,7 @@ export function MarketplaceFooter() {
       <div className="mx-auto max-w-[1366px]">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.7fr_0.8fr_0.8fr]">
           <div className="max-w-[360px]">
-            <div className="text-[33px] font-medium uppercase tracking-[0.08em] text-[#E1251B]">logo</div>
+            <DaviviendaLogo variant="footer" />
             <p className="mt-7 text-[15px] leading-8 text-[#404040]">
               Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras
               sobre infraestructura bancaria de grado empresarial.
