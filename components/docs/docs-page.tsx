@@ -120,8 +120,8 @@ export function DocsPage() {
             Explore endpoints como en su editor
           </h1>
           <p className="mt-4 max-w-[680px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
-            Consulte rutas, parámetros y ejemplos de las APIs del catálogo. El árbol de la izquierda abre cada endpoint
-            en una pestaña, con ejemplos tomados del playground técnico.
+            Consulte rutas, parámetros y ejemplos de consulta de movimientos. El árbol de la izquierda abre el endpoint
+            en una pestaña, con el request y la respuesta de ejemplo.
           </p>
         </SectionContainer>
       </section>
@@ -193,14 +193,16 @@ export function DocsPage() {
                           <MethodFileIcon method={match.endpoint.method} />
                           <span className="font-mono text-[12px]">{match.endpoint.name}</span>
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => closeTab(tabId)}
-                          className="mr-1 inline-flex h-6 w-6 items-center justify-center rounded-[6px] text-[#8E8E8E] transition-colors hover:bg-[#EEF1F4] hover:text-[#141F25]"
-                          aria-label={`Cerrar ${match.endpoint.name}`}
-                        >
-                          <CloseIcon />
-                        </button>
+                        {openTabIds.length > 1 ? (
+                          <button
+                            type="button"
+                            onClick={() => closeTab(tabId)}
+                            className="mr-1 inline-flex h-6 w-6 items-center justify-center rounded-[6px] text-[#8E8E8E] transition-colors hover:bg-[#EEF1F4] hover:text-[#141F25]"
+                            aria-label={`Cerrar ${match.endpoint.name}`}
+                          >
+                            <CloseIcon />
+                          </button>
+                        ) : null}
                       </div>
                     );
                   })}
@@ -363,11 +365,11 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         {endpoint.name.replace(/\.(get|post|put|delete)$/i, "")}
       </p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3">
-        <span className={`inline-flex min-w-[76px] items-center justify-center rounded-full px-4 py-2 text-[13px] font-bold ${methodBadgeClass(endpoint.method)}`}>
+      <div className="mt-4 flex items-center gap-3">
+        <span className={`inline-flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-[13px] font-bold ${methodBadgeClass(endpoint.method)}`}>
           {endpoint.method}
         </span>
-        <code className="min-w-0 break-all text-[16px] font-medium tracking-[0.1px] text-[#202A31] sm:text-[20px]">
+        <code className="min-w-0 break-all text-[15px] font-medium leading-6 tracking-[0.1px] text-[#202A31] sm:text-[18px]">
           {endpoint.httpUrl}
         </code>
       </div>
@@ -376,32 +378,49 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
 
       <div className="mt-8">
         <h2 className="text-[18px] font-medium text-[#202A31] sm:text-[20px]">Parámetros</h2>
-        <div className="mt-3 overflow-hidden rounded-[18px] border border-[#E7EAEE]">
-          <div className="hidden grid-cols-[1.1fr_0.7fr_0.8fr_1.8fr] bg-[#F7F8FA] px-4 py-3 text-[11px] font-medium uppercase tracking-[0.14em] text-[#8E8E8E] md:grid">
-            <span>Nombre</span>
-            <span>Tipo</span>
-            <span>Uso</span>
-            <span>Descripción</span>
-          </div>
-          {endpoint.parameters.map((parameter, index) => (
-            <div
-              key={`${parameter.name}-${index}`}
-              className={`grid gap-2 px-4 py-4 md:grid-cols-[1.1fr_0.7fr_0.8fr_1.8fr] ${index !== 0 ? "border-t border-[#EEF1F4]" : ""}`}
-            >
-              <p className="font-mono text-[13px] font-semibold text-[#202A31]">{parameter.name}</p>
-              <span className="w-fit rounded-full bg-[#F2F3F5] px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-[#6A7178]">
-                {parameter.type}
-              </span>
-              <span
-                className={`w-fit rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.14em] ${
-                  parameter.required ? "bg-[#FFEAEA] text-[#A11B1B]" : "bg-[#F2F3F5] text-[#6A7178]"
-                }`}
-              >
-                {parameter.required ? "Requerido" : "Opcional"}
-              </span>
-              <p className="text-[13px] leading-6 text-[#6A7178]">{parameter.description}</p>
-            </div>
-          ))}
+        <div className="mt-3 overflow-x-auto rounded-[18px] border border-[#E7EAEE]">
+          <table className="w-full min-w-[720px] border-collapse text-left">
+            <colgroup>
+              <col className="w-[200px]" />
+              <col className="w-[220px]" />
+              <col className="w-[128px]" />
+              <col />
+            </colgroup>
+            <thead>
+              <tr className="bg-[#F7F8FA] text-[11px] font-medium uppercase tracking-[0.14em] text-[#8E8E8E]">
+                <th className="px-4 py-3 font-medium">Nombre</th>
+                <th className="px-4 py-3 font-medium">Tipo</th>
+                <th className="px-4 py-3 font-medium">Uso</th>
+                <th className="px-4 py-3 font-medium">Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {endpoint.parameters.map((parameter, index) => (
+                <tr key={`${parameter.name}-${index}`} className="border-t border-[#EEF1F4]">
+                  <td className="px-4 py-3.5 align-middle font-mono text-[13px] font-semibold text-[#202A31]">
+                    {parameter.name}
+                  </td>
+                  <td className="px-4 py-3.5 align-middle">
+                    <span className="inline-flex h-7 items-center rounded-full bg-[#F2F3F5] px-2.5 text-[11px] font-medium uppercase tracking-[0.08em] text-[#6A7178]">
+                      {parameter.type}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5 align-middle">
+                    <span
+                      className={`inline-flex h-7 items-center rounded-full px-2.5 text-[11px] font-medium uppercase tracking-[0.08em] ${
+                        parameter.required ? "bg-[#FFEAEA] text-[#A11B1B]" : "bg-[#F2F3F5] text-[#6A7178]"
+                      }`}
+                    >
+                      {parameter.required ? "Requerido" : "Opcional"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5 align-middle text-[13px] leading-6 text-[#6A7178]">
+                    {parameter.description}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -440,8 +459,7 @@ function EmptyState() {
       </div>
       <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[#141F25]">Seleccione un endpoint</h2>
       <p className="mt-3 max-w-[420px] text-[15px] leading-7 text-[#6A7178]">
-        Seleccione un endpoint para ver su documentación. Use el explorador de la izquierda para abrir las rutas de
-        Tesorería, Pay Davivienda y Validación de Cuenta.
+        Seleccione consulta-movimientos en el explorador de la izquierda para ver la documentación.
       </p>
     </div>
   );

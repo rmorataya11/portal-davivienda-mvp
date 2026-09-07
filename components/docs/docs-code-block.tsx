@@ -44,6 +44,14 @@ const languageTabs = [
 
 type ExampleLanguage = (typeof languageTabs)[number]["id"];
 
+function prettyPrintJson(value: string) {
+  try {
+    return JSON.stringify(JSON.parse(value), null, 2);
+  } catch {
+    return value;
+  }
+}
+
 function CopyButton({ content }: { content: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -71,7 +79,8 @@ export function DocsRequestCode({
 }) {
   const [language, setLanguage] = useState<ExampleLanguage>("json");
   const activeTab = languageTabs.find((tab) => tab.id === language) ?? languageTabs[0];
-  const code = examples[activeTab.id];
+  const rawCode = examples[activeTab.id];
+  const code = activeTab.language === "json" ? prettyPrintJson(rawCode) : rawCode;
 
   return (
     <div className="overflow-hidden rounded-[18px] border border-[#141F25] bg-[linear-gradient(180deg,#141F25_0%,#1D2930_100%)] shadow-[0_20px_46px_rgba(20,31,37,0.18)]">

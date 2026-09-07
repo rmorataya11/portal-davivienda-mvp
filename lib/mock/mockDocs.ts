@@ -1,4 +1,4 @@
-import { apiDetails, type ApiEndpoint } from "@/components/catalog/content/apis";
+import type { ApiEndpoint } from "@/components/catalog/content/apis";
 
 export type DocsHttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -469,11 +469,22 @@ const consultaMovimientos: DocsEndpoint = {
   ],
   requestExamples: {
     json: `{
-  "nit": ["90012345601"],
+  "nit": [
+    "90012345601"
+  ],
   "fechaInicial": "2025-01-01",
   "fechaFinal": "2025-01-09",
-  "filtros": [{ "tipo": "moneda", "valor": "usd" }],
-  "paginacion": { "ASC": true, "pagina": 0, "tamanoPagina": 1 }
+  "filtros": [
+    {
+      "tipo": "moneda",
+      "valor": "usd"
+    }
+  ],
+  "paginacion": {
+    "ASC": true,
+    "pagina": 0,
+    "tamanoPagina": 1
+  }
 }`,
     curl: `curl -X POST https://api.davivienda.com/conciliacion/bancaempresa/movimientos/ \\
   -H "x-api-key: TU_API_KEY" \\
@@ -562,19 +573,15 @@ data = response.json()`,
   ],
 };
 
-export const docsApis: DocsApi[] = apiDetails.map((api) => ({
-  apiId: api.slug,
-  apiName: api.name,
-  endpoints: api.endpoints.map((endpoint) => {
-    if (api.slug === "api-tesoreria" && endpoint.path === "/treasury/v1/movements") {
-      return consultaMovimientos;
-    }
+export const docsApis: DocsApi[] = [
+  {
+    apiId: "api-tesoreria",
+    apiName: "API Tesorería",
+    endpoints: [consultaMovimientos],
+  },
+];
 
-    return toDocsEndpoint(api.slug, endpoint);
-  }),
-}));
-
-export const defaultDocsEndpointId = docsApis[0]?.endpoints[0]?.id ?? "";
+export const defaultDocsEndpointId = consultaMovimientos.id;
 
 export function findDocsApi(apiId: string) {
   return docsApis.find((api) => api.apiId === apiId);
