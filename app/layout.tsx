@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "Davivienda API Marketplace",
   description:
     "Marketplace de APIs de Davivienda para explorar productos de open banking y casos de uso.",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }, { url: "/favicon.ico" }],
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
