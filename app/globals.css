@@ -811,6 +811,275 @@ a {
   will-change: opacity;
 }
 
+/* Home use cases — Adobe XD frame 1366. Cards 408 × 600, gap 24. */
+.inspire-section {
+  padding: 48px 0 72px;
+}
+
+.inspire-frame {
+  width: 100%;
+  max-width: 1366px;
+  margin-inline: auto;
+  padding: 0 20px;
+}
+
+.inspire-title,
+.inspire-subtitle {
+  margin: 0;
+  text-align: left;
+}
+
+.inspire-title {
+  max-width: 920px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0.8px;
+  color: #404040;
+}
+
+.inspire-subtitle {
+  margin-top: 16px;
+  max-width: 829px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.4px;
+  color: #8e8e8e;
+}
+
+.inspire-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.inspire-card {
+  position: relative;
+  display: flex;
+  min-height: 560px;
+  flex-direction: column;
+  border-radius: 32px;
+  background: #ffffff;
+  padding: 27px 16px 24px;
+}
+
+.inspire-card-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 16px;
+  min-height: 37px;
+}
+
+.inspire-card-icon {
+  display: flex;
+  width: 44px;
+  height: 37px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.inspire-card-icon-svg {
+  width: 44px;
+  height: 37px;
+}
+
+.inspire-card-category {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  color: #404040;
+}
+
+.inspire-card-media {
+  display: block;
+  flex-shrink: 0;
+  width: 100%;
+  height: 208px;
+  margin-top: 26px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #d9d9d9;
+}
+
+.inspire-card-title {
+  margin: 22px 0 0;
+  flex-shrink: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.4px;
+  color: #404040;
+  white-space: pre-line;
+}
+
+.inspire-card-rule {
+  display: block;
+  width: 48px;
+  height: 4px;
+  margin-top: 6.5px;
+  border-radius: 9999px;
+  background: #e1251b;
+}
+
+.inspire-card-desc {
+  margin: 10px 0 0;
+  max-width: 373px;
+  min-height: 59px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.32px;
+  color: #8e8e8e;
+}
+
+.inspire-card-cta {
+  display: flex;
+  width: min(317px, 100%);
+  height: 48px;
+  margin: auto auto 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #404040;
+  border-radius: 32px;
+  background: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  color: #404040;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.inspire-card-cta:hover {
+  border-color: #e1251b;
+  color: #e1251b;
+}
+
+@media (min-width: 768px) {
+  .inspire-frame {
+    padding: 0 32px;
+  }
+
+  .inspire-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1280px) {
+  .inspire-section {
+    padding: 88px 0 96px;
+  }
+
+  .inspire-frame {
+    container-type: inline-size;
+    padding: 0;
+  }
+
+  .inspire-header {
+    padding-left: calc(58 / 1366 * 100%);
+  }
+
+  .inspire-title {
+    width: auto;
+    max-width: calc(1100 / 1366 * 100%);
+    height: auto;
+    font-size: calc(40 / 1366 * 100cqi);
+    line-height: calc(48 / 1366 * 100cqi);
+    letter-spacing: calc(0.8 / 1366 * 100cqi);
+    white-space: nowrap;
+  }
+
+  .inspire-subtitle {
+    margin-top: calc(32 / 1366 * 100cqi);
+    width: calc(829 / 1366 * 100%);
+    max-width: none;
+    height: auto;
+    font-size: calc(20 / 1366 * 100cqi);
+    line-height: calc(24 / 1366 * 100cqi);
+    letter-spacing: calc(0.4 / 1366 * 100cqi);
+  }
+
+  .inspire-grid {
+    width: calc(1272 / 1366 * 100%);
+    margin-top: calc(40 / 1366 * 100cqi);
+    margin-left: calc(57 / 1366 * 100%);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: calc(24 / 1366 * 100cqi);
+  }
+
+  .inspire-card {
+    height: calc(600 / 1366 * 100cqi);
+    min-height: 0;
+    padding: calc(27 / 1366 * 100cqi) calc(16 / 1366 * 100cqi) calc(24 / 1366 * 100cqi);
+    overflow: visible;
+    border-radius: calc(32 / 1366 * 100cqi);
+  }
+
+  .inspire-card-header {
+    gap: calc(16 / 1366 * 100cqi);
+    min-height: calc(37 / 1366 * 100cqi);
+  }
+
+  .inspire-card-icon {
+    width: calc(44 / 1366 * 100cqi);
+    height: calc(37 / 1366 * 100cqi);
+  }
+
+  .inspire-card-icon-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .inspire-card-category {
+    font-size: calc(16 / 1366 * 100cqi);
+    line-height: calc(24 / 1366 * 100cqi);
+    letter-spacing: calc(0.32 / 1366 * 100cqi);
+  }
+
+  .inspire-card-media {
+    height: calc(208 / 1366 * 100cqi);
+    margin-top: calc(26 / 1366 * 100cqi);
+    border-radius: calc(16 / 1366 * 100cqi);
+  }
+
+  .inspire-card-title {
+    margin-top: calc(22 / 1366 * 100cqi);
+    flex-shrink: 0;
+    font-size: calc(20 / 1366 * 100cqi);
+    line-height: calc(28 / 1366 * 100cqi);
+    letter-spacing: calc(0.4 / 1366 * 100cqi);
+    white-space: pre-line;
+  }
+
+  .inspire-card-rule {
+    width: calc(48 / 1366 * 100cqi);
+    height: calc(4 / 1366 * 100cqi);
+    margin-top: calc(10 / 1366 * 100cqi);
+  }
+
+  .inspire-card-desc {
+    margin-top: calc(10 / 1366 * 100cqi);
+    min-height: 0;
+    font-size: calc(16 / 1366 * 100cqi);
+    line-height: calc(20 / 1366 * 100cqi);
+    letter-spacing: calc(0.32 / 1366 * 100cqi);
+  }
+
+  .inspire-card-cta {
+    align-self: center;
+    width: calc(317 / 1366 * 100cqi);
+    height: calc(48 / 1366 * 100cqi);
+    margin-top: auto;
+    margin-bottom: 0;
+    border-radius: calc(32 / 1366 * 100cqi);
+    font-size: calc(16 / 1366 * 100cqi);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

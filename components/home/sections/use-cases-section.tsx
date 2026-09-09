@@ -1,24 +1,24 @@
-import { SectionHeading } from "@/components/ui/section-heading";
-import { PageContainer } from "@/components/ui/layout";
-
 import { UseCaseCard } from "../cards/use-case-card";
 import { useCaseCards } from "../content/use-cases";
 
 export function UseCasesSection() {
   return (
-    <section id="casos-de-uso" className="pb-16 pt-2">
-      <PageContainer className="lg:px-[57px]">
-        <SectionHeading
-          title="Inspírese con lo que puede lograr"
-          description="Historias reales de negocio que puede hacer realidad. Elija la que más se parezca a su idea y descubra cómo darle vida."
-        />
+    <section id="casos-de-uso" className="inspire-section">
+      <div className="inspire-frame">
+        <div className="inspire-header">
+          <h2 className="inspire-title">Inspírese con lo que puede lograr</h2>
+          <p className="inspire-subtitle">
+            Historias reales de negocio que puede hacer realidad. Elija la que más se parezca a su idea y descubra cómo
+            darle vida.
+          </p>
+        </div>
 
-        <div className="mt-10 grid gap-[14px] md:grid-cols-2 xl:grid-cols-3">
-          {useCaseCards.map((card, index) => (
-            <UseCaseCard key={card.title} card={card} highlightWarmMedia={card.mediaTone === "warm" && index === 0} />
+        <div className="inspire-grid">
+          {useCaseCards.map((card) => (
+            <UseCaseCard key={card.title} card={card} />
           ))}
         </div>
-      </PageContainer>
+      </div>
     </section>
   );
 }
