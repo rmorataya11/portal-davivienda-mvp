@@ -12,12 +12,20 @@ function WhyBackgroundBands() {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <g stroke="#5A656C" strokeOpacity="0.28" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M1180 -90C1420 40 1485 250 1325 455" strokeWidth="78" />
-        <path d="M1115 -70C1385 70 1455 270 1270 460" strokeWidth="78" />
-        <path d="M-90 430C40 640 290 760 560 620" strokeWidth="78" />
-        <path d="M-70 500C80 690 320 790 580 655" strokeWidth="78" />
-      </g>
+      {/* Sustracción 1 — 483.45×284.64, esquina superior derecha */}
+      <path
+        d="M923 40A443 245 0 0 1 1326 245"
+        stroke="#2A3239"
+        strokeWidth="80"
+        strokeLinecap="round"
+      />
+      {/* Sustracción 2 — 329×154, esquina inferior izquierda */}
+      <path
+        d="M29 587A300 125 0 0 1 300 683"
+        stroke="#2A3239"
+        strokeWidth="58"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
