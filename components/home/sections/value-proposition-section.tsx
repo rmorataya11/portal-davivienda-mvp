@@ -2,23 +2,42 @@ import { TallValueCard } from "../cards/tall-value-card";
 import { WideValueCard } from "../cards/wide-value-card";
 import { valueCards } from "../content/value-proposition";
 
+function WhyBackgroundBands() {
+  return (
+    <svg
+      className="why-bands"
+      viewBox="0 0 1366 712"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <g stroke="#5A656C" strokeOpacity="0.28" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M1180 -90C1420 40 1485 250 1325 455" strokeWidth="78" />
+        <path d="M1115 -70C1385 70 1455 270 1270 460" strokeWidth="78" />
+        <path d="M-90 430C40 640 290 760 560 620" strokeWidth="78" />
+        <path d="M-70 500C80 690 320 790 580 655" strokeWidth="78" />
+      </g>
+    </svg>
+  );
+}
+
 export function ValuePropositionSection() {
   const [firstCard, secondCard, thirdCard, fourthCard] = valueCards;
 
   return (
-    <section className="pb-16">
-      <div className="dark-orbit relative mx-auto w-full max-w-[1366px] overflow-hidden bg-[#141F25] px-6 py-10 sm:px-8 sm:py-12 lg:px-14 lg:py-14">
-        <div>
-          <p className="text-[24px] leading-7 font-normal tracking-[0.48px] text-white">Por qué Davivienda</p>
-          <h2 className="mt-3 max-w-[741px] text-[28px] leading-8 font-bold tracking-[0.64px] text-white sm:text-[32px]">
-            Pensado para acompañar a su negocio
-          </h2>
+    <section className="why-section">
+      <div className="why-frame">
+        <WhyBackgroundBands />
+        <div className="why-header">
+          <p className="why-eyebrow">Por qué Davivienda</p>
+          <h2 className="why-subtitle">Pensado para acompañar a su negocio</h2>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-[18px] md:grid-cols-2 lg:grid-cols-[1fr_1fr_2fr] lg:grid-rows-[minmax(188px,auto)_minmax(188px,auto)]">
+        <div className="why-grid">
           <TallValueCard card={firstCard} />
           <TallValueCard card={secondCard} />
-          <div className="grid gap-[18px] md:col-span-2 md:grid-cols-2 lg:col-span-1 lg:row-span-2 lg:grid-cols-1 lg:grid-rows-[minmax(188px,1fr)_minmax(188px,1fr)]">
+          <div className="why-wide-col">
             <WideValueCard card={thirdCard} />
             <WideValueCard card={fourthCard} />
           </div>
