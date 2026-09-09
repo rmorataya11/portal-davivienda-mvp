@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import Link from "next/link";
 
+import { DaviviendaLogo } from "@/components/home/shared/davivienda-logo";
+
 import { LoginForm } from "./login-form";
 
 const loginHighlights = [
@@ -15,7 +17,10 @@ export function LoginPage() {
       <section className="flex min-h-screen items-center justify-center px-4 py-6 sm:px-6 sm:py-8">
         <div className="mx-auto w-full max-w-[420px] overflow-hidden rounded-[24px] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.08)] lg:grid lg:max-w-[920px] lg:grid-cols-[0.9fr_1.1fr] lg:rounded-[28px]">
           <div className="border-b border-[#E7EAEE] bg-white px-5 py-5 text-[#141F25] sm:px-6 sm:py-5 lg:hidden">
-            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8E8E8E]">Developers</p>
+            <Link href="/" className="inline-flex items-center">
+              <DaviviendaLogo variant="auth" />
+            </Link>
+            <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#E1251B]">Developers</p>
             <p className="mt-2 text-[18px] font-bold leading-6 tracking-[0.15px]">
               Nos encanta acompañar a quienes se atreven a crear.
             </p>
@@ -27,11 +32,8 @@ export function LoginPage() {
             <div className="pointer-events-none absolute -right-12 bottom-[-70px] h-[180px] w-[180px] rounded-full border border-[#E7EAEE]" />
 
             <div className="relative">
-              <Link
-                href="/"
-                className="inline-flex h-9 items-center rounded-[8px] border border-[#E7EAEE] bg-[#F8F9FB] px-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[#404040] transition-colors hover:bg-[#F2F3F5]"
-              >
-                logo
+              <Link href="/" className="inline-flex items-center">
+                <DaviviendaLogo variant="auth" />
               </Link>
               <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.28em] text-[#E1251B]">Developers</p>
             </div>
