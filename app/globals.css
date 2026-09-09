@@ -100,6 +100,12 @@ a {
   pointer-events: none;
 }
 
+.why-boomerang {
+  position: absolute;
+  height: auto;
+  user-select: none;
+}
+
 .why-eyebrow,
 .why-subtitle {
   margin: 0;
@@ -283,6 +289,21 @@ a {
     inset: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+  }
+
+  .why-boomerang-tr {
+    top: -2%;
+    right: -4%;
+    width: calc(620 / 1366 * 100%);
+    transform: rotate(18deg);
+  }
+
+  .why-boomerang-bl {
+    bottom: 2%;
+    left: -2%;
+    width: calc(460 / 1366 * 100%);
+    transform: rotate(198deg);
   }
 
   .why-header {

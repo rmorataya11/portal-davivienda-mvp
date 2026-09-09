@@ -4,29 +4,18 @@ import { valueCards } from "../content/value-proposition";
 
 function WhyBackgroundBands() {
   return (
-    <svg
-      className="why-bands"
-      viewBox="0 0 1366 712"
-      preserveAspectRatio="xMidYMid slice"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* Sustracción 1 — 483.45×284.64, esquina superior derecha */}
-      <path
-        d="M923 40A443 245 0 0 1 1326 245"
-        stroke="#2A3239"
-        strokeWidth="80"
-        strokeLinecap="round"
+    <div className="why-bands" aria-hidden="true">
+      <img
+        src="/why-boomerang.png"
+        alt=""
+        className="why-boomerang why-boomerang-tr"
       />
-      {/* Sustracción 2 — 329×154, esquina inferior izquierda */}
-      <path
-        d="M29 587A300 125 0 0 1 300 683"
-        stroke="#2A3239"
-        strokeWidth="58"
-        strokeLinecap="round"
+      <img
+        src="/why-boomerang.png"
+        alt=""
+        className="why-boomerang why-boomerang-bl"
       />
-    </svg>
+    </div>
   );
 }
 
