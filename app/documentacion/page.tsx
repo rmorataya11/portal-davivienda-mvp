@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { DocsPage } from "@/components/docs/docs-page";
 
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function DocumentationRoute() {
-  return <DocsPage />;
+  return (
+    <Suspense>
+      <DocsPage />
+    </Suspense>
+  );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
 import { SectionContainer } from "@/components/ui/layout";
@@ -8,6 +9,7 @@ import {
   defaultDocsEndpointId,
   docsApis,
   docsBreadcrumbLabel,
+  findDocsApi,
   findDocsEndpoint,
   type DocsEndpoint,
   type DocsHttpMethod,
@@ -45,10 +47,24 @@ function methodBadgeClass(method: DocsHttpMethod) {
   return "bg-[#EFFCF5] text-[#347659]";
 }
 
+function docsStateFromApiQuery(apiParam: string | null) {
+  const matchedApi = apiParam ? findDocsApi(apiParam) : undefined;
+  const firstEndpoint = matchedApi?.endpoints[0];
+
+  return {
+    query: matchedApi?.apiName ?? "",
+    openTabIds: firstEndpoint ? [firstEndpoint.id] : defaultDocsEndpointId ? [defaultDocsEndpointId] : [],
+    activeTabId: firstEndpoint?.id ?? defaultDocsEndpointId,
+  };
+}
+
 export function DocsPage() {
-  const [query, setQuery] = useState("");
-  const [openTabIds, setOpenTabIds] = useState<string[]>(() => (defaultDocsEndpointId ? [defaultDocsEndpointId] : []));
-  const [activeTabId, setActiveTabId] = useState(defaultDocsEndpointId);
+  const searchParams = useSearchParams();
+  const apiFromQuery = searchParams.get("api");
+  const initialDocsState = docsStateFromApiQuery(apiFromQuery);
+  const [query, setQuery] = useState(initialDocsState.query);
+  const [openTabIds, setOpenTabIds] = useState<string[]>(initialDocsState.openTabIds);
+  const [activeTabId, setActiveTabId] = useState(initialDocsState.activeTabId);
   const [expandedApis, setExpandedApis] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(docsApis.map((api) => [api.apiId, true])),
   );
@@ -96,6 +112,23 @@ export function DocsPage() {
       return next;
     });
   }
+
+  useEffect(() => {
+    if (!apiFromQuery) {
+      return;
+    }
+
+    const matchedApi = findDocsApi(apiFromQuery);
+    if (!matchedApi) {
+      return;
+    }
+
+    const next = docsStateFromApiQuery(apiFromQuery);
+    setQuery(next.query);
+    setExpandedApis((current) => ({ ...current, [matchedApi.apiId]: true }));
+    setOpenTabIds(next.openTabIds);
+    setActiveTabId(next.activeTabId);
+  }, [apiFromQuery]);
 
   useEffect(() => {
     if (!mobileSidebarOpen) {

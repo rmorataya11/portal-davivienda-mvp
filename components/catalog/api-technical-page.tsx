@@ -22,8 +22,8 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
             </h1>
             <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
             <p className="mt-4 max-w-[820px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
-              Acceda a la consola visual de endpoints, ejemplos de request/response y criterios técnicos para avanzar
-              hacia una integración más realista.
+              Resumen de cabeceras, endpoints principales y un execute de prueba. El detalle exhaustivo está en
+              Documentación.
             </p>
             <ContractingRequestLink
               href={`/solicitud-contratacion?producto=${api.slug}`}
@@ -40,11 +40,9 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
           <TechnicalAccessGate api={api}>
             <DetailSectionCard eyebrow="Técnico" title="Detalle técnico de esta API">
               <TechnicalTabs
+                description={api.description}
                 authentication={api.authentication}
-                requirements={api.requirements}
                 endpoints={api.endpoints}
-                sampleRequest={api.sampleRequest}
-                sampleResponse={api.sampleResponse}
                 errors={api.errors}
                 slug={api.slug}
                 apiName={api.name}

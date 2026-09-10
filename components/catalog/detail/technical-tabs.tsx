@@ -1,169 +1,93 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 
-import type { ApiDetail, ApiEndpoint, ApiError } from "../content/apis";
+import type { ApiDetail, ApiError } from "../content/apis";
+import { CompactEndpointPlayground } from "./compact-endpoint-playground";
 import { CredentialsPanel } from "./credentials-panel";
-import { EndpointPlayground } from "./endpoint-playground";
-
-type TabId = "overview" | "endpoints" | "request" | "response" | "errors" | "credentials";
 
 type TechnicalTabsProps = {
+  description: string;
   authentication: ApiDetail["authentication"];
-  requirements: string[];
-  endpoints: ApiEndpoint[];
-  sampleRequest: string;
-  sampleResponse: string;
+  endpoints: ApiDetail["endpoints"];
   errors: ApiError[];
   slug?: string;
   apiName?: string;
 };
 
-function CopyButton({ content }: { content: string }) {
-  const [copied, setCopied] = useState(false);
-
-  async function handleCopy() {
-    await navigator.clipboard.writeText(content);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={handleCopy}
-      className="inline-flex h-9 items-center justify-center rounded-full border border-white/14 px-4 text-[13px] font-medium text-white transition-all duration-300 hover:bg-white/8"
-    >
-      {copied ? "Copiado" : "Copiar"}
-    </button>
-  );
-}
-
-function CodePanel({ title, code }: { title: string; code: string }) {
-  return (
-    <div className="overflow-hidden rounded-[24px] border border-[#141F25] bg-[linear-gradient(180deg,#141F25_0%,#1D2930_100%)] shadow-[0_20px_46px_rgba(20,31,37,0.18)]">
-      <div className="flex items-center justify-between gap-4 border-b border-white/10 px-6 py-4">
-        <div className="text-[12px] font-medium uppercase tracking-[0.24em] text-white/68">{title}</div>
-        <CopyButton content={code} />
-      </div>
-      <pre className="overflow-x-auto px-6 py-6 text-[14px] leading-7 text-white">
-        <code>{code}</code>
-      </pre>
-    </div>
-  );
-}
-
-function ErrorCard({ error }: { error: ApiError }) {
-  return (
-    <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5">
-      <div className="flex items-center gap-3">
-        <span className="inline-flex h-10 min-w-10 items-center justify-center rounded-full bg-[#F2F3F5] px-3 text-[14px] font-bold text-[#404040]">
-          {error.code}
-        </span>
-        <h3 className="text-[18px] font-medium tracking-[0.24px] text-[#30383F]">{error.title}</h3>
-      </div>
-      <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">{error.description}</p>
-    </div>
-  );
+function commonErrors(errors: ApiError[]) {
+  const highlighted = errors.filter((error) => error.code === "401" || error.code === "429");
+  return highlighted.length > 0 ? highlighted : errors.slice(0, 2);
 }
 
 export function TechnicalTabs({
+  description,
   authentication,
-  requirements,
   endpoints,
-  sampleRequest,
-  sampleResponse,
   errors,
   slug,
   apiName,
 }: TechnicalTabsProps) {
-  const [activeTab, setActiveTab] = useState<TabId>("overview");
-
-  const tabs: Array<{ id: TabId; label: string }> = [
-    { id: "overview", label: "Overview" },
-    { id: "endpoints", label: "Endpoints" },
-    { id: "request", label: "Request" },
-    { id: "response", label: "Response" },
-    { id: "errors", label: "Errores" },
-    { id: "credentials", label: "Credenciales" },
-  ];
+  const summaryErrors = commonErrors(errors);
+  const docsHref = slug ? `/documentacion?api=${slug}` : "/documentacion";
 
   return (
-    <div className="rounded-[28px] bg-white px-6 py-6 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
-      <div className="flex flex-wrap gap-2">
-        {tabs.map((tab) => {
-          const isActive = tab.id === activeTab;
+    <div className="space-y-8">
+      <section>
+        <h3 className="text-[20px] font-bold tracking-[0.24px] text-[#30383F]">{apiName ?? "Esta API"}</h3>
+        <p className="mt-3 max-w-[720px] text-[16px] leading-7 text-[#6A7178]">{description}</p>
 
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`inline-flex h-11 items-center justify-center rounded-full px-5 text-[14px] font-medium transition-all duration-300 ease-out ${
-                isActive
-                  ? "bg-[#202A31] text-white shadow-[0_12px_28px_rgba(20,31,37,0.14)]"
-                  : "bg-[#F3F5F7] text-[#5F676E] hover:-translate-y-0.5 hover:bg-[#EAEDF0] hover:text-[#30383F]"
-              }`}
+        <h4 className="mt-6 text-[14px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">Cabeceras clave</h4>
+        <ul className="mt-3 grid gap-2 sm:grid-cols-3">
+          {authentication.headers.map((header) => (
+            <li
+              key={header}
+              className="rounded-[14px] border border-[#E3E7EC] bg-[#F8F9FB] px-4 py-3 font-mono text-[13px] text-[#404040]"
             >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
+              {header}
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <div className="mt-8">
-        {activeTab === "overview" ? (
-          <div className="grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
-            <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-              <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">Autenticación y seguridad</h3>
-              <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">{authentication.description}</p>
+      <section>
+        <h3 className="text-[20px] font-bold tracking-[0.24px] text-[#30383F]">Endpoints principales</h3>
+        <p className="mt-2 text-[14px] leading-6 text-[#8E8E8E]">Resumen de los flujos más usados. El detalle completo está en Documentación.</p>
+        <div className="mt-4">
+          <CompactEndpointPlayground endpoints={endpoints} />
+        </div>
+      </section>
 
-              <h4 className="mt-8 text-[18px] font-medium tracking-[0.24px] text-[#30383F]">Cabeceras clave</h4>
-              <ul className="mt-4 space-y-3">
-                {authentication.headers.map((header) => (
-                  <li
-                    key={header}
-                    className="rounded-[16px] border border-[#E3E7EC] bg-white px-4 py-3 font-mono text-[14px] text-[#404040]"
-                  >
-                    {header}
-                  </li>
-                ))}
-              </ul>
+      <section>
+        <h3 className="text-[20px] font-bold tracking-[0.24px] text-[#30383F]">Errores frecuentes</h3>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {summaryErrors.map((error) => (
+            <div key={error.code} className="rounded-[16px] border border-[#E3E7EC] bg-[#F8F9FB] px-4 py-4">
+              <p className="text-[14px] font-bold text-[#30383F]">
+                {error.code} · {error.title}
+              </p>
+              <p className="mt-1 text-[14px] leading-6 text-[#6A7178]">{error.description}</p>
             </div>
+          ))}
+        </div>
+      </section>
 
-            <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-              <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">Antes de integrar</h3>
-              <ul className="mt-4 space-y-4">
-                {requirements.map((item) => (
-                  <li key={item} className="flex gap-3 text-[16px] leading-7 tracking-[0.24px] text-[#3C444B]">
-                    <span className="mt-[11px] h-2.5 w-2.5 shrink-0 rounded-full bg-[#E1251B]" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {slug ? (
+        <section>
+          <h3 className="text-[20px] font-bold tracking-[0.24px] text-[#30383F]">Credenciales de sandbox</h3>
+          <div className="mt-4">
+            <CredentialsPanel slug={slug} apiName={apiName ?? "esta API"} />
           </div>
-        ) : null}
+        </section>
+      ) : null}
 
-        {activeTab === "endpoints" ? (
-          <EndpointPlayground endpoints={endpoints} />
-        ) : null}
-
-        {activeTab === "request" ? <CodePanel title="Request de ejemplo" code={sampleRequest} /> : null}
-
-        {activeTab === "response" ? <CodePanel title="Response de ejemplo" code={sampleResponse} /> : null}
-
-        {activeTab === "errors" ? (
-          <div className="grid gap-4 xl:grid-cols-2">
-            {errors.map((error) => (
-              <ErrorCard key={error.code} error={error} />
-            ))}
-          </div>
-        ) : null}
-
-        {activeTab === "credentials" && slug ? (
-          <CredentialsPanel slug={slug} apiName={apiName ?? "esta API"} />
-        ) : null}
+      <div className="border-t border-[#E7EAEE] pt-6">
+        <Link
+          href={docsHref}
+          className="inline-flex items-center text-[15px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
+        >
+          Ver documentación completa de esta API →
+        </Link>
       </div>
     </div>
   );
