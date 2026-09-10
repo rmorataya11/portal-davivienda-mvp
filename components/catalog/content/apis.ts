@@ -149,7 +149,11 @@ const tesoreria: ApiDetail = {
     "Automatice conciliaciones y reduzca pasos manuales en sus procesos internos.",
     "Integre información de tesorería en ERPs, dashboards y flujos operativos.",
   ],
-  useCases: ["Monitoreo de movimientos para conciliación automática."],
+  useCases: [
+    "Consultar movimientos de una cuenta empresarial por NIT.",
+    "Consultar movimientos en un rango de fechas (fechaInicial y fechaFinal).",
+    "Filtrar movimientos por moneda y paginar los resultados.",
+  ],
   requirements: [
     "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
     "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
