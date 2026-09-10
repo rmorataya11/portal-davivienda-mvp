@@ -16,7 +16,9 @@ export function CreateAppForm() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [productSlugs, setProductSlugs] = useState<string[]>(lockedProduct ? [lockedProduct.slug] : []);
+  const [productSlugs, setProductSlugs] = useState<string[]>(
+    lockedProduct ? [lockedProduct.slug] : apiCatalogItems.map((item) => item.slug),
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 

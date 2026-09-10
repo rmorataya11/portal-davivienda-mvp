@@ -43,7 +43,7 @@ export function CatalogBrowser() {
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <label className="flex h-10 w-full items-center rounded-full border border-[#8E8E8E] bg-white px-4 text-[#8E8E8E] transition-colors duration-300 focus-within:border-[#404040] hover:border-[#404040] sm:w-[408px]">
+        <label className="flex h-10 w-full items-center rounded-full border border-[#707070] bg-white px-4 text-[#8E8E8E] sm:w-[408px]">
           <span className="sr-only">Filtrar catálogo</span>
           <input
             type="search"
@@ -61,10 +61,10 @@ export function CatalogBrowser() {
               key={item}
               type="button"
               onClick={() => setCategory(item)}
-              className={`inline-flex h-10 items-center justify-center rounded-[32px] border px-5 text-sm font-medium transition-all duration-300 ease-out ${
+              className={`inline-flex h-10 items-center justify-center rounded-[32px] border px-5 text-sm font-medium transition-colors duration-300 ${
                 isActive
-                  ? "border-[#404040] bg-[#404040] text-white"
-                  : "border-[#404040] bg-white text-[#404040] hover:-translate-y-0.5 hover:border-[#2C2C2C] hover:bg-[#404040] hover:text-white hover:shadow-[0_12px_24px_rgba(20,31,37,0.08)]"
+                  ? "border-[#707070] bg-[#404040] text-white"
+                  : "border-[#707070] bg-white text-[#404040] hover:bg-[#404040] hover:text-white"
               }`}
             >
               {item}

@@ -140,7 +140,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                 <div className="grid gap-4">
                   {[
                     "Solicite acceso y configure las credenciales del ambiente inicial.",
-                    "Valide saldos y movimientos en Sandbox usando los endpoints base.",
+                    "Valide la consulta de movimientos en Sandbox con POST /conciliacion/bancaempresa/movimientos/.",
                     "Integre trazabilidad, monitoreo y paso controlado a Producción.",
                   ].map((step, index) => (
                     <div

@@ -16,8 +16,12 @@ type TechnicalTabsProps = {
 };
 
 function commonErrors(errors: ApiError[]) {
-  const highlighted = errors.filter((error) => error.code === "401" || error.code === "429");
-  return highlighted.length > 0 ? highlighted : errors.slice(0, 2);
+  const preferredCodes = ["401", "400", "429"];
+  const highlighted = preferredCodes
+    .map((code) => errors.find((error) => error.code === code))
+    .filter((error): error is ApiError => Boolean(error));
+
+  return (highlighted.length > 0 ? highlighted : errors).slice(0, 2);
 }
 
 export function TechnicalTabs({

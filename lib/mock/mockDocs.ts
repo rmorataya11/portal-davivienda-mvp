@@ -218,22 +218,8 @@ function toFileName(endpoint: ApiEndpoint): string {
   const method = endpoint.method.toLowerCase();
 
   switch (endpoint.path) {
-    case "/treasury/v1/balances":
-      return `consultar-saldo.${method}`;
-    case "/treasury/v1/movements":
-      return `consultar-movimientos.${method}`;
-    case "/treasury/v1/reports":
-      return `solicitar-reportes.${method}`;
-    case "/payments/v1/charges":
-      return `procesar-cobro.${method}`;
-    case "/payments/v1/charges/{chargeId}":
-      return `consultar-cobro.${method}`;
-    case "/payments/v1/refunds":
-      return `solicitar-reembolso.${method}`;
-    case "/accounts/v1/validate":
-      return `validar-cuenta.${method}`;
-    case "/accounts/v1/validate/{validationId}":
-      return `consultar-validacion.${method}`;
+    case "/conciliacion/bancaempresa/movimientos/":
+      return "consulta-movimientos";
     default: {
       const segment = endpoint.path.split("/").filter((part) => part && !part.startsWith("{")).at(-1) ?? "endpoint";
       return `${segment}.${method}`;
@@ -280,11 +266,6 @@ function buildResponseExamples(endpoint: ApiEndpoint): DocsResponseExample[] {
     },
   ];
 
-  const hasPathId = endpoint.path.includes("{");
-  const isLookup = endpoint.method === "GET" && hasPathId;
-  const refundsRelatedResource = endpoint.path.includes("/refunds");
-  const readsAccount = endpoint.path.includes("/balances") || endpoint.path.includes("/movements");
-
   examples.push({
     status: 400,
     label: "400 Bad Request",
@@ -292,9 +273,7 @@ function buildResponseExamples(endpoint: ApiEndpoint): DocsResponseExample[] {
     body: problemDetails(
       400,
       "Solicitud inválida",
-      endpoint.method === "GET"
-        ? "Falta un parámetro requerido o el valor enviado no es válido para esta consulta."
-        : "El cuerpo de la solicitud está incompleto o no cumple el formato esperado.",
+      "Falta nit, fechaInicial, fechaFinal o paginacion, o el rango de fechas no es válido.",
       instance,
       "invalid-request",
     ),
@@ -312,25 +291,6 @@ function buildResponseExamples(endpoint: ApiEndpoint): DocsResponseExample[] {
       "unauthorized",
     ),
   });
-
-  if (isLookup || refundsRelatedResource || readsAccount) {
-    examples.push({
-      status: 404,
-      label: "404 Not Found",
-      kind: "error",
-      body: problemDetails(
-        404,
-        "Recurso no encontrado",
-        isLookup
-          ? "No existe un recurso con el identificador indicado."
-          : refundsRelatedResource
-            ? "No se encontró el cobro asociado a esta solicitud de reembolso."
-            : "No se encontró la cuenta indicada en accountId.",
-        instance,
-        "not-found",
-      ),
-    });
-  }
 
   if (endpoint.method === "POST") {
     examples.push({

@@ -20,18 +20,8 @@ function methodClasses(method: ApiEndpoint["method"]) {
   return "bg-[#EFFCF5] text-[#347659]";
 }
 
-const featuredPaths = ["/treasury/v1/balances", "/treasury/v1/movements"];
-
 export function selectSummaryEndpoints(endpoints: ApiEndpoint[]) {
-  const preferred = featuredPaths
-    .map((path) => endpoints.find((endpoint) => endpoint.path === path))
-    .filter((endpoint): endpoint is ApiEndpoint => Boolean(endpoint));
-
-  if (preferred.length >= 2) {
-    return preferred.slice(0, 3);
-  }
-
-  return endpoints.slice(0, 3);
+  return endpoints.slice(0, 1);
 }
 
 function keyParameters(endpoint: ApiEndpoint) {
