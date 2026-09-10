@@ -1,10 +1,9 @@
 import { ContractingRequestLink } from "@/components/contracting/contracting-request-link";
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
-import { SectionContainer } from "@/components/ui/layout";
+import { SectionContainer, SurfaceCard } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
-import { DetailSectionCard } from "./detail/detail-primitives";
 import { TechnicalAccessGate } from "./detail/technical-access-gate";
 import { TechnicalTabs } from "./detail/technical-tabs";
 
@@ -15,15 +14,13 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
 
       <section className="pt-4 pb-8">
         <SectionContainer>
-          <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
+          <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-5 sm:px-8 sm:py-6">
             <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Detalle técnico</p>
-            <h1 className="mt-4 text-[26px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[36px] lg:text-[44px]">
+            <h1 className="mt-3 text-[24px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[32px]">
               Explore la integración de {api.name}
             </h1>
-            <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
-            <p className="mt-4 max-w-[820px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
-              Resumen de cabeceras, endpoints principales y un execute de prueba. El detalle exhaustivo está en
-              Documentación.
+            <p className="mt-3 max-w-[720px] text-[15px] leading-7 tracking-[0.24px] text-[#6A7178]">
+              Cabeceras, endpoint de prueba y credenciales. El detalle exhaustivo está en Documentación.
             </p>
             <ContractingRequestLink
               href={`/solicitud-contratacion?producto=${api.slug}`}
@@ -38,7 +35,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
       <section className="pb-16">
         <SectionContainer>
           <TechnicalAccessGate api={api}>
-            <DetailSectionCard eyebrow="Técnico" title="Detalle técnico de esta API">
+            <SurfaceCard className="px-6 py-6 sm:px-8 sm:py-8">
               <TechnicalTabs
                 description={api.description}
                 authentication={api.authentication}
@@ -47,7 +44,7 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
                 slug={api.slug}
                 apiName={api.name}
               />
-            </DetailSectionCard>
+            </SurfaceCard>
           </TechnicalAccessGate>
         </SectionContainer>
       </section>
