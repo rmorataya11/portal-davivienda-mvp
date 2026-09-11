@@ -6,7 +6,6 @@ import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
 import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
-import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 
 import type { DocsResponseExample } from "@/lib/mock/mockDocs";
 
@@ -15,11 +14,9 @@ SyntaxHighlighter.registerLanguage("javascript", javascript);
 SyntaxHighlighter.registerLanguage("json", json);
 SyntaxHighlighter.registerLanguage("python", python);
 
-const editorTheme = {
-  ...vscDarkPlus,
+const daviviendaCodeTheme = {
   'pre[class*="language-"]': {
-    ...vscDarkPlus['pre[class*="language-"]'],
-    background: "#141F25",
+    background: "transparent",
     margin: 0,
     padding: 0,
     fontSize: "13px",
@@ -27,12 +24,24 @@ const editorTheme = {
     overflow: "visible",
   },
   'code[class*="language-"]': {
-    ...vscDarkPlus['code[class*="language-"]'],
     background: "transparent",
+    color: "#404040",
     fontSize: "13px",
     lineHeight: "1.65",
     textShadow: "none",
   },
+  comment: { color: "#8E8E8E" },
+  function: { color: "#E1251B" },
+  builtin: { color: "#E1251B" },
+  keyword: { color: "#8A4B00" },
+  string: { color: "#347659" },
+  number: { color: "#202A31" },
+  boolean: { color: "#8A4B00" },
+  null: { color: "#707070", fontStyle: "italic" },
+  property: { color: "#E1251B" },
+  operator: { color: "#707070" },
+  punctuation: { color: "#707070" },
+  variable: { color: "#404040" },
 };
 
 const languageTabs = [
@@ -65,7 +74,7 @@ function CopyButton({ content }: { content: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="inline-flex h-8 items-center justify-center rounded-full border border-white/14 px-3 text-[12px] font-medium text-white transition-all duration-300 hover:bg-white/8"
+      className="h-8 px-2 font-mono text-[11px] text-[#8E8E8E] transition-colors hover:text-[#404040]"
     >
       {copied ? "Copiado" : "Copiar"}
     </button>
@@ -83,9 +92,9 @@ export function DocsRequestCode({
   const code = activeTab.language === "json" ? prettyPrintJson(rawCode) : rawCode;
 
   return (
-    <div className="overflow-hidden rounded-[18px] border border-[#141F25] bg-[linear-gradient(180deg,#141F25_0%,#1D2930_100%)] shadow-[0_20px_46px_rgba(20,31,37,0.18)]">
-      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3 py-2 sm:px-4">
-        <div className="flex min-w-0 items-center gap-1 overflow-x-auto">
+    <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
+      <div className="flex h-12 items-center justify-between gap-3 bg-[#F2F3F5] px-4">
+        <div className="flex min-w-0 items-center gap-3 overflow-x-auto">
           {languageTabs.map((tab) => {
             const isActive = tab.id === language;
 
@@ -94,8 +103,8 @@ export function DocsRequestCode({
                 key={tab.id}
                 type="button"
                 onClick={() => setLanguage(tab.id)}
-                className={`inline-flex h-8 shrink-0 items-center rounded-full px-3 text-[12px] font-medium transition-colors duration-300 ${
-                  isActive ? "bg-white/12 text-white" : "text-white/62 hover:bg-white/8 hover:text-white"
+                className={`h-12 shrink-0 font-mono text-[12px] ${
+                  isActive ? "font-semibold text-[#404040]" : "text-[#8E8E8E] hover:text-[#404040]"
                 }`}
               >
                 {tab.label}
@@ -105,8 +114,8 @@ export function DocsRequestCode({
         </div>
         <CopyButton content={code} />
       </div>
-      <div className="overflow-x-auto px-4 py-4 sm:px-5">
-        <SyntaxHighlighter language={activeTab.language} style={editorTheme} wrapLongLines={false}>
+      <div className="overflow-x-auto px-4 py-4">
+        <SyntaxHighlighter language={activeTab.language} style={daviviendaCodeTheme} wrapLongLines={false}>
           {code}
         </SyntaxHighlighter>
       </div>
@@ -116,10 +125,10 @@ export function DocsRequestCode({
 
 export function DocsJsonCode({ code }: { code: string }) {
   return (
-    <div className="overflow-hidden rounded-[18px] border border-[#141F25] bg-[linear-gradient(180deg,#141F25_0%,#1D2930_100%)]">
-      <div className="overflow-x-auto px-4 py-4 sm:px-5">
-        <SyntaxHighlighter language="json" style={editorTheme} wrapLongLines={false}>
-          {code}
+    <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
+      <div className="overflow-x-auto px-4 py-4">
+        <SyntaxHighlighter language="json" style={daviviendaCodeTheme} wrapLongLines={false}>
+          {prettyPrintJson(code)}
         </SyntaxHighlighter>
       </div>
     </div>
@@ -128,18 +137,18 @@ export function DocsJsonCode({ code }: { code: string }) {
 
 function statusTabClass(example: DocsResponseExample, isActive: boolean) {
   if (!isActive) {
-    return "border-transparent text-white/55 hover:bg-white/8 hover:text-white/80";
+    return "text-[#8E8E8E] hover:text-[#404040]";
   }
 
   if (example.kind === "success") {
-    return "border-[#55B685] bg-[#55B685]/16 text-[#B7E4C7]";
+    return "font-semibold text-[#347659]";
   }
 
   if (example.status === 500) {
-    return "border-[#E1251B] bg-[#E1251B]/16 text-[#FFB4B0]";
+    return "font-semibold text-[#A11B1B]";
   }
 
-  return "border-[#C47B17] bg-[#C47B17]/16 text-[#F3D4A0]";
+  return "font-semibold text-[#C47B17]";
 }
 
 export function DocsStatusCode({ examples }: { examples: DocsResponseExample[] }) {
@@ -151,9 +160,9 @@ export function DocsStatusCode({ examples }: { examples: DocsResponseExample[] }
   }
 
   return (
-    <div className="overflow-hidden rounded-[18px] border border-[#141F25] bg-[linear-gradient(180deg,#141F25_0%,#1D2930_100%)]">
-      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3 py-2 sm:px-4">
-        <div className="flex min-w-0 items-center gap-1 overflow-x-auto">
+    <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
+      <div className="flex h-12 items-center justify-between gap-3 bg-[#F2F3F5] px-4">
+        <div className="flex min-w-0 items-center gap-3 overflow-x-auto">
           {examples.map((example) => {
             const isActive = example.status === active.status;
 
@@ -162,7 +171,7 @@ export function DocsStatusCode({ examples }: { examples: DocsResponseExample[] }
                 key={example.status}
                 type="button"
                 onClick={() => setActiveStatus(example.status)}
-                className={`inline-flex h-8 shrink-0 items-center rounded-full border px-3 font-mono text-[12px] font-medium transition-colors duration-300 ${statusTabClass(example, isActive)}`}
+                className={`h-12 shrink-0 font-mono text-[12px] ${statusTabClass(example, isActive)}`}
               >
                 {example.status}
               </button>
@@ -171,9 +180,9 @@ export function DocsStatusCode({ examples }: { examples: DocsResponseExample[] }
         </div>
         <CopyButton content={active.body} />
       </div>
-      <div className="overflow-x-auto px-4 py-4 sm:px-5">
-        <SyntaxHighlighter language="json" style={editorTheme} wrapLongLines={false}>
-          {active.body}
+      <div className="overflow-x-auto px-4 py-4">
+        <SyntaxHighlighter language="json" style={daviviendaCodeTheme} wrapLongLines={false}>
+          {prettyPrintJson(active.body)}
         </SyntaxHighlighter>
       </div>
     </div>

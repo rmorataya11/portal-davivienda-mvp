@@ -33,7 +33,7 @@ function methodIconClass(method: DocsHttpMethod) {
 
 function methodBadgeClass(method: DocsHttpMethod) {
   if (method === "POST") {
-    return "bg-[#141F25] text-white";
+    return "bg-[#E1251B] text-white";
   }
 
   if (method === "PUT") {
@@ -147,21 +147,12 @@ export function DocsPage() {
 
   return (
     <>
-      <section className="bg-white pt-6 pb-8 sm:pt-8 sm:pb-10">
+      <section className="pt-6 pb-16 sm:pb-20">
         <SectionContainer>
-          <h1 className="max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
+          <h1 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">
             Explore endpoints como en su editor
           </h1>
-          <p className="mt-4 max-w-[680px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178] sm:text-[18px] sm:leading-8">
-            Consulte rutas, parámetros y ejemplos de consulta de movimientos. El árbol de la izquierda abre el endpoint
-            en una pestaña, con el request y la respuesta de ejemplo.
-          </p>
-        </SectionContainer>
-      </section>
-
-      <section className="bg-[#F2F3F5] pb-16 pt-2 sm:pb-20">
-        <SectionContainer>
-          <div className="flex min-h-[640px] overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.06)] lg:h-[calc(100dvh-220px)] lg:min-h-[680px]">
+          <div className="flex min-h-[640px] overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white lg:h-[calc(100dvh-168px)] lg:min-h-[680px]">
             <aside
               className={`hidden shrink-0 overflow-hidden border-[#E7EAEE] bg-[#FAFBFC] transition-[width] duration-300 lg:flex ${
                 desktopSidebarOpen ? "w-[280px] border-r" : "w-0 border-r-0"
@@ -267,8 +258,7 @@ export function DocsPage() {
             onClick={() => setMobileSidebarOpen(false)}
           />
           <aside className="relative flex h-full w-[min(280px,86vw)] flex-col bg-[#FAFBFC] shadow-[0_18px_50px_rgba(20,31,37,0.18)]">
-            <div className="flex items-center justify-between border-b border-[#E7EAEE] px-3 py-3">
-              <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#6A7178]">Explorador</p>
+            <div className="flex items-center justify-end border-b border-[#E7EAEE] px-3 py-3">
               <button
                 type="button"
                 onClick={() => setMobileSidebarOpen(false)}
@@ -319,8 +309,7 @@ function ExplorerTree({
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div className="border-b border-[#E7EAEE] px-3 py-3">
-        <p className="hidden text-[12px] font-medium uppercase tracking-[0.22em] text-[#6A7178] lg:block">Explorador</p>
-        <label className="mt-3 flex h-10 items-center rounded-[12px] border border-[#E3E7EC] bg-white px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9]">
+        <label className="flex h-10 items-center rounded-[12px] border border-[#E3E7EC] bg-white px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9]">
           <SearchIcon />
           <span className="sr-only">Buscar endpoints</span>
           <input
@@ -407,10 +396,10 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         </code>
       </div>
 
-      <p className="mt-5 max-w-[760px] text-[15px] leading-7 text-[#6A7178]">{endpoint.description}</p>
+      <p className="mt-5 text-[15px] leading-7 text-[#707070]">{endpoint.description}</p>
 
-      <div className="mt-8">
-        <h2 className="text-[18px] font-medium text-[#202A31] sm:text-[20px]">Parámetros</h2>
+      <div className="mt-10">
+        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">Parámetros</h2>
         <div className="mt-3 overflow-x-auto rounded-[18px] border border-[#E7EAEE]">
           <table className="w-full min-w-[720px] border-collapse text-left">
             <colgroup>
@@ -457,21 +446,21 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         </div>
       </div>
 
-      <div className="mt-8">
-        <h2 className="text-[18px] font-medium text-[#202A31] sm:text-[20px]">Ejemplo de solicitud</h2>
+      <div className="mt-10">
+        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">Ejemplo de solicitud</h2>
         <div className="mt-3">
           <DocsRequestCode examples={endpoint.requestExamples} />
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-10">
         <button
           type="button"
           onClick={() => setResponseOpen((current) => !current)}
-          className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] bg-[#F7F8FA] px-4 py-3 text-left"
+          className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] bg-[#F8F9FB] px-4 py-3 text-left"
           aria-expanded={responseOpen}
         >
-          <span className="text-[16px] font-medium text-[#202A31]">Ejemplo de respuesta</span>
+          <span className="text-[16px] font-medium text-[#404040]">Ejemplo de respuesta</span>
           <ChevronIcon open={responseOpen} />
         </button>
         {responseOpen ? (

@@ -5,7 +5,7 @@ import { MarketplaceHeader } from "@/components/home/sections/marketplace-header
 
 export default function DocumentationLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/documentacion" />
       {children}
       <MarketplaceFooter />
