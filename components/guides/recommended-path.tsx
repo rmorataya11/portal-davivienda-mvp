@@ -18,7 +18,6 @@ const steps = [
     currentHref: "/crear-cuenta",
     currentLabel: "Crear cuenta →",
     doneLabel: "Completado",
-    icon: UserIcon,
   },
   {
     id: 2,
@@ -27,7 +26,6 @@ const steps = [
     currentHref: "/dashboard/apps/nueva",
     currentLabel: "Abrir consola →",
     doneLabel: "Completado",
-    icon: KeyIcon,
   },
   {
     id: 3,
@@ -36,7 +34,6 @@ const steps = [
     currentHref: "/guias/autenticacion-mtls-oauth",
     currentLabel: "Ver guía de seguridad →",
     doneLabel: "Completado",
-    icon: ShieldIcon,
   },
   {
     id: 4,
@@ -45,7 +42,6 @@ const steps = [
     currentHref: "/catalogo-apis",
     currentLabel: "Ver referencia →",
     doneLabel: "Completado",
-    icon: CallIcon,
   },
 ];
 
@@ -99,142 +95,76 @@ export function RecommendedPath() {
   }
 
   return (
-    <section id="ruta-recomendada" className="scroll-mt-36 bg-white py-10 sm:py-14">
+    <section id="ruta-recomendada" className="scroll-mt-36 pb-6">
       <SectionContainer>
+        <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-8">
         <p className="inline-flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#E1251B]">
           <BoltIcon />
           Ruta recomendada
         </p>
-        <h2 className="mt-3 text-[24px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[32px]">Su primera integración</h2>
-        <p className="mt-3 max-w-[560px] text-[15px] leading-7 text-[#6A7178] sm:text-[16px]">
-          Cuatro pasos en orden para pasar de cero a su primera llamada. Le acompañamos en cada uno.
+        <h2 className="mt-3 text-[24px] font-bold tracking-[0.2px] text-[#404040] sm:text-[28px]">Su primera integración</h2>
+        <p className="mt-2 max-w-[560px] text-[15px] leading-7 text-[#707070]">
+          Cuatro pasos en orden para pasar de cero a su primera llamada.
         </p>
 
-        <ol className="mt-8 flex items-center" aria-label="Progreso de la ruta recomendada">
+        <ol className="mt-6">
           {waiting
             ? [0, 1, 2, 3].map((index) => (
-                <li key={index} className="flex flex-1 items-center last:flex-none">
-                  <span className="block h-4 w-4 shrink-0 rounded-full bg-[#E7EAEE]" />
-                  {index < 3 ? <span className="mx-2 h-px min-w-4 flex-1 bg-[#E7EAEE] sm:mx-3" /> : null}
-                </li>
+                <li key={index} className="h-16 animate-pulse rounded-[16px] bg-[#F2F3F5] not-last:mb-3" />
               ))
             : steps.map((item, index) => {
-                const filled = states[index] !== "locked";
+                const state = states[index];
+                const locked = state === "locked";
+                const completedStep = state === "completed";
+                const current = state === "current";
+                const last = index === steps.length - 1;
 
                 return (
-                  <li key={item.id} className="flex flex-1 items-center last:flex-none">
-                    <span
-                      className={`block h-4 w-4 shrink-0 rounded-full ${
-                        filled ? "bg-[#E1251B]" : "border-2 border-[#E1251B] bg-white"
-                      }`}
-                      aria-current={states[index] === "current" ? "step" : undefined}
-                    >
-                      <span className="sr-only">
-                        Paso {item.id} de 4
-                        {states[index] === "current"
-                          ? ", actual"
-                          : states[index] === "completed"
-                            ? ", completado"
-                            : ", bloqueado"}
+                  <li key={item.id} className="flex gap-4">
+                    <div className="flex w-10 shrink-0 flex-col items-center">
+                      <span
+                        className={`inline-flex h-10 w-10 items-center justify-center rounded-full text-[13px] font-bold ${
+                          completedStep
+                            ? "bg-[#347659] text-white"
+                            : current
+                              ? "bg-[#E1251B] text-white"
+                              : "bg-[#F2F3F5] text-[#8E8E8E]"
+                        }`}
+                      >
+                        {completedStep ? <CheckIcon /> : String(item.id).padStart(2, "0")}
                       </span>
-                    </span>
-                    {index < steps.length - 1 ? (
-                      <span className="mx-2 h-px min-w-4 flex-1 bg-[#E7B8B5] sm:mx-3" aria-hidden="true" />
-                    ) : null}
+                      {last ? null : <span className="w-px flex-1 bg-[#E7EAEE]" />}
+                    </div>
+                    <div className={`min-w-0 flex-1 ${last ? "pb-0" : "pb-6"}`}>
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <h3 className={`text-[16px] font-bold tracking-[0.2px] ${locked ? "text-[#8E8E8E]" : "text-[#404040]"}`}>
+                            {item.title}
+                          </h3>
+                          <p className={`mt-1 text-[14px] leading-6 ${locked ? "text-[#B4B9BF]" : "text-[#707070]"}`}>
+                            {item.description}
+                          </p>
+                        </div>
+                        {completedStep ? (
+                          <p className="shrink-0 text-[13px] font-semibold text-[#347659]">{item.doneLabel}</p>
+                        ) : current ? (
+                          <Link
+                            href={item.currentHref}
+                            onClick={() => handleStepAction(item.id)}
+                            className="inline-flex h-10 shrink-0 items-center justify-center rounded-full bg-[#E1251B] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
+                          >
+                            {item.currentLabel}
+                          </Link>
+                        ) : (
+                          <p className="shrink-0 text-[13px] text-[#8E8E8E]">Siguiente</p>
+                        )}
+                      </div>
+                    </div>
                   </li>
                 );
               })}
         </ol>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {waiting
-            ? [0, 1, 2, 3].map((index) => (
-                <div key={index} className="h-52 animate-pulse rounded-[22px] bg-[#F2F3F5]" />
-              ))
-            : steps.map((item, index) => {
-            const Icon = item.icon;
-            const state = states[index];
-            const locked = state === "locked";
-            const completedStep = state === "completed";
-            const tone = locked ? "text-[#B4B9BF]" : "text-[#E1251B]";
-            const titleTone = locked ? "text-[#8E8E8E]" : "text-[#141F25]";
-            const bodyTone = locked ? "text-[#B4B9BF]" : "text-[#6A7178]";
-
-            return (
-              <article key={item.id} className="flex h-full flex-col rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-5">
-                <div className={`flex items-center gap-2 ${tone}`}>
-                  <Icon className="h-4 w-4" />
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em]">Paso {item.id} de 4</p>
-                </div>
-                <h3 className={`mt-4 text-[16px] font-bold leading-6 tracking-[0.2px] ${titleTone}`}>{item.title}</h3>
-                <p className={`mt-2 flex-1 text-[14px] leading-6 ${bodyTone}`}>{item.description}</p>
-                {locked ? (
-                  <p className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#C9CED4]">
-                    <LockIcon />
-                    {item.currentLabel}
-                  </p>
-                ) : completedStep ? (
-                  <p className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#347659]">
-                    <CheckIcon />
-                    {item.doneLabel}
-                  </p>
-                ) : (
-                  <Link
-                    href={item.currentHref}
-                    onClick={() => handleStepAction(item.id)}
-                    className="mt-4 inline-flex text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
-                  >
-                    {item.currentLabel}
-                  </Link>
-                )}
-              </article>
-            );
-          })}
         </div>
-
-        {waiting || user ? null : (
-          <div className="mt-6 flex flex-col gap-4 rounded-[22px] bg-[#FFF1F0] px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <div className="flex gap-3">
-              <span className="mt-0.5 text-[#E1251B]">
-                <LockIcon />
-              </span>
-              <div>
-                <p className="text-[15px] font-bold text-[#141F25]">Los pasos técnicos necesitan una sesión iniciada</p>
-                <p className="mt-1 text-[14px] leading-6 text-[#6A7178]">
-                  Cree su cuenta gratis y desbloquee las credenciales de Sandbox al instante.
-                </p>
-              </div>
-            </div>
-            <Link
-              href="/crear-cuenta"
-              className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
-            >
-              Crear cuenta
-            </Link>
-          </div>
-        )}
-
-        {!waiting && user && apps.length === 0 ? (
-          <div className="mt-6 flex flex-col gap-4 rounded-[22px] bg-[#FFF1F0] px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <div className="flex gap-3">
-              <span className="mt-0.5 text-[#E1251B]">
-                <LockIcon />
-              </span>
-              <div>
-                <p className="text-[15px] font-bold text-[#141F25]">El siguiente paso es crear una app en Sandbox</p>
-                <p className="mt-1 text-[14px] leading-6 text-[#6A7178]">
-                  Con la aplicación obtiene las credenciales y se desbloquea la guía de seguridad.
-                </p>
-              </div>
-            </div>
-            <Link
-              href="/dashboard/apps/nueva"
-              className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
-            >
-              Crear app
-            </Link>
-          </div>
-        ) : null}
       </SectionContainer>
     </section>
   );
@@ -248,15 +178,6 @@ function BoltIcon() {
   );
 }
 
-function LockIcon() {
-  return (
-    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
-      <rect x="3.2" y="7.2" width="9.6" height="6.4" rx="1.2" stroke="currentColor" strokeWidth="1.4" />
-      <path d="M5.2 7.2V5.4a2.8 2.8 0 0 1 5.6 0v1.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function CheckIcon() {
   return (
     <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
@@ -265,48 +186,3 @@ function CheckIcon() {
   );
 }
 
-function UserIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <circle cx="12" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.7" />
-      <path
-        d="M5.5 18.5c1.2-3 3.5-4.5 6.5-4.5s5.3 1.5 6.5 4.5"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function KeyIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <circle cx="8.5" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.7" />
-      <path d="M11.5 12h8.2m-2.4-2.2V12m0 0v2.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function ShieldIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path
-        d="M12 4 6 6.5v5.2c0 3.6 2.3 6.2 6 7.8 3.7-1.6 6-4.2 6-7.8V6.5L12 4Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function CallIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <path d="M5 12h9.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      <path d="M12 8.5 16.5 12 12 15.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="4.5" y="5" width="15" height="14" rx="2" stroke="currentColor" strokeWidth="1.7" />
-    </svg>
-  );
-}
