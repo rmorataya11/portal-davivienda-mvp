@@ -46,9 +46,9 @@ export function ProfilePasswordCard() {
   }
 
   return (
-    <section className="flex h-full flex-col rounded-[22px] border border-[#E7EAEE] bg-[#FCFCFD] px-5 py-6 sm:px-6">
-      <h3 className="text-[18px] font-bold tracking-[0.2px] text-[#141F25]">Cambiar contraseña</h3>
-      <p className="mt-2 text-[15px] leading-7 text-[#6A7178]">
+    <section className="flex h-full flex-col rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
+      <h3 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">Cambiar contraseña</h3>
+      <p className="mt-2 text-[15px] leading-7 text-[#707070]">
         Le enviaremos un enlace a {user?.email ?? "su correo"} para crear una nueva contraseña.
       </p>
       <div className="mt-auto pt-5">
@@ -56,7 +56,7 @@ export function ProfilePasswordCard() {
           type="button"
           onClick={handlePasswordReset}
           disabled={resetState === "sending" || !user?.email}
-          className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:translate-y-0 disabled:bg-[#C9CED4]"
+          className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
         >
           {resetState === "sending" ? "Enviando..." : "Cambiar contraseña"}
         </button>

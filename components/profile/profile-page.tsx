@@ -21,43 +21,41 @@ export function ProfilePage() {
 
   return (
     <div>
-      <h1 className="text-[28px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">Mi perfil</h1>
+      <h1 className="text-[28px] font-bold tracking-[0.3px] text-[#404040] sm:text-[36px]">Mi perfil</h1>
 
-      <div className="mt-8 rounded-[28px] bg-white px-5 py-6 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
-        <div className="flex flex-wrap gap-2">
-          {tabs.map((tab) => {
-            const isActive = tab.id === activeTab;
+      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-[#E7EAEE]">
+        {tabs.map((tab) => {
+          const isActive = tab.id === activeTab;
 
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`inline-flex h-11 items-center justify-center rounded-full px-5 text-[14px] font-medium transition-all duration-300 ease-out ${
-                  isActive
-                    ? "bg-[#202A31] text-white shadow-[0_12px_28px_rgba(20,31,37,0.14)]"
-                    : "bg-[#F3F5F7] text-[#5F676E] hover:-translate-y-0.5 hover:bg-[#EAEDF0] hover:text-[#30383F]"
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id)}
+              className={`h-11 shrink-0 border-b-2 px-4 text-[14px] font-medium transition-colors ${
+                isActive
+                  ? "border-[#E1251B] text-[#404040]"
+                  : "border-transparent text-[#8E8E8E] hover:text-[#404040]"
+              }`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
 
-        <div className="mt-8">
-          {activeTab === "datos" ? (
-            <div className="space-y-10">
-              <ProfileDataForm />
-              <div className="grid gap-4 border-t border-[#E7EAEE] pt-8 lg:grid-cols-2">
-                <ProfilePasswordCard />
-                <ProfileDangerZone />
-              </div>
+      <div className="mt-6">
+        {activeTab === "datos" ? (
+          <div className="space-y-5">
+            <ProfileDataForm />
+            <div className="grid gap-5 lg:grid-cols-2">
+              <ProfilePasswordCard />
+              <ProfileDangerZone />
             </div>
-          ) : null}
-          {activeTab === "solicitudes" ? <ProfileRequests /> : null}
-          {activeTab === "facturacion" ? <ProfileBilling /> : null}
-        </div>
+          </div>
+        ) : null}
+        {activeTab === "solicitudes" ? <ProfileRequests /> : null}
+        {activeTab === "facturacion" ? <ProfileBilling /> : null}
       </div>
     </div>
   );

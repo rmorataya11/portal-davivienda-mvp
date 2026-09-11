@@ -121,9 +121,9 @@ export function ProfileRequests() {
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-[22px] border border-[#E7EAEE] bg-[#FCFCFD] px-6 py-10 text-center">
-        <h3 className="text-[20px] font-bold text-[#141F25]">Sin solicitudes todavía</h3>
-        <p className="mx-auto mt-2 max-w-[440px] text-[15px] leading-7 text-[#6A7178]">
+      <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-10 text-center">
+        <h3 className="text-[20px] font-bold text-[#404040]">Sin solicitudes todavía</h3>
+        <p className="mx-auto mt-2 max-w-[440px] text-[15px] leading-7 text-[#707070]">
           Cuando envíe una solicitud de contratación, el folio y el estado aparecerán aquí.
         </p>
       </div>
@@ -131,7 +131,7 @@ export function ProfileRequests() {
   }
 
   return (
-    <div className="overflow-x-auto rounded-[22px] border border-[#E7EAEE]">
+    <div className="overflow-x-auto rounded-[24px] border border-[#E7EAEE] bg-white">
       <table className="min-w-full text-left text-[14px]">
         <thead className="bg-[#F8F9FB] text-[12px] font-medium uppercase tracking-[0.16em] text-[#8E8E8E]">
           <tr>

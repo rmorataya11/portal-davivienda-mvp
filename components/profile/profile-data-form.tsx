@@ -21,19 +21,6 @@ type ProfileSnapshot = {
   phone: string;
 };
 
-function formatLastSignIn(value?: string) {
-  if (!value) {
-    return "No disponible";
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return "No disponible";
-  }
-
-  return new Intl.DateTimeFormat("es-CO", { dateStyle: "medium", timeStyle: "short" }).format(date);
-}
-
 function identificationNumberCopy(idType: string) {
   if (idType === "nit") {
     return { label: "NIT", placeholder: "900123456-7" };
@@ -55,7 +42,11 @@ function identificationNumberCopy(idType: string) {
 }
 
 function SectionTitle({ children }: { children: ReactNode }) {
-  return <h3 className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#8E8E8E]">{children}</h3>;
+  return <h3 className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E]">{children}</h3>;
+}
+
+function ProfileCard({ children }: { children: ReactNode }) {
+  return <section className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">{children}</section>;
 }
 
 export function ProfileDataForm() {
@@ -298,11 +289,11 @@ export function ProfileDataForm() {
   }
 
   return (
-    <form className="space-y-8" noValidate onSubmit={handleSubmit}>
-      <section className="space-y-4">
+    <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+      <ProfileCard>
         <SectionTitle>Identidad</SectionTitle>
-        <div className="flex items-start gap-4">
-          <div className="pt-7">
+        <div className="mt-4 flex items-start gap-4">
+          <div className="mt-8 shrink-0">
             <AccountAvatar name={avatarInitials} size="lg" />
           </div>
           <div className="min-w-0 flex-1">
@@ -321,14 +312,14 @@ export function ProfileDataForm() {
                 setSaved(false);
               }}
             />
-            <p className="mt-1.5 text-[13px] leading-5 text-[#8E8E8E]">Así aparece en el menú del portal.</p>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">Así aparece en el menú del portal.</p>
           </div>
         </div>
-        <p className="text-[13px] text-[#8E8E8E]">Última sesión iniciada: {formatLastSignIn()}</p>
-      </section>
+      </ProfileCard>
 
-      <section className="space-y-4">
+      <ProfileCard>
         <SectionTitle>Empresa</SectionTitle>
+        <div className="mt-4 space-y-4">
         <TextField
           id="companyName"
           name="companyName"
@@ -380,17 +371,18 @@ export function ProfileDataForm() {
             }}
           />
         </div>
-      </section>
+        </div>
+      </ProfileCard>
 
-      <section className="space-y-4">
+      <ProfileCard>
         <SectionTitle>Contacto</SectionTitle>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="mt-4 grid gap-6 md:grid-cols-2">
           <div>
             <FieldLabel>Correo electrónico</FieldLabel>
-            <p className="mt-2 flex h-12 items-center rounded-[10px] bg-[#F8F9FB] px-4 text-[15px] text-[#6A7178]">
+            <p className="mt-2 flex h-12 items-center rounded-[10px] bg-[#F8F9FB] px-4 text-[15px] text-[#707070]">
               {user?.email ?? "—"}
             </p>
-            <p className="mt-1.5 text-[13px] leading-5 text-[#8E8E8E]">No se puede cambiar desde el portal.</p>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">No se puede cambiar desde el portal.</p>
           </div>
           <div>
             <TextField
@@ -408,14 +400,14 @@ export function ProfileDataForm() {
                 setSaved(false);
               }}
             />
-            <p className="mt-1.5 text-[13px] leading-5 text-[#8E8E8E]">Opcional.</p>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">Opcional.</p>
           </div>
         </div>
-      </section>
+      </ProfileCard>
 
-      <section className="space-y-3">
+      <ProfileCard>
         <SectionTitle>Preferencias</SectionTitle>
-        <div className="flex items-center justify-between gap-3 rounded-[12px] bg-[#F8F9FB] px-4 py-3">
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-[12px] bg-[#F8F9FB] px-4 py-3">
           <p id="notify-expiration-label" className="text-[14px] leading-5 text-[#404040]">
             Avisarme por email cuando mi sandbox esté por vencer
           </p>
@@ -437,14 +429,14 @@ export function ProfileDataForm() {
             />
           </button>
         </div>
-        {notifyError ? <p className="text-[14px] text-[#E1251B]">{notifyError}</p> : null}
-      </section>
+        {notifyError ? <p className="mt-3 text-[14px] text-[#E1251B]">{notifyError}</p> : null}
+      </ProfileCard>
 
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
           disabled={isSubmitting || !isDirty}
-          className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:translate-y-0 disabled:bg-[#C9CED4]"
+          className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
         >
           {isSubmitting ? "Guardando..." : saved && !isDirty ? "Guardado" : "Guardar cambios"}
         </button>
@@ -452,7 +444,7 @@ export function ProfileDataForm() {
           <button
             type="button"
             onClick={discardChanges}
-            className="inline-flex h-12 items-center justify-center rounded-full px-5 text-[15px] font-medium text-[#6A7178] transition-colors hover:text-[#141F25]"
+            className="inline-flex h-12 items-center justify-center rounded-full px-5 text-[15px] font-medium text-[#707070] transition-colors hover:text-[#404040]"
           >
             Descartar cambios
           </button>
