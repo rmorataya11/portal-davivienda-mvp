@@ -140,7 +140,7 @@ export function AppDeleteControl({ appId, appName }: { appId: string; appName: s
       <button
         type="button"
         onClick={() => setConfirming(true)}
-        className="inline-flex h-11 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[14px] font-medium text-[#E1251B] transition-all duration-300 hover:bg-[#FFF8F8]"
+        className="inline-flex h-11 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-5 text-[14px] font-medium text-[#6A7178] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
       >
         Eliminar
       </button>
