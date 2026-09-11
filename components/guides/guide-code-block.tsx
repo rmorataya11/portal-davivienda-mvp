@@ -4,18 +4,15 @@ import { useState } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
-import vscDarkPlus from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 
 import type { GuideCodeSample } from "@/lib/guides/guides-content";
 
 SyntaxHighlighter.registerLanguage("bash", bash);
 SyntaxHighlighter.registerLanguage("json", json);
 
-const editorTheme = {
-  ...vscDarkPlus,
+const daviviendaCodeTheme = {
   'pre[class*="language-"]': {
-    ...vscDarkPlus['pre[class*="language-"]'],
-    background: "#141F25",
+    background: "transparent",
     margin: 0,
     padding: 0,
     fontSize: "13px",
@@ -23,15 +20,27 @@ const editorTheme = {
     overflow: "visible",
   },
   'code[class*="language-"]': {
-    ...vscDarkPlus['code[class*="language-"]'],
     background: "transparent",
+    color: "#404040",
     fontSize: "13px",
     lineHeight: "1.65",
     textShadow: "none",
   },
+  comment: { color: "#8E8E8E" },
+  function: { color: "#E1251B" },
+  builtin: { color: "#E1251B" },
+  keyword: { color: "#8A4B00" },
+  string: { color: "#347659" },
+  number: { color: "#202A31" },
+  boolean: { color: "#8A4B00" },
+  null: { color: "#707070", fontStyle: "italic" },
+  property: { color: "#E1251B" },
+  operator: { color: "#707070" },
+  punctuation: { color: "#707070" },
+  variable: { color: "#404040" },
 };
 
-function CopyButton({ content, tone = "dark" }: { content: string; tone?: "dark" | "light" }) {
+function CopyButton({ content }: { content: string }) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -44,9 +53,7 @@ function CopyButton({ content, tone = "dark" }: { content: string; tone?: "dark"
     <button
       type="button"
       onClick={handleCopy}
-      className={`h-8 px-2 font-mono text-[11px] transition-colors ${
-        tone === "light" ? "text-[#8E8E8E] hover:text-[#141F25]" : "text-white/55 hover:text-white"
-      }`}
+      className="h-8 px-2 font-mono text-[11px] text-[#8E8E8E] transition-colors hover:text-[#404040]"
     >
       {copied ? "Copiado" : "Copiar"}
     </button>
@@ -62,8 +69,8 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
   }
 
   return (
-    <div className="overflow-hidden bg-[#141F25]">
-      <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3">
+    <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
+      <div className="flex items-center justify-between gap-3 border-b border-[#E7EAEE] px-3">
         <div className="flex min-w-0 items-center gap-4 overflow-x-auto">
           {samples.map((sample, index) => {
             const isActive = index === activeIndex;
@@ -74,7 +81,7 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
                 type="button"
                 onClick={() => setActiveIndex(index)}
                 className={`h-10 shrink-0 border-b-2 font-mono text-[12px] ${
-                  isActive ? "border-white text-white" : "border-transparent text-white/45 hover:text-white/80"
+                  isActive ? "border-[#E1251B] text-[#404040]" : "border-transparent text-[#8E8E8E] hover:text-[#404040]"
                 }`}
               >
                 {sample.label}
@@ -85,7 +92,7 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
         <CopyButton content={active.code} />
       </div>
       <div className="overflow-x-auto px-4 py-4">
-        <SyntaxHighlighter language={active.language} style={editorTheme} wrapLongLines={false}>
+        <SyntaxHighlighter language={active.language} style={daviviendaCodeTheme} wrapLongLines={false}>
           {active.code}
         </SyntaxHighlighter>
       </div>
@@ -95,12 +102,12 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
 
 export function GuideJsonBlock({ code }: { code: string }) {
   return (
-    <div className="overflow-hidden bg-[#141F25]">
-      <div className="flex items-center justify-end border-b border-white/10 px-3">
+    <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
+      <div className="flex items-center justify-end border-b border-[#E7EAEE] px-3">
         <CopyButton content={code} />
       </div>
       <div className="overflow-x-auto px-4 py-4">
-        <SyntaxHighlighter language="json" style={editorTheme} wrapLongLines={false}>
+        <SyntaxHighlighter language="json" style={daviviendaCodeTheme} wrapLongLines={false}>
           {code}
         </SyntaxHighlighter>
       </div>
@@ -110,12 +117,12 @@ export function GuideJsonBlock({ code }: { code: string }) {
 
 export function GuideMermaidBlock({ source }: { source: string }) {
   return (
-    <div className="overflow-hidden border border-[#D8DCE1] bg-[#F7F5F1]">
-      <div className="flex items-center justify-between border-b border-[#D8DCE1] px-3">
+    <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
+      <div className="flex items-center justify-between border-b border-[#E7EAEE] px-3">
         <span className="h-10 font-mono text-[12px] leading-10 text-[#8E8E8E]">Mermaid</span>
-        <CopyButton content={source} tone="light" />
+        <CopyButton content={source} />
       </div>
-      <pre className="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-7 text-[#141F25]">{source}</pre>
+      <pre className="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-7 text-[#404040]">{source}</pre>
     </div>
   );
 }
