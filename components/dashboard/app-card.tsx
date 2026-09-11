@@ -14,21 +14,21 @@ export function AppCard({ app }: { app: DeveloperApp }) {
   return (
     <Link
       href={`/dashboard/apps/${app.id}`}
-      className="group flex h-full flex-col rounded-[24px] border border-[#E7EAEE] bg-white p-5 shadow-[0_12px_32px_rgba(20,31,37,0.04)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#E1251B]/24 hover:shadow-[0_18px_40px_rgba(20,31,37,0.08)]"
+      className="group flex h-full flex-col rounded-[24px] border border-[#E7EAEE] bg-white p-5 transition-colors duration-300 hover:border-[#E1251B]/40"
     >
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[20px] font-bold tracking-[0.2px] text-[#141F25]">{app.name}</h3>
+        <h3 className="text-[20px] font-bold tracking-[0.2px] text-[#404040]">{app.name}</h3>
         <AppStatusBadge status={app.status} />
       </div>
-      <p className="mt-3 line-clamp-2 text-[14px] leading-6 text-[#6A7178]">
+      <p className="mt-3 line-clamp-2 text-[14px] leading-6 text-[#707070]">
         {app.description || "Sin descripción todavía"}
       </p>
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 mb-5 flex flex-wrap gap-2">
         {products.length > 0 ? (
           products.map((product) => (
             <span
               key={product.slug}
-              className="rounded-full bg-[#F3F5F7] px-3 py-1 text-[12px] font-medium text-[#404040]"
+              className="rounded-full border border-[#E7EAEE] bg-[#F8F9FB] px-3 py-1.5 text-[13px] font-medium text-[#404040]"
             >
               {product.name}
             </span>
@@ -37,16 +37,20 @@ export function AppCard({ app }: { app: DeveloperApp }) {
           <span className="text-[13px] text-[#8E8E8E]">Sin APIs vinculadas</span>
         )}
       </div>
-      <div className="mt-auto flex items-end justify-between gap-3 border-t border-[#F0F2F4] pt-4">
+      <div className="mt-auto flex items-end justify-between gap-3 border-t border-[#E7EAEE] pt-4">
         <div>
-          <p className="text-[12px] text-[#8E8E8E]">Consumido</p>
-          <p className="mt-1 text-[20px] font-bold text-[#141F25]">{formatMoneyCop(stats.consumedCop)}</p>
+          <p className="text-[12px] text-[#707070]">Llamadas / 30 días</p>
+          <p className="mt-1 text-[20px] font-bold text-[#404040]">{stats.callsLast30Days.toLocaleString("es-CO")}</p>
+          <p className="mt-1 text-[12px] text-[#707070]">
+            {formatMoneyCop(stats.consumedCop)} estimado · no se factura
+          </p>
         </div>
-        <p className="text-right text-[13px] text-[#6A7178]">
-          {stats.callsLast30Days.toLocaleString("es-CO")} llamadas
-          <br />
-          <span className="text-[#8E8E8E]">Creada {formatAppDate(app.createdAt)}</span>
-        </p>
+        <div className="text-right">
+          <p className="text-[13px] font-semibold text-[#E1251B] transition-colors group-hover:text-[#C01F16]">
+            Abrir →
+          </p>
+          <p className="mt-1 text-[12px] text-[#8E8E8E]">Creada {formatAppDate(app.createdAt)}</p>
+        </div>
       </div>
     </Link>
   );
