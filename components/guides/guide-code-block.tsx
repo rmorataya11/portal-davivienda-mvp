@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
@@ -60,7 +60,27 @@ function CopyButton({ content }: { content: string }) {
   );
 }
 
-export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
+function SampleBar({
+  title,
+  meta,
+  children,
+}: {
+  title: string;
+  meta?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="flex h-12 items-center justify-between gap-3 bg-[#F2F3F5] px-4">
+      <div className="flex min-w-0 items-baseline gap-3">
+        <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#707070]">{title}</p>
+        {meta ? <span className="font-mono text-[12px] text-[#347659]">{meta}</span> : null}
+      </div>
+      <div className="flex min-w-0 items-center gap-3">{children}</div>
+    </div>
+  );
+}
+
+export function GuideCodeBlock({ samples, title = "Request" }: { samples: GuideCodeSample[]; title?: string }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = samples[activeIndex] ?? samples[0];
 
@@ -70,8 +90,8 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
 
   return (
     <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
-      <div className="flex items-center justify-between gap-3 border-b border-[#E7EAEE] px-3">
-        <div className="flex min-w-0 items-center gap-4 overflow-x-auto">
+      <SampleBar title={title}>
+        <div className="flex min-w-0 items-center gap-3 overflow-x-auto">
           {samples.map((sample, index) => {
             const isActive = index === activeIndex;
 
@@ -80,8 +100,8 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
                 key={sample.label}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`h-10 shrink-0 border-b-2 font-mono text-[12px] ${
-                  isActive ? "border-[#E1251B] text-[#404040]" : "border-transparent text-[#8E8E8E] hover:text-[#404040]"
+                className={`h-12 shrink-0 font-mono text-[12px] ${
+                  isActive ? "font-semibold text-[#404040]" : "text-[#8E8E8E] hover:text-[#404040]"
                 }`}
               >
                 {sample.label}
@@ -90,7 +110,7 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
           })}
         </div>
         <CopyButton content={active.code} />
-      </div>
+      </SampleBar>
       <div className="overflow-x-auto px-4 py-4">
         <SyntaxHighlighter language={active.language} style={daviviendaCodeTheme} wrapLongLines={false}>
           {active.code}
@@ -100,12 +120,20 @@ export function GuideCodeBlock({ samples }: { samples: GuideCodeSample[] }) {
   );
 }
 
-export function GuideJsonBlock({ code }: { code: string }) {
+export function GuideJsonBlock({
+  code,
+  title = "Response",
+  meta,
+}: {
+  code: string;
+  title?: string;
+  meta?: string;
+}) {
   return (
     <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
-      <div className="flex items-center justify-end border-b border-[#E7EAEE] px-3">
+      <SampleBar title={title} meta={meta}>
         <CopyButton content={code} />
-      </div>
+      </SampleBar>
       <div className="overflow-x-auto px-4 py-4">
         <SyntaxHighlighter language="json" style={daviviendaCodeTheme} wrapLongLines={false}>
           {code}
@@ -118,10 +146,9 @@ export function GuideJsonBlock({ code }: { code: string }) {
 export function GuideMermaidBlock({ source }: { source: string }) {
   return (
     <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
-      <div className="flex items-center justify-between border-b border-[#E7EAEE] px-3">
-        <span className="h-10 font-mono text-[12px] leading-10 text-[#8E8E8E]">Mermaid</span>
+      <SampleBar title="Flujo">
         <CopyButton content={source} />
-      </div>
+      </SampleBar>
       <pre className="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-7 text-[#404040]">{source}</pre>
     </div>
   );

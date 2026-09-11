@@ -101,6 +101,15 @@ function GuideComingSoon({
   );
 }
 
+function StepHeading({ number, title }: { number?: string; title: string }) {
+  return (
+    <div className="flex items-baseline gap-4">
+      {number ? <span className="font-mono text-[13px] text-[#8E8E8E]">{number}</span> : null}
+      <h2 className="text-[20px] font-medium leading-7 text-[#404040] sm:text-[22px]">{title}</h2>
+    </div>
+  );
+}
+
 function GuideArticleBody({
   guide,
   previous,
@@ -125,15 +134,13 @@ function GuideArticleBody({
         <div className="-mx-5 sm:-mx-8 lg:hidden">
           <GuideToc items={tocItems} variant="mobile" />
         </div>
-        <div className="lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-8 xl:gap-10">
-          <aside className="hidden lg:block lg:pt-2">
-            <div className="lg:sticky lg:top-[140px] rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-5">
-              <GuideToc items={tocItems} variant="desktop" />
-            </div>
+        <div className="overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white lg:grid lg:grid-cols-[240px_minmax(0,1fr)]">
+          <aside className="hidden border-r border-[#E7EAEE] px-6 pt-10 pb-8 lg:block">
+            <GuideToc items={tocItems} variant="desktop" />
           </aside>
 
-          <div className="min-w-0 rounded-[24px] border border-[#E7EAEE] bg-white px-5 sm:px-8">
-            <section className="max-w-[42rem] border-b border-[#E7EAEE] py-10">
+          <div className="min-w-0 px-5 sm:px-8">
+            <section className="border-b border-[#E7EAEE] py-10">
               {lead ? <p className="text-[18px] leading-8 text-[#404040]">{lead}</p> : null}
               {rest.map((paragraph) => (
                 <p
@@ -153,12 +160,9 @@ function GuideArticleBody({
                 id={section.id}
                 className="scroll-mt-36 border-b border-[#E7EAEE] py-10 last:border-b-0"
               >
-                <div className="flex items-baseline gap-4">
-                  <span className="font-mono text-[13px] text-[#8E8E8E]">{String(index + 1).padStart(2, "0")}</span>
-                  <h2 className="text-[20px] font-medium leading-7 text-[#404040] sm:text-[22px]">{section.title}</h2>
-                </div>
+                <StepHeading number={String(index + 1).padStart(2, "0")} title={section.title} />
 
-                <div className="mt-5 max-w-[42rem] space-y-4">
+                <div className="mt-5 space-y-4">
                   {section.explanation.map((paragraph) => (
                     <p key={paragraph} className="text-[16px] leading-7 text-[#707070]">
                       <GuideProse text={paragraph} />
@@ -177,49 +181,42 @@ function GuideArticleBody({
 
                 {section.request ? (
                   <div className="mt-8">
-                    <h3 className="font-mono text-[12px] text-[#8E8E8E]">Request</h3>
                     {section.request.caption ? (
-                      <p className="mt-2 max-w-[42rem] text-[14px] leading-6 text-[#707070]">
+                      <p className="mb-3 text-[14px] leading-6 text-[#707070]">
                         <GuideProse text={section.request.caption} />
                       </p>
                     ) : null}
-                    <div className="mt-3">
-                      <GuideCodeBlock samples={section.request.samples} />
-                    </div>
+                    <GuideCodeBlock samples={section.request.samples} title="Request" />
                   </div>
                 ) : null}
 
                 {section.response ? (
                   <div className="mt-8">
-                    <div className="flex flex-wrap items-baseline gap-3">
-                      <h3 className="font-mono text-[12px] text-[#8E8E8E]">Response</h3>
-                      <span className="font-mono text-[12px] text-[#347659]">{section.response.status}</span>
-                    </div>
                     {section.response.caption ? (
-                      <p className="mt-2 max-w-[42rem] text-[14px] leading-6 text-[#707070]">
+                      <p className="mb-3 text-[14px] leading-6 text-[#707070]">
                         <GuideProse text={section.response.caption} />
                       </p>
                     ) : null}
-                    <div className="mt-3">
-                      <GuideJsonBlock code={section.response.json} />
-                    </div>
+                    <GuideJsonBlock code={section.response.json} title="Response" meta={section.response.status} />
                   </div>
                 ) : null}
 
                 <div className="mt-8">
-                  <h3 className="font-mono text-[12px] text-[#8E8E8E]">Errores de este paso</h3>
-                  <div className="mt-3 border-t border-[#E7EAEE]">
+                  <h3 className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#707070]">
+                    Errores de este paso
+                  </h3>
+                  <div className="mt-3 divide-y divide-[#E7EAEE] border-y border-[#E7EAEE]">
                     {section.errors.map((error) => (
-                      <article key={`${error.status}-${error.code}`} className="border-b border-[#E7EAEE] py-4">
-                        <p className="flex flex-wrap items-baseline gap-3 font-mono text-[13px]">
-                          <span className="text-[#A11B1B]">{error.status}</span>
+                      <article key={`${error.status}-${error.code}`} className="py-3">
+                        <p className="flex flex-wrap items-center gap-2 font-mono text-[12px]">
+                          <span className="rounded-full bg-[#FFF1F0] px-2 py-0.5 text-[#A11B1B]">{error.status}</span>
                           <span className="text-[#404040]">{error.code}</span>
                         </p>
-                        <p className="mt-2 text-[14px] leading-6 text-[#404040]">
+                        <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">
                           <span className="text-[#8E8E8E]">Causa. </span>
                           <GuideProse text={error.cause} />
                         </p>
-                        <p className="mt-1 text-[14px] leading-6 text-[#404040]">
+                        <p className="mt-0.5 text-[13px] leading-5 text-[#707070]">
                           <span className="text-[#8E8E8E]">Solución. </span>
                           <GuideProse text={error.solution} />
                         </p>
@@ -240,13 +237,8 @@ function GuideArticleBody({
             ))}
 
             <section id="flujo" className="scroll-mt-36 border-b border-[#E7EAEE] py-10">
-              <div className="flex items-baseline gap-4">
-                <span className="font-mono text-[13px] text-[#8E8E8E]">
-                  {String(article.sections.length + 1).padStart(2, "0")}
-                </span>
-                <h2 className="text-[20px] font-medium leading-7 text-[#404040] sm:text-[22px]">{article.diagram.title}</h2>
-              </div>
-              <p className="mt-4 max-w-[42rem] text-[15px] leading-7 text-[#707070]">
+              <StepHeading number={String(article.sections.length + 1).padStart(2, "0")} title={article.diagram.title} />
+              <p className="mt-4 text-[15px] leading-7 text-[#707070]">
                 Secuencia de punta a punta. Puede copiar el bloque y pegarlo en cualquier visor Mermaid.
               </p>
               <div className="mt-4">
@@ -255,16 +247,14 @@ function GuideArticleBody({
             </section>
 
             <section id="checklist" className="scroll-mt-36 py-10">
-              <div className="flex items-baseline gap-4">
-                <span className="font-mono text-[13px] text-[#8E8E8E]">
-                  {String(article.sections.length + 2).padStart(2, "0")}
-                </span>
-                <h2 className="text-[20px] font-medium leading-7 text-[#404040] sm:text-[22px]">Antes de continuar</h2>
-              </div>
-              <ol className="mt-6 max-w-[42rem] border-t border-[#E7EAEE]">
-                {article.checklist.map((item, index) => (
-                  <li key={item} className="flex gap-4 border-b border-[#E7EAEE] py-3 text-[15px] leading-6 text-[#404040]">
-                    <span className="w-6 shrink-0 font-mono text-[12px] text-[#8E8E8E]">{index + 1}.</span>
+              <StepHeading number={String(article.sections.length + 2).padStart(2, "0")} title="Antes de continuar" />
+              <ol className="mt-6 space-y-3">
+                {article.checklist.map((item) => (
+                  <li key={item} className="flex gap-3 text-[15px] leading-6 text-[#404040]">
+                    <span
+                      className="mt-0.5 inline-flex h-5 w-5 shrink-0 rounded-full border border-[#D5DAE0] bg-white"
+                      aria-hidden="true"
+                    />
                     <GuideProse text={item} />
                   </li>
                 ))}
@@ -273,13 +263,8 @@ function GuideArticleBody({
 
             {article.references?.length ? (
               <section id="referencias" className="scroll-mt-36 border-t border-[#E7EAEE] py-10">
-                <div className="flex items-baseline gap-4">
-                  <span className="font-mono text-[13px] text-[#8E8E8E]">
-                    {String(article.sections.length + 3).padStart(2, "0")}
-                  </span>
-                  <h2 className="text-[20px] font-medium leading-7 text-[#404040] sm:text-[22px]">Referencias</h2>
-                </div>
-                <ul className="mt-6 max-w-[42rem] space-y-3">
+                <StepHeading number={String(article.sections.length + 3).padStart(2, "0")} title="Referencias" />
+                <ul className="mt-6 space-y-3">
                   {article.references.map((reference) => (
                     <li key={reference.href}>
                       <a

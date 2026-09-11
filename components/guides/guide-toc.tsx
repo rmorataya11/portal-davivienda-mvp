@@ -71,31 +71,23 @@ export function GuideToc({
 
   return (
     <nav aria-label="Pasos de esta guía">
-      <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E]">En esta guía</p>
-      <ol className="mt-4">
-        {items.map((item, index) => {
+      <p className="text-[13px] text-[#8E8E8E]">En esta guía</p>
+      <ol className="mt-4 border-l border-[#E7EAEE]">
+        {items.map((item) => {
           const isActive = item.id === active?.id;
-          const last = index === items.length - 1;
 
           return (
-            <li key={item.id} className="flex gap-3">
-              <div className="flex w-7 shrink-0 flex-col items-center">
-                <span
-                  className={`inline-flex h-7 w-7 items-center justify-center rounded-full font-mono text-[11px] font-bold ${
-                    isActive ? "bg-[#E1251B] text-white" : "bg-[#F2F3F5] text-[#8E8E8E]"
-                  }`}
-                >
-                  {item.number}
-                </span>
-                {last ? null : <span className="w-px flex-1 bg-[#E7EAEE]" />}
-              </div>
+            <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                className={`min-w-0 flex-1 text-[13px] leading-5 ${last ? "pb-0" : "pb-4"} ${
-                  isActive ? "font-semibold text-[#404040]" : "text-[#707070] hover:text-[#404040]"
+                className={`-ml-px flex gap-3 border-l-2 py-2 pl-3 text-[13px] leading-5 ${
+                  isActive
+                    ? "border-[#E1251B] text-[#404040]"
+                    : "border-transparent text-[#707070] hover:text-[#404040]"
                 }`}
               >
-                {item.label}
+                <span className="w-6 shrink-0 font-mono text-[12px] text-[#8E8E8E]">{item.number}</span>
+                <span className={isActive ? "font-medium" : undefined}>{item.label}</span>
               </a>
             </li>
           );
