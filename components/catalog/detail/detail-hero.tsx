@@ -70,7 +70,8 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     },
     {
       label: "Primer consumo",
-      value: primaryEndpoint ? `${primaryEndpoint.method} ${primaryEndpoint.path}` : "GET /balances",
+      value: primaryEndpoint?.method ?? "GET",
+      path: primaryEndpoint?.path ?? "/balances",
       detail: primaryEndpoint?.description ?? "Use Sandbox para validar el flujo base antes de ampliar la integración.",
     },
     {
@@ -159,13 +160,27 @@ export function DetailHero({ api }: { api: ApiDetail }) {
           <div className="overflow-hidden">
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {summaryItems.map((item) => (
-                <div key={item.label} className="flex min-h-[132px] flex-col rounded-[16px] border border-[#E7EAEE] px-5 py-5">
+                <div
+                  key={item.label}
+                  className="flex min-h-[132px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-[#E7EAEE] px-5 py-5"
+                >
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">{item.label}</p>
                   <p className="mt-3 text-[18px] font-bold leading-7 tracking-[0.2px] text-[#404040] sm:text-[20px]">
                     {item.value}
                   </p>
+                  {"path" in item && item.path ? (
+                    <p className="mt-1 break-all font-mono text-[12px] leading-5 text-[#404040] sm:text-[13px]">
+                      {item.path}
+                    </p>
+                  ) : null}
                   {"detail" in item && item.detail ? (
-                    <p className="mt-auto pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E]">{item.detail}</p>
+                    <p
+                      className={`mt-auto pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E] ${
+                        item.detail.includes("/") ? "break-all" : "break-words"
+                      }`}
+                    >
+                      {item.detail}
+                    </p>
                   ) : null}
                 </div>
               ))}
@@ -175,7 +190,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
 
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {api.quickFacts.map((item) => (
-                <div key={item.label} className="rounded-[16px] bg-[#F5F6F8] px-5 py-4">
+                <div key={item.label} className="min-w-0 rounded-[16px] bg-[#F5F6F8] px-5 py-4">
                   <p className="text-[13px] font-normal text-[#8E8E8E]">{item.label}</p>
                   <p className="mt-2 text-[16px] font-bold tracking-[0.2px] text-[#404040] sm:text-[18px]">{item.value}</p>
                 </div>
