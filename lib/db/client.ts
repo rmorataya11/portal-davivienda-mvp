@@ -1,5 +1,16 @@
+import { existsSync, writeFileSync } from 'node:fs';
 import { Connector, IpAddressTypes } from '@google-cloud/cloud-sql-connector';
 import { Pool } from 'pg';
+
+const GCP_CREDENTIALS_PATH = '/tmp/gcp-credentials.json';
+
+if (process.env.GOOGLE_CREDENTIALS_BASE64) {
+  if (!existsSync(GCP_CREDENTIALS_PATH)) {
+    writeFileSync(GCP_CREDENTIALS_PATH, Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64'));
+  }
+
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = GCP_CREDENTIALS_PATH;
+}
 
 const connector = new Connector();
 
