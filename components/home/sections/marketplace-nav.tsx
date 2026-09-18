@@ -4,7 +4,7 @@ import { navItems } from "../content/navigation";
 
 export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: string }) {
   return (
-    <nav className="hidden lg:block">
+    <nav className="hidden xl:block">
       <ul className="flex items-center gap-12 border-b border-white/40 px-[26px]">
         {navItems.map((item) => {
           const isActive = item.href === activeHref;

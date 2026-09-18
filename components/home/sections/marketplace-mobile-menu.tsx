@@ -43,7 +43,7 @@ export function MarketplaceMobileMenu({
   }, [pathname]);
 
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 1024px)");
+    const media = window.matchMedia("(min-width: 1280px)");
     const onChange = () => {
       if (media.matches) {
         setOpen(false);
@@ -83,7 +83,7 @@ export function MarketplaceMobileMenu({
     mounted &&
     createPortal(
       <div
-        className={`fixed inset-0 z-[60] lg:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-[60] xl:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`}
         aria-hidden={!open}
         inert={!open}
       >

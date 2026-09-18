@@ -24,11 +24,11 @@ export function MarketplaceHeader({ activeHref = "/" }: { activeHref?: string })
               <MarketplaceDesktopNav activeHref={activeHref} />
             </div>
 
-            <div className="ml-auto hidden lg:flex">
+            <div className="ml-auto hidden xl:flex">
               <AuthNav />
             </div>
 
-            <MarketplaceMobileMenu activeHref={activeHref} className="ml-auto lg:hidden" />
+            <MarketplaceMobileMenu activeHref={activeHref} className="ml-auto xl:hidden" />
           </div>
         </div>
       </header>

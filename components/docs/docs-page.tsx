@@ -402,12 +402,12 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
       <div className="mt-10">
         <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">Parámetros</h2>
         <div className="mt-3 overflow-x-auto rounded-[18px] border border-[#E7EAEE]">
-          <table className="w-full min-w-[720px] border-collapse text-left">
+          <table className="w-full table-fixed border-collapse text-left">
             <colgroup>
-              <col className="w-[200px]" />
-              <col className="w-[220px]" />
-              <col className="w-[128px]" />
-              <col />
+              <col className="w-[22%]" />
+              <col className="w-[26%]" />
+              <col className="w-[16%]" />
+              <col className="w-[36%]" />
             </colgroup>
             <thead>
               <tr className="bg-[#F7F8FA] text-[11px] font-medium uppercase tracking-[0.14em] text-[#8E8E8E]">
@@ -420,24 +420,24 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
             <tbody>
               {endpoint.parameters.map((parameter, index) => (
                 <tr key={`${parameter.name}-${index}`} className="border-t border-[#EEF1F4]">
-                  <td className="px-4 py-3.5 align-middle font-mono text-[13px] font-semibold text-[#202A31]">
-                    {parameter.name}
+                  <td className="min-w-0 px-4 py-3.5 align-middle font-mono text-[13px] font-semibold text-[#202A31]">
+                    <BreakablePath value={parameter.name} />
                   </td>
-                  <td className="px-4 py-3.5 align-middle">
-                    <span className="inline-flex h-7 items-center rounded-full bg-[#F2F3F5] px-2.5 text-[11px] font-medium uppercase tracking-[0.08em] text-[#6A7178]">
+                  <td className="min-w-0 px-4 py-3.5 align-middle">
+                    <span className="inline-flex min-h-7 max-w-full items-center whitespace-normal rounded-full bg-[#F2F3F5] px-2.5 py-1 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-[#6A7178]">
                       {parameter.type}
                     </span>
                   </td>
-                  <td className="px-4 py-3.5 align-middle">
+                  <td className="min-w-0 px-4 py-3.5 align-middle">
                     <span
-                      className={`inline-flex h-7 items-center rounded-full px-2.5 text-[11px] font-medium uppercase tracking-[0.08em] ${
+                      className={`inline-flex min-h-7 max-w-full items-center rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.08em] ${
                         parameter.required ? "bg-[#FFEAEA] text-[#A11B1B]" : "bg-[#F2F3F5] text-[#6A7178]"
                       }`}
                     >
                       {parameter.required ? "Requerido" : "Opcional"}
                     </span>
                   </td>
-                  <td className="px-4 py-3.5 align-middle text-[13px] leading-6 text-[#6A7178]">
+                  <td className="min-w-0 px-4 py-3.5 align-middle text-[13px] leading-6 [overflow-wrap:normal] [word-break:normal] text-[#6A7178]">
                     {parameter.description}
                   </td>
                 </tr>
