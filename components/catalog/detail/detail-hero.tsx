@@ -158,24 +158,24 @@ export function DetailHero({ api }: { api: ApiDetail }) {
             isSummaryOpen ? "mt-6 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
           }`}
         >
-          <div className="overflow-hidden">
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="min-w-0 overflow-hidden">
+            <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {summaryItems.map((item) => (
                 <div
                   key={item.label}
                   className="flex min-h-[132px] min-w-0 flex-col rounded-[16px] border border-[#E7EAEE] px-5 py-5"
                 >
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">{item.label}</p>
-                  <p className="mt-3 text-[18px] font-bold leading-7 tracking-[0.2px] text-[#404040] sm:text-[20px]">
+                  <p className="mt-3 min-w-0 text-[18px] font-bold leading-7 tracking-[0.2px] text-[#404040] sm:text-[20px]">
                     {item.value}
                   </p>
                   {"path" in item && item.path ? (
-                    <p className="mt-1 font-mono text-[12px] leading-5 text-[#404040] sm:text-[13px]">
+                    <p className="mt-1 min-w-0 w-full font-mono text-[12px] leading-5 text-[#404040] sm:text-[13px]">
                       <BreakablePath value={item.path} />
                     </p>
                   ) : null}
                   {"detail" in item && item.detail ? (
-                    <p className="mt-auto pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E]">
+                    <p className="mt-auto min-w-0 w-full pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E]">
                       {item.detail.includes("/") ? <BreakablePath value={item.detail} /> : item.detail}
                     </p>
                   ) : null}
