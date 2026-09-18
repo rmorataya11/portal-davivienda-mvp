@@ -22,7 +22,7 @@ export function GuidesPage() {
 
       <RecommendedPath />
 
-      <section id="listado-guias" className="scroll-mt-36 pb-16 pt-2 sm:pb-20">
+      <section id="listado-guias" className="scroll-anchor pb-16 pt-2 sm:pb-20">
         <SectionContainer>
           <div className="mb-4 flex items-baseline justify-between gap-3">
             <h2 className="text-[22px] font-bold text-[#404040]">Todas las guías</h2>
@@ -34,7 +34,7 @@ export function GuidesPage() {
                 <article
                   key={guide.id}
                   id={guide.id}
-                  className="group scroll-mt-36 flex flex-col rounded-[24px] border border-[#E7EAEE] bg-white p-5 transition-colors hover:border-[#E1251B]/40"
+                  className="group scroll-anchor flex flex-col rounded-[24px] border border-[#E7EAEE] bg-white p-5 transition-colors hover:border-[#E1251B]/40"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex min-w-0 items-start gap-3">

@@ -3,7 +3,7 @@ import { useCaseCards } from "../content/use-cases";
 
 export function UseCasesSection() {
   return (
-    <section id="casos-de-uso" className="inspire-section">
+    <section id="casos-de-uso" className="inspire-section scroll-anchor">
       <div className="inspire-frame">
         <div className="inspire-header">
           <h2 className="inspire-title">Inspírese con lo que puede lograr</h2>

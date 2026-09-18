@@ -7,7 +7,7 @@ import type { ApiDetail } from "../content/apis";
 
 export function DetailFinalCta({ api }: { api: ApiDetail }) {
   return (
-    <section id="next-steps" className="pb-16">
+    <section id="next-steps" className="scroll-anchor pb-16">
       <SectionContainer>
         <div className="overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white px-5 py-6 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
           <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-center">

@@ -158,7 +158,7 @@ function GuideArticleBody({
               <section
                 key={section.id}
                 id={section.id}
-                className="scroll-mt-36 border-b border-[#E7EAEE] py-10 last:border-b-0"
+                className="scroll-anchor border-b border-[#E7EAEE] py-10 last:border-b-0"
               >
                 <StepHeading number={String(index + 1).padStart(2, "0")} title={section.title} />
 
@@ -236,7 +236,7 @@ function GuideArticleBody({
               </section>
             ))}
 
-            <section id="flujo" className="scroll-mt-36 border-b border-[#E7EAEE] py-10">
+            <section id="flujo" className="scroll-anchor border-b border-[#E7EAEE] py-10">
               <StepHeading number={String(article.sections.length + 1).padStart(2, "0")} title={article.diagram.title} />
               <p className="mt-4 text-[15px] leading-7 text-[#707070]">
                 Secuencia de punta a punta. Puede copiar el bloque y pegarlo en cualquier visor Mermaid.
@@ -246,7 +246,7 @@ function GuideArticleBody({
               </div>
             </section>
 
-            <section id="checklist" className="scroll-mt-36 py-10">
+            <section id="checklist" className="scroll-anchor py-10">
               <StepHeading number={String(article.sections.length + 2).padStart(2, "0")} title="Antes de continuar" />
               <ol className="mt-6 space-y-3">
                 {article.checklist.map((item) => (
@@ -262,7 +262,7 @@ function GuideArticleBody({
             </section>
 
             {article.references?.length ? (
-              <section id="referencias" className="scroll-mt-36 border-t border-[#E7EAEE] py-10">
+              <section id="referencias" className="scroll-anchor border-t border-[#E7EAEE] py-10">
                 <StepHeading number={String(article.sections.length + 3).padStart(2, "0")} title="Referencias" />
                 <ul className="mt-6 space-y-3">
                   {article.references.map((reference) => (

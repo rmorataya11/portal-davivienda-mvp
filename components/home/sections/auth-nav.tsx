@@ -11,7 +11,7 @@ import { accountInitials, accountLabel } from "@/lib/account/display";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
 
 const buttonClassName =
-  "inline-flex min-h-[40px] min-w-[120px] items-center justify-center rounded-full bg-white px-3 text-[13px] font-bold !text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#F2F3F5] hover:shadow-[0_14px_34px_rgba(20,31,37,0.16)] sm:min-w-[132px] sm:px-4 lg:min-h-[42px] lg:text-[14px]";
+  "inline-flex min-h-[44px] min-w-[120px] items-center justify-center rounded-full bg-white px-3 text-[13px] font-bold !text-[#404040] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#F2F3F5] hover:shadow-[0_14px_34px_rgba(20,31,37,0.16)] sm:min-w-[132px] sm:px-4 lg:text-[14px]";
 
 const menuItemClassName =
   "block w-full px-4 py-2.5 text-left text-[14px] font-medium text-[#141F25] transition-colors hover:bg-[#F8F9FB] hover:text-[#E1251B]";
@@ -57,7 +57,7 @@ export function AuthNav() {
   }, [open]);
 
   if (loading) {
-    return <div className="h-10 w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:min-h-[42px] lg:w-[156px]" />;
+    return <div className="h-11 min-h-[44px] w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:w-[156px]" />;
   }
 
   if (user) {
@@ -129,7 +129,7 @@ export function AuthNav() {
       <AuthReturnLink
         href={signupHref}
         returnTo={returnTo}
-        className="text-[14px] font-medium text-white transition-all duration-300 hover:opacity-85"
+        className="inline-flex min-h-[44px] items-center text-[14px] font-medium text-white transition-all duration-300 hover:opacity-85"
       >
         Crear cuenta
       </AuthReturnLink>

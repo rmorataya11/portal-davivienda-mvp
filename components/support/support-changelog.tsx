@@ -26,7 +26,7 @@ export function SupportChangelog() {
   const entries = [...changelogEntries].sort((left, right) => right.date.localeCompare(left.date));
 
   return (
-    <section id="novedades" className="scroll-mt-36 pb-16 sm:pb-20">
+    <section id="novedades" className="scroll-anchor pb-16 sm:pb-20">
       <SectionContainer>
         <h2 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">Qué hay de nuevo</h2>
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-7">

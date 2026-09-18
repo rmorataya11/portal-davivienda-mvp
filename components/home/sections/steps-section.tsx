@@ -7,7 +7,7 @@ import { stepCards } from "../content/steps";
 
 export function StepsSection() {
   return (
-    <section id="catalogo" className="pb-20 pt-1">
+    <section id="catalogo" className="scroll-anchor pb-20 pt-1">
       <PageContainer>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-[741px]">

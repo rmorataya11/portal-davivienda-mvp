@@ -14,7 +14,7 @@ export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: strin
               <Link
                 href={item.href}
                 transitionTypes={["marketplace-nav"]}
-                className={`relative inline-flex h-8 w-fit items-center text-[13px] leading-none whitespace-nowrap text-white after:pointer-events-none after:absolute after:bottom-0 after:left-[-26px] after:h-[3px] after:w-[calc(100%+52px)] after:bg-white ${
+                className={`relative inline-flex min-h-[44px] w-fit items-center text-[13px] leading-none whitespace-nowrap text-white after:pointer-events-none after:absolute after:bottom-0 after:left-[-26px] after:h-[3px] after:w-[calc(100%+52px)] after:bg-white ${
                   isActive ? "font-semibold after:opacity-100" : "font-medium after:opacity-0"
                 }`}
               >

@@ -180,10 +180,10 @@ export function DocsPage() {
                 <button
                   type="button"
                   onClick={() => setMobileSidebarOpen(true)}
-                  className="inline-flex h-11 w-11 items-center justify-center text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:hidden"
+                  className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-[#E7EAEE] bg-white text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:hidden"
                   aria-label="Abrir explorador de endpoints"
                 >
-                  <MenuIcon />
+                  <ExplorerIcon />
                 </button>
                 <button
                   type="button"
@@ -191,7 +191,7 @@ export function DocsPage() {
                   className="hidden h-11 w-11 items-center justify-center text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:inline-flex"
                   aria-label={desktopSidebarOpen ? "Ocultar explorador" : "Mostrar explorador"}
                 >
-                  <MenuIcon />
+                  <ExplorerIcon />
                 </button>
 
                 <div className="flex min-w-0 flex-1 items-stretch overflow-x-auto">
@@ -540,10 +540,11 @@ function SearchIcon() {
   );
 }
 
-function MenuIcon() {
+function ExplorerIcon() {
   return (
     <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden="true">
-      <path d="M3 4.5h10M3 8h10M3 11.5h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <rect x="2.25" y="2.75" width="4.25" height="10.5" rx="0.8" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M8.5 4.5h5.25M8.5 8h5.25M8.5 11.5h3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   );
 }

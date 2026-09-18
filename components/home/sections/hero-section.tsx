@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <section id="inicio" className="relative overflow-hidden">
+    <section id="inicio" className="scroll-anchor relative overflow-hidden">
       <div className="hero-frame">
         <div className="hero-scene" aria-hidden="true">
           <div className="hero-scene-photo">

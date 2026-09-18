@@ -20,7 +20,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
   ];
 
   return (
-    <section id="value" className="pt-10 pb-16">
+    <section id="value" className="scroll-anchor pt-10 pb-16">
       <SectionContainer>
         <DetailSectionCard eyebrow="Insights" title="Explore cómo aprovechar esta API">
           <div className="rounded-[24px] bg-[linear-gradient(180deg,#F8F9FB_0%,#F3F5F7_100%)] p-4">

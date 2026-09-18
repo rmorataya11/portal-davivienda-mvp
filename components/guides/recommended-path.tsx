@@ -95,7 +95,7 @@ export function RecommendedPath() {
   }
 
   return (
-    <section id="ruta-recomendada" className="scroll-mt-36 pb-6">
+    <section id="ruta-recomendada" className="scroll-anchor pb-6">
       <SectionContainer>
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-8">
         <p className="inline-flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#E1251B]">

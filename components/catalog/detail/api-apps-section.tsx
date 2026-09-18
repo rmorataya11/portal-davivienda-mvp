@@ -8,7 +8,7 @@ export function ApiAppsSection({ slug, apiName }: { slug: string; apiName: strin
   const returnTo = `/catalogo-apis/${slug}`;
 
   return (
-    <section id="apps" className="pt-10">
+    <section id="apps" className="scroll-anchor pt-10">
       <SectionContainer>
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>

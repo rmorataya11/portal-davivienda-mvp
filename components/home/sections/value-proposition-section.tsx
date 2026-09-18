@@ -23,7 +23,7 @@ export function ValuePropositionSection() {
   const [firstCard, secondCard, thirdCard, fourthCard] = valueCards;
 
   return (
-    <section className="why-section">
+    <section className="why-section scroll-anchor">
       <div className="why-frame">
         <WhyBackgroundBands />
         <div className="why-header">

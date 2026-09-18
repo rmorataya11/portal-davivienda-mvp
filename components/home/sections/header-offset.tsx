@@ -14,7 +14,7 @@ export function HeaderOffset() {
   }
 
   return (
-    <div className="pt-[104px] sm:pt-[120px] lg:pt-[132px]">
+    <div className="header-offset">
       <SectionContainer>
         <Suspense fallback={null}>
           <PageBreadcrumb />

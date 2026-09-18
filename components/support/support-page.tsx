@@ -202,7 +202,7 @@ export function SupportPage() {
         </SectionContainer>
       </section>
 
-      <section id="preguntas-frecuentes" className="scroll-mt-36 pb-8 pt-2">
+      <section id="preguntas-frecuentes" className="scroll-anchor pb-8 pt-2">
         <SectionContainer>
           <h2 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">Preguntas frecuentes</h2>
           <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
@@ -306,7 +306,7 @@ export function SupportPage() {
 
               <section
                 id="soporte-prioritario"
-                className="scroll-mt-36 rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6"
+                className="scroll-anchor rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6"
               >
                 <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">Soporte prioritario 24/7</h2>
                 <p className="mt-3 text-[15px] leading-7 text-[#707070]">

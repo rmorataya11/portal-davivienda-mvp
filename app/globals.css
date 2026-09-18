@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --header-offset: 104px;
   --background: #f2f3f5;
   --foreground: #141f25;
   --surface: #ffffff;
@@ -36,6 +37,14 @@ html {
   overflow-wrap: normal;
   word-break: normal;
   hyphens: none;
+}
+
+.scroll-anchor {
+  scroll-margin-top: var(--header-offset);
+}
+
+.header-offset {
+  padding-top: var(--header-offset);
 }
 
 body {
@@ -495,7 +504,7 @@ a {
   max-width: 1366px;
   margin-inline: auto;
   overflow: hidden;
-  padding: 104px 16px 40px;
+  padding: var(--header-offset) 16px 40px;
 }
 
 .hero-scene {
@@ -715,8 +724,12 @@ a {
 }
 
 @media (min-width: 640px) {
+  :root {
+    --header-offset: 120px;
+  }
+
   .hero-frame {
-    padding: 120px 24px 40px;
+    padding: var(--header-offset) 24px 40px;
   }
 
   .hero-badge {
@@ -735,6 +748,12 @@ a {
 
   .hero-cta {
     font-size: 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-offset: 132px;
   }
 }
 
