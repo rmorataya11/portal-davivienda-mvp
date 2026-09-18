@@ -7,6 +7,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
 import { SurfaceCard } from "@/components/ui/layout";
+import { getPasswordResetActionCodeSettings } from "@/lib/auth/session";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
 
@@ -37,7 +38,7 @@ export function RecoverPasswordPage() {
     setIsSubmitting(true);
 
     try {
-      await sendPasswordResetEmail(getFirebaseAuth(), email);
+      await sendPasswordResetEmail(getFirebaseAuth(), email, getPasswordResetActionCodeSettings());
       setSubmitted(true);
     } catch (resetError) {
       const code = typeof resetError === "object" && resetError && "code" in resetError ? String(resetError.code) : "";

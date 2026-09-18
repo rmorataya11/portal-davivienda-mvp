@@ -113,6 +113,11 @@ function buildCrumbs(
       crumbs.push({ href, label: "Recuperar clave" });
       return;
     }
+
+    if (segment === "restablecer-clave") {
+      crumbs.push({ href, label: "Restablecer clave" });
+      return;
+    }
   });
 
   return crumbs;

@@ -9,6 +9,9 @@ export function getAuthErrorMessage(error: unknown) {
         return "Ingrese un correo válido, por ejemplo nombre@empresa.com.";
       case "auth/weak-password":
         return "La contraseña debe tener al menos 8 caracteres.";
+      case "auth/expired-action-code":
+      case "auth/invalid-action-code":
+        return "Enlace inválido o expirado";
       case "auth/invalid-credential":
       case "auth/user-not-found":
       case "auth/wrong-password":

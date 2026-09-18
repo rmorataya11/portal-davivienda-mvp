@@ -5,6 +5,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  type ActionCodeSettings,
   type User,
 } from 'firebase/auth';
 
@@ -89,9 +90,19 @@ export async function signOutUser(): Promise<void> {
   }
 }
 
+export function getAppBaseUrl() {
+  return (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').trim().replace(/\/$/, '');
+}
+
+export function getPasswordResetActionCodeSettings(): ActionCodeSettings {
+  return {
+    url: `${getAppBaseUrl()}/restablecer-clave`,
+  };
+}
+
 export async function resetPassword(email: string): Promise<void> {
   try {
-    await sendPasswordResetEmail(auth, email);
+    await sendPasswordResetEmail(auth, email, getPasswordResetActionCodeSettings());
   } catch (error) {
     throwAuthError(error);
   }
