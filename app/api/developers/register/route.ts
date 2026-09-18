@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { createDeveloper, DeveloperConflictError } from '@/lib/db/developers';
 import {
+  isExplicitTrue,
   isValidDocumentId,
   isValidDocumentType,
   isValidEmail,
@@ -19,6 +20,13 @@ type RegisterDeveloperBody = {
   documentType?: unknown;
   documentId?: unknown;
   phone?: unknown;
+  reason?: unknown;
+  environment?: unknown;
+  product?: unknown;
+  subject?: unknown;
+  description?: unknown;
+  terms?: unknown;
+  privacy?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -31,13 +39,27 @@ export async function POST(request: Request) {
     const documentType = readTrimmedString(body.documentType);
     const documentId = readTrimmedString(body.documentId);
     const phone = readTrimmedString(body.phone);
+    const reason = readTrimmedString(body.reason);
+    const environment = readTrimmedString(body.environment);
+    const product = readTrimmedString(body.product);
+    const subject = readTrimmedString(body.subject);
+    const description = readTrimmedString(body.description);
 
-    if (!identityUid || !email || !fullName || !companyName || !documentType || !documentId) {
+    if (
+      !identityUid ||
+      !email ||
+      !fullName ||
+      !companyName ||
+      !documentType ||
+      !documentId ||
+      !reason ||
+      !environment ||
+      !product ||
+      !subject ||
+      !description
+    ) {
       return NextResponse.json(
-        {
-          message:
-            'identityUid, email, fullName, companyName, documentType y documentId son obligatorios.',
-        },
+        { message: 'Faltan campos obligatorios para completar el registro.' },
         { status: 400 },
       );
     }
@@ -58,6 +80,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Ingrese un teléfono válido.' }, { status: 400 });
     }
 
+    if (!isExplicitTrue(body.terms) || !isExplicitTrue(body.privacy)) {
+      return NextResponse.json(
+        { message: 'Debe aceptar los términos y autorizar el tratamiento de datos personales.' },
+        { status: 400 },
+      );
+    }
+
     const developer = await createDeveloper({
       identityUid,
       email,
@@ -66,6 +95,11 @@ export async function POST(request: Request) {
       documentType,
       documentId,
       phone: phone || undefined,
+      reason,
+      environment,
+      product,
+      subject,
+      description,
     });
 
     return NextResponse.json(developer, { status: 201 });

@@ -143,6 +143,13 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
           companyName,
           documentType: String(formData.get("idType") ?? "").trim(),
           documentId: String(formData.get("idNumber") ?? "").trim(),
+          reason: String(formData.get("reason") ?? "").trim(),
+          environment: String(formData.get("environment") ?? "").trim(),
+          product: String(formData.get("product") ?? "").trim(),
+          subject: String(formData.get("subject") ?? "").trim(),
+          description: String(formData.get("description") ?? "").trim(),
+          terms: formData.get("terms") === "on",
+          privacy: formData.get("privacy") === "on",
         }),
       });
 

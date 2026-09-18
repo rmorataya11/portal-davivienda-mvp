@@ -15,12 +15,24 @@ type CreateDeveloperInput = {
   documentType: string;
   documentId: string;
   phone?: string;
+  reason: string;
+  environment: string;
+  product: string;
+  subject: string;
+  description: string;
 };
 
 type CreatedDeveloper = {
   id: string;
   identityUid: string;
   email: string;
+  reason: string | null;
+  environment: string | null;
+  product: string | null;
+  subject: string | null;
+  description: string | null;
+  termsAcceptedAt: string | null;
+  privacyAcceptedAt: string | null;
 };
 
 export type DeveloperProfile = {
@@ -93,6 +105,14 @@ function uniqueViolationMessage(error: { constraint?: string }): string {
   return 'Ya existe un developer con estos datos.';
 }
 
+function toIso(value: Date | string | null): string | null {
+  if (!value) {
+    return null;
+  }
+
+  return value instanceof Date ? value.toISOString() : value;
+}
+
 export async function createDeveloper({
   identityUid,
   email,
@@ -101,6 +121,11 @@ export async function createDeveloper({
   documentType,
   documentId,
   phone,
+  reason,
+  environment,
+  product,
+  subject,
+  description,
 }: CreateDeveloperInput): Promise<CreatedDeveloper> {
   try {
     const result = await query(
@@ -111,10 +136,27 @@ export async function createDeveloper({
          company_name,
          document_type,
          document_id,
-         phone
+         phone,
+         reason,
+         environment,
+         product,
+         subject,
+         description,
+         terms_accepted_at,
+         privacy_accepted_at
        )
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id, identity_uid, email`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, now(), now())
+       RETURNING
+         id,
+         identity_uid,
+         email,
+         reason,
+         environment,
+         product,
+         subject,
+         description,
+         terms_accepted_at,
+         privacy_accepted_at`,
       [
         identityUid,
         email,
@@ -123,6 +165,11 @@ export async function createDeveloper({
         documentType,
         documentId,
         phone?.trim() || null,
+        reason,
+        environment,
+        product,
+        subject,
+        description,
       ],
     );
 
@@ -130,12 +177,26 @@ export async function createDeveloper({
       id: string;
       identity_uid: string;
       email: string;
+      reason: string | null;
+      environment: string | null;
+      product: string | null;
+      subject: string | null;
+      description: string | null;
+      terms_accepted_at: Date | string | null;
+      privacy_accepted_at: Date | string | null;
     };
 
     return {
       id: row.id,
       identityUid: row.identity_uid,
       email: row.email,
+      reason: row.reason,
+      environment: row.environment,
+      product: row.product,
+      subject: row.subject,
+      description: row.description,
+      termsAcceptedAt: toIso(row.terms_accepted_at),
+      privacyAcceptedAt: toIso(row.privacy_accepted_at),
     };
   } catch (error) {
     if (isUniqueViolation(error)) {
