@@ -36,7 +36,7 @@ export function ResetPasswordPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!hasValidParams) {
+    if (mode !== "resetPassword" || !oobCode) {
       setStatus("invalid");
       return;
     }
@@ -62,7 +62,7 @@ export function ResetPasswordPage() {
     return () => {
       cancelled = true;
     };
-  }, [hasValidParams, oobCode]);
+  }, [mode, oobCode]);
 
   function clearError(field: string) {
     setErrors((current) => {
