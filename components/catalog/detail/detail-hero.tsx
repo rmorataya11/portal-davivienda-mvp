@@ -85,7 +85,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     <div className="mt-4 grid gap-4">
       <section
         id="overview"
-        className="flex min-h-[200px] items-center rounded-2xl bg-white px-5 py-6 sm:px-8 sm:py-8 lg:h-[278px] lg:px-10"
+        className="flex min-h-[200px] items-center rounded-2xl bg-white px-5 py-6 sm:px-8 sm:py-8 lg:min-h-[278px] lg:px-10"
       >
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
           <div className="flex min-w-0 items-start gap-5">
