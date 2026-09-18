@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { BreakablePath } from "@/components/ui/breakable-path";
+
 export function CredentialField({
   label,
   value,
@@ -43,8 +45,8 @@ export function CredentialField({
           </button>
         </div>
       </div>
-      <p className="mt-3 break-all font-mono text-[14px] leading-7 text-[#141F25]">
-        {visible ? value : "•".repeat(Math.min(value.length, 28))}
+      <p className="mt-3 font-mono text-[14px] leading-7 text-[#141F25]">
+        {visible ? <BreakablePath value={value} /> : "•".repeat(Math.min(value.length, 28))}
       </p>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { BreakablePath } from "@/components/ui/breakable-path";
 import type { ApiDetail, ApiError } from "../content/apis";
 import { CompactEndpointPlayground } from "./compact-endpoint-playground";
 import { CredentialsPanel } from "./credentials-panel";
@@ -48,7 +49,7 @@ export function TechnicalTabs({
               key={header}
               className="rounded-[14px] border border-[#E3E7EC] bg-[#F8F9FB] px-4 py-3 font-mono text-[13px] text-[#404040]"
             >
-              {header}
+              <BreakablePath value={header} />
             </li>
           ))}
         </ul>

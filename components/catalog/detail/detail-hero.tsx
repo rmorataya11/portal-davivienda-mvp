@@ -163,7 +163,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               {summaryItems.map((item) => (
                 <div
                   key={item.label}
-                  className="flex min-h-[132px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-[#E7EAEE] px-5 py-5"
+                  className="flex min-h-[132px] min-w-0 flex-col rounded-[16px] border border-[#E7EAEE] px-5 py-5"
                 >
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">{item.label}</p>
                   <p className="mt-3 text-[18px] font-bold leading-7 tracking-[0.2px] text-[#404040] sm:text-[20px]">

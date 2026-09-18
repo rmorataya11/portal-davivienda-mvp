@@ -4,19 +4,30 @@ type BreakablePathProps = {
 };
 
 export function BreakablePath({ value, className = "" }: BreakablePathProps) {
-  const segments = value.split(/(\/)/);
+  const parts = value.split(/([/._-])/);
 
   return (
-    <span className={`min-w-0 wrap-break-word ${className}`.trim()}>
-      {segments.map((segment, index) =>
-        segment === "/" ? (
-          <span key={`${segment}-${index}`}>
-            /<wbr />
+    <span className={`min-w-0 [overflow-wrap:normal] [word-break:normal] ${className}`.trim()}>
+      {parts.map((part, index) => {
+        if (!part) {
+          return null;
+        }
+
+        if (/^[/._-]$/.test(part)) {
+          return (
+            <span key={`${part}-${index}`}>
+              {part}
+              {"\u200B"}
+            </span>
+          );
+        }
+
+        return (
+          <span key={`${part}-${index}`} className="whitespace-nowrap">
+            {part}
           </span>
-        ) : (
-          <span key={`${segment}-${index}`}>{segment}</span>
-        ),
-      )}
+        );
+      })}
     </span>
   );
 }
