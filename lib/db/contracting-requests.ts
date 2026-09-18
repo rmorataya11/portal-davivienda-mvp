@@ -12,6 +12,7 @@ export type CreateContractingRequestInput = {
   ipWhitelist?: string;
   contactoTecnicoNombre: string;
   contactoTecnicoEmail: string;
+  contactoTecnicoTelefono: string;
   aceptaTerminos: boolean;
   confirmaVeracidad: boolean;
 };
@@ -28,6 +29,7 @@ export type ContractingRequest = {
   ipWhitelist: string | null;
   contactoTecnicoNombre: string;
   contactoTecnicoEmail: string;
+  contactoTecnicoTelefono: string | null;
   aceptaTerminos: boolean;
   confirmaVeracidad: boolean;
   status: string;
@@ -47,6 +49,7 @@ type ContractingRequestRow = {
   ip_whitelist: string | null;
   contacto_tecnico_nombre: string;
   contacto_tecnico_email: string;
+  contacto_tecnico_telefono: string | null;
   acepta_terminos: boolean;
   confirma_veracidad: boolean;
   status: string;
@@ -71,6 +74,7 @@ function mapContractingRequest(row: ContractingRequestRow): ContractingRequest {
     ipWhitelist: row.ip_whitelist,
     contactoTecnicoNombre: row.contacto_tecnico_nombre,
     contactoTecnicoEmail: row.contacto_tecnico_email,
+    contactoTecnicoTelefono: row.contacto_tecnico_telefono,
     aceptaTerminos: row.acepta_terminos,
     confirmaVeracidad: row.confirma_veracidad,
     status: row.status,
@@ -105,10 +109,11 @@ export async function createContractingRequest(
        ip_whitelist,
        contacto_tecnico_nombre,
        contacto_tecnico_email,
+       contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad
      )
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
      RETURNING
        id,
        developer_id,
@@ -121,6 +126,7 @@ export async function createContractingRequest(
        ip_whitelist,
        contacto_tecnico_nombre,
        contacto_tecnico_email,
+       contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad,
        status,
@@ -137,6 +143,7 @@ export async function createContractingRequest(
       data.ipWhitelist?.trim() || null,
       data.contactoTecnicoNombre,
       data.contactoTecnicoEmail,
+      data.contactoTecnicoTelefono.trim() || null,
       data.aceptaTerminos,
       data.confirmaVeracidad,
     ],
@@ -167,6 +174,7 @@ export async function getContractingRequestsByDeveloper(
        ip_whitelist,
        contacto_tecnico_nombre,
        contacto_tecnico_email,
+       contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad,
        status,

@@ -189,6 +189,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
               : undefined,
           contactoTecnicoNombre: String(formData.get("technicalName") ?? "").trim(),
           contactoTecnicoEmail: String(formData.get("technicalEmail") ?? "").trim(),
+          contactoTecnicoTelefono: String(formData.get("technicalPhone") ?? "").trim(),
           aceptaTerminos: formData.get("terms") === "on",
           confirmaVeracidad: formData.get("dataAccuracy") === "on",
         }),

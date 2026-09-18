@@ -4,6 +4,12 @@ import {
   createContractingRequest,
   getContractingRequestsByDeveloper,
 } from '@/lib/db/contracting-requests';
+import {
+  isExplicitTrue,
+  isValidEmail,
+  isValidPhone,
+  readTrimmedString,
+} from '@/lib/validation/fields';
 
 export const runtime = 'nodejs';
 
@@ -18,21 +24,10 @@ type ContractingRequestBody = {
   ipWhitelist?: unknown;
   contactoTecnicoNombre?: unknown;
   contactoTecnicoEmail?: unknown;
+  contactoTecnicoTelefono?: unknown;
   aceptaTerminos?: unknown;
   confirmaVeracidad?: unknown;
 };
-
-function readRequiredString(value: unknown) {
-  return typeof value === 'string' ? value.trim() : '';
-}
-
-function readOptionalString(value: unknown) {
-  return typeof value === 'string' ? value.trim() : '';
-}
-
-function readBoolean(value: unknown) {
-  return value === true || value === 'true';
-}
 
 export async function GET(request: Request) {
   try {
@@ -56,18 +51,19 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ContractingRequestBody;
-    const developerId = readRequiredString(body.developerId);
-    const razonSocial = readRequiredString(body.razonSocial);
-    const nit = readRequiredString(body.nit);
-    const industria = readRequiredString(body.industria);
-    const casoUso = readRequiredString(body.casoUso);
-    const volumenEstimado = readRequiredString(body.volumenEstimado);
-    const ambienteDestino = readRequiredString(body.ambienteDestino);
-    const contactoTecnicoNombre = readRequiredString(body.contactoTecnicoNombre);
-    const contactoTecnicoEmail = readRequiredString(body.contactoTecnicoEmail);
-    const ipWhitelist = readOptionalString(body.ipWhitelist);
-    const aceptaTerminos = readBoolean(body.aceptaTerminos);
-    const confirmaVeracidad = readBoolean(body.confirmaVeracidad);
+    const developerId = readTrimmedString(body.developerId);
+    const razonSocial = readTrimmedString(body.razonSocial);
+    const nit = readTrimmedString(body.nit);
+    const industria = readTrimmedString(body.industria);
+    const casoUso = readTrimmedString(body.casoUso);
+    const volumenEstimado = readTrimmedString(body.volumenEstimado);
+    const ambienteDestino = readTrimmedString(body.ambienteDestino);
+    const contactoTecnicoNombre = readTrimmedString(body.contactoTecnicoNombre);
+    const contactoTecnicoEmail = readTrimmedString(body.contactoTecnicoEmail);
+    const contactoTecnicoTelefono = readTrimmedString(body.contactoTecnicoTelefono);
+    const ipWhitelist = readTrimmedString(body.ipWhitelist);
+    const aceptaTerminos = isExplicitTrue(body.aceptaTerminos);
+    const confirmaVeracidad = isExplicitTrue(body.confirmaVeracidad);
 
     if (
       !developerId ||
@@ -78,12 +74,21 @@ export async function POST(request: Request) {
       !volumenEstimado ||
       !ambienteDestino ||
       !contactoTecnicoNombre ||
-      !contactoTecnicoEmail
+      !contactoTecnicoEmail ||
+      !contactoTecnicoTelefono
     ) {
       return NextResponse.json(
         { message: 'Faltan campos obligatorios para crear la solicitud.' },
         { status: 400 },
       );
+    }
+
+    if (!isValidEmail(contactoTecnicoEmail)) {
+      return NextResponse.json({ message: 'Ingrese un correo válido.' }, { status: 400 });
+    }
+
+    if (!isValidPhone(contactoTecnicoTelefono)) {
+      return NextResponse.json({ message: 'Ingrese un teléfono válido.' }, { status: 400 });
     }
 
     if (!aceptaTerminos || !confirmaVeracidad) {
@@ -104,6 +109,7 @@ export async function POST(request: Request) {
       ipWhitelist: ipWhitelist || undefined,
       contactoTecnicoNombre,
       contactoTecnicoEmail,
+      contactoTecnicoTelefono,
       aceptaTerminos,
       confirmaVeracidad,
     });

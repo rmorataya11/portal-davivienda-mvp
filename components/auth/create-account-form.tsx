@@ -141,6 +141,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
           email: user.email,
           fullName: companyName,
           companyName,
+          documentType: String(formData.get("idType") ?? "").trim(),
+          documentId: String(formData.get("idNumber") ?? "").trim(),
         }),
       });
 

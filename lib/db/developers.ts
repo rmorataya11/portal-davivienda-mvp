@@ -11,7 +11,10 @@ type CreateDeveloperInput = {
   identityUid: string;
   email: string;
   fullName: string;
-  companyName?: string;
+  companyName: string;
+  documentType: string;
+  documentId: string;
+  phone?: string;
 };
 
 type CreatedDeveloper = {
@@ -95,13 +98,32 @@ export async function createDeveloper({
   email,
   fullName,
   companyName,
+  documentType,
+  documentId,
+  phone,
 }: CreateDeveloperInput): Promise<CreatedDeveloper> {
   try {
     const result = await query(
-      `INSERT INTO developers (identity_uid, email, full_name, company_name)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO developers (
+         identity_uid,
+         email,
+         full_name,
+         company_name,
+         document_type,
+         document_id,
+         phone
+       )
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, identity_uid, email`,
-      [identityUid, email, fullName, companyName ?? null],
+      [
+        identityUid,
+        email,
+        fullName,
+        companyName,
+        documentType,
+        documentId,
+        phone?.trim() || null,
+      ],
     );
 
     const row = result.rows[0] as {

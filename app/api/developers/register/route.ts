@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
 
 import { createDeveloper, DeveloperConflictError } from '@/lib/db/developers';
+import {
+  isValidDocumentId,
+  isValidDocumentType,
+  isValidEmail,
+  isValidPhone,
+  readTrimmedString,
+} from '@/lib/validation/fields';
 
 export const runtime = 'nodejs';
 
@@ -9,32 +16,56 @@ type RegisterDeveloperBody = {
   email?: unknown;
   fullName?: unknown;
   companyName?: unknown;
+  documentType?: unknown;
+  documentId?: unknown;
+  phone?: unknown;
 };
-
-function readRequiredString(value: unknown): string {
-  return typeof value === 'string' ? value.trim() : '';
-}
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as RegisterDeveloperBody;
-    const identityUid = readRequiredString(body.identityUid);
-    const email = readRequiredString(body.email);
-    const fullName = readRequiredString(body.fullName);
-    const companyName = readRequiredString(body.companyName);
+    const identityUid = readTrimmedString(body.identityUid);
+    const email = readTrimmedString(body.email);
+    const fullName = readTrimmedString(body.fullName);
+    const companyName = readTrimmedString(body.companyName);
+    const documentType = readTrimmedString(body.documentType);
+    const documentId = readTrimmedString(body.documentId);
+    const phone = readTrimmedString(body.phone);
 
-    if (!identityUid || !email || !fullName) {
+    if (!identityUid || !email || !fullName || !companyName || !documentType || !documentId) {
       return NextResponse.json(
-        { message: 'identityUid, email y fullName son obligatorios.' },
+        {
+          message:
+            'identityUid, email, fullName, companyName, documentType y documentId son obligatorios.',
+        },
         { status: 400 },
       );
+    }
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ message: 'Ingrese un correo válido.' }, { status: 400 });
+    }
+
+    if (!isValidDocumentType(documentType)) {
+      return NextResponse.json({ message: 'Seleccione un tipo de identificación válido.' }, { status: 400 });
+    }
+
+    if (!isValidDocumentId(documentId)) {
+      return NextResponse.json({ message: 'Ingrese el número de identificación.' }, { status: 400 });
+    }
+
+    if (phone && !isValidPhone(phone)) {
+      return NextResponse.json({ message: 'Ingrese un teléfono válido.' }, { status: 400 });
     }
 
     const developer = await createDeveloper({
       identityUid,
       email,
       fullName,
-      companyName: companyName || undefined,
+      companyName,
+      documentType,
+      documentId,
+      phone: phone || undefined,
     });
 
     return NextResponse.json(developer, { status: 201 });
