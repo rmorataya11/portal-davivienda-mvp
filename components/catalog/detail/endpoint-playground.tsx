@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { BreakablePath } from "@/components/ui/breakable-path";
 import type { ApiEndpoint } from "../content/apis";
 
 function methodClasses(method: ApiEndpoint["method"]) {
@@ -69,16 +70,16 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
               >
                 {selectedEndpoint.method}
               </span>
-              <code className="min-w-0 break-all text-[18px] font-medium tracking-[0.1px] text-[#202A31] sm:text-[22px] lg:text-[28px]">
-                {selectedEndpoint.path}
+              <code className="min-w-0 text-[18px] font-medium tracking-[0.1px] text-[#202A31] sm:text-[22px] lg:text-[28px]">
+                <BreakablePath value={selectedEndpoint.path} />
               </code>
             </div>
           </div>
 
           <div className="px-6 py-6">
             <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">HTTP URL</p>
-            <code className="mt-3 block break-all rounded-[14px] bg-[#F7F8FA] px-4 py-3 text-[13px] leading-6 text-[#30383F]">
-              {selectedEndpoint.playground.httpUrl}
+            <code className="mt-3 block rounded-[14px] bg-[#F7F8FA] px-4 py-3 text-[13px] leading-6 text-[#30383F]">
+              <BreakablePath value={selectedEndpoint.playground.httpUrl} />
             </code>
 
             <div className="mt-6">

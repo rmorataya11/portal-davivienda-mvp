@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { BreakablePath } from "@/components/ui/breakable-path";
 import type { ApiDetail } from "../content/apis";
 
 function ApiGlyph() {
@@ -169,17 +170,13 @@ export function DetailHero({ api }: { api: ApiDetail }) {
                     {item.value}
                   </p>
                   {"path" in item && item.path ? (
-                    <p className="mt-1 break-all font-mono text-[12px] leading-5 text-[#404040] sm:text-[13px]">
-                      {item.path}
+                    <p className="mt-1 font-mono text-[12px] leading-5 text-[#404040] sm:text-[13px]">
+                      <BreakablePath value={item.path} />
                     </p>
                   ) : null}
                   {"detail" in item && item.detail ? (
-                    <p
-                      className={`mt-auto pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E] ${
-                        item.detail.includes("/") ? "break-all" : "break-words"
-                      }`}
-                    >
-                      {item.detail}
+                    <p className="mt-auto pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E]">
+                      {item.detail.includes("/") ? <BreakablePath value={item.detail} /> : item.detail}
                     </p>
                   ) : null}
                 </div>

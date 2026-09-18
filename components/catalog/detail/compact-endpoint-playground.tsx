@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 
+import { BreakablePath } from "@/components/ui/breakable-path";
 import type { ApiEndpoint } from "../content/apis";
 
 SyntaxHighlighter.registerLanguage("json", json);
@@ -86,7 +87,9 @@ function CompactEndpointCard({ endpoint }: { endpoint: ApiEndpoint }) {
         >
           {endpoint.method}
         </span>
-        <code className="min-w-0 break-all text-[18px] font-medium text-[#404040] sm:text-[20px]">{endpoint.path}</code>
+        <code className="min-w-0 text-[18px] font-medium text-[#404040] sm:text-[20px]">
+          <BreakablePath value={endpoint.path} />
+        </code>
       </div>
 
       <div className="border-b border-[#707070]/30 bg-white px-5 py-4">

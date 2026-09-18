@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
+import { BreakablePath } from "@/components/ui/breakable-path";
 import { SectionContainer } from "@/components/ui/layout";
 import {
   defaultDocsEndpointId,
@@ -391,8 +392,8 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         <span className={`inline-flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-[13px] font-bold ${methodBadgeClass(endpoint.method)}`}>
           {endpoint.method}
         </span>
-        <code className="min-w-0 break-all text-[15px] font-medium leading-6 tracking-[0.1px] text-[#202A31] sm:text-[18px]">
-          {endpoint.httpUrl}
+        <code className="min-w-0 text-[15px] font-medium leading-6 tracking-[0.1px] text-[#202A31] sm:text-[18px]">
+          <BreakablePath value={endpoint.httpUrl} />
         </code>
       </div>
 

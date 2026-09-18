@@ -144,14 +144,15 @@ a {
 }
 
 .why-wide-col {
-  display: grid;
-  gap: 24px;
+  display: contents;
 }
 
 .why-card {
   position: relative;
+  height: 100%;
   border-radius: 32px;
   background: #ffffff;
+  overflow-wrap: break-word;
 }
 
 .why-card-step {
@@ -192,6 +193,9 @@ a {
   font-weight: 700;
   line-height: 26px;
   color: #1a1a1a;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
 }
 
 .why-card-desc {
@@ -200,6 +204,13 @@ a {
   font-weight: 400;
   line-height: 20px;
   color: #6b7280;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+}
+
+.why-card-desc-desktop {
+  display: none;
 }
 
 .why-card:hover .why-card-icon {
@@ -240,21 +251,38 @@ a {
 
 .why-card-wide {
   display: flex;
-  min-height: 188px;
+  min-height: 280px;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 18px 72px 19px;
 }
 
 .why-card-wide-body {
   display: flex;
+  width: 100%;
   flex: 1;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 40px 24px 39px 50px;
+  align-items: center;
+  gap: 0;
+  padding: 0;
 }
 
 .why-card-wide .why-card-copy {
+  align-self: stretch;
+  margin-top: 42px;
+  padding-left: 16px;
   text-align: left;
+}
+
+.why-card-wide .why-card-title {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.why-card-wide .why-card-desc {
+  font-size: 14px;
+  line-height: 20px;
 }
 
 @media (min-width: 768px) {
@@ -264,11 +292,13 @@ a {
 
   .why-grid {
     grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+    align-items: stretch;
   }
 
-  .why-wide-col {
-    grid-column: 1 / -1;
-    grid-template-columns: 1fr 1fr;
+  .why-card-tall,
+  .why-card-wide {
+    min-height: 0;
   }
 }
 
@@ -339,6 +369,14 @@ a {
     grid-template-rows: 100%;
     column-gap: calc(24 / 1268 * 100%);
     row-gap: 0;
+  }
+
+  .why-card-desc-responsive {
+    display: none;
+  }
+
+  .why-card-desc-desktop {
+    display: inline;
   }
 
   .why-wide-col {
@@ -415,6 +453,8 @@ a {
 
   .why-card-wide {
     display: block;
+    min-height: 0;
+    padding: 0;
   }
 
   .why-card-wide-body {
@@ -424,6 +464,21 @@ a {
     gap: calc(24 / 1366 * 100cqi);
     height: 100%;
     padding: calc(40 / 1366 * 100cqi) calc(24 / 1366 * 100cqi) calc(39 / 1366 * 100cqi) calc(50 / 1366 * 100cqi);
+  }
+
+  .why-card-wide .why-card-copy {
+    margin-top: 0;
+    padding-left: 0;
+  }
+
+  .why-card-wide .why-card-title {
+    font-size: calc(20 / 1366 * 100cqi);
+    line-height: calc(26 / 1366 * 100cqi);
+  }
+
+  .why-card-wide .why-card-desc {
+    font-size: calc(15 / 1366 * 100cqi);
+    line-height: calc(20 / 1366 * 100cqi);
   }
 }
 

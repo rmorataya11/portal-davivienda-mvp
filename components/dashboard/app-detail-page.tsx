@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { apiCatalogItems, getApiDetailBySlug } from "@/components/catalog/content/apis";
+import { BreakablePath } from "@/components/ui/breakable-path";
 import { CredentialField } from "@/components/ui/credential-field";
 import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
 import { formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
@@ -147,7 +148,9 @@ export function AppDetailPage({ appId }: { appId: string }) {
                         >
                           {endpoint.method}
                         </span>
-                        <code className="min-w-0 break-all text-[13px] text-[#404040]">{endpoint.path}</code>
+                        <code className="min-w-0 text-[13px] text-[#404040]">
+                          <BreakablePath value={endpoint.path} />
+                        </code>
                       </div>
                       <p className="mt-2 text-[13px] leading-5 text-[#707070]">{endpoint.description}</p>
                     </div>
