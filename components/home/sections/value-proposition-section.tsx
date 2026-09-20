@@ -6,12 +6,12 @@ function WhyBackgroundBands() {
   return (
     <div className="why-bands" aria-hidden="true">
       <img
-        src="/why-boomerang.png"
+        src="/home/why-boomerang.png"
         alt=""
         className="why-boomerang why-boomerang-tr"
       />
       <img
-        src="/why-boomerang.png"
+        src="/home/why-boomerang.png"
         alt=""
         className="why-boomerang why-boomerang-bl"
       />
