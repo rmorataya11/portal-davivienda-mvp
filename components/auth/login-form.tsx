@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { startTransition, useEffect, useRef, useState, type FormEvent } from "react";
 
 import { signIn } from "@/lib/auth/session";
 import { getAuthErrorMessage } from "@/lib/firebase/errors";
@@ -36,7 +36,9 @@ export function LoginForm() {
       return;
     }
 
-    router.replace(destinationRef.current);
+    startTransition(() => {
+      router.replace(destinationRef.current);
+    });
   }, [loading, router, user]);
 
   function clearError(field: string) {

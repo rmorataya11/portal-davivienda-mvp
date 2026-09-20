@@ -9,7 +9,7 @@ import {
   type User,
 } from 'firebase/auth';
 
-import { auth } from '@/lib/firebase/client';
+import { getFirebaseAuth } from '@/lib/firebase/client';
 
 export type AuthUser = {
   uid: string;
@@ -63,7 +63,7 @@ export async function signUp(
   password: string,
 ): Promise<AuthUser> {
   try {
-    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    const credential = await createUserWithEmailAndPassword(getFirebaseAuth(), email, password);
     return toAuthUser(credential.user);
   } catch (error) {
     throwAuthError(error);
@@ -75,7 +75,7 @@ export async function signIn(
   password: string,
 ): Promise<AuthUser> {
   try {
-    const credential = await signInWithEmailAndPassword(auth, email, password);
+    const credential = await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
     return toAuthUser(credential.user);
   } catch (error) {
     throwAuthError(error);
@@ -84,7 +84,7 @@ export async function signIn(
 
 export async function signOutUser(): Promise<void> {
   try {
-    await signOut(auth);
+    await signOut(getFirebaseAuth());
   } catch (error) {
     throwAuthError(error);
   }
@@ -102,7 +102,7 @@ export function getPasswordResetActionCodeSettings(): ActionCodeSettings {
 
 export async function resetPassword(email: string): Promise<void> {
   try {
-    await sendPasswordResetEmail(auth, email, getPasswordResetActionCodeSettings());
+    await sendPasswordResetEmail(getFirebaseAuth(), email, getPasswordResetActionCodeSettings());
   } catch (error) {
     throwAuthError(error);
   }
@@ -111,7 +111,7 @@ export async function resetPassword(email: string): Promise<void> {
 export function getCurrentUser(): Promise<AuthUser | null> {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
-      auth,
+      getFirebaseAuth(),
       (user) => {
         unsubscribe();
         resolve(user ? toAuthUser(user) : null);
@@ -127,7 +127,13 @@ export function getCurrentUser(): Promise<AuthUser | null> {
 export function onAuthChange(
   callback: (user: AuthUser | null) => void,
 ): () => void {
-  return onAuthStateChanged(auth, (user) => {
-    callback(user ? toAuthUser(user) : null);
-  });
+  return onAuthStateChanged(
+    getFirebaseAuth(),
+    (user) => {
+      callback(user ? toAuthUser(user) : null);
+    },
+    () => {
+      callback(null);
+    },
+  );
 }
