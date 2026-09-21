@@ -214,6 +214,11 @@ a {
   object-fit: contain;
 }
 
+.why-card-icon img.why-card-icon-img-sm {
+  width: 58px;
+  height: 58px;
+}
+
 .why-card-copy {
   min-width: 0;
 }
@@ -445,6 +450,11 @@ a {
   .why-card-icon img {
     width: calc(72 / 1366 * 100cqi);
     height: calc(72 / 1366 * 100cqi);
+  }
+
+  .why-card-icon img.why-card-icon-img-sm {
+    width: calc(58 / 1366 * 100cqi);
+    height: calc(58 / 1366 * 100cqi);
   }
 
   .why-card-tall {
