@@ -973,7 +973,7 @@ a {
   flex-direction: column;
   border-radius: 32px;
   background: #ffffff;
-  padding: 27px 16px 24px 33px;
+  padding: 27px 16px 24px;
 }
 
 .inspire-card-header {
@@ -982,6 +982,7 @@ a {
   align-items: center;
   gap: 16px;
   min-height: 37px;
+  padding-left: 17px;
 }
 
 .inspire-card-icon {
@@ -1146,7 +1147,7 @@ a {
   .inspire-card {
     height: calc(600 / 1366 * 100cqi);
     min-height: 0;
-    padding: calc(27 / 1366 * 100cqi) calc(16 / 1366 * 100cqi) calc(24 / 1366 * 100cqi) calc(33 / 1366 * 100cqi);
+    padding: calc(27 / 1366 * 100cqi) calc(16 / 1366 * 100cqi) calc(24 / 1366 * 100cqi);
     overflow: visible;
     border-radius: calc(32 / 1366 * 100cqi);
   }
@@ -1154,6 +1155,7 @@ a {
   .inspire-card-header {
     gap: calc(16 / 1366 * 100cqi);
     min-height: calc(37 / 1366 * 100cqi);
+    padding-left: calc(17 / 1366 * 100cqi);
   }
 
   .inspire-card-icon {

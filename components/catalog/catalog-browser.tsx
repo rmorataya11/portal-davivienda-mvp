@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { ApiCard } from "./api-card";
+import { CatalogGlyph } from "./catalog-glyph";
 import { apiCatalogItems, apiCategories, getApiDetailBySlug } from "./content/apis";
 
 export function CatalogBrowser() {
@@ -38,21 +39,31 @@ export function CatalogBrowser() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex items-center gap-2 text-[16px] leading-7 font-medium tracking-[0.32px] text-[#404040]">
+      <div className="flex items-center gap-3 text-[16px] leading-7 font-medium tracking-[0.32px] text-[#404040]">
+        <img
+          src="/catag/main/catalog.svg"
+          alt=""
+          width={32}
+          height={32}
+          className="h-8 w-8 object-contain"
+          aria-hidden="true"
+        />
         <span>Catálogo de APIs</span>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <label className="flex h-10 w-full items-center rounded-full border border-[#707070] bg-white px-4 text-[#8E8E8E] sm:w-[408px]">
+      <div className="flex flex-wrap items-center gap-4">
+        <label className="flex h-10 w-full items-center gap-2 rounded-full border border-[#707070] bg-white px-4 text-[#8E8E8E] sm:w-[408px]">
           <span className="sr-only">Filtrar catálogo</span>
+          <CatalogGlyph src="/catag/main/lupa.svg" className="h-6 w-6" />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Filtre por nombre, etiqueta o endpoint..."
-            className="h-full w-full bg-transparent text-sm text-[#404040] outline-none placeholder:text-[#8E8E8E]"
+            className="h-full w-full bg-transparent text-sm text-[#404040] outline-none placeholder:text-[#8E8E8E] [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
           />
         </label>
+        <CatalogGlyph src="/catag/main/filter.svg" className="h-7 w-7" />
         {apiCategories.map((item) => {
           const isActive = item === category;
 

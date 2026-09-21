@@ -128,6 +128,7 @@ const tesoreria: ApiDetail = {
     "Optimice la liquidez corporativa y la toma de decisiones en tiempo real. Integre la posición consolidada de fondos de su empresa directamente con sus sistemas centrales.",
   category: "Cuentas",
   status: "Producción",
+  imageSrc: "/catag/icons_apis/api_tesoreria_icon.svg",
   heroSceneSrc: "/treasury-hero-illustration.svg",
   heroDescription:
     "Consulta los movimientos de una cuenta empresarial, con soporte de filtros por moneda y paginación.",

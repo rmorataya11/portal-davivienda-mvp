@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
+import { CatalogGlyph } from "../catalog-glyph";
 import type { ApiDetail } from "../content/apis";
 
 function ApiGlyph() {
@@ -22,17 +23,6 @@ function ApiGlyph() {
       />
       <rect x="20" y="18" width="16" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
       <circle cx="28" cy="23" r="2.2" stroke="currentColor" strokeWidth="1.6" />
-    </svg>
-  );
-}
-
-function CategoryGlyph() {
-  return (
-    <svg viewBox="0 0 16 16" className="h-4 w-4 text-[#8E8E8E]" fill="none" aria-hidden="true">
-      <circle cx="4.5" cy="5" r="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <circle cx="11.5" cy="5" r="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <circle cx="8" cy="11.5" r="1.5" stroke="currentColor" strokeWidth="1.3" />
-      <path d="M5.7 6.2 7 10.2M10.3 6.2 9 10.2" stroke="currentColor" strokeWidth="1.3" />
     </svg>
   );
 }
@@ -90,8 +80,8 @@ export function DetailHero({ api }: { api: ApiDetail }) {
       >
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
           <div className="flex min-w-0 items-start gap-5">
-            <div className="inline-flex h-[60px] w-[60px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#F2F3F5] sm:h-[98px] sm:w-[98px]">
-              {iconSrc ? <img src={iconSrc} alt="" className="h-10 w-10 object-contain" /> : <ApiGlyph />}
+            <div className="inline-flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[16px] bg-[#F2F3F5] sm:h-[98px] sm:w-[98px]">
+              {iconSrc ? <img src={iconSrc} alt="" className="h-12 w-12 object-contain sm:h-16 sm:w-16" /> : <ApiGlyph />}
             </div>
 
             <div className="min-w-0 pt-1">
@@ -103,7 +93,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-4">
                 <span className="inline-flex items-center gap-2 text-[14px] font-normal text-[#8E8E8E]">
-                  <CategoryGlyph />
+                  <CatalogGlyph src="/catag/main/filter.svg" className="h-6 w-6" />
                   {api.category}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-3 py-1 text-[13px] font-medium text-[#347659]">
