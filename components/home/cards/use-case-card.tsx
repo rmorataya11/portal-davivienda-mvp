@@ -13,7 +13,12 @@ export function UseCaseCard({ card }: { card: UseCaseCardData }) {
         <p className="inspire-card-category">{card.category}</p>
       </div>
       {card.imageSrc ? (
-        <img src={card.imageSrc} alt="" className="inspire-card-media" />
+        <img
+          src={card.imageSrc}
+          alt=""
+          className="inspire-card-media"
+          style={card.imagePosition ? { objectPosition: card.imagePosition } : undefined}
+        />
       ) : (
         <div className="inspire-card-media" />
       )}

@@ -4,17 +4,7 @@ export function HeroSection() {
   return (
     <section id="inicio" className="scroll-anchor relative overflow-hidden">
       <div className="hero-frame">
-        <div className="hero-scene" aria-hidden="true">
-          <div className="hero-scene-photo">
-            <div className="hero-scene-glass hero-scene-glass--lg" />
-            <div className="hero-scene-glass hero-scene-glass--sm" />
-            <div className="hero-scene-tag hero-scene-tag--q3">Q3</div>
-            <div className="hero-scene-tag hero-scene-tag--leads">Nuevos leads</div>
-            <div className="hero-scene-figure hero-scene-figure--left" />
-            <div className="hero-scene-figure hero-scene-figure--center" />
-            <div className="hero-scene-figure hero-scene-figure--right" />
-          </div>
-        </div>
+        <div className="hero-scene" aria-hidden="true" />
 
         <div className="hero-card">
           <p className="hero-badge">Open Banking Davivienda</p>

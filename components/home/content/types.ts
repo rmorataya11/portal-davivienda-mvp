@@ -26,6 +26,7 @@ export type UseCaseCard = {
   description: string;
   icon: UseCaseIconName;
   imageSrc?: string;
+  imagePosition?: string;
 };
 
 export type StepCard = {
