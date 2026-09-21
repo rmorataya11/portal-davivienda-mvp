@@ -973,7 +973,7 @@ a {
   flex-direction: column;
   border-radius: 32px;
   background: #ffffff;
-  padding: 27px 16px 24px;
+  padding: 27px 16px 24px 33px;
 }
 
 .inspire-card-header {
@@ -996,6 +996,27 @@ a {
 .inspire-card-icon-svg {
   width: 44px;
   height: 37px;
+  object-fit: contain;
+}
+
+.inspire-card-header:has(.inspire-card-icon-img) {
+  gap: 8px;
+}
+
+.inspire-card-icon:has(.inspire-card-icon-img) {
+  width: 52px;
+  height: 48px;
+}
+
+.inspire-card-icon-img {
+  width: 52px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.inspire-card-icon-img-sm {
+  width: 40px;
+  height: 36px;
 }
 
 .inspire-card-category {
@@ -1125,7 +1146,7 @@ a {
   .inspire-card {
     height: calc(600 / 1366 * 100cqi);
     min-height: 0;
-    padding: calc(27 / 1366 * 100cqi) calc(16 / 1366 * 100cqi) calc(24 / 1366 * 100cqi);
+    padding: calc(27 / 1366 * 100cqi) calc(16 / 1366 * 100cqi) calc(24 / 1366 * 100cqi) calc(33 / 1366 * 100cqi);
     overflow: visible;
     border-radius: calc(32 / 1366 * 100cqi);
   }
@@ -1143,6 +1164,25 @@ a {
   .inspire-card-icon-svg {
     width: 100%;
     height: 100%;
+  }
+
+  .inspire-card-header:has(.inspire-card-icon-img) {
+    gap: calc(8 / 1366 * 100cqi);
+  }
+
+  .inspire-card-icon:has(.inspire-card-icon-img) {
+    width: calc(52 / 1366 * 100cqi);
+    height: calc(48 / 1366 * 100cqi);
+  }
+
+  .inspire-card-icon-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .inspire-card-icon-img-sm {
+    width: calc(40 / 1366 * 100cqi);
+    height: calc(36 / 1366 * 100cqi);
   }
 
   .inspire-card-category {
