@@ -16,22 +16,7 @@ export function ValueCardIcon({ step, className = "" }: ValueCardIconProps) {
 
 function RocketIcon() {
   return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M19.4 5.2C15.8 6.4 12.2 9.6 10.2 13.6L7.4 16.4L11.8 17.6L13 21.8L15.8 19C19.8 17 23 13.4 24.2 9.8C24.8 7.9 24.8 6 24.2 5.2C23.2 4.6 21.4 4.6 19.4 5.2Z"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17.2 14.2C18.3 14.2 19.2 13.3 19.2 12.2C19.2 11.1 18.3 10.2 17.2 10.2C16.1 10.2 15.2 11.1 15.2 12.2C15.2 13.3 16.1 14.2 17.2 14.2Z"
-        stroke="white"
-        strokeWidth="2"
-      />
-      <path d="M10 18.8L6.4 22.4" stroke="white" strokeWidth="2" strokeLinecap="round" />
-      <path d="M13.2 22L9.6 25.6" stroke="white" strokeWidth="2" strokeLinecap="round" />
-    </svg>
+    <img src="/home/icons/cohete.svg" alt="" width={72} height={72} aria-hidden="true" />
   );
 }
 

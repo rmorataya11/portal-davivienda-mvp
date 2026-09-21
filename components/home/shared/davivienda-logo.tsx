@@ -10,17 +10,25 @@ const sources = {
 
 const sizes = {
   navbar: "h-[22px] w-auto",
-  footer: "h-auto w-[196px] object-contain object-left",
+  footer: "h-auto w-[302px] max-w-full object-contain object-left",
   auth: "h-auto w-[168px] object-contain object-left",
 } as const;
 
+const dimensions = {
+  navbar: { width: 196, height: 22 },
+  footer: { width: 302, height: 40 },
+  auth: { width: 168, height: 22 },
+} as const;
+
 export function DaviviendaLogo({ variant = "navbar" }: DaviviendaLogoProps) {
+  const { width, height } = dimensions[variant];
+
   return (
     <img
       src={sources[variant]}
       alt="Davivienda"
-      width={196}
-      height={19}
+      width={width}
+      height={height}
       className={sizes[variant]}
     />
   );

@@ -5,16 +5,8 @@ import { valueCards } from "../content/value-proposition";
 function WhyBackgroundBands() {
   return (
     <div className="why-bands" aria-hidden="true">
-      <img
-        src="/home/why-boomerang.png"
-        alt=""
-        className="why-boomerang why-boomerang-tr"
-      />
-      <img
-        src="/home/why-boomerang.png"
-        alt=""
-        className="why-boomerang why-boomerang-bl"
-      />
+      <div className="why-boomerang why-boomerang-tr" />
+      <div className="why-boomerang why-boomerang-bl" />
     </div>
   );
 }

@@ -52,7 +52,7 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
           aria-disabled={!api.slug}
           className={`inline-flex h-10 w-full items-center justify-center rounded-[20px] border text-[14px] font-medium transition-all duration-300 ease-out sm:w-[157px] ${
             api.slug
-              ? "border-[#707070] text-[#000000] hover:border-[#E1251B] hover:bg-[#E1251B] hover:text-white"
+              ? "border-[#000000] text-[#000000] hover:border-[#E1251B] hover:bg-[#E1251B] hover:text-white"
               : "pointer-events-none border-[#B8B8B8] text-[#B8B8B8]"
           }`}
         >

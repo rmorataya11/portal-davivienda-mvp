@@ -117,8 +117,18 @@ a {
 
 .why-boomerang {
   position: absolute;
-  height: auto;
+  aspect-ratio: 1 / 1;
+  background-color: #2a3239;
+  pointer-events: none;
   user-select: none;
+  -webkit-mask-image: url("/home/icons/boomerang.svg");
+  mask-image: url("/home/icons/boomerang.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 .why-eyebrow,
@@ -196,6 +206,12 @@ a {
 .why-card-icon svg {
   width: 48px;
   height: 48px;
+}
+
+.why-card-icon img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
 }
 
 .why-card-copy {
@@ -338,17 +354,17 @@ a {
   }
 
   .why-boomerang-tr {
-    top: -2%;
-    right: -4%;
-    width: calc(620 / 1366 * 100%);
-    transform: rotate(18deg);
+    top: calc(-200 / 712 * 100%);
+    right: calc(-210 / 1366 * 100%);
+    width: calc(720 / 1366 * 100%);
+    transform: rotate(55deg);
   }
 
   .why-boomerang-bl {
-    bottom: 2%;
-    left: -2%;
-    width: calc(460 / 1366 * 100%);
-    transform: rotate(198deg);
+    bottom: calc(-250 / 712 * 100%);
+    left: calc(-180 / 1366 * 100%);
+    width: calc(580 / 1366 * 100%);
+    transform: rotate(-125deg);
   }
 
   .why-header {
@@ -424,6 +440,11 @@ a {
   .why-card-icon svg {
     width: calc(48 / 1366 * 100cqi);
     height: calc(48 / 1366 * 100cqi);
+  }
+
+  .why-card-icon img {
+    width: calc(72 / 1366 * 100cqi);
+    height: calc(72 / 1366 * 100cqi);
   }
 
   .why-card-tall {
