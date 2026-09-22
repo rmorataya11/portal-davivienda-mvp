@@ -5,14 +5,14 @@ const hrefByLabel: Record<string, string> = {
   "Guías de Uso": "/guias",
   "Catálogo de APIs": "/catalogo-apis",
   Documentación: "/documentacion",
-  Soporte: "/soporte",
+  FAQ: "/faq",
   "Crear una cuenta": "/crear-cuenta",
   "Iniciar sesión": "/iniciar-sesion",
   Sandbox: "/dashboard",
   "Documentación técnica": "/documentacion",
-  "Centro de ayuda": "/soporte#preguntas-frecuentes",
-  "Contactar con un experto": "/soporte#soporte-prioritario",
-  "Preguntas frecuentes": "/soporte#preguntas-frecuentes",
+  "Centro de ayuda": "/faq#preguntas-frecuentes",
+  "Contactar con un experto": "/faq#soporte-prioritario",
+  "Preguntas frecuentes": "/faq#preguntas-frecuentes",
 };
 
 export function FooterColumn({ title, links }: { title: string; links: string[] }) {

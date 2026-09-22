@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useId } from "react";
 
-export const SUPPORT_HREF = "/soporte";
-export const SUPPORT_LABEL = "Soporte";
+export const SUPPORT_HREF = "/faq";
+export const SUPPORT_LABEL = "FAQ";
 
 export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const titleId = useId();
@@ -52,14 +52,14 @@ export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: 
           <Link href={SUPPORT_HREF} className="font-semibold text-[#E1251B] underline-offset-2 hover:underline">
             {SUPPORT_LABEL}
           </Link>{" "}
-          (sección Soporte, opción Hable con un experto).
+          (sección FAQ, opción Hable con un experto).
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
             href={SUPPORT_HREF}
             className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
           >
-            Ir a soporte
+            Ir a FAQ
           </Link>
           <button
             type="button"

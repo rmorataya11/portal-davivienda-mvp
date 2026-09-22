@@ -84,8 +84,8 @@ function buildCrumbs(
       return;
     }
 
-    if (segment === "soporte") {
-      crumbs.push({ href, label: "Soporte" });
+    if (segment === "faq") {
+      crumbs.push({ href, label: "FAQ" });
       return;
     }
 

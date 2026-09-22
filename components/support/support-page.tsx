@@ -155,7 +155,7 @@ export function SupportPage() {
       <section className="pt-6 pb-8 sm:pt-8 sm:pb-10">
         <SectionContainer>
           <h1 className="max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">
-            Estamos para ayudarle a integrar
+            FAQ
           </h1>
           <p className="mt-3 max-w-[640px] text-[16px] leading-7 tracking-[0.24px] text-[#707070]">
             Encuentre respuestas, hable con nuestro equipo o abra un caso.
