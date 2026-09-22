@@ -7,7 +7,7 @@ import { DaviviendaLogo } from "../shared/davivienda-logo";
 export function MarketplaceFooter() {
   return (
     <footer className="border-t border-black/5 bg-white px-4 py-14 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-[1366px]">
+      <div className="mx-auto w-full max-w-[1920px]">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.7fr_0.8fr_0.8fr]">
           <div className="max-w-[360px]">
             <DaviviendaLogo variant="footer" />

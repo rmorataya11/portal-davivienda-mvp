@@ -6,11 +6,15 @@ type LayoutProps = {
 };
 
 export function PageContainer({ children, className = "" }: LayoutProps) {
-  return <div className={`mx-auto max-w-[1366px] px-4 sm:px-6 lg:px-8 xl:px-[56px] ${className}`}>{children}</div>;
+  return (
+    <div className={`mx-auto w-full max-w-[1920px] px-4 sm:px-6 lg:px-8 xl:px-[56px] 2xl:px-[4vw] ${className}`}>
+      {children}
+    </div>
+  );
 }
 
 export function FullBleedContainer({ children, className = "" }: LayoutProps) {
-  return <div className={`mx-auto max-w-[1366px] ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[1920px] ${className}`}>{children}</div>;
 }
 
 /** Page sections inset inside the navbar pill (`max-w-[1200px]`, more padding than the nav). */

@@ -24,7 +24,7 @@ export function CatalogPage() {
 
       <section className="pb-16">
         <FullBleedContainer className="bg-white">
-          <div className="px-4 py-4 sm:px-6 lg:px-[56px]">
+          <div className="px-4 py-4 sm:px-6 lg:px-[56px] 2xl:px-[4vw]">
             <CatalogBrowser />
           </div>
         </FullBleedContainer>

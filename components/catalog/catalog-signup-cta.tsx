@@ -13,7 +13,7 @@ export function CatalogSignupCta() {
 
   return (
     <section className="pb-16">
-      <div className="mx-auto flex w-full max-w-[1366px] flex-col gap-8 bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)] px-4 py-10 sm:px-6 xl:min-h-[287px] xl:flex-row xl:items-center xl:justify-between xl:gap-24 xl:py-8 xl:px-[56px]">
+      <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-8 bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)] px-4 py-10 sm:px-6 xl:min-h-[287px] xl:flex-row xl:items-center xl:justify-between xl:gap-24 xl:py-8 xl:px-[56px] 2xl:px-[4vw]">
         <div className="min-w-0 max-w-[691px]">
           <h2 className="text-[24px] font-bold leading-[1.2] tracking-[0.8px] text-white sm:text-[32px] xl:max-w-[596px] xl:text-[40px] xl:leading-[48px]">
             ¿Listo para su primera llamada?
