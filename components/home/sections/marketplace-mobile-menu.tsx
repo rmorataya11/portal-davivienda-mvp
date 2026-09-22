@@ -33,6 +33,7 @@ export function MarketplaceMobileMenu({
   const dialogId = useId();
   const { loginHref, signupHref } = getAuthHrefs(pathname);
   const returnTo = getApiContextFromPath(pathname)?.returnTo;
+  const visibleNavItems = navItems.filter((item) => item.href !== "/dashboard" || user);
 
   useEffect(() => {
     setMounted(true);
@@ -123,7 +124,7 @@ export function MarketplaceMobileMenu({
           </div>
 
           <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 pb-4">
-            {navItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const isActive = item.href === activeHref;
 
               return (

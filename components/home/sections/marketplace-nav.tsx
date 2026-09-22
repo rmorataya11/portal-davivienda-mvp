@@ -1,12 +1,19 @@
+"use client";
+
 import Link from "next/link";
+
+import { useAuth } from "@/components/auth/auth-provider";
 
 import { navItems } from "../content/navigation";
 
 export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: string }) {
+  const { user } = useAuth();
+  const visibleNavItems = navItems.filter((item) => item.href !== "/dashboard" || user);
+
   return (
     <nav className="hidden xl:block">
       <ul className="flex items-center gap-12 border-b border-white/40 px-[26px]">
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const isActive = item.href === activeHref;
 
           return (
