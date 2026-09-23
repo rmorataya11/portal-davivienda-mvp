@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import type { UseCaseCard as UseCaseCardData } from "../content/types";
 import { UseCaseIcon } from "./use-case-icon";
 
 export function UseCaseCard({ card }: { card: UseCaseCardData }) {
+  const t = useTranslations("Home.useCases");
+
   return (
     <article className="inspire-card">
       <div className="inspire-card-header">
@@ -26,7 +29,7 @@ export function UseCaseCard({ card }: { card: UseCaseCardData }) {
       <span className="inspire-card-rule" aria-hidden="true" />
       <p className="inspire-card-desc">{card.description}</p>
       <Link href="/catalogo-apis" className="inspire-card-cta">
-        Ver como funciona
+        {t("viewHowItWorks")}
       </Link>
     </article>
   );

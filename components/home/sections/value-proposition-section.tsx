@@ -1,6 +1,8 @@
+import { useTranslations } from "next-intl";
+
 import { TallValueCard } from "../cards/tall-value-card";
 import { WideValueCard } from "../cards/wide-value-card";
-import { valueCards } from "../content/value-proposition";
+import { valueCardDefinitions } from "../content/value-proposition";
 
 function WhyBackgroundBands() {
   return (
@@ -12,6 +14,12 @@ function WhyBackgroundBands() {
 }
 
 export function ValuePropositionSection() {
+  const t = useTranslations("Home.valueProposition");
+  const valueCards = valueCardDefinitions.map((card) => ({
+    ...card,
+    title: t(`cards.${card.messageKey}.title`),
+    description: t(`cards.${card.messageKey}.description`),
+  }));
   const [firstCard, secondCard, thirdCard, fourthCard] = valueCards;
 
   return (
@@ -19,8 +27,8 @@ export function ValuePropositionSection() {
       <div className="why-frame">
         <WhyBackgroundBands />
         <div className="why-header">
-          <p className="why-eyebrow">Por qué Davivienda</p>
-          <h2 className="why-subtitle">Pensado para acompañar a su negocio</h2>
+          <p className="why-eyebrow">{t("eyebrow")}</p>
+          <h2 className="why-subtitle">{t("title")}</h2>
         </div>
 
         <div className="why-grid">

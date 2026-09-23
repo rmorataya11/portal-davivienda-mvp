@@ -1,9 +1,9 @@
 import type { NavItem } from "./types";
 
 export const navItems: NavItem[] = [
-  { label: "Inicio", href: "/" },
-  { label: "Catálogo de APIs", href: "/catalogo-apis" },
-  { label: "Mis apps", href: "/dashboard" },
-  { label: "Documentación", href: "/documentacion" },
-  { label: "FAQ", href: "/faq" },
+  { key: "home", href: "/" },
+  { key: "apiCatalog", href: "/catalogo-apis" },
+  { key: "myApps", href: "/dashboard" },
+  { key: "documentation", href: "/documentacion" },
+  { key: "faq", href: "/faq" },
 ];

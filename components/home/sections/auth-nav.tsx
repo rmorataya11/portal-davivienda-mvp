@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
+import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { AccountAvatar } from "@/components/profile/account-avatar";
 import { accountInitials, accountLabel } from "@/lib/account/display";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
@@ -18,6 +20,8 @@ const menuItemClassName =
 
 export function AuthNav() {
   const { user, loading, displayName, companyName, signOut } = useAuth();
+  const t = useTranslations("Navbar");
+  const languageT = useTranslations("Language");
   const router = useRouter();
   const pathname = usePathname();
   const { loginHref, signupHref } = getAuthHrefs(pathname);
@@ -96,7 +100,7 @@ export function AuthNav() {
             </div>
             <div className="my-1 h-px bg-[#E7EAEE]" />
             <Link href="/perfil" role="menuitem" onClick={() => setOpen(false)} className={menuItemClassName}>
-              Mi cuenta
+              {t("myAccount")}
             </Link>
             <Link
               href="/solicitud-contratacion"
@@ -104,8 +108,14 @@ export function AuthNav() {
               onClick={() => setOpen(false)}
               className={menuItemClassName}
             >
-              Solicitar contratación
+              {t("requestContracting")}
             </Link>
+            <div className="my-1 h-px bg-[#E7EAEE]" />
+            <div className="flex items-center justify-between gap-3 px-4 py-2.5">
+              <span className="text-[14px] font-medium text-[#141F25]">{languageT("label")}</span>
+              <LanguageSwitcher />
+            </div>
+            <div className="my-1 h-px bg-[#E7EAEE]" />
             <button
               type="button"
               role="menuitem"
@@ -116,7 +126,7 @@ export function AuthNav() {
               }}
               className={menuItemClassName}
             >
-              Cerrar sesión
+              {t("signOut")}
             </button>
           </div>
         ) : null}
@@ -125,16 +135,17 @@ export function AuthNav() {
   }
 
   return (
-    <div className="flex items-center gap-4 sm:gap-8">
+    <div className="flex items-center gap-4 sm:gap-6">
+      <LanguageSwitcher compact theme="dark" />
       <AuthReturnLink
         href={signupHref}
         returnTo={returnTo}
         className="inline-flex min-h-[44px] items-center text-[14px] font-medium text-white transition-all duration-300 hover:opacity-85"
       >
-        Crear cuenta
+        {t("createAccount")}
       </AuthReturnLink>
       <AuthReturnLink href={loginHref} returnTo={returnTo} className={buttonClassName}>
-        Iniciar sesión
+        {t("signIn")}
       </AuthReturnLink>
     </div>
   );

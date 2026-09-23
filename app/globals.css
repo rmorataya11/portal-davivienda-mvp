@@ -718,8 +718,8 @@ a {
     height: auto;
     max-width: none;
     margin: 0;
-    font-size: calc(40 / 1366 * 100cqi);
-    line-height: calc(44 / 1366 * 100cqi);
+    font-size: calc(37 / 1366 * 100cqi);
+    line-height: calc(41 / 1366 * 100cqi);
     letter-spacing: calc(0.8 / 1366 * 100cqi);
   }
 
@@ -759,6 +759,10 @@ a {
   .hero-cta-secondary {
     top: calc(462 / 570 * 100%);
   }
+
+  html[lang="en"] .hero-lead {
+    top: calc(260 / 570 * 100%);
+  }
 }
 
 @media (min-width: 1367px) {
@@ -781,8 +785,8 @@ a {
   }
 
   .hero-title {
-    font-size: clamp(40px, 2.928vw, 44px);
-    line-height: clamp(44px, 3.221vw, 49px);
+    font-size: clamp(37px, 2.709vw, 40px);
+    line-height: clamp(41px, 3.002vw, 44px);
   }
 
   .hero-lead {
@@ -795,6 +799,7 @@ a {
     font-size: clamp(18px, 1.318vw, 19px);
     line-height: clamp(16px, 1.172vw, 18px);
   }
+
 }
 
 .media-placeholder {

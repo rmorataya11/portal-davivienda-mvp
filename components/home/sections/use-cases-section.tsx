@@ -1,15 +1,24 @@
+import { useTranslations } from "next-intl";
+
 import { UseCaseCard } from "../cards/use-case-card";
-import { useCaseCards } from "../content/use-cases";
+import { useCaseCardDefinitions } from "../content/use-cases";
 
 export function UseCasesSection() {
+  const t = useTranslations("Home.useCases");
+  const useCaseCards = useCaseCardDefinitions.map((card) => ({
+    ...card,
+    category: t(`cards.${card.messageKey}.category`),
+    title: t(`cards.${card.messageKey}.title`),
+    description: t(`cards.${card.messageKey}.description`),
+  }));
+
   return (
     <section id="casos-de-uso" className="inspire-section scroll-anchor">
       <div className="inspire-frame">
         <div className="inspire-header">
-          <h2 className="inspire-title">Inspírese con lo que puede lograr</h2>
+          <h2 className="inspire-title">{t("title")}</h2>
           <p className="inspire-subtitle">
-            Historias reales de negocio que puede hacer realidad. Elija la que más se parezca a su idea y descubra cómo
-            darle vida.
+            {t("description")}
           </p>
         </div>
 

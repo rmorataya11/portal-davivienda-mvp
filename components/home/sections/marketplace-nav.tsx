@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
 
@@ -8,6 +9,7 @@ import { navItems } from "../content/navigation";
 
 export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: string }) {
   const { user } = useAuth();
+  const t = useTranslations("Navbar");
   const visibleNavItems = navItems.filter((item) => item.href !== "/dashboard" || user);
 
   return (
@@ -17,7 +19,7 @@ export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: strin
           const isActive = item.href === activeHref;
 
           return (
-            <li key={item.label} className="relative w-fit">
+            <li key={item.key} className="relative w-fit">
               <Link
                 href={item.href}
                 transitionTypes={["marketplace-nav"]}
@@ -25,7 +27,7 @@ export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: strin
                   isActive ? "font-semibold after:opacity-100" : "font-medium after:opacity-0"
                 }`}
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             </li>
           );

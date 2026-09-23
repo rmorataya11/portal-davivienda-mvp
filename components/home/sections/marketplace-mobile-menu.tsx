@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
+import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { AccountAvatar } from "@/components/profile/account-avatar";
 import { accountInitials, accountLabel } from "@/lib/account/display";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
@@ -27,6 +29,8 @@ export function MarketplaceMobileMenu({
   const pathname = usePathname();
   const router = useRouter();
   const { user, loading, displayName, companyName, signOut } = useAuth();
+  const t = useTranslations("Navbar");
+  const languageT = useTranslations("Language");
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const titleId = useId();
@@ -91,7 +95,7 @@ export function MarketplaceMobileMenu({
         <button
           type="button"
           tabIndex={open ? 0 : -1}
-          aria-label="Cerrar menú"
+          aria-label={t("closeMenu")}
           onClick={closeMenu}
           className={`absolute inset-0 bg-[#141F25]/55 transition-opacity duration-300 ease-out motion-reduce:transition-none ${
             open ? "opacity-100" : "opacity-0"
@@ -109,14 +113,14 @@ export function MarketplaceMobileMenu({
         >
           <div className="flex items-center justify-between gap-4 px-5 pt-5 pb-4">
             <p id={titleId} className="sr-only">
-              Menú de navegación
+              {t("navigationMenu")}
             </p>
             <DaviviendaLogo />
             <button
               type="button"
               onClick={closeMenu}
               tabIndex={open ? 0 : -1}
-              aria-label="Cerrar menú"
+              aria-label={t("closeMenu")}
               className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 text-white transition-colors duration-300 hover:bg-white/25"
             >
               <CloseIcon />
@@ -129,7 +133,7 @@ export function MarketplaceMobileMenu({
 
               return (
                 <Link
-                  key={item.label}
+                  key={item.key}
                   href={item.href}
                   transitionTypes={["marketplace-nav"]}
                   tabIndex={open ? 0 : -1}
@@ -138,7 +142,7 @@ export function MarketplaceMobileMenu({
                     isActive ? "bg-white text-[#870412]" : "text-white hover:bg-white/12"
                   }`}
                 >
-                  {item.label}
+                  {t(item.key)}
                 </Link>
               );
             })}
@@ -167,7 +171,7 @@ export function MarketplaceMobileMenu({
                   onClick={closeMenu}
                   className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
                 >
-                  Mi cuenta
+                  {t("myAccount")}
                 </Link>
                 <Link
                   href="/solicitud-contratacion"
@@ -175,8 +179,12 @@ export function MarketplaceMobileMenu({
                   onClick={closeMenu}
                   className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
                 >
-                  Solicitar contratación
+                  {t("requestContracting")}
                 </Link>
+                <div className="flex items-center justify-between gap-3 px-1 py-1">
+                  <span className="text-[14px] font-medium text-white">{languageT("label")}</span>
+                  <LanguageSwitcher theme="dark" />
+                </div>
                 <button
                   type="button"
                   tabIndex={open ? 0 : -1}
@@ -187,24 +195,27 @@ export function MarketplaceMobileMenu({
                   }}
                   className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-5 text-[15px] font-bold text-[#404040] transition-colors duration-300 hover:bg-[#F2F3F5]"
                 >
-                  Cerrar sesión
+                  {t("signOut")}
                 </button>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
+                <div className="flex justify-center pb-1">
+                  <LanguageSwitcher compact theme="dark" />
+                </div>
                 <AuthReturnLink
                   href={signupHref}
                   returnTo={returnTo}
                   className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
                 >
-                  Crear cuenta
+                  {t("createAccount")}
                 </AuthReturnLink>
                 <AuthReturnLink
                   href={loginHref}
                   returnTo={returnTo}
                   className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-5 text-[15px] font-bold text-[#404040] transition-colors duration-300 hover:bg-[#F2F3F5]"
                 >
-                  Iniciar sesión
+                  {t("signIn")}
                 </AuthReturnLink>
               </div>
             )}
@@ -221,7 +232,7 @@ export function MarketplaceMobileMenu({
         onClick={() => setOpen((current) => !current)}
         aria-expanded={open}
         aria-controls={dialogId}
-        aria-label={open ? "Cerrar menú" : "Abrir menú"}
+        aria-label={open ? t("closeMenu") : t("openMenu")}
         className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/12 text-white transition-colors duration-300 hover:bg-white/20"
       >
         <span className="relative flex h-4 w-5 flex-col justify-between" aria-hidden="true">

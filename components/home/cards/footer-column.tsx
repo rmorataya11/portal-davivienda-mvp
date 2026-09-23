@@ -1,29 +1,19 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
-const hrefByLabel: Record<string, string> = {
-  Inicio: "/",
-  "Guías de Integración": "/faq#guias-integracion",
-  "Catálogo de APIs": "/catalogo-apis",
-  Documentación: "/documentacion",
-  FAQ: "/faq",
-  "Crear una cuenta": "/crear-cuenta",
-  "Iniciar sesión": "/iniciar-sesion",
-  Sandbox: "/dashboard",
-  "Documentación técnica": "/documentacion",
-  "Centro de ayuda": "/faq#preguntas-frecuentes",
-  "Contactar con un experto": "/faq#soporte-prioritario",
-  "Preguntas frecuentes": "/faq#preguntas-frecuentes",
-};
+import type { FooterLink, FooterMessageKey } from "../content/footer-links";
 
-export function FooterColumn({ title, links }: { title: string; links: string[] }) {
+export function FooterColumn({ titleKey, links }: { titleKey: FooterMessageKey; links: FooterLink[] }) {
+  const t = useTranslations("Footer");
+
   return (
     <div>
-      <h3 className="text-[20px] font-bold text-[#404040]">{title}</h3>
+      <h3 className="text-[20px] font-bold text-[#404040]">{t(titleKey)}</h3>
       <ul className="mt-7 space-y-6 text-[15px] text-[#404040]">
         {links.map((link) => (
-          <li key={link}>
-            <Link href={hrefByLabel[link] ?? "#"} className="transition-colors duration-300 hover:text-[#E1251B]">
-              {link}
+          <li key={link.key}>
+            <Link href={link.href} className="transition-colors duration-300 hover:text-[#E1251B]">
+              {t(link.key)}
             </Link>
           </li>
         ))}

@@ -1,30 +1,20 @@
-import type { ValueCard } from "./types";
-
-export const valueCards: ValueCard[] = [
+export const valueCardDefinitions = [
   {
     step: "01",
-    title: "Nuevas formas de crecer",
-    description:
-      "Ofrezca servicios financieros\ndentro de su propio producto y\ndescubra oportunidades de ingreso\nque antes no estaban a su alcance.",
+    messageKey: "growth",
   },
   {
     step: "02",
-    title: "Empiece sin complicaciones",
-    description:
-      "Le dejamos todo listo para\narrancar: documentación clara y un\nentorno de pruebas para\nexperimentar con total tranquilidad.",
+    messageKey: "easyStart",
   },
   {
     step: "03",
-    title: "Tranquilidad en cada paso",
-    description:
-      "Detrás de cada conexión está Davivienda,\ncuidando la seguridad de su negocio y la\nconfianza de sus clientes.",
+    messageKey: "security",
     wide: true,
   },
   {
     step: "04",
-    title: "Crezca a su propio ritmo",
-    description:
-      "Comience con algo pequeño y\nescale cuando lo necesite. Nuestra\ntecnología avanza junto con usted.",
+    messageKey: "scalability",
     wide: true,
   },
-];
+] as const;

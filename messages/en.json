@@ -1,0 +1,143 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "apiCatalog": "API Catalog",
+    "documentation": "Documentation",
+    "faq": "FAQ",
+    "myApps": "My apps",
+    "createAccount": "Create account",
+    "signIn": "Sign in",
+    "myAccount": "My account",
+    "requestContracting": "Request contracting",
+    "signOut": "Sign out",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "navigationMenu": "Navigation menu"
+  },
+  "Language": {
+    "label": "Language",
+    "spanish": "Spanish",
+    "english": "English",
+    "shortSpanish": "ES",
+    "shortEnglish": "EN"
+  },
+  "Global": {
+    "metadata": {
+      "title": "Davivienda API Marketplace",
+      "description": "Davivienda's API marketplace for exploring open banking products and use cases."
+    }
+  },
+  "Home": {
+    "hero": {
+      "badge": "Open Banking Davivienda",
+      "title": "Connect your business to the financial ecosystem and scale your operations.",
+      "description": "Davivienda APIs help you process sales, pay suppliers, and reconcile balances in real time. Build unique financial experiences for your customers.",
+      "createFreeAccount": "Create a free account",
+      "exploreApiCatalog": "Explore the API catalog"
+    },
+    "valueProposition": {
+      "eyebrow": "Why Davivienda",
+      "title": "Built to support your business",
+      "cards": {
+        "growth": {
+          "title": "New ways to grow",
+          "description": "Embed financial services\ninto your own product and\nunlock revenue opportunities\nthat were previously out of reach."
+        },
+        "easyStart": {
+          "title": "Get started with confidence",
+          "description": "Everything is ready from day one:\nclear documentation and a\nsandbox where you can\nexperiment with confidence."
+        },
+        "security": {
+          "title": "Confidence at every step",
+          "description": "Davivienda supports every connection,\nprotecting your business and preserving\nthe trust of your customers."
+        },
+        "scalability": {
+          "title": "Grow at your own pace",
+          "description": "Start small and scale when\nyou are ready. Our technology\ngrows alongside your business."
+        }
+      }
+    },
+    "useCases": {
+      "title": "See what your business can achieve",
+      "description": "Explore real business scenarios you can bring to life. Choose the one closest to your vision and discover how to make it happen.",
+      "viewHowItWorks": "See how it works",
+      "cards": {
+        "checkout": {
+          "category": "Payments and Transfers",
+          "title": "Accept payments at checkout",
+          "description": "Collect payments directly from your customer's account, with immediate confirmation and a digital receipt."
+        },
+        "payroll": {
+          "category": "Payments and Transfers",
+          "title": "Process payroll and bulk payments",
+          "description": "Pay hundreds of beneficiaries in a single run, with per-record tracking and duplicate-payment controls."
+        },
+        "accounts": {
+          "category": "Accounts and Balances",
+          "title": "Display balances and\ntransactions in your app",
+          "description": "Give customers real-time access to balances, transactions, and detailed activity within your own application."
+        },
+        "identity": {
+          "category": "KYC and Identity",
+          "title": "Frictionless digital onboarding",
+          "description": "Verify customer identities digitally using facial biometrics and document validation."
+        },
+        "cards": {
+          "category": "Cards",
+          "title": "Issue virtual cards instantly",
+          "description": "Create virtual cards for secure online purchases, with full control over spending limits and expiration."
+        },
+        "notifications": {
+          "category": "Notifications",
+          "title": "Reconcile transactions in real time",
+          "description": "Receive immediate transaction notifications to streamline reconciliation and operational control."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready to discuss your next idea?",
+      "description": "Find the right product for your business and take the first step. Our team is ready to support you.",
+      "exploreProducts": "Explore products"
+    },
+    "steps": {
+      "eyebrow": "How it works",
+      "title": "Getting started is simple",
+      "exploreProducts": "Explore products",
+      "cards": {
+        "explore": {
+          "title": "Explore and choose your product",
+          "description": "Browse the catalog and find the API that best fits what you want to achieve."
+        },
+        "registerInterest": {
+          "title": "Tell us what you need",
+          "description": "Share your details and select the product you are interested in. It is quick and requires no commitment."
+        },
+        "activateCredentials": {
+          "title": "Activate your credentials",
+          "description": "We review your request and enable access so you can start building."
+        }
+      }
+    }
+  },
+  "Footer": {
+    "description": "Developer platform for the Open Banking ecosystem. Build secure financial experiences on enterprise-grade banking infrastructure.",
+    "platform": "Platform",
+    "developers": "Developers",
+    "support": "Support",
+    "home": "Home",
+    "integrationGuides": "Integration guides",
+    "apiCatalog": "API Catalog",
+    "documentation": "Documentation",
+    "faq": "FAQ",
+    "createAccount": "Create an account",
+    "signIn": "Sign in",
+    "sandbox": "Sandbox",
+    "technicalDocumentation": "Technical documentation",
+    "helpCenter": "Help center",
+    "contactExpert": "Contact an expert",
+    "frequentQuestions": "Frequently asked questions",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "security": "Security"
+  }
+}

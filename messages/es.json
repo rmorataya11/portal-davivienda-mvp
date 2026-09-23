@@ -1,0 +1,143 @@
+{
+  "Navbar": {
+    "home": "Inicio",
+    "apiCatalog": "Catálogo de APIs",
+    "documentation": "Documentación",
+    "faq": "FAQ",
+    "myApps": "Mis apps",
+    "createAccount": "Crear cuenta",
+    "signIn": "Iniciar sesión",
+    "myAccount": "Mi cuenta",
+    "requestContracting": "Solicitar contratación",
+    "signOut": "Cerrar sesión",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "navigationMenu": "Menú de navegación"
+  },
+  "Language": {
+    "label": "Idioma",
+    "spanish": "Español",
+    "english": "Inglés",
+    "shortSpanish": "ES",
+    "shortEnglish": "EN"
+  },
+  "Global": {
+    "metadata": {
+      "title": "Davivienda API Marketplace",
+      "description": "Marketplace de APIs de Davivienda para explorar productos de open banking y casos de uso."
+    }
+  },
+  "Home": {
+    "hero": {
+      "badge": "Open Banking Davivienda",
+      "title": "Conecte su negocio al ecosistema financiero y escale sus operaciones.",
+      "description": "Las APIs Davivienda le permiten procesar ventas, pagar a proveedores y conciliar saldos en tiempo real. Cree experiencias financieras únicas para sus clientes.",
+      "createFreeAccount": "Crear cuenta gratuita",
+      "exploreApiCatalog": "Explorar catálogo de APIs"
+    },
+    "valueProposition": {
+      "eyebrow": "Por qué Davivienda",
+      "title": "Pensado para acompañar a su negocio",
+      "cards": {
+        "growth": {
+          "title": "Nuevas formas de crecer",
+          "description": "Ofrezca servicios financieros\ndentro de su propio producto y\ndescubra oportunidades de ingreso\nque antes no estaban a su alcance."
+        },
+        "easyStart": {
+          "title": "Empiece sin complicaciones",
+          "description": "Le dejamos todo listo para\narrancar: documentación clara y un\nentorno de pruebas para\nexperimentar con total tranquilidad."
+        },
+        "security": {
+          "title": "Tranquilidad en cada paso",
+          "description": "Detrás de cada conexión está Davivienda,\ncuidando la seguridad de su negocio y la\nconfianza de sus clientes."
+        },
+        "scalability": {
+          "title": "Crezca a su propio ritmo",
+          "description": "Comience con algo pequeño y\nescale cuando lo necesite. Nuestra\ntecnología avanza junto con usted."
+        }
+      }
+    },
+    "useCases": {
+      "title": "Inspírese con lo que puede lograr",
+      "description": "Historias reales de negocio que puede hacer realidad. Elija la que más se parezca a su idea y descubra cómo darle vida.",
+      "viewHowItWorks": "Ver cómo funciona",
+      "cards": {
+        "checkout": {
+          "category": "Pagos y Transferencias",
+          "title": "Acepte pagos en su checkout",
+          "description": "Reciba el pago de una venta debitando la cuenta del cliente, con información inmediata y comprobante digital."
+        },
+        "payroll": {
+          "category": "Pagos y Transferencias",
+          "title": "Disperse nómina y pagos masivos",
+          "description": "Pague a cientos de beneficiarios en una sola corrida, con rastro y pagos duplicados por registro."
+        },
+        "accounts": {
+          "category": "Cuentas y saldos",
+          "title": "Muestre saldos y\nmovimientos en su App",
+          "description": "Consulte saldos, movimientos y el detalle de cada operación dentro de su propia aplicación, en tiempo real."
+        },
+        "identity": {
+          "category": "Identidad KYC",
+          "title": "Registro digital sin fricción",
+          "description": "Valide la identidad de sus clientes de forma digital, con biometría facial y validación de documentos."
+        },
+        "cards": {
+          "category": "Tarjetas",
+          "title": "Emita tarjetas virtuales al instante",
+          "description": "Genere tarjetas virtuales para compras en línea seguras, con control total sobre topes y vigencia."
+        },
+        "notifications": {
+          "category": "Notificaciones",
+          "title": "Concilie en tiempo real",
+          "description": "Reciba notificaciones inmediatas de cada transacción, facilitando la conciliación y el control operativo."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "¿Conversamos sobre su próxima idea?",
+      "description": "Encuentre el producto ideal para su negocio y dé el primer paso. Estamos listos para acompañarle.",
+      "exploreProducts": "Explorar productos"
+    },
+    "steps": {
+      "eyebrow": "Cómo funciona",
+      "title": "Empezar es muy sencillo",
+      "exploreProducts": "Explorar productos",
+      "cards": {
+        "explore": {
+          "title": "Explore y elija su producto",
+          "description": "Recorra el catálogo y descubra la API que mejor se ajusta a lo que quiere lograr."
+        },
+        "registerInterest": {
+          "title": "Cuéntenos su interés",
+          "description": "Déjenos sus datos y registre el producto que desea. Es rápido y sin compromiso."
+        },
+        "activateCredentials": {
+          "title": "Active sus credenciales",
+          "description": "Revisamos su solicitud y habilitamos sus accesos para que empiece a construir."
+        }
+      }
+    }
+  },
+  "Footer": {
+    "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
+    "platform": "Plataforma",
+    "developers": "Desarrolladores",
+    "support": "Soporte",
+    "home": "Inicio",
+    "integrationGuides": "Guías de Integración",
+    "apiCatalog": "Catálogo de APIs",
+    "documentation": "Documentación",
+    "faq": "FAQ",
+    "createAccount": "Crear una cuenta",
+    "signIn": "Iniciar sesión",
+    "sandbox": "Sandbox",
+    "technicalDocumentation": "Documentación técnica",
+    "helpCenter": "Centro de ayuda",
+    "contactExpert": "Contactar con un experto",
+    "frequentQuestions": "Preguntas frecuentes",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "security": "Seguridad"
+  }
+}
