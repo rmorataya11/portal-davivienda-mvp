@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 
 const controlClassName =
@@ -83,6 +84,7 @@ export function PasswordField({
   error?: string;
 }) {
   const [visible, setVisible] = useState(false);
+  const t = useTranslations("Auth.common");
   const errorId = id ? `${id}-error` : undefined;
 
   return (
@@ -105,7 +107,7 @@ export function PasswordField({
           type="button"
           onClick={() => setVisible((current) => !current)}
           className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#6A7178] transition-colors hover:text-[#141F25]"
-          aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
+          aria-label={visible ? t("hidePassword") : t("showPassword")}
         >
           {visible ? <EyeOffIcon /> : <EyeIcon />}
         </button>
@@ -147,7 +149,7 @@ export function SelectField({
   label,
   required,
   error,
-  placeholder = "Seleccione",
+  placeholder,
   children,
   className = "",
   ...props
@@ -157,7 +159,9 @@ export function SelectField({
   error?: string;
   placeholder?: string;
 }) {
+  const t = useTranslations("Auth.common");
   const errorId = id ? `${id}-error` : undefined;
+  const selectPlaceholder = placeholder ?? t("selectPlaceholder");
 
   return (
     <div className={className}>
@@ -173,7 +177,7 @@ export function SelectField({
           className={`${controlClassName} appearance-none pr-11 ${fieldBorder(error)}`}
           {...props}
         >
-          <option value="">{placeholder}</option>
+          <option value="">{selectPlaceholder}</option>
           {children}
         </select>
         <svg

@@ -1,7 +1,7 @@
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 
-const DOCUMENT_TYPES = new Set(['cc', 'ce', 'nit', 'pasaporte', 'ppt']);
+const DOCUMENT_TYPES = new Set(['dui', 'nit']);
 
 export function readTrimmedString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';

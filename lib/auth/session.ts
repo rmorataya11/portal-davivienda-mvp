@@ -1,4 +1,3 @@
-import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -23,39 +22,8 @@ function toAuthUser(user: User): AuthUser {
   };
 }
 
-function getAuthErrorMessage(error: unknown): string {
-  if (error instanceof FirebaseError) {
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        return 'Este correo ya tiene una cuenta. Inicie sesión.';
-      case 'auth/weak-password':
-        return 'La contraseña es demasiado débil. Use al menos 6 caracteres.';
-      case 'auth/invalid-email':
-        return 'Ingrese un correo válido, por ejemplo nombre@empresa.com.';
-      case 'auth/invalid-credential':
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        return 'El correo o la contraseña no coinciden.';
-      case 'auth/too-many-requests':
-        return 'Demasiados intentos. Espere un momento e intente de nuevo.';
-      case 'auth/network-request-failed':
-        return 'No hay conexión. Revise su red e intente de nuevo.';
-      case 'auth/operation-not-allowed':
-        return 'El inicio de sesión con correo no está habilitado.';
-      default:
-        return 'No pudimos completar la operación. Intente de nuevo.';
-    }
-  }
-
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return 'No pudimos completar la operación. Intente de nuevo.';
-}
-
 function throwAuthError(error: unknown): never {
-  throw new Error(getAuthErrorMessage(error));
+  throw error;
 }
 
 export async function signUp(
@@ -118,7 +86,7 @@ export function getCurrentUser(): Promise<AuthUser | null> {
       },
       (error) => {
         unsubscribe();
-        reject(new Error(getAuthErrorMessage(error)));
+        reject(error);
       },
     );
   });

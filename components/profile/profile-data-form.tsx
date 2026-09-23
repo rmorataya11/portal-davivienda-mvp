@@ -23,22 +23,14 @@ type ProfileSnapshot = {
 
 function identificationNumberCopy(idType: string) {
   if (idType === "nit") {
-    return { label: "NIT", placeholder: "900123456-7" };
+    return { label: "Número de NIT", placeholder: "0614-290191-101-3" };
   }
 
-  if (idType === "pasaporte") {
-    return { label: "Número de pasaporte", placeholder: "AU123456" };
+  if (idType === "dui") {
+    return { label: "Número de DUI", placeholder: "00000000-0" };
   }
 
-  if (idType === "ppt") {
-    return { label: "Número de PPT", placeholder: "123456789" };
-  }
-
-  if (idType === "cc" || idType === "ce") {
-    return { label: "Número de cédula", placeholder: "1020304050" };
-  }
-
-  return { label: "Número de identificación", placeholder: "1020304050" };
+  return { label: "Número de identificación", placeholder: "00000000-0" };
 }
 
 function SectionTitle({ children }: { children: ReactNode }) {

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
@@ -9,14 +10,12 @@ import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
 import { SurfaceCard } from "@/components/ui/layout";
 import { getFirebaseAuth } from "@/lib/firebase/client";
-import { getAuthErrorMessage } from "@/lib/firebase/errors";
+import { getAuthErrorKey } from "@/lib/firebase/errors";
 
 import { PasswordField } from "./auth-form-fields";
 
 type FieldErrors = Record<string, string>;
 type ResetStatus = "checking" | "invalid" | "ready" | "success";
-
-const INVALID_LINK_MESSAGE = "Enlace inválido o expirado";
 
 function isInvalidActionCode(error: unknown) {
   const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
@@ -24,6 +23,7 @@ function isInvalidActionCode(error: unknown) {
 }
 
 export function ResetPasswordPage() {
+  const t = useTranslations("Auth");
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
   const oobCode = searchParams.get("oobCode") ?? searchParams.get("oobcode");
@@ -90,15 +90,15 @@ export function ResetPasswordPage() {
     const nextErrors: FieldErrors = {};
 
     if (!password) {
-      nextErrors.password = "Ingrese una contraseña.";
+      nextErrors.password = t("errors.passwordCreateRequired");
     } else if (password.length < 8) {
-      nextErrors.password = "La contraseña debe tener al menos 8 caracteres.";
+      nextErrors.password = t("errors.passwordMin");
     }
 
     if (!confirmPassword) {
-      nextErrors.confirmPassword = "Confirme su contraseña.";
+      nextErrors.confirmPassword = t("errors.confirmPasswordRequired");
     } else if (password !== confirmPassword) {
-      nextErrors.confirmPassword = "Las contraseñas no coinciden.";
+      nextErrors.confirmPassword = t("errors.passwordsMismatch");
     }
 
     setErrors(nextErrors);
@@ -120,7 +120,7 @@ export function ResetPasswordPage() {
         return;
       }
 
-      setFormError(getAuthErrorMessage(error));
+      setFormError(t(`errors.${getAuthErrorKey(error)}`));
     } finally {
       setIsSubmitting(false);
     }
@@ -139,36 +139,32 @@ export function ResetPasswordPage() {
 
             {status === "invalid" ? (
               <div>
-                <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Recuperar contraseña</p>
+                <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">{t("reset.invalidEyebrow")}</p>
                 <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
-                  {INVALID_LINK_MESSAGE}
+                  {t("reset.invalidTitle")}
                 </h1>
-                <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
-                  Este enlace ya no es válido. Solicite uno nuevo para restablecer su contraseña.
-                </p>
+                <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">{t("reset.invalidDescription")}</p>
                 <Link
                   href="/recuperar-clave"
                   className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
                 >
-                  Volver a solicitar el enlace
+                  {t("reset.requestNewLink")}
                 </Link>
               </div>
             ) : null}
 
             {status === "success" ? (
               <div>
-                <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">Contraseña actualizada</p>
+                <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">{t("reset.successEyebrow")}</p>
                 <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
-                  Ya puede iniciar sesión
+                  {t("reset.successTitle")}
                 </h1>
-                <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
-                  Su contraseña se actualizó correctamente. Inicie sesión con la nueva clave.
-                </p>
+                <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">{t("reset.successDescription")}</p>
                 <Link
                   href="/iniciar-sesion"
                   className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
                 >
-                  Ir a iniciar sesión
+                  {t("reset.goToLogin")}
                 </Link>
               </div>
             ) : null}
@@ -176,31 +172,29 @@ export function ResetPasswordPage() {
             {status === "ready" ? (
               <>
                 <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
-                  Restablecer contraseña
+                  {t("reset.title")}
                 </h1>
                 <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">
-                  {accountEmail
-                    ? `Cree una nueva contraseña para ${accountEmail}.`
-                    : "Cree una nueva contraseña para su cuenta."}
+                  {accountEmail ? t("reset.descriptionWithEmail", { email: accountEmail }) : t("reset.description")}
                 </p>
                 <form className="mt-8 space-y-6" noValidate onSubmit={handleSubmit}>
                   <PasswordField
                     id="password"
                     name="password"
-                    label="Nueva contraseña"
+                    label={t("reset.newPassword")}
                     required
                     autoComplete="new-password"
-                    placeholder="Mínimo 8 caracteres"
+                    placeholder={t("common.passwordMinPlaceholder")}
                     error={errors.password}
                     onChange={() => clearError("password")}
                   />
                   <PasswordField
                     id="confirmPassword"
                     name="confirmPassword"
-                    label="Confirmar nueva contraseña"
+                    label={t("reset.confirmNewPassword")}
                     required
                     autoComplete="new-password"
-                    placeholder="Repita su contraseña"
+                    placeholder={t("common.repeatPasswordPlaceholder")}
                     error={errors.confirmPassword}
                     onChange={() => clearError("confirmPassword")}
                   />
@@ -210,7 +204,7 @@ export function ResetPasswordPage() {
                     disabled={isSubmitting}
                     className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:bg-[#C9CED4]"
                   >
-                    {isSubmitting ? "Guardando..." : "Guardar contraseña"}
+                    {isSubmitting ? t("reset.submitting") : t("reset.submit")}
                   </button>
                 </form>
               </>

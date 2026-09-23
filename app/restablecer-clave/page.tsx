@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { ResetPasswordPage } from "@/components/auth/reset-password-page";
 
-export const metadata: Metadata = {
-  title: "Restablecer contraseña | Davivienda API Marketplace",
-  description: "Cree una nueva contraseña para su cuenta de desarrollador.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Auth.metadata");
+
+  return {
+    title: t("resetTitle"),
+    description: t("resetDescription"),
+  };
+}
 
 export default function RestablecerClaveRoute() {
   return (

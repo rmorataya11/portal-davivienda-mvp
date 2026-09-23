@@ -1,9 +1,6 @@
 export const identificationTypes = [
-  { value: "cc", label: "Cédula de ciudadanía" },
-  { value: "ce", label: "Cédula de extranjería" },
-  { value: "nit", label: "NIT" },
-  { value: "pasaporte", label: "Pasaporte" },
-  { value: "ppt", label: "Permiso por protección temporal" },
+  { value: "dui", label: "DUI (Documento Único de Identidad)" },
+  { value: "nit", label: "NIT (Número de Identificación Tributaria)" },
 ];
 
 export const caseReasons = [

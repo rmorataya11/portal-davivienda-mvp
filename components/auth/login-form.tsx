@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useRef, useState, type FormEvent } from "react";
 
 import { signIn } from "@/lib/auth/session";
-import { getAuthErrorMessage } from "@/lib/firebase/errors";
+import { getAuthErrorKey } from "@/lib/firebase/errors";
 import { getSignupHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
 
 import { useAuth } from "./auth-provider";
@@ -17,6 +18,7 @@ type FieldErrors = Record<string, string>;
 
 export function LoginForm() {
   const router = useRouter();
+  const t = useTranslations("Auth");
   const { user, loading } = useAuth();
   const destinationRef = useRef<string>("/dashboard");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -61,15 +63,15 @@ export function LoginForm() {
     const nextErrors: FieldErrors = {};
 
     if (!email) {
-      nextErrors.email = "Ingrese su correo electrónico.";
+      nextErrors.email = t("errors.emailRequired");
     } else if (!EMAIL_PATTERN.test(email)) {
-      nextErrors.email = "Ingrese un correo válido, por ejemplo nombre@empresa.com.";
+      nextErrors.email = t("errors.emailInvalid");
     }
 
     if (!password) {
-      nextErrors.password = "Ingrese su contraseña.";
+      nextErrors.password = t("errors.passwordRequired");
     } else if (password.length < 8) {
-      nextErrors.password = "La contraseña debe tener al menos 8 caracteres.";
+      nextErrors.password = t("errors.passwordMin");
     }
 
     setErrors(nextErrors);
@@ -88,7 +90,7 @@ export function LoginForm() {
       await signIn(email, password);
       router.replace(destination);
     } catch (error) {
-      setFormError(getAuthErrorMessage(error));
+      setFormError(t(`errors.${getAuthErrorKey(error)}`));
     } finally {
       setIsSubmitting(false);
     }
@@ -99,23 +101,23 @@ export function LoginForm() {
   return (
     <div className="w-full">
       <Link href="/" className="text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
-        Volver al inicio
+        {t("login.backHome")}
       </Link>
       <div className="mt-4 h-1 w-12 rounded-full bg-[#E1251B] sm:mt-5" />
       <h1 className="mt-3 text-[26px] font-bold leading-[1.15] tracking-[0.2px] text-[#141F25] sm:mt-4 sm:text-[30px]">
-        Hola de nuevo
+        {t("login.title")}
       </h1>
-      <p className="mt-2 text-[14px] leading-6 text-[#6A7178] sm:text-[15px]">Nos alegra verle. Ingrese para continuar.</p>
+      <p className="mt-2 text-[14px] leading-6 text-[#6A7178] sm:text-[15px]">{t("login.description")}</p>
 
       <form className="mt-5 space-y-4 sm:mt-6" noValidate onSubmit={handleSubmit}>
         <TextField
           id="email"
           name="email"
           type="email"
-          label="Correo electrónico"
+          label={t("common.email")}
           required
           autoComplete="email"
-          placeholder="nombre@empresa.com"
+          placeholder={t("common.emailPlaceholder")}
           error={errors.email}
           onChange={() => clearError("email")}
         />
@@ -123,9 +125,9 @@ export function LoginForm() {
         <PasswordField
           id="password"
           name="password"
-          label="Contraseña"
+          label={t("common.password")}
           required
-          placeholder="••••••••"
+          placeholder={t("common.passwordPlaceholder")}
           error={errors.password}
           onChange={() => clearError("password")}
         />
@@ -137,10 +139,10 @@ export function LoginForm() {
               name="remember"
               className="h-[18px] w-[18px] shrink-0 rounded-[4px] border border-[#C9CED4] accent-[#E1251B]"
             />
-            Recordarme
+            {t("login.rememberMe")}
           </label>
           <Link href="/recuperar-clave" className="text-[14px] font-medium text-[#E1251B] transition-colors hover:text-[#E1111C]">
-            ¿Olvidó su contraseña?
+            {t("login.forgotPassword")}
           </Link>
         </div>
 
@@ -151,15 +153,15 @@ export function LoginForm() {
           disabled={isSubmitting}
           className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none sm:h-12 sm:text-[15px]"
         >
-          {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
+          {isSubmitting ? t("login.submitting") : t("common.signIn")}
           {isSubmitting ? null : <span aria-hidden="true">→</span>}
         </button>
       </form>
 
       <div className="mt-5 rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB] px-4 py-4 sm:mt-6 sm:px-5 sm:py-4">
-        <p className="text-[15px] font-bold text-[#141F25]">¿Aún no tiene cuenta?</p>
+        <p className="text-[15px] font-bold text-[#141F25]">{t("login.noAccountTitle")}</p>
         <p className="mt-1 text-[13px] leading-5 text-[#6A7178] sm:text-[14px] sm:leading-6">
-          Regístrese, elija el producto que le interesa y le acompañamos para empezar.
+          {t("login.noAccountDescription")}
         </p>
         <Link
           href={getSignupHref(signupReturnTo)}
@@ -170,7 +172,7 @@ export function LoginForm() {
           }}
           className="mt-3 inline-flex h-9 items-center justify-center rounded-full border border-[#E1251B] bg-white px-4 text-[13px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
         >
-          Crear cuenta
+          {t("common.createAccount")}
         </Link>
       </div>
     </div>

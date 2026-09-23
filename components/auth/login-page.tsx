@@ -1,17 +1,15 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 import { DaviviendaLogo } from "@/components/home/shared/davivienda-logo";
 
 import { LoginForm } from "./login-form";
 
-const loginHighlights = [
-  "Un entorno de pruebas para experimentar sin riesgos",
-  "Ejemplos listos para copiar y pegar",
-  "Un equipo cercano para cuando lo necesite",
-];
+export async function LoginPage() {
+  const t = await getTranslations("Auth.login");
+  const highlights = [t("highlights.0"), t("highlights.1"), t("highlights.2")];
 
-export function LoginPage() {
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
       <section className="flex min-h-screen items-center justify-center px-4 py-6 sm:px-6 sm:py-8">
@@ -20,10 +18,8 @@ export function LoginPage() {
             <Link href="/" className="inline-flex items-center">
               <DaviviendaLogo variant="auth" />
             </Link>
-            <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#E1251B]">Developers</p>
-            <p className="mt-2 text-[18px] font-bold leading-6 tracking-[0.15px]">
-              Nos encanta acompañar a quienes se atreven a crear.
-            </p>
+            <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#E1251B]">{t("developers")}</p>
+            <p className="mt-2 text-[18px] font-bold leading-6 tracking-[0.15px]">{t("headline")}</p>
           </div>
 
           <aside className="relative hidden overflow-hidden border-r border-[#E7EAEE] bg-white px-8 py-8 text-[#141F25] lg:flex lg:flex-col xl:px-10 xl:py-9">
@@ -35,15 +31,15 @@ export function LoginPage() {
               <Link href="/" className="inline-flex items-center">
                 <DaviviendaLogo variant="auth" />
               </Link>
-              <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.28em] text-[#E1251B]">Developers</p>
+              <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.28em] text-[#E1251B]">{t("developers")}</p>
             </div>
 
             <div className="relative my-auto py-8">
               <h2 className="max-w-[340px] text-[28px] font-bold leading-[1.15] tracking-[0.2px] xl:text-[32px]">
-                Nos encanta acompañar a quienes se atreven a crear.
+                {t("headline")}
               </h2>
               <ul className="mt-6 space-y-3">
-                {loginHighlights.map((item) => (
+                {highlights.map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-[14px] leading-6 text-[#6A7178]">
                     <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#E1251B]">
                       <CheckIcon />
@@ -54,7 +50,7 @@ export function LoginPage() {
               </ul>
             </div>
 
-            <p className="relative text-[12px] tracking-[0.2px] text-[#8E8E8E]">Con el respaldo de Davivienda</p>
+            <p className="relative text-[12px] tracking-[0.2px] text-[#8E8E8E]">{t("backedBy")}</p>
           </aside>
 
           <div className="flex items-start px-5 py-6 sm:px-7 sm:py-7 lg:px-8 lg:py-8 xl:px-10">
