@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { getApiDetailBySlug } from "@/components/catalog/content/apis";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { getGuideBySlug } from "@/lib/guides/guides-content";
 
 const HIDDEN_PATHS = new Set(["/", "/iniciar-sesion", "/crear-cuenta"]);
 
@@ -75,6 +76,16 @@ function buildCrumbs(
 
     if (segment === "faq") {
       crumbs.push({ href, label: "FAQ" });
+      return;
+    }
+
+    if (segment === "guias" && previous === "faq") {
+      crumbs.push({ href: "/faq#guias-integracion", label: "Guías de Integración" });
+      return;
+    }
+
+    if (previous === "guias") {
+      crumbs.push({ href, label: getGuideBySlug(segment)?.title ?? segment });
       return;
     }
 

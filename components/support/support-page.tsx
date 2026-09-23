@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FaqFeedback } from "@/components/support/faq-feedback";
 import { SupportCaseModal } from "@/components/support/support-case-modal";
 import { SupportChangelog } from "@/components/support/support-changelog";
-import { GuideAccordion } from "@/components/guides/guide-accordion";
+import { GuideList } from "@/components/guides/guide-list";
 import { SectionContainer } from "@/components/ui/layout";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
 
@@ -339,7 +339,7 @@ export function SupportPage() {
           <p className="mt-3 mb-5 max-w-[720px] text-[15px] leading-7 text-[#707070]">
             Consulte los pasos técnicos para conectar sus sistemas con las APIs Davivienda.
           </p>
-          <GuideAccordion />
+          <GuideList />
         </SectionContainer>
       </section>
 
