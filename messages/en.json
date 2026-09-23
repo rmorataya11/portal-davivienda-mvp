@@ -629,6 +629,115 @@
       "application": "Application"
     }
   },
+  "Profile": {
+    "metadata": {
+      "title": "My profile | Davivienda API Marketplace",
+      "description": "Manage your details, requests, and billing."
+    },
+    "breadcrumb": {
+      "profile": "My profile"
+    },
+    "title": "My profile",
+    "gate": {
+      "eyebrow": "My profile",
+      "title": "Sign in or create an account to view this content",
+      "description": "My profile is private: it holds your details, requests, and billing. You need a developer account to enter.",
+      "createAccount": "Create account",
+      "signIn": "Sign in"
+    },
+    "tabs": {
+      "data": "Profile details",
+      "requests": "Requests",
+      "billing": "Billing"
+    },
+    "data": {
+      "identity": "Identity",
+      "displayName": "Display name",
+      "displayNamePlaceholder": "Ana Gómez",
+      "displayNameHint": "This is how it appears in the portal menu.",
+      "displayNameRequired": "Enter a display name.",
+      "company": "Company",
+      "companyName": "Registered company name",
+      "companyNamePlaceholder": "My Company S.A. de C.V.",
+      "companyNameRequired": "Enter the name or registered company name.",
+      "idType": "ID type",
+      "idTypeRequired": "Select an ID type.",
+      "idNumber": "ID number",
+      "duiNumber": "DUI number",
+      "nitNumber": "NIT number",
+      "idNumberRequired": "Enter the {field}.",
+      "contact": "Contact",
+      "email": "Email",
+      "emailLocked": "This cannot be changed from the portal.",
+      "phone": "Phone",
+      "phonePlaceholder": "+503 7000 1234",
+      "phoneOptional": "Optional.",
+      "phoneInvalid": "Enter a valid phone number.",
+      "preferences": "Preferences",
+      "notifyExpiration": "Email me when my sandbox is about to expire",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "save": "Save changes",
+      "discard": "Discard changes",
+      "loadFailed": "The profile could not be loaded.",
+      "saveFailed": "We could not save the profile. Please try again.",
+      "notifyFailed": "We could not save the preference. Please try again."
+    },
+    "password": {
+      "title": "Change password",
+      "description": "We will send a link to {email} so you can create a new password.",
+      "descriptionFallback": "your email",
+      "submit": "Change password",
+      "sending": "Sending...",
+      "sent": "Check your inbox. The link has already been sent.",
+      "signOut": "Sign out on this device",
+      "signingOut": "Signing out..."
+    },
+    "danger": {
+      "eyebrow": "Danger zone",
+      "title": "Delete account",
+      "description": "This action cannot be undone from the portal. If you need to close the account, start the process with support.",
+      "delete": "Delete account",
+      "modalDescription": "Accounts cannot be deleted from the portal yet. To request deletion, contact <faq>FAQ</faq> (FAQ section, Talk to an expert).",
+      "goToFaq": "Go to FAQ",
+      "close": "Got it",
+      "closeAria": "Close"
+    },
+    "billing": {
+      "currentPlan": "Current plan",
+      "planName": "Professional Plan",
+      "period": "month",
+      "planDescription": "Production API usage with priority support and an expanded call limit.",
+      "featureCalls": "Up to 100,000 calls / month",
+      "featureSla": "8x5 support SLA",
+      "featureProduction": "Production environment included",
+      "nextCharge": "Next charge",
+      "paymentMethod": "Payment method",
+      "expires": "Expires {date}",
+      "invoiceHistory": "Invoice history",
+      "invoice": "Invoice",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "download": "Download",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "pending": "Pending"
+    },
+    "requests": {
+      "loadFailed": "The requests could not be loaded.",
+      "emptyTitle": "No requests yet",
+      "emptyDescription": "When you submit a contracting request, the reference number and status will appear here.",
+      "folio": "Reference",
+      "api": "API",
+      "date": "Date",
+      "status": "Status",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "inProduction": "In production",
+      "inReview": "Under review"
+    }
+  },
   "Footer": {
     "description": "Developer platform for the Open Banking ecosystem. Build secure financial experiences on enterprise-grade banking infrastructure.",
     "platform": "Platform",

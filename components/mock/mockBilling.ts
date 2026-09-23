@@ -1,11 +1,7 @@
 // MOCK: reemplazar cuando se integre pasarela de pago real
 
 export const mockCurrentPlan = {
-  name: "Plan Profesional",
   priceUsd: 300,
-  period: "mensual",
-  description: "Consumo de APIs en producción con soporte prioritario y límite ampliado de llamadas.",
-  features: ["Hasta 100.000 llamadas / mes", "SLA de soporte 8x5", "Ambiente de producción incluido"],
 };
 
 export type MockInvoiceStatus = "pagada" | "pendiente" | "vencida";
@@ -25,7 +21,7 @@ export const mockInvoices: Array<{
 export const mockPaymentMethod = {
   brand: "Visa",
   last4: "4242",
-  holder: "Empresa Demo S.A.S.",
+  holder: "Empresa Demo S.A. de C.V.",
   expires: "08/28",
 };
 

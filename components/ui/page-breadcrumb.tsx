@@ -22,6 +22,7 @@ function buildCrumbs(
   getApp: (id: string) => { name: string } | undefined,
   t: (key: string) => string,
   dashboardT: (key: string) => string,
+  profileT: (key: string) => string,
   homeLabel: string,
 ): Crumb[] {
   if (pathname === "/") {
@@ -71,7 +72,7 @@ function buildCrumbs(
     }
 
     if (segment === "perfil") {
-      crumbs.push({ href, label: "Mi perfil" });
+      crumbs.push({ href, label: profileT("profile") });
       return;
     }
 
@@ -135,13 +136,14 @@ export function PageBreadcrumb() {
   const { getApp } = useDeveloperApps();
   const t = useTranslations("Catalog");
   const dashboardT = useTranslations("Dashboard.breadcrumb");
+  const profileT = useTranslations("Profile.breadcrumb");
   const homeLabel = useTranslations("Navbar")("home");
 
   if (HIDDEN_PATHS.has(pathname)) {
     return null;
   }
 
-  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp, t, dashboardT, homeLabel);
+  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp, t, dashboardT, profileT, homeLabel);
 
   return (
     <nav aria-label="Breadcrumb" className="text-[13px] font-normal tracking-[0.2px] text-[#8E8E8E] sm:text-[14px]">

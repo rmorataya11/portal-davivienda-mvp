@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 import { FieldLabel, SelectField, TextField } from "@/components/auth/auth-form-fields";
 import { identificationTypes } from "@/components/auth/content/create-account";
@@ -21,16 +22,16 @@ type ProfileSnapshot = {
   phone: string;
 };
 
-function identificationNumberCopy(idType: string) {
+function identificationNumberCopy(idType: string, t: (key: string) => string) {
   if (idType === "nit") {
-    return { label: "Número de NIT", placeholder: "0614-290191-101-3" };
+    return { label: t("nitNumber"), placeholder: "0614-290191-101-3" };
   }
 
   if (idType === "dui") {
-    return { label: "Número de DUI", placeholder: "00000000-0" };
+    return { label: t("duiNumber"), placeholder: "00000000-0" };
   }
 
-  return { label: "Número de identificación", placeholder: "00000000-0" };
+  return { label: t("idNumber"), placeholder: "00000000-0" };
 }
 
 function SectionTitle({ children }: { children: ReactNode }) {
@@ -42,6 +43,8 @@ function ProfileCard({ children }: { children: ReactNode }) {
 }
 
 export function ProfileDataForm() {
+  const t = useTranslations("Profile.data");
+  const authT = useTranslations("Auth");
   const { user, developerId, setDisplayName, setCompanyName: setAccountCompanyName } = useAuth();
   const [accountName, setAccountName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -58,7 +61,7 @@ export function ProfileDataForm() {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const idNumberCopy = identificationNumberCopy(idType);
+  const idNumberCopy = identificationNumberCopy(idType, t);
   const avatarInitials = accountInitials(companyName, accountName, user?.email);
   const isDirty = useMemo(() => {
     if (!initial) {
@@ -78,6 +81,7 @@ export function ProfileDataForm() {
     const lookupId = developerId ?? user?.uid;
 
     if (!lookupId) {
+      setLoading(false);
       return;
     }
 
@@ -86,7 +90,7 @@ export function ProfileDataForm() {
     fetch(`/api/developers/${lookupId}/profile`)
       .then(async (response) => {
         if (!response.ok) {
-          throw new Error("No se pudo cargar el perfil.");
+          throw new Error(t("loadFailed"));
         }
 
         return (await response.json()) as {
@@ -133,7 +137,7 @@ export function ProfileDataForm() {
     return () => {
       cancelled = true;
     };
-  }, [developerId, user]);
+  }, [developerId, t, user]);
 
   function clearError(field: string) {
     setErrors((current) => {
@@ -166,23 +170,23 @@ export function ProfileDataForm() {
     const nextErrors: FieldErrors = {};
 
     if (!accountName.trim()) {
-      nextErrors.displayName = "Ingrese el nombre para mostrar.";
+      nextErrors.displayName = t("displayNameRequired");
     }
 
     if (!companyName.trim()) {
-      nextErrors.companyName = "Ingrese el nombre o razón social.";
+      nextErrors.companyName = t("companyNameRequired");
     }
 
     if (!idType) {
-      nextErrors.idType = "Seleccione el tipo de identificación.";
+      nextErrors.idType = t("idTypeRequired");
     }
 
     if (!idNumber.trim()) {
-      nextErrors.idNumber = `Ingrese el ${idNumberCopy.label.toLowerCase()}.`;
+      nextErrors.idNumber = t("idNumberRequired", { field: idNumberCopy.label.toLowerCase() });
     }
 
     if (phone.trim() && !PHONE_PATTERN.test(phone.trim())) {
-      nextErrors.phone = "Ingrese un teléfono válido.";
+      nextErrors.phone = t("phoneInvalid");
     }
 
     return nextErrors;
@@ -229,8 +233,7 @@ export function ProfileDataForm() {
       });
 
       if (!response.ok) {
-        const payload = (await response.json().catch(() => null)) as { message?: string } | null;
-        throw new Error(payload?.message ?? "No pudimos guardar el perfil. Intente de nuevo.");
+        throw new Error(t("saveFailed"));
       }
       setAccountName(snapshot.accountName);
       setCompanyName(snapshot.companyName);
@@ -240,8 +243,8 @@ export function ProfileDataForm() {
       setDisplayName(snapshot.accountName);
       setAccountCompanyName(snapshot.companyName);
       setSaved(true);
-    } catch (error) {
-      setFormError(error instanceof Error ? error.message : "No pudimos guardar el perfil. Intente de nuevo.");
+    } catch {
+      setFormError(t("saveFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -266,11 +269,11 @@ export function ProfileDataForm() {
       });
 
       if (!response.ok) {
-        throw new Error("No pudimos guardar la preferencia. Intente de nuevo.");
+        throw new Error(t("notifyFailed"));
       }
-    } catch (error) {
+    } catch {
       setNotifyBeforeExpiration(!next);
-      setNotifyError(error instanceof Error ? error.message : "No pudimos guardar la preferencia. Intente de nuevo.");
+      setNotifyError(t("notifyFailed"));
     } finally {
       setNotifySaving(false);
     }
@@ -283,7 +286,7 @@ export function ProfileDataForm() {
   return (
     <form className="space-y-5" noValidate onSubmit={handleSubmit}>
       <ProfileCard>
-        <SectionTitle>Identidad</SectionTitle>
+        <SectionTitle>{t("identity")}</SectionTitle>
         <div className="mt-4 flex items-start gap-4">
           <div className="mt-8 shrink-0">
             <AccountAvatar name={avatarInitials} size="lg" />
@@ -292,10 +295,10 @@ export function ProfileDataForm() {
             <TextField
               id="displayName"
               name="displayName"
-              label="Nombre para mostrar"
+              label={t("displayName")}
               required
               autoComplete="name"
-              placeholder="Ana Gómez"
+              placeholder={t("displayNamePlaceholder")}
               value={accountName}
               error={errors.displayName}
               onChange={(event) => {
@@ -304,86 +307,86 @@ export function ProfileDataForm() {
                 setSaved(false);
               }}
             />
-            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">Así aparece en el menú del portal.</p>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">{t("displayNameHint")}</p>
           </div>
         </div>
       </ProfileCard>
 
       <ProfileCard>
-        <SectionTitle>Empresa</SectionTitle>
+        <SectionTitle>{t("company")}</SectionTitle>
         <div className="mt-4 space-y-4">
-        <TextField
-          id="companyName"
-          name="companyName"
-          label="Razón social"
-          required
-          autoComplete="organization"
-          placeholder="Mi Empresa S.A.S."
-          value={companyName}
-          error={errors.companyName}
-          onChange={(event) => {
-            setCompanyName(event.currentTarget.value);
-            clearError("companyName");
-            setSaved(false);
-          }}
-        />
-        <div className="grid gap-6 md:grid-cols-2">
-          <SelectField
-            id="idType"
-            name="idType"
-            label="Tipo de identificación"
-            required
-            value={idType}
-            error={errors.idType}
-            onChange={(event) => {
-              setIdType(event.currentTarget.value);
-              clearError("idType");
-              setSaved(false);
-            }}
-          >
-            {identificationTypes.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </SelectField>
           <TextField
-            id="idNumber"
-            name="idNumber"
-            label={idNumberCopy.label}
+            id="companyName"
+            name="companyName"
+            label={t("companyName")}
             required
-            inputMode="numeric"
-            placeholder={idNumberCopy.placeholder}
-            value={idNumber}
-            error={errors.idNumber}
+            autoComplete="organization"
+            placeholder={t("companyNamePlaceholder")}
+            value={companyName}
+            error={errors.companyName}
             onChange={(event) => {
-              setIdNumber(event.currentTarget.value);
-              clearError("idNumber");
+              setCompanyName(event.currentTarget.value);
+              clearError("companyName");
               setSaved(false);
             }}
           />
-        </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <SelectField
+              id="idType"
+              name="idType"
+              label={t("idType")}
+              required
+              value={idType}
+              error={errors.idType}
+              onChange={(event) => {
+                setIdType(event.currentTarget.value);
+                clearError("idType");
+                setSaved(false);
+              }}
+            >
+              {identificationTypes.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {authT(`signup.idTypes.${option.value}`)}
+                </option>
+              ))}
+            </SelectField>
+            <TextField
+              id="idNumber"
+              name="idNumber"
+              label={idNumberCopy.label}
+              required
+              inputMode="numeric"
+              placeholder={idNumberCopy.placeholder}
+              value={idNumber}
+              error={errors.idNumber}
+              onChange={(event) => {
+                setIdNumber(event.currentTarget.value);
+                clearError("idNumber");
+                setSaved(false);
+              }}
+            />
+          </div>
         </div>
       </ProfileCard>
 
       <ProfileCard>
-        <SectionTitle>Contacto</SectionTitle>
+        <SectionTitle>{t("contact")}</SectionTitle>
         <div className="mt-4 grid gap-6 md:grid-cols-2">
           <div>
-            <FieldLabel>Correo electrónico</FieldLabel>
+            <FieldLabel>{t("email")}</FieldLabel>
             <p className="mt-2 flex h-12 items-center rounded-[10px] bg-[#F8F9FB] px-4 text-[15px] text-[#707070]">
               {user?.email ?? "—"}
             </p>
-            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">No se puede cambiar desde el portal.</p>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">{t("emailLocked")}</p>
           </div>
           <div>
             <TextField
               id="phone"
               name="phone"
               type="tel"
-              label="Teléfono"
+              label={t("phone")}
               autoComplete="tel"
-              placeholder="+57 300 123 4567"
+              placeholder={t("phonePlaceholder")}
               value={phone}
               error={errors.phone}
               onChange={(event) => {
@@ -392,16 +395,16 @@ export function ProfileDataForm() {
                 setSaved(false);
               }}
             />
-            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">Opcional.</p>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">{t("phoneOptional")}</p>
           </div>
         </div>
       </ProfileCard>
 
       <ProfileCard>
-        <SectionTitle>Preferencias</SectionTitle>
+        <SectionTitle>{t("preferences")}</SectionTitle>
         <div className="mt-4 flex items-center justify-between gap-3 rounded-[12px] bg-[#F8F9FB] px-4 py-3">
           <p id="notify-expiration-label" className="text-[14px] leading-5 text-[#404040]">
-            Avisarme por email cuando mi sandbox esté por vencer
+            {t("notifyExpiration")}
           </p>
           <button
             type="button"
@@ -430,7 +433,7 @@ export function ProfileDataForm() {
           disabled={isSubmitting || !isDirty}
           className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
         >
-          {isSubmitting ? "Guardando..." : saved && !isDirty ? "Guardado" : "Guardar cambios"}
+          {isSubmitting ? t("saving") : saved && !isDirty ? t("saved") : t("save")}
         </button>
         {isDirty ? (
           <button
@@ -438,7 +441,7 @@ export function ProfileDataForm() {
             onClick={discardChanges}
             className="inline-flex h-12 items-center justify-center rounded-full px-5 text-[15px] font-medium text-[#707070] transition-colors hover:text-[#404040]"
           >
-            Descartar cambios
+            {t("discard")}
           </button>
         ) : null}
         {formError ? <p className="text-[14px] text-[#E1251B]">{formError}</p> : null}

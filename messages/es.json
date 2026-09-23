@@ -629,6 +629,115 @@
       "application": "Aplicación"
     }
   },
+  "Profile": {
+    "metadata": {
+      "title": "Mi perfil | Davivienda API Marketplace",
+      "description": "Administre sus datos, solicitudes y facturación."
+    },
+    "breadcrumb": {
+      "profile": "Mi perfil"
+    },
+    "title": "Mi perfil",
+    "gate": {
+      "eyebrow": "Mi perfil",
+      "title": "Inicie sesión o cree una cuenta para ver este contenido",
+      "description": "Mi perfil es privado: ahí están sus datos, solicitudes y facturación. Necesita una cuenta de desarrollador para entrar.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión"
+    },
+    "tabs": {
+      "data": "Datos de perfil",
+      "requests": "Solicitudes",
+      "billing": "Facturación"
+    },
+    "data": {
+      "identity": "Identidad",
+      "displayName": "Nombre para mostrar",
+      "displayNamePlaceholder": "Ana Gómez",
+      "displayNameHint": "Así aparece en el menú del portal.",
+      "displayNameRequired": "Ingrese el nombre para mostrar.",
+      "company": "Empresa",
+      "companyName": "Razón social",
+      "companyNamePlaceholder": "Mi Empresa S.A. de C.V.",
+      "companyNameRequired": "Ingrese el nombre o razón social.",
+      "idType": "Tipo de identificación",
+      "idTypeRequired": "Seleccione el tipo de identificación.",
+      "idNumber": "Número de identificación",
+      "duiNumber": "Número de DUI",
+      "nitNumber": "Número de NIT",
+      "idNumberRequired": "Ingrese el {field}.",
+      "contact": "Contacto",
+      "email": "Correo electrónico",
+      "emailLocked": "No se puede cambiar desde el portal.",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+503 7000 1234",
+      "phoneOptional": "Opcional.",
+      "phoneInvalid": "Ingrese un teléfono válido.",
+      "preferences": "Preferencias",
+      "notifyExpiration": "Avisarme por email cuando mi sandbox esté por vencer",
+      "saving": "Guardando...",
+      "saved": "Guardado",
+      "save": "Guardar cambios",
+      "discard": "Descartar cambios",
+      "loadFailed": "No se pudo cargar el perfil.",
+      "saveFailed": "No pudimos guardar el perfil. Intente de nuevo.",
+      "notifyFailed": "No pudimos guardar la preferencia. Intente de nuevo."
+    },
+    "password": {
+      "title": "Cambiar contraseña",
+      "description": "Le enviaremos un enlace a {email} para crear una nueva contraseña.",
+      "descriptionFallback": "su correo",
+      "submit": "Cambiar contraseña",
+      "sending": "Enviando...",
+      "sent": "Revise su bandeja. El enlace ya fue enviado.",
+      "signOut": "Cerrar sesión en este dispositivo",
+      "signingOut": "Cerrando sesión..."
+    },
+    "danger": {
+      "eyebrow": "Zona de peligro",
+      "title": "Eliminar cuenta",
+      "description": "Esta acción no se puede deshacer desde el portal. Si necesita dar de baja la cuenta, inicie el proceso con soporte.",
+      "delete": "Eliminar cuenta",
+      "modalDescription": "Por ahora no se puede borrar la cuenta desde el portal. Para solicitar la eliminación, contacte a <faq>FAQ</faq> (sección FAQ, opción Hable con un experto).",
+      "goToFaq": "Ir a FAQ",
+      "close": "Entendido",
+      "closeAria": "Cerrar"
+    },
+    "billing": {
+      "currentPlan": "Plan actual",
+      "planName": "Plan Profesional",
+      "period": "mensual",
+      "planDescription": "Consumo de APIs en producción con soporte prioritario y límite ampliado de llamadas.",
+      "featureCalls": "Hasta 100.000 llamadas / mes",
+      "featureSla": "SLA de soporte 8x5",
+      "featureProduction": "Ambiente de producción incluido",
+      "nextCharge": "Próximo cobro",
+      "paymentMethod": "Método de pago",
+      "expires": "Vence {date}",
+      "invoiceHistory": "Historial de facturas",
+      "invoice": "Factura",
+      "date": "Fecha",
+      "amount": "Monto",
+      "status": "Estado",
+      "download": "Descargar",
+      "paid": "Pagada",
+      "overdue": "Vencida",
+      "pending": "Pendiente"
+    },
+    "requests": {
+      "loadFailed": "No se pudieron cargar las solicitudes.",
+      "emptyTitle": "Sin solicitudes todavía",
+      "emptyDescription": "Cuando envíe una solicitud de contratación, el folio y el estado aparecerán aquí.",
+      "folio": "Folio",
+      "api": "API",
+      "date": "Fecha",
+      "status": "Estado",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "inProduction": "En producción",
+      "inReview": "En revisión"
+    }
+  },
   "Footer": {
     "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
     "platform": "Plataforma",

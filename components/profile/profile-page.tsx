@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { ProfileBilling } from "./profile-billing";
 import { ProfileDangerZone } from "./profile-danger-zone";
@@ -10,18 +11,18 @@ import { ProfileRequests } from "./profile-requests";
 
 type TabId = "datos" | "solicitudes" | "facturacion";
 
-const tabs: Array<{ id: TabId; label: string }> = [
-  { id: "datos", label: "Datos de perfil" },
-  { id: "solicitudes", label: "Solicitudes" },
-  { id: "facturacion", label: "Facturación" },
-];
-
 export function ProfilePage() {
+  const t = useTranslations("Profile");
   const [activeTab, setActiveTab] = useState<TabId>("datos");
+  const tabs: Array<{ id: TabId; label: string }> = [
+    { id: "datos", label: t("tabs.data") },
+    { id: "solicitudes", label: t("tabs.requests") },
+    { id: "facturacion", label: t("tabs.billing") },
+  ];
 
   return (
     <div>
-      <h1 className="text-[28px] font-bold tracking-[0.3px] text-[#404040] sm:text-[36px]">Mi perfil</h1>
+      <h1 className="text-[28px] font-bold tracking-[0.3px] text-[#404040] sm:text-[36px]">{t("title")}</h1>
 
       <div className="mt-6 flex gap-1 overflow-x-auto border-b border-[#E7EAEE]">
         {tabs.map((tab) => {
