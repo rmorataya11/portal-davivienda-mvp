@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FaqFeedback } from "@/components/support/faq-feedback";
 import { SupportCaseModal } from "@/components/support/support-case-modal";
 import { SupportChangelog } from "@/components/support/support-changelog";
+import { GuideAccordion } from "@/components/guides/guide-accordion";
 import { SectionContainer } from "@/components/ui/layout";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
 
@@ -30,10 +31,10 @@ function FaqGuideLink({ slug }: { slug: string }) {
   return (
     <p className="mt-4">
       <Link
-        href={`/guias/${guide.slug}`}
+        href={`#guia-${guide.slug}`}
         className="text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
       >
-        Ver guía completa: {guide.title} →
+        Ver Guías de Integración: {guide.title} →
       </Link>
     </p>
   );
@@ -105,6 +106,14 @@ const quickAccess = [
     linkLabel: "Crear solicitud →",
     icon: TicketIcon,
   },
+  {
+    id: "guias",
+    title: "Guías de Integración",
+    description: "Tutoriales técnicos para integrar sus sistemas con nuestras APIs.",
+    href: "#guias-integracion",
+    linkLabel: "Ver guías →",
+    icon: IntegrationGuideIcon,
+  },
 ];
 
 export function SupportPage() {
@@ -165,7 +174,7 @@ export function SupportPage() {
 
       <section className="pb-8">
         <SectionContainer>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {quickAccess.map((item) => {
               const Icon = item.icon;
 
@@ -324,6 +333,16 @@ export function SupportPage() {
         </SectionContainer>
       </section>
 
+      <section id="guias-integracion" className="scroll-anchor pb-12 pt-2 sm:pb-16">
+        <SectionContainer>
+          <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">Guías de Integración</h2>
+          <p className="mt-3 mb-5 max-w-[720px] text-[15px] leading-7 text-[#707070]">
+            Consulte los pasos técnicos para conectar sus sistemas con las APIs Davivienda.
+          </p>
+          <GuideAccordion />
+        </SectionContainer>
+      </section>
+
       <SupportChangelog />
 
       <SupportCaseModal open={caseModalOpen} onClose={() => setCaseModalOpen(false)} />
@@ -358,6 +377,16 @@ function BookIcon() {
       />
       <path d="M6 5.5A2 2 0 0 0 4 7.5V18" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
       <path d="M9 9h6M9 12.5h6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IntegrationGuideIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+      <path d="M5 4.5h10.5A2.5 2.5 0 0 1 18 7v12H7a2 2 0 0 1-2-2V4.5Z" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M5 4.5A2 2 0 0 0 3 6.5V17" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="m9 11 2 2 4-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
