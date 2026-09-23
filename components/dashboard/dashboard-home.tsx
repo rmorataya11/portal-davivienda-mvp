@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
+import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 
 import { AppCard } from "./app-card";
 import { useDeveloperApps } from "./apps-provider";
@@ -24,9 +24,9 @@ export function DashboardHome() {
   const greetingName = displayNameFromEmail(user?.email);
   const stats = apps.map((app) => appUsageStats(app));
   const totalCalls = stats.reduce((sum, item) => sum + item.callsLast30Days, 0);
-  const consumedCop = stats.reduce((sum, item) => sum + item.consumedCop, 0);
-  const budgetCop = apps.length > 0 ? Math.max(...stats.map((item) => item.budgetCop)) : 2_500_000;
-  const consumedRatio = Math.min(consumedCop / budgetCop, 1);
+  const consumedUsd = stats.reduce((sum, item) => sum + item.consumedUsd, 0);
+  const budgetUsd = apps.length > 0 ? Math.max(...stats.map((item) => item.budgetUsd)) : 600;
+  const consumedRatio = Math.min(consumedUsd / budgetUsd, 1);
   const weekActivity =
     stats.length > 0
       ? [0, 1, 2, 3, 4, 5, 6].map((index) => stats.reduce((sum, item) => sum + item.weekActivity[index], 0))
@@ -50,9 +50,9 @@ export function DashboardHome() {
           <div className="px-6 py-7 sm:px-8 sm:py-8">
             <p className="text-[13px] font-medium text-[#8E8E8E]">{t("consumption30")}</p>
             <p className="mt-3 text-[34px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[42px] lg:text-[48px]">
-              {formatMoneyCop(consumedCop, numberLocale)}
+              {formatMoney(consumedUsd)}
             </p>
-            <p className="mt-3 text-[15px] text-[#6A7178]">{t("ofEstimate", { amount: formatMoneyCop(budgetCop, numberLocale) })}</p>
+            <p className="mt-3 text-[15px] text-[#6A7178]">{t("ofEstimate", { amount: formatMoney(budgetUsd) })}</p>
             <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#F2F3F5]">
               <div
                 className="h-full rounded-full bg-[#E1251B] transition-[width] duration-500"

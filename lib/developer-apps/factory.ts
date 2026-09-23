@@ -48,8 +48,8 @@ export function appUsageStats(app: DeveloperApp) {
     callsLast30Days,
     errorRate: ((hash % 28) + 4) / 10,
     avgLatencyMs: 120 + (hash % 260),
-    consumedCop: Math.round(callsLast30Days * 42),
-    budgetCop: 2_500_000,
+    consumedUsd: Number((callsLast30Days * 0.01).toFixed(2)),
+    budgetUsd: 600,
     weekActivity: weekdayShare.map((share, index) => {
       const variance = 0.82 + (((hash + index * 19) % 36) / 100);
       return Math.max(8, Math.round(weeklyTotal * share * variance));
@@ -57,10 +57,11 @@ export function appUsageStats(app: DeveloperApp) {
   };
 }
 
-export function formatMoneyCop(value: number, locale = "es-CO") {
-  return new Intl.NumberFormat(locale, {
+export function formatMoney(value: number) {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(value);
 }

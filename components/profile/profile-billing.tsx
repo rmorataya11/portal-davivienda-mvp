@@ -1,7 +1,7 @@
 "use client";
 
 import { mockCurrentPlan, mockInvoices, mockNextCharge, mockPaymentMethod } from "@/components/mock/mockBilling";
-import { formatMoneyCop } from "@/lib/developer-apps/factory";
+import { formatMoney } from "@/lib/developer-apps/factory";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("es-CO", { dateStyle: "medium" }).format(new Date(value));
@@ -27,7 +27,7 @@ export function ProfileBilling() {
           <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Plan actual</p>
           <h3 className="mt-2 text-[22px] font-bold tracking-[0.2px] text-[#141F25]">{mockCurrentPlan.name}</h3>
           <p className="mt-2 text-[28px] font-bold text-[#141F25]">
-            {mockCurrentPlan.priceLabel}
+            {formatMoney(mockCurrentPlan.priceUsd)}
             <span className="ml-2 text-[15px] font-medium text-[#6A7178]">/ {mockCurrentPlan.period}</span>
           </p>
           <p className="mt-3 text-[15px] leading-7 text-[#6A7178]">{mockCurrentPlan.description}</p>
@@ -44,7 +44,7 @@ export function ProfileBilling() {
         <div className="grid gap-4">
           <section className="rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
             <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Próximo cobro</p>
-            <p className="mt-2 text-[22px] font-bold text-[#141F25]">{formatMoneyCop(mockNextCharge.amountCop)}</p>
+            <p className="mt-2 text-[22px] font-bold text-[#141F25]">{formatMoney(mockNextCharge.amountUsd)}</p>
             <p className="mt-1 text-[15px] text-[#6A7178]">{formatDate(mockNextCharge.date)}</p>
           </section>
 
@@ -85,7 +85,7 @@ export function ProfileBilling() {
                   <tr key={invoice.id} className="border-t border-[#E7EAEE]">
                     <td className="px-5 py-4 font-semibold text-[#141F25]">{invoice.id}</td>
                     <td className="px-5 py-4 text-[#6A7178]">{formatDate(invoice.date)}</td>
-                    <td className="px-5 py-4 text-[#404040]">{formatMoneyCop(invoice.amountCop)}</td>
+                    <td className="px-5 py-4 text-[#404040]">{formatMoney(invoice.amountUsd)}</td>
                     <td className="px-5 py-4">
                       <span className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>
                         {status.label}

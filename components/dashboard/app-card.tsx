@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
-import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
+import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 import { formatAppDate } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -53,7 +53,7 @@ export function AppCard({ app }: { app: DeveloperApp }) {
           <p className="text-[12px] text-[#707070]">{t("card.calls30")}</p>
           <p className="mt-1 text-[20px] font-bold text-[#404040]">{stats.callsLast30Days.toLocaleString(numberLocale)}</p>
           <p className="mt-1 text-[12px] text-[#707070]">
-            {t("card.estimatedNotBilled", { amount: formatMoneyCop(stats.consumedCop, numberLocale) })}
+            {t("card.estimatedNotBilled", { amount: formatMoney(stats.consumedUsd) })}
           </p>
         </div>
         <div className="text-right">

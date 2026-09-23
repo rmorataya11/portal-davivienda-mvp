@@ -7,7 +7,7 @@ import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
-import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
+import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -124,7 +124,7 @@ function ApiAppRow({ app }: { app: DeveloperApp }) {
         <h3 className="text-[18px] font-bold text-[#141F25]">{app.name}</h3>
         <AppStatusBadge status={app.status} />
       </div>
-      <p className="mt-3 text-[20px] font-bold text-[#141F25]">{formatMoneyCop(stats.consumedCop)}</p>
+      <p className="mt-3 text-[20px] font-bold text-[#141F25]">{formatMoney(stats.consumedUsd)}</p>
       <p className="mt-1 text-[13px] text-[#8E8E8E]">
         {t("callsLast30Days", { count: stats.callsLast30Days.toLocaleString(locale === "en" ? "en-US" : "es-CO") })}
       </p>

@@ -8,7 +8,7 @@ import { apiCatalogItems, getApiDetailBySlug } from "@/components/catalog/conten
 import { localizeApiDetail, localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import { CredentialField } from "@/components/ui/credential-field";
-import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
+import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 import { formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
 
 import { AppDeleteControl, AppEditForm } from "./app-edit-form";
@@ -105,10 +105,10 @@ export function AppDetailPage({ appId }: { appId: string }) {
           <div className="border-t border-[#E7EAEE] px-5 py-5 md:border-t-0 md:border-l md:px-6">
             <p className="text-[13px] text-[#707070]">{t("detail.monthEstimate")}</p>
             <p className="mt-2 text-[22px] font-bold tracking-[0.2px] text-[#404040] sm:text-[26px]">
-              {formatMoneyCop(stats.consumedCop, numberLocale)}
+              {formatMoney(stats.consumedUsd)}
             </p>
             <p className="mt-2 text-[13px] leading-5 text-[#707070]">
-              {t("detail.budgetSandbox", { amount: formatMoneyCop(stats.budgetCop, numberLocale) })}
+              {t("detail.budgetSandbox", { amount: formatMoney(stats.budgetUsd) })}
             </p>
           </div>
         </div>
