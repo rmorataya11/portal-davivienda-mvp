@@ -500,6 +500,135 @@
       "signIn": "Iniciar sesión"
     }
   },
+  "Dashboard": {
+    "metadata": {
+      "homeTitle": "Mis aplicaciones | Davivienda API Marketplace",
+      "homeDescription": "Administre sus aplicaciones, credenciales de sandbox y el paso a producción.",
+      "createTitle": "Crear aplicación | Davivienda API Marketplace",
+      "createDescription": "Cree una aplicación de sandbox y vincule las APIs que va a integrar.",
+      "detailTitle": "Detalle de aplicación | Davivienda API Marketplace",
+      "detailDescription": "Credenciales, APIs vinculadas y estado de contratación de su aplicación."
+    },
+    "status": {
+      "sandbox": "Sandbox",
+      "contracting": "En contratación",
+      "production": "Producción"
+    },
+    "gate": {
+      "eyebrow": "Mis apps",
+      "title": "Inicie sesión o cree una cuenta para ver este contenido",
+      "description": "Mis apps es privado: ahí están sus aplicaciones, credenciales de sandbox y el consumo. Necesita una cuenta de desarrollador para entrar.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión"
+    },
+    "home": {
+      "greeting": "Hola",
+      "greetingNamed": "Hola, {name}",
+      "title": "Su espacio de trabajo",
+      "description": "Revise el consumo, abra una app o cree una nueva para obtener credenciales de sandbox.",
+      "consumption30": "Consumo de los últimos 30 días",
+      "ofEstimate": "de un estimado de {amount}",
+      "emptyConsumption": "Cuando empiece a consumir APIs, el monto aparecerá aquí.",
+      "consumedRatio": "{percent}% del estimado del mes · sandbox aún no se factura",
+      "applications": "Aplicaciones",
+      "inSandbox": "En sandbox",
+      "calls30": "Llamadas / 30 días",
+      "emptyTitle": "Empiece con su primera app",
+      "emptyDescription": "En un minuto obtiene credenciales de sandbox y puede probar una API del catálogo.",
+      "createApp": "Crear aplicación",
+      "yourApps": "Sus aplicaciones",
+      "appsTotal": "{count} en total"
+    },
+    "chart": {
+      "title": "Actividad de la semana",
+      "calls": "{count} llamadas",
+      "noTraffic": "Sin tráfico todavía",
+      "peak": "Pico el {day}",
+      "days": {
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mié",
+        "thu": "Jue",
+        "fri": "Vie",
+        "sat": "Sáb",
+        "sun": "Dom"
+      }
+    },
+    "card": {
+      "noDescription": "Sin descripción todavía",
+      "noApis": "Sin APIs vinculadas",
+      "calls30": "Llamadas / 30 días",
+      "estimatedNotBilled": "{amount} estimado · no se factura",
+      "open": "Abrir →",
+      "created": "Creada {date}"
+    },
+    "create": {
+      "eyebrow": "Nueva aplicación",
+      "title": "Cree una app de sandbox",
+      "titleForProduct": "Cree una app para {name}",
+      "description": "Indique qué APIs va a consumir. El ambiente inicial es sandbox; cuando valide la integración, solicite producción desde el detalle de esta app.",
+      "descriptionLocked": "Solo necesita un nombre. Las credenciales de sandbox quedan asociadas a esta API. Si más adelante quiere usar otro producto, puede vincularlo desde el detalle técnico.",
+      "name": "Nombre de la aplicación",
+      "namePlaceholder": "Billetera corporativa",
+      "nameRequired": "Ingrese un nombre para la aplicación.",
+      "descriptionLabel": "Descripción",
+      "descriptionHint": "Opcional. Ayuda a su equipo a identificar para qué sirve esta app.",
+      "descriptionPlaceholder": "Conciliación de pagos y consulta de estado para el canal digital.",
+      "apisLegend": "APIs que va a usar",
+      "apisHelp": "Elija los productos que consumirá esta aplicación.",
+      "apisRequired": "Seleccione al menos una API.",
+      "submitting": "Creando...",
+      "submit": "Crear aplicación"
+    },
+    "detail": {
+      "notFoundTitle": "No encontramos esta aplicación",
+      "notFoundDescription": "Puede que haya iniciado sesión con otra cuenta o que la app se haya creado en otro navegador.",
+      "back": "Volver al dashboard",
+      "eyebrow": "Aplicación",
+      "requestProduction": "Solicitar producción",
+      "edit": "Editar",
+      "noDescription": "Esta aplicación todavía no tiene una descripción.",
+      "contractingNote": "Hay una solicitud de contratación en revisión para esta app.",
+      "productionNote": "Esta aplicación ya tiene acceso de producción.",
+      "calls30": "Llamadas / 30 días",
+      "errorRate": "Tasa de error",
+      "monthEstimate": "Estimado del mes",
+      "budgetSandbox": "de {amount} · sandbox no se factura",
+      "credentialsTitle": "Credenciales de sandbox",
+      "credentialsDescription": "Use el consumer key en la cabecera <header>x-api-key</header>. El secret se muestra en esta vista; no lo comparta.",
+      "consumerKey": "Consumer key / API key",
+      "consumerSecret": "Consumer secret",
+      "baseUrl": "Base URL",
+      "baseUrlHint": "Host de sandbox de esta app. El path del endpoint está en Documentación.",
+      "expires": "Expira",
+      "linkedApi": "API vinculada",
+      "viewCard": "Ver ficha",
+      "technicalConsole": "Consola técnica",
+      "viewDocs": "Ver documentación de esta API →",
+      "created": "Creada {date}"
+    },
+    "edit": {
+      "save": "Guardar cambios",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleteConfirm": "¿Eliminar <name></name>? Esta acción no se puede deshacer.",
+      "deleteYes": "Sí, eliminar"
+    },
+    "dates": {
+      "noActivity": "Sin actividad"
+    },
+    "credentials": {
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "copy": "Copiar",
+      "copied": "Copiado"
+    },
+    "breadcrumb": {
+      "apps": "Mis apps",
+      "newApp": "Nueva app",
+      "application": "Aplicación"
+    }
+  },
   "Footer": {
     "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
     "platform": "Plataforma",

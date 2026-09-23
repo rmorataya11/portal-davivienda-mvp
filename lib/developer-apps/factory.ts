@@ -57,8 +57,8 @@ export function appUsageStats(app: DeveloperApp) {
   };
 }
 
-export function formatMoneyCop(value: number) {
-  return new Intl.NumberFormat("es-CO", {
+export function formatMoneyCop(value: number, locale = "es-CO") {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "COP",
     maximumFractionDigits: 0,

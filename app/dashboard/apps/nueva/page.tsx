@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 
 import { CreateAppForm } from "@/components/dashboard/create-app-form";
 
-export const metadata: Metadata = {
-  title: "Crear aplicación | Davivienda API Marketplace",
-  description: "Cree una aplicación de sandbox y vincule las APIs que va a integrar.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Dashboard.metadata");
+
+  return {
+    title: t("createTitle"),
+    description: t("createDescription"),
+  };
+}
 
 export default function CreateAppRoute() {
   return (

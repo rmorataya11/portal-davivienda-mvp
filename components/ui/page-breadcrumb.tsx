@@ -21,6 +21,7 @@ function buildCrumbs(
   productSlug: string | null,
   getApp: (id: string) => { name: string } | undefined,
   t: (key: string) => string,
+  dashboardT: (key: string) => string,
   homeLabel: string,
 ): Crumb[] {
   if (pathname === "/") {
@@ -51,7 +52,7 @@ function buildCrumbs(
     }
 
     if (segment === "dashboard") {
-      crumbs.push({ href, label: "Mis apps" });
+      crumbs.push({ href, label: dashboardT("apps") });
       return;
     }
 
@@ -60,12 +61,12 @@ function buildCrumbs(
     }
 
     if (previous === "apps" && segment === "nueva") {
-      crumbs.push({ href, label: "Nueva app" });
+      crumbs.push({ href, label: dashboardT("newApp") });
       return;
     }
 
     if (previous === "apps") {
-      crumbs.push({ href, label: getApp(segment)?.name ?? "Aplicación" });
+      crumbs.push({ href, label: getApp(segment)?.name ?? dashboardT("application") });
       return;
     }
 
@@ -133,13 +134,14 @@ export function PageBreadcrumb() {
   const searchParams = useSearchParams();
   const { getApp } = useDeveloperApps();
   const t = useTranslations("Catalog");
+  const dashboardT = useTranslations("Dashboard.breadcrumb");
   const homeLabel = useTranslations("Navbar")("home");
 
   if (HIDDEN_PATHS.has(pathname)) {
     return null;
   }
 
-  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp, t, homeLabel);
+  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp, t, dashboardT, homeLabel);
 
   return (
     <nav aria-label="Breadcrumb" className="text-[13px] font-normal tracking-[0.2px] text-[#8E8E8E] sm:text-[14px]">

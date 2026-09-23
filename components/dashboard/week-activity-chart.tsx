@@ -1,14 +1,13 @@
-const WEEK_DAYS = [
-  { key: "L", label: "Lun" },
-  { key: "M", label: "Mar" },
-  { key: "X", label: "Mié" },
-  { key: "J", label: "Jue" },
-  { key: "V", label: "Vie" },
-  { key: "S", label: "Sáb" },
-  { key: "D", label: "Dom" },
-] as const;
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+
+const WEEK_DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
 
 export function WeekActivityChart({ values }: { values: number[] }) {
+  const t = useTranslations("Dashboard.chart");
+  const locale = useLocale();
+  const numberLocale = locale === "en" ? "en-US" : "es";
   const maxValue = Math.max(...values, 1);
   const total = values.reduce((sum, value) => sum + value, 0);
   const peakIndex = values.reduce((best, value, index, list) => (value > list[best] ? index : best), 0);
@@ -22,11 +21,13 @@ export function WeekActivityChart({ values }: { values: number[] }) {
     <div>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[13px] font-medium text-[#8E8E8E]">Actividad de la semana</p>
-          <p className="mt-1 text-[15px] font-semibold text-[#141F25]">{total.toLocaleString("es-CO")} llamadas</p>
+          <p className="text-[13px] font-medium text-[#8E8E8E]">{t("title")}</p>
+          <p className="mt-1 text-[15px] font-semibold text-[#141F25]">
+            {t("calls", { count: total.toLocaleString(numberLocale) })}
+          </p>
         </div>
         <p className="max-w-[148px] text-right text-[12px] leading-5 text-[#8E8E8E]">
-          {total === 0 ? "Sin tráfico todavía" : `Pico el ${WEEK_DAYS[peakIndex].label}`}
+          {total === 0 ? t("noTraffic") : t("peak", { day: t(`days.${WEEK_DAY_KEYS[peakIndex]}`) })}
         </p>
       </div>
 
@@ -45,15 +46,15 @@ export function WeekActivityChart({ values }: { values: number[] }) {
           </div>
 
           <div className="flex h-[116px] items-end gap-2">
-            {WEEK_DAYS.map((day, index) => {
+            {WEEK_DAY_KEYS.map((day, index) => {
               const value = values[index] ?? 0;
               const height = value === 0 ? 4 : Math.max((value / maxValue) * 100, 12);
               const isToday = index === todayIndex;
 
               return (
-                <div key={day.key} className="group relative flex h-full flex-1 items-end justify-center">
+                <div key={day} className="group relative flex h-full flex-1 items-end justify-center">
                   <div className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-md bg-[#141F25] px-2 py-1 text-[11px] font-medium whitespace-nowrap text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
-                    {value.toLocaleString("es-CO")} llamadas
+                    {t("calls", { count: value.toLocaleString(numberLocale) })}
                   </div>
                   <div
                     className={`w-full max-w-8 rounded-t-[10px] transition-colors ${
@@ -67,14 +68,14 @@ export function WeekActivityChart({ values }: { values: number[] }) {
           </div>
 
           <div className="mt-2 flex gap-2">
-            {WEEK_DAYS.map((day, index) => (
+            {WEEK_DAY_KEYS.map((day, index) => (
               <span
-                key={day.key}
+                key={day}
                 className={`flex-1 text-center text-[11px] ${
                   index === todayIndex ? "font-semibold text-[#E1251B]" : "text-[#8E8E8E]"
                 }`}
               >
-                {day.label}
+                {t(`days.${day}`)}
               </span>
             ))}
           </div>

@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { DashboardHome } from "@/components/dashboard/dashboard-home";
 
-export const metadata: Metadata = {
-  title: "Mis aplicaciones | Davivienda API Marketplace",
-  description: "Administre sus aplicaciones, credenciales de sandbox y el paso a producción.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Dashboard.metadata");
+
+  return {
+    title: t("homeTitle"),
+    description: t("homeDescription"),
+  };
+}
 
 export default function DashboardRoute() {
   return <DashboardHome />;

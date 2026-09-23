@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
 import { formatAppDate } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
@@ -8,8 +12,15 @@ import type { DeveloperApp } from "@/lib/developer-apps/types";
 import { AppStatusBadge } from "./app-status-badge";
 
 export function AppCard({ app }: { app: DeveloperApp }) {
-  const products = apiCatalogItems.filter((item) => app.productSlugs.includes(item.slug));
+  const t = useTranslations("Dashboard");
+  const catalogT = useTranslations("Catalog");
+  const locale = useLocale();
+  const numberLocale = locale === "en" ? "en-US" : "es";
+  const products = apiCatalogItems
+    .filter((item) => app.productSlugs.includes(item.slug))
+    .map((item) => localizeCatalogItem(item, catalogT));
   const stats = appUsageStats(app);
+  const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
 
   return (
     <Link
@@ -21,7 +32,7 @@ export function AppCard({ app }: { app: DeveloperApp }) {
         <AppStatusBadge status={app.status} />
       </div>
       <p className="mt-3 line-clamp-2 text-[14px] leading-6 text-[#707070]">
-        {app.description || "Sin descripción todavía"}
+        {app.description || t("card.noDescription")}
       </p>
       <div className="mt-4 mb-5 flex flex-wrap gap-2">
         {products.length > 0 ? (
@@ -34,22 +45,22 @@ export function AppCard({ app }: { app: DeveloperApp }) {
             </span>
           ))
         ) : (
-          <span className="text-[13px] text-[#8E8E8E]">Sin APIs vinculadas</span>
+          <span className="text-[13px] text-[#8E8E8E]">{t("card.noApis")}</span>
         )}
       </div>
       <div className="mt-auto flex items-end justify-between gap-3 border-t border-[#E7EAEE] pt-4">
         <div>
-          <p className="text-[12px] text-[#707070]">Llamadas / 30 días</p>
-          <p className="mt-1 text-[20px] font-bold text-[#404040]">{stats.callsLast30Days.toLocaleString("es-CO")}</p>
+          <p className="text-[12px] text-[#707070]">{t("card.calls30")}</p>
+          <p className="mt-1 text-[20px] font-bold text-[#404040]">{stats.callsLast30Days.toLocaleString(numberLocale)}</p>
           <p className="mt-1 text-[12px] text-[#707070]">
-            {formatMoneyCop(stats.consumedCop)} estimado · no se factura
+            {t("card.estimatedNotBilled", { amount: formatMoneyCop(stats.consumedCop, numberLocale) })}
           </p>
         </div>
         <div className="text-right">
           <p className="text-[13px] font-semibold text-[#E1251B] transition-colors group-hover:text-[#C01F16]">
-            Abrir →
+            {t("card.open")}
           </p>
-          <p className="mt-1 text-[12px] text-[#8E8E8E]">Creada {formatAppDate(app.createdAt)}</p>
+          <p className="mt-1 text-[12px] text-[#8E8E8E]">{t("card.created", { date: created })}</p>
         </div>
       </div>
     </Link>

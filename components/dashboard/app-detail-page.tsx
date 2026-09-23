@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { apiCatalogItems, getApiDetailBySlug } from "@/components/catalog/content/apis";
+import { localizeApiDetail, localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import { CredentialField } from "@/components/ui/credential-field";
 import { appUsageStats, formatMoneyCop } from "@/lib/developer-apps/factory";
@@ -16,6 +18,10 @@ import { useDeveloperApps } from "./apps-provider";
 export function AppDetailPage({ appId }: { appId: string }) {
   const { getApp, ready } = useDeveloperApps();
   const [isEditing, setIsEditing] = useState(false);
+  const t = useTranslations("Dashboard");
+  const catalogT = useTranslations("Catalog");
+  const locale = useLocale();
+  const numberLocale = locale === "en" ? "en-US" : "es";
 
   if (!ready) {
     return <div className="h-64 animate-pulse rounded-[24px] bg-white" />;
@@ -26,30 +32,31 @@ export function AppDetailPage({ appId }: { appId: string }) {
   if (!app) {
     return (
       <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-8">
-        <h1 className="text-[26px] font-bold text-[#404040] sm:text-[32px]">No encontramos esta aplicación</h1>
-        <p className="mt-3 text-[16px] leading-7 text-[#707070]">
-          Puede que haya iniciado sesión con otra cuenta o que la app se haya creado en otro navegador.
-        </p>
+        <h1 className="text-[26px] font-bold text-[#404040] sm:text-[32px]">{t("detail.notFoundTitle")}</h1>
+        <p className="mt-3 text-[16px] leading-7 text-[#707070]">{t("detail.notFoundDescription")}</p>
         <Link
           href="/dashboard"
           className="mt-7 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white"
         >
-          Volver al dashboard
+          {t("detail.back")}
         </Link>
       </div>
     );
   }
 
-  const products = apiCatalogItems.filter((item) => app.productSlugs.includes(item.slug));
+  const products = apiCatalogItems
+    .filter((item) => app.productSlugs.includes(item.slug))
+    .map((item) => localizeCatalogItem(item, catalogT));
   const stats = appUsageStats(app);
   const productionHref = `/solicitud-contratacion?app=${app.id}&producto=${app.productSlugs[0] ?? ""}`;
+  const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
 
   return (
     <div>
       <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-5 sm:px-8 sm:py-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#707070]">Aplicación</p>
+            <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#707070]">{t("detail.eyebrow")}</p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <h1 className="text-[26px] font-bold tracking-[0.3px] text-[#404040] sm:text-[32px]">{app.name}</h1>
               <AppStatusBadge status={app.status} />
@@ -62,7 +69,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
                   href={productionHref}
                   className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
                 >
-                  Solicitar producción
+                  {t("detail.requestProduction")}
                 </Link>
               ) : null}
               <button
@@ -70,7 +77,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
                 onClick={() => setIsEditing(true)}
                 className="inline-flex h-11 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-5 text-[14px] font-medium text-[#404040] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
               >
-                Editar
+                {t("detail.edit")}
               </button>
               <AppDeleteControl appId={app.id} appName={app.name} />
             </div>
@@ -80,30 +87,28 @@ export function AppDetailPage({ appId }: { appId: string }) {
           <AppEditForm app={app} onCancel={() => setIsEditing(false)} />
         ) : (
           <p className="mt-3 max-w-[720px] text-[15px] leading-6 text-[#707070]">
-            {app.description || "Esta aplicación todavía no tiene una descripción."}
+            {app.description || t("detail.noDescription")}
           </p>
         )}
         {app.status === "contracting" ? (
-          <p className="mt-3 text-[14px] leading-6 text-[#707070]">
-            Hay una solicitud de contratación en revisión para esta app.
-          </p>
+          <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.contractingNote")}</p>
         ) : null}
         {app.status === "production" ? (
-          <p className="mt-3 text-[14px] leading-6 text-[#707070]">Esta aplicación ya tiene acceso de producción.</p>
+          <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.productionNote")}</p>
         ) : null}
       </div>
 
       <div className="mt-5 overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white">
         <div className="grid md:grid-cols-3">
-          <MetricCard label="Llamadas / 30 días" value={stats.callsLast30Days.toLocaleString("es-CO")} />
-          <MetricCard label="Tasa de error" value={`${stats.errorRate.toFixed(1)}%`} />
+          <MetricCard label={t("detail.calls30")} value={stats.callsLast30Days.toLocaleString(numberLocale)} />
+          <MetricCard label={t("detail.errorRate")} value={`${stats.errorRate.toFixed(1)}%`} />
           <div className="border-t border-[#E7EAEE] px-5 py-5 md:border-t-0 md:border-l md:px-6">
-            <p className="text-[13px] text-[#707070]">Estimado del mes</p>
+            <p className="text-[13px] text-[#707070]">{t("detail.monthEstimate")}</p>
             <p className="mt-2 text-[22px] font-bold tracking-[0.2px] text-[#404040] sm:text-[26px]">
-              {formatMoneyCop(stats.consumedCop)}
+              {formatMoneyCop(stats.consumedCop, numberLocale)}
             </p>
             <p className="mt-2 text-[13px] leading-5 text-[#707070]">
-              de {formatMoneyCop(stats.budgetCop)} · sandbox no se factura
+              {t("detail.budgetSandbox", { amount: formatMoneyCop(stats.budgetCop, numberLocale) })}
             </p>
           </div>
         </div>
@@ -111,28 +116,28 @@ export function AppDetailPage({ appId }: { appId: string }) {
 
       <div className="mt-5 grid items-start gap-5 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
-          <h2 className="text-[22px] font-bold text-[#404040]">Credenciales de sandbox</h2>
+          <h2 className="text-[22px] font-bold text-[#404040]">{t("detail.credentialsTitle")}</h2>
           <p className="mt-2 text-[14px] leading-6 text-[#707070]">
-            Use el consumer key en la cabecera <span className="font-mono text-[#404040]">x-api-key</span>. El secret se
-            muestra en esta vista; no lo comparta.
+            {t.rich("detail.credentialsDescription", {
+              header: (chunks) => <span className="font-mono text-[#404040]">{chunks}</span>,
+            })}
           </p>
           <div className="mt-5 space-y-3">
-            <CredentialField label="Consumer key / API key" value={app.consumerKey} secret />
-            <CredentialField label="Consumer secret" value={app.consumerSecret} secret />
-            <CredentialField label="Base URL" value={app.baseUrl} />
-            <p className="-mt-1 px-1 text-[13px] leading-5 text-[#707070]">
-              Host de sandbox de esta app. El path del endpoint está en Documentación.
-            </p>
-            <CredentialField label="Expira" value={formatAppDateTime(app.expiresAt)} />
+            <CredentialField label={t("detail.consumerKey")} value={app.consumerKey} secret />
+            <CredentialField label={t("detail.consumerSecret")} value={app.consumerSecret} secret />
+            <CredentialField label={t("detail.baseUrl")} value={app.baseUrl} />
+            <p className="-mt-1 px-1 text-[13px] leading-5 text-[#707070]">{t("detail.baseUrlHint")}</p>
+            <CredentialField label={t("detail.expires")} value={formatAppDateTime(app.expiresAt, locale)} />
           </div>
         </div>
 
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
-          <h2 className="text-[22px] font-bold text-[#404040]">API vinculada</h2>
+          <h2 className="text-[22px] font-bold text-[#404040]">{t("detail.linkedApi")}</h2>
           <div className="mt-4 space-y-3">
             {products.map((product) => {
               const detail = getApiDetailBySlug(product.slug);
-              const endpoint = detail?.endpoints[0];
+              const localizedDetail = detail ? localizeApiDetail(detail, catalogT) : undefined;
+              const endpoint = localizedDetail?.endpoints[0];
 
               return (
                 <div key={product.slug} className="rounded-[16px] border border-[#E7EAEE] bg-white px-4 py-4">
@@ -155,9 +160,9 @@ export function AppDetailPage({ appId }: { appId: string }) {
                       <p className="mt-2 text-[13px] leading-5 text-[#707070]">{endpoint.description}</p>
                     </div>
                   ) : null}
-                  {detail?.useCases.length ? (
+                  {localizedDetail?.useCases.length ? (
                     <ul className="mt-4 space-y-2">
-                      {detail.useCases.map((useCase, index) => (
+                      {localizedDetail.useCases.map((useCase, index) => (
                         <li key={useCase} className="flex gap-3 text-[13px] leading-5 text-[#404040]">
                           <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#202A31] text-[10px] font-bold text-white">
                             {String(index + 1).padStart(2, "0")}
@@ -172,26 +177,26 @@ export function AppDetailPage({ appId }: { appId: string }) {
                       href={`/catalogo-apis/${product.slug}`}
                       className="inline-flex h-10 items-center justify-center rounded-[20px] border border-[#D5DAE0] px-4 text-[13px] font-medium text-[#404040] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
                     >
-                      Ver ficha
+                      {t("detail.viewCard")}
                     </Link>
                     <Link
                       href={`/catalogo-apis/${product.slug}/detalle-tecnico`}
                       className="inline-flex h-10 items-center justify-center rounded-[20px] bg-[#E1251B] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
                     >
-                      Consola técnica
+                      {t("detail.technicalConsole")}
                     </Link>
                   </div>
                   <Link
                     href={`/documentacion?api=${product.slug}`}
                     className="mt-4 inline-flex text-[13px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
                   >
-                    Ver documentación de esta API →
+                    {t("detail.viewDocs")}
                   </Link>
                 </div>
               );
             })}
           </div>
-          <p className="mt-5 text-[13px] text-[#707070]">Creada {formatAppDate(app.createdAt)}</p>
+          <p className="mt-5 text-[13px] text-[#707070]">{t("detail.created", { date: created })}</p>
         </div>
       </div>
     </div>
