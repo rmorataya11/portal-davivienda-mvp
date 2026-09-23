@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { getApiDetailBySlug } from "@/components/catalog/content/apis";
+import { localizeApiDetail } from "@/components/catalog/content/localize-api";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
 
@@ -18,12 +20,14 @@ function buildCrumbs(
   pathname: string,
   productSlug: string | null,
   getApp: (id: string) => { name: string } | undefined,
+  t: (key: string) => string,
+  homeLabel: string,
 ): Crumb[] {
   if (pathname === "/") {
-    return [{ href: "/", label: "Inicio" }];
+    return [{ href: "/", label: homeLabel }];
   }
 
-  const crumbs: Crumb[] = [{ href: "/", label: "Inicio" }];
+  const crumbs: Crumb[] = [{ href: "/", label: homeLabel }];
   const segments = pathname.split("/").filter(Boolean);
 
   segments.forEach((segment, index) => {
@@ -31,17 +35,18 @@ function buildCrumbs(
     const previous = segments[index - 1];
 
     if (segment === "catalogo-apis") {
-      crumbs.push({ href, label: "Catálogo de APIs" });
+      crumbs.push({ href, label: t("breadcrumb.catalog") });
       return;
     }
 
     if (previous === "catalogo-apis") {
-      crumbs.push({ href, label: getApiDetailBySlug(segment)?.name ?? segment });
+      const api = getApiDetailBySlug(segment);
+      crumbs.push({ href, label: api ? localizeApiDetail(api, t).name : segment });
       return;
     }
 
     if (segment === "detalle-tecnico") {
-      crumbs.push({ href, label: "Detalle técnico" });
+      crumbs.push({ href, label: t("breadcrumb.technicalDetail") });
       return;
     }
 
@@ -127,12 +132,14 @@ export function PageBreadcrumb() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { getApp } = useDeveloperApps();
+  const t = useTranslations("Catalog");
+  const homeLabel = useTranslations("Navbar")("home");
 
   if (HIDDEN_PATHS.has(pathname)) {
     return null;
   }
 
-  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp);
+  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp, t, homeLabel);
 
   return (
     <nav aria-label="Breadcrumb" className="text-[13px] font-normal tracking-[0.2px] text-[#8E8E8E] sm:text-[14px]">

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
 import type { ApiDetail, ApiError } from "../content/apis";
@@ -33,16 +34,17 @@ export function TechnicalTabs({
   slug,
   apiName,
 }: TechnicalTabsProps) {
+  const t = useTranslations("Catalog.technical");
   const summaryErrors = commonErrors(errors);
   const docsHref = slug ? `/documentacion?api=${slug}` : "/documentacion";
 
   return (
     <div className="space-y-8">
       <section>
-        <h3 className="text-[18px] font-bold tracking-[0.24px] text-[#30383F]">{apiName ?? "Esta API"}</h3>
+        <h3 className="text-[18px] font-bold tracking-[0.24px] text-[#30383F]">{apiName ?? t("thisApi")}</h3>
         <p className="mt-2 max-w-[720px] text-[15px] leading-6 text-[#6A7178]">{description}</p>
 
-        <h4 className="mt-5 text-[12px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">Cabeceras clave</h4>
+        <h4 className="mt-5 text-[12px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">{t("keyHeaders")}</h4>
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
           {authentication.headers.map((header) => (
             <li
@@ -56,15 +58,15 @@ export function TechnicalTabs({
       </section>
 
       <section>
-        <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">Endpoint</h3>
-        <p className="mt-2 text-[14px] leading-6 text-[#8E8E8E]">Pruebe el request. El detalle completo está en Documentación.</p>
+        <h3 className="text-[22px] font-bold tracking-[0.24px] text-[#30383F]">{t("endpoint")}</h3>
+        <p className="mt-2 text-[14px] leading-6 text-[#8E8E8E]">{t("endpointHelp")}</p>
         <div className="mt-4">
           <CompactEndpointPlayground endpoints={endpoints} />
         </div>
       </section>
 
       <section>
-        <h3 className="text-[16px] font-bold tracking-[0.24px] text-[#30383F]">Errores frecuentes</h3>
+        <h3 className="text-[16px] font-bold tracking-[0.24px] text-[#30383F]">{t("commonErrors")}</h3>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {summaryErrors.map((error) => (
             <div key={error.code} className="rounded-[16px] border border-[#E3E7EC] bg-[#F8F9FB] px-4 py-3">
@@ -79,9 +81,9 @@ export function TechnicalTabs({
 
       {slug ? (
         <section>
-          <h3 className="text-[16px] font-bold tracking-[0.24px] text-[#30383F]">Credenciales de sandbox</h3>
+          <h3 className="text-[16px] font-bold tracking-[0.24px] text-[#30383F]">{t("sandboxCredentials")}</h3>
           <div className="mt-3">
-            <CredentialsPanel slug={slug} apiName={apiName ?? "esta API"} />
+            <CredentialsPanel slug={slug} apiName={apiName ?? t("thisApiLower")} />
           </div>
         </section>
       ) : null}
@@ -91,7 +93,7 @@ export function TechnicalTabs({
           href={docsHref}
           className="inline-flex items-center text-[15px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
         >
-          Ver documentación completa de esta API →
+          {t("viewFullDocs")}
         </Link>
       </div>
     </div>

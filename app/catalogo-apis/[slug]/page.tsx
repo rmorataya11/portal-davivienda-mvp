@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { ApiDetailPage } from "@/components/catalog/api-detail-page";
 import { apiDetails, getApiDetailBySlug } from "@/components/catalog/content/apis";
+import { localizeApiDetail } from "@/components/catalog/content/localize-api";
 
 export function generateStaticParams() {
   return apiDetails.map((api) => ({ slug: api.slug }));
@@ -11,16 +13,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const api = getApiDetailBySlug(slug);
+  const t = await getTranslations("Catalog");
 
   if (!api) {
     return {
-      title: "API no encontrada | Davivienda API Marketplace",
+      title: t("metadata.notFoundTitle"),
     };
   }
 
+  const localized = localizeApiDetail(api, t);
+
   return {
-    title: `${api.name} | Davivienda API Marketplace`,
-    description: api.description,
+    title: t("metadata.detailTitle", { name: localized.name }),
+    description: localized.description.replace(/\n/g, " "),
   };
 }
 

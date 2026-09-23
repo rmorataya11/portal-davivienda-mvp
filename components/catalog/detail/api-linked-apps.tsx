@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -19,6 +20,7 @@ export function ApiLinkedApps({
   apiName: string;
   returnTo: string;
 }) {
+  const t = useTranslations("Catalog.apps");
   const { user, loading } = useAuth();
   const { apps, ready, linkProduct } = useDeveloperApps();
 
@@ -30,8 +32,7 @@ export function ApiLinkedApps({
     return (
       <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-7">
         <p className="max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
-          Inicie sesión para ver las aplicaciones que ya usa con {apiName}, o cree una para obtener credenciales de
-          sandbox.
+          {t("signedOut", { name: apiName })}
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <AuthReturnLink
@@ -39,14 +40,14 @@ export function ApiLinkedApps({
             returnTo={returnTo}
             className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
           >
-            Crear cuenta
+            {t("createAccount")}
           </AuthReturnLink>
           <AuthReturnLink
             href={getLoginHref(returnTo)}
             returnTo={returnTo}
             className="inline-flex h-12 items-center justify-center rounded-full border border-[#E1251B] bg-white px-7 text-[15px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
           >
-            Iniciar sesión
+            {t("signIn")}
           </AuthReturnLink>
         </div>
       </div>
@@ -61,13 +62,13 @@ export function ApiLinkedApps({
       {linkedApps.length === 0 ? (
         <div className="rounded-[24px] border border-dashed border-[#D5DAE0] bg-white px-6 py-8">
           <p className="text-[16px] leading-7 text-[#6A7178]">
-            Todavía no tiene una aplicación en {apiName}. Créela aquí; también aparecerá en Mis apps.
+            {t("empty", { name: apiName })}
           </p>
           <Link
             href={`/dashboard/apps/nueva?producto=${slug}`}
             className="mt-5 inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
           >
-            Crear aplicación
+            {t("createApp")}
           </Link>
         </div>
       ) : (
@@ -83,15 +84,15 @@ export function ApiLinkedApps({
           href={`/dashboard/apps/nueva?producto=${slug}`}
           className="inline-flex h-11 items-center justify-center rounded-full border border-[#E1251B] bg-white px-5 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
         >
-          Crear otra para esta API
+          {t("createAnother")}
         </Link>
       ) : null}
 
       {otherApps.length > 0 ? (
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-5">
-          <p className="text-[14px] font-semibold text-[#141F25]">Usar una app que ya tiene</p>
+          <p className="text-[14px] font-semibold text-[#141F25]">{t("useExistingTitle")}</p>
           <p className="mt-1 text-[13px] leading-6 text-[#6A7178]">
-            La vincula a {apiName} con las mismas credenciales. Seguirá viéndose en Mis apps.
+            {t("useExistingDescription", { name: apiName })}
           </p>
           <div className="mt-3 space-y-2">
             {otherApps.map((app) => (
@@ -102,7 +103,7 @@ export function ApiLinkedApps({
                 className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] px-4 py-3 text-left text-[14px] text-[#141F25] transition-colors hover:border-[#E1251B]"
               >
                 <span className="min-w-0 truncate">{app.name}</span>
-                <span className="shrink-0 text-[13px] font-medium text-[#E1251B]">Vincular a esta API</span>
+                <span className="shrink-0 text-[13px] font-medium text-[#E1251B]">{t("linkToApi")}</span>
               </button>
             ))}
           </div>
@@ -113,6 +114,8 @@ export function ApiLinkedApps({
 }
 
 function ApiAppRow({ app }: { app: DeveloperApp }) {
+  const t = useTranslations("Catalog.apps");
+  const locale = useLocale();
   const stats = appUsageStats(app);
 
   return (
@@ -122,10 +125,12 @@ function ApiAppRow({ app }: { app: DeveloperApp }) {
         <AppStatusBadge status={app.status} />
       </div>
       <p className="mt-3 text-[20px] font-bold text-[#141F25]">{formatMoneyCop(stats.consumedCop)}</p>
-      <p className="mt-1 text-[13px] text-[#8E8E8E]">{stats.callsLast30Days.toLocaleString("es-CO")} llamadas · 30 días</p>
+      <p className="mt-1 text-[13px] text-[#8E8E8E]">
+        {t("callsLast30Days", { count: stats.callsLast30Days.toLocaleString(locale === "en" ? "en-US" : "es-CO") })}
+      </p>
       <div className="mt-4">
         <Link href={`/dashboard/apps/${app.id}`} className="text-[13px] font-medium text-[#E1251B]">
-          Abrir app
+          {t("openApp")}
         </Link>
       </div>
     </div>

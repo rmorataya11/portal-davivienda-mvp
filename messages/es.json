@@ -119,6 +119,236 @@
       }
     }
   },
+  "Catalog": {
+    "metadata": {
+      "listingTitle": "Catálogo de APIs | Davivienda API Marketplace",
+      "listingDescription": "Explore las APIs de Davivienda y encuentre el producto ideal para su negocio.",
+      "notFoundTitle": "API no encontrada | Davivienda API Marketplace",
+      "detailTitle": "{name} | Davivienda API Marketplace",
+      "technicalNotFoundTitle": "Detalle técnico no encontrado | Davivienda API Marketplace",
+      "technicalTitle": "Detalle técnico de {name} | Davivienda API Marketplace",
+      "technicalDescription": "Información técnica, endpoints y ejemplos de integración para {name}."
+    },
+    "listing": {
+      "title": "Encuentre el producto ideal para su negocio",
+      "description": "Explore nuestras APIs y descubra la que mejor se ajusta a lo que quiere lograr. Cuando encuentre la indicada, cuéntenos y le acompañamos para empezar.",
+      "heading": "Catálogo de APIs",
+      "searchAria": "Filtrar catálogo",
+      "searchPlaceholder": "Filtre por nombre, etiqueta o endpoint...",
+      "empty": "No encontramos APIs para esos filtros. Pruebe otra categoría o borre el texto de búsqueda."
+    },
+    "filters": {
+      "all": "Todas"
+    },
+    "categories": {
+      "accounts": "Cuentas"
+    },
+    "status": {
+      "production": "Producción"
+    },
+    "types": {
+      "objectArray": "array de objetos"
+    },
+    "card": {
+      "viewApi": "Conocer esta API"
+    },
+    "signupCta": {
+      "title": "¿Listo para su primera llamada?",
+      "descriptionLead": "Cree su cuenta de desarrollador, genere credenciales de Sandbox y reciba",
+      "descriptionRest": "su primer 200 OK en cuestión de minutos.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión"
+    },
+    "breadcrumb": {
+      "catalog": "Catálogo de APIs",
+      "technicalDetail": "Detalle técnico"
+    },
+    "detail": {
+      "requestAccess": "Solicitar",
+      "summaryEyebrow": "Resumen Ejecutivo",
+      "summaryTitle": "Lo esencial para evaluar esta API",
+      "summaryDescription": "Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.",
+      "showSummary": "Mostrar resumen ejecutivo",
+      "hideSummary": "Ocultar resumen ejecutivo",
+      "facts": {
+        "access": "Acceso",
+        "accessValue": "Bearer + API key",
+        "coverage": "Cobertura",
+        "firstCall": "Primer consumo",
+        "firstCallFallback": "Use Sandbox para validar el flujo base antes de ampliar la integración.",
+        "environments": "Ambientes",
+        "environmentsValue": "Sandbox y Producción",
+        "environmentsDetail": "Del descubrimiento funcional al consumo automatizado."
+      },
+      "insightsEyebrow": "Insights",
+      "insightsTitle": "Explore cómo aprovechar esta API",
+      "businessView": "Vista de negocio",
+      "insightsDescription": "Cambie entre valor, aplicación, preparación técnica y journey recomendado desde un mismo bloque.",
+      "tabs": {
+        "value": "Valor",
+        "useCases": "Casos de uso",
+        "integration": "Integración",
+        "journey": "Journey"
+      },
+      "valueEyebrow": "Valor",
+      "valueTitle": "Qué puede lograr",
+      "valueDescription": "Beneficios directos para equipos que priorizan visibilidad, conciliación y agilidad operativa.",
+      "useCasesEyebrow": "Aplicación",
+      "useCasesTitle": "Casos de uso",
+      "useCasesDescription": "Escenarios concretos donde esta API agrega valor en backoffice, reporting y operación diaria.",
+      "integrationEyebrow": "Integración",
+      "integrationTitle": "Cómo empezar",
+      "integrationDescription": "Todo lo necesario para preparar su primer consumo de la API y pasar de exploración a integración real.",
+      "authenticationEyebrow": "Autenticación",
+      "environmentsEyebrow": "Ambientes",
+      "idealForEyebrow": "Ideal para",
+      "journeyEyebrow": "Journey",
+      "journeyTitle": "Ruta de integración sugerida",
+      "journeyDescription": "Una secuencia simple para validar la API, probar su flujo y dejar lista la salida a producción.",
+      "journeySteps": {
+        "0": "Solicite acceso y configure las credenciales del ambiente inicial.",
+        "1": "Valide la consulta de movimientos en Sandbox con POST /conciliacion/bancaempresa/movimientos/.",
+        "2": "Integre trazabilidad, monitoreo y paso controlado a Producción."
+      },
+      "nextStepEyebrow": "Siguiente paso",
+      "nextStepTitle": "Revise el detalle técnico de esta API",
+      "nextStepDescription": "Acceda a la consola visual, explore endpoints, request/response y prepare una validación técnica más completa para {name}.",
+      "technicalEyebrow": "Detalle técnico",
+      "technicalCardDescription": "Abra una vista más enfocada en integración, pruebas visuales y referencia operativa.",
+      "viewTechnicalDetail": "Ver detalle técnico",
+      "requestContracting": "Solicitar contratación"
+    },
+    "apps": {
+      "title": "Sus aplicaciones",
+      "description": "Solo las apps que usan {name}. El consumo total y el resto de productos están en Mis apps.",
+      "signedOut": "Inicie sesión para ver las aplicaciones que ya usa con {name}, o cree una para obtener credenciales de sandbox.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión",
+      "empty": "Todavía no tiene una aplicación en {name}. Créela aquí; también aparecerá en Mis apps.",
+      "createApp": "Crear aplicación",
+      "createAnother": "Crear otra para esta API",
+      "useExistingTitle": "Usar una app que ya tiene",
+      "useExistingDescription": "La vincula a {name} con las mismas credenciales. Seguirá viéndose en Mis apps.",
+      "linkToApi": "Vincular a esta API",
+      "callsLast30Days": "{count} llamadas · 30 días",
+      "openApp": "Abrir app"
+    },
+    "technical": {
+      "eyebrow": "Detalle técnico",
+      "title": "Explore la integración de {name}",
+      "description": "Cabeceras, endpoint de prueba y credenciales. El detalle exhaustivo está en Documentación.",
+      "requestContracting": "Solicitar contratación",
+      "gateLoadingEyebrow": "Técnico",
+      "gateLoadingTitle": "Detalle técnico de esta API",
+      "gateEyebrow": "Acceso requerido",
+      "gateTitle": "Inicie sesión para ver el detalle técnico",
+      "gateDescription": "Para consultar endpoints, ejemplos y la consola de {name} necesita una cuenta de desarrollador. Puede crear una ahora o iniciar sesión si ya la tiene.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión",
+      "thisApi": "Esta API",
+      "thisApiLower": "esta API",
+      "keyHeaders": "Cabeceras clave",
+      "endpoint": "Endpoint",
+      "endpointHelp": "Pruebe el request. El detalle completo está en Documentación.",
+      "commonErrors": "Errores frecuentes",
+      "sandboxCredentials": "Credenciales de sandbox",
+      "viewFullDocs": "Ver documentación completa de esta API →"
+    },
+    "credentials": {
+      "signInTitle": "Inicie sesión para ver sus claves",
+      "signInDescription": "Las credenciales de sandbox de {name} están ligadas a su cuenta.",
+      "createAccount": "Crear cuenta",
+      "signIn": "Iniciar sesión",
+      "emptyTitle": "Todavía no hay claves en esta API",
+      "emptyDescription": "Cree una aplicación de sandbox para {name} y aquí verá el consumer key y la URL base.",
+      "createApp": "Crear aplicación",
+      "apps": "Apps",
+      "credentials": "Credenciales",
+      "openApp": "Abrir app",
+      "howToUse": "Cómo usarlas",
+      "step1": "Pase el consumer key en la cabecera x-api-key.",
+      "step2": "Llame el proxy con la URL base de esta aplicación.",
+      "step3": "Estas claves solo aplican a sandbox.",
+      "linkExisting": "O vincule una app que ya tiene",
+      "link": "Vincular"
+    },
+    "playground": {
+      "executeHint": "Ejecute para ver la respuesta de ejemplo.",
+      "description": "Descripción",
+      "parameters": "Parámetros",
+      "visualReference": "Referencia visual para {label}.",
+      "readyToRun": "Listo para ejecutar"
+    },
+    "products": {
+      "tesoreria": {
+        "name": "API Tesorería",
+        "description": "Optimice la liquidez corporativa y la toma de decisiones en tiempo real. Integre la posición\nconsolidada de fondos de su empresa directamente con sus sistemas centrales.",
+        "heroDescription": "Consulta los movimientos de una cuenta empresarial, con soporte de filtros por moneda y paginación.",
+        "intro": "Pensada para empresas que necesitan visibilidad financiera en tiempo casi real, esta API centraliza información clave para conciliar, proyectar caja y automatizar procesos de backoffice.",
+        "quickFacts": {
+          "0": { "label": "Producto", "value": "Tesorería" },
+          "1": { "label": "Uso ideal", "value": "B2B corporativo" },
+          "2": { "label": "Cobertura", "value": "Movimientos empresariales" },
+          "3": { "label": "Valor", "value": "Liquidez en tiempo real" }
+        },
+        "coverage": {
+          "value": "1 endpoint"
+        },
+        "idealFor": "Equipos que necesitan liquidez visible, conciliación rápida y automatización en sus flujos internos.",
+        "benefits": {
+          "0": "Automatice conciliaciones y reduzca pasos manuales en sus procesos internos.",
+          "1": "Integre información de tesorería en ERPs, dashboards y flujos operativos."
+        },
+        "useCases": {
+          "0": "Consultar movimientos de una cuenta empresarial por NIT.",
+          "1": "Consultar movimientos en un rango de fechas (fechaInicial y fechaFinal).",
+          "2": "Filtrar movimientos por moneda y paginar los resultados."
+        },
+        "requirements": {
+          "0": "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
+          "1": "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
+          "2": "Disponer de un backend seguro para gestionar tokens, trazabilidad y consumo de endpoints."
+        },
+        "authentication": {
+          "title": "Credenciales de cliente y cabeceras seguras",
+          "description": "La integración requiere credenciales provistas por Davivienda y el envío de cabeceras de seguridad para identificar la aplicación y rastrear cada operación."
+        },
+        "environments": {
+          "0": "Sandbox para pruebas funcionales",
+          "1": "Producción para operaciones autorizadas"
+        },
+        "endpoints": {
+          "movimientos": {
+            "description": "Consulta los movimientos de una cuenta empresarial, con soporte de filtros por moneda y paginación.",
+            "parameters": {
+              "nit": "NIT de la empresa (array, puede aceptar más de uno)",
+              "fechaInicial": "Fecha inicial del rango de consulta",
+              "fechaFinal": "Fecha final del rango de consulta",
+              "filtros": "Filtros adicionales, ej. { tipo: 'moneda', valor: 'usd' }",
+              "paginacion_ASC": "Orden ascendente (true) o descendente (false)",
+              "paginacion_pagina": "Número de página, empieza en 0",
+              "paginacion_tamanoPagina": "Cantidad de resultados por página"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Solicitud inválida",
+            "description": "Falta nit, fechaInicial, fechaFinal o paginacion, o el rango de fechas no es válido."
+          },
+          "401": {
+            "title": "No autorizado",
+            "description": "La llave de acceso es inválida, expiró o no corresponde a este ambiente."
+          },
+          "500": {
+            "title": "Error interno",
+            "description": "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde."
+          }
+        },
+        "supportNote": "Si su caso de uso requiere validaciones adicionales, cobertura por múltiples cuentas o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación."
+      }
+    }
+  },
   "Footer": {
     "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
     "platform": "Plataforma",

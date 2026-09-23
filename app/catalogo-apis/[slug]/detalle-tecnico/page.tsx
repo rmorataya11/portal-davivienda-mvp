@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { ApiTechnicalPage } from "@/components/catalog/api-technical-page";
 import { apiDetails, getApiDetailBySlug } from "@/components/catalog/content/apis";
+import { localizeApiDetail } from "@/components/catalog/content/localize-api";
 
 export function generateStaticParams() {
   return apiDetails.map((api) => ({ slug: api.slug }));
@@ -11,16 +13,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[slug]/detalle-tecnico">): Promise<Metadata> {
   const { slug } = await params;
   const api = getApiDetailBySlug(slug);
+  const t = await getTranslations("Catalog");
 
   if (!api) {
     return {
-      title: "Detalle técnico no encontrado | Davivienda API Marketplace",
+      title: t("metadata.technicalNotFoundTitle"),
     };
   }
 
+  const localized = localizeApiDetail(api, t);
+
   return {
-    title: `Detalle técnico de ${api.name} | Davivienda API Marketplace`,
-    description: `Información técnica, endpoints y ejemplos de integración para ${api.name}.`,
+    title: t("metadata.technicalTitle", { name: localized.name }),
+    description: t("metadata.technicalDescription", { name: localized.name }),
   };
 }
 

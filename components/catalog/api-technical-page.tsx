@@ -1,13 +1,19 @@
+import { useTranslations } from "next-intl";
+
 import { ContractingRequestLink } from "@/components/contracting/contracting-request-link";
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
 import { SectionContainer, SurfaceCard } from "@/components/ui/layout";
 
 import type { ApiDetail } from "./content/apis";
+import { localizeApiDetail } from "./content/localize-api";
 import { TechnicalAccessGate } from "./detail/technical-access-gate";
 import { TechnicalTabs } from "./detail/technical-tabs";
 
 export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
+  const t = useTranslations("Catalog");
+  const localized = localizeApiDetail(api, t);
+
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/catalogo-apis" />
@@ -15,18 +21,18 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
       <section className="pt-4 pb-8">
         <SectionContainer>
           <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-5 sm:px-8 sm:py-6">
-            <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">Detalle técnico</p>
+            <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{t("technical.eyebrow")}</p>
             <h1 className="mt-3 text-[24px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[32px]">
-              Explore la integración de {api.name}
+              {t("technical.title", { name: localized.name })}
             </h1>
             <p className="mt-3 max-w-[720px] text-[15px] leading-7 tracking-[0.24px] text-[#6A7178]">
-              Cabeceras, endpoint de prueba y credenciales. El detalle exhaustivo está en Documentación.
+              {t("technical.description")}
             </p>
             <ContractingRequestLink
-              href={`/solicitud-contratacion?producto=${api.slug}`}
+              href={`/solicitud-contratacion?producto=${localized.slug}`}
               className="mt-7 inline-flex h-12 items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C]"
             >
-              Solicitar contratación
+              {t("technical.requestContracting")}
             </ContractingRequestLink>
           </div>
         </SectionContainer>
@@ -34,15 +40,15 @@ export function ApiTechnicalPage({ api }: { api: ApiDetail }) {
 
       <section className="pb-16">
         <SectionContainer>
-          <TechnicalAccessGate api={api}>
+          <TechnicalAccessGate api={localized}>
             <SurfaceCard className="px-6 py-6 sm:px-8 sm:py-8">
               <TechnicalTabs
-                description={api.description}
-                authentication={api.authentication}
-                endpoints={api.endpoints}
-                errors={api.errors}
-                slug={api.slug}
-                apiName={api.name}
+                description={localized.description}
+                authentication={localized.authentication}
+                endpoints={localized.endpoints}
+                errors={localized.errors}
+                slug={localized.slug}
+                apiName={localized.name}
               />
             </SurfaceCard>
           </TechnicalAccessGate>

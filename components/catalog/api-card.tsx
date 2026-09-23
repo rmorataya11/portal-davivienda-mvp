@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { CatalogGlyph } from "./catalog-glyph";
 import type { ApiCatalogItem } from "./content/apis";
@@ -13,6 +14,7 @@ function CoinIcon() {
 }
 
 export function ApiCard({ api }: { api: ApiCatalogItem }) {
+  const t = useTranslations("Catalog.card");
   const detailHref = api.slug ? `/catalogo-apis/${api.slug}` : "#";
 
   return (
@@ -46,7 +48,7 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
               : "pointer-events-none border-[#B8B8B8] text-[#B8B8B8]"
           }`}
         >
-          Conocer esta API
+          {t("viewApi")}
         </Link>
       </div>
     </article>

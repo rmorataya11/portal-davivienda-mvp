@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
@@ -22,6 +23,7 @@ function methodClasses(method: ApiEndpoint["method"]) {
 }
 
 export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) {
+  const t = useTranslations("Catalog.playground");
   const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint>(endpoints[0]);
   const [requestBody, setRequestBody] = useState(endpoints[0]?.playground.requestBody ?? "");
   const [credentialValue, setCredentialValue] = useState("ApiKeyAuth");
@@ -83,12 +85,12 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
             </code>
 
             <div className="mt-6">
-              <p className="text-[20px] font-medium text-[#202A31]">Descripción</p>
+              <p className="text-[20px] font-medium text-[#202A31]">{t("description")}</p>
               <p className="mt-3 text-[15px] leading-7 text-[#6A7178]">{selectedEndpoint.description}</p>
             </div>
 
             <div className="mt-6">
-              <p className="text-[20px] font-medium text-[#202A31]">Parámetros</p>
+              <p className="text-[20px] font-medium text-[#202A31]">{t("parameters")}</p>
               <div className="mt-3 overflow-hidden rounded-[18px] border border-[#E7EAEE]">
                 {selectedEndpoint.playground.parameters.map((parameter, index) => (
                   <div
@@ -135,7 +137,9 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
               onChange={(event) => setCredentialValue(event.target.value)}
               className="mt-3 h-11 w-full rounded-[14px] border border-[#E3E7EC] bg-white px-4 text-[14px] text-[#30383F] outline-none transition-colors duration-300 focus:border-[#CBD2D9]"
             />
-            <p className="mt-2 text-[12px] leading-6 text-[#6A7178]">Referencia visual para {selectedEndpoint.playground.credentialsLabel}.</p>
+            <p className="mt-2 text-[12px] leading-6 text-[#6A7178]">
+              {t("visualReference", { label: selectedEndpoint.playground.credentialsLabel })}
+            </p>
           </div>
 
           <button
@@ -148,7 +152,7 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
 
           <div className="mt-5 overflow-hidden rounded-[16px] border border-[#E3E7EC]">
             <div className={`px-4 py-3 text-[13px] font-semibold ${executed ? "bg-[#FF4545] text-white" : "bg-[#ECEFF2] text-[#6A7178]"}`}>
-              {executed ? selectedEndpoint.playground.responseStatus : "Listo para ejecutar"}
+              {executed ? selectedEndpoint.playground.responseStatus : t("readyToRun")}
             </div>
             <pre className="overflow-x-auto bg-[#141F25] px-4 py-4 text-[13px] leading-6 text-white">
               <code>{executed ? selectedEndpoint.playground.responseBody : requestBody}</code>

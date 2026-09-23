@@ -119,6 +119,236 @@
       }
     }
   },
+  "Catalog": {
+    "metadata": {
+      "listingTitle": "API Catalog | Davivienda API Marketplace",
+      "listingDescription": "Explore Davivienda APIs and find the right product for your business.",
+      "notFoundTitle": "API not found | Davivienda API Marketplace",
+      "detailTitle": "{name} | Davivienda API Marketplace",
+      "technicalNotFoundTitle": "Technical details not found | Davivienda API Marketplace",
+      "technicalTitle": "Technical details for {name} | Davivienda API Marketplace",
+      "technicalDescription": "Technical information, endpoints, and integration examples for {name}."
+    },
+    "listing": {
+      "title": "Find the right product for your business",
+      "description": "Explore our APIs and discover the one that best fits what you want to achieve. When you find the right fit, tell us and we will help you get started.",
+      "heading": "API Catalog",
+      "searchAria": "Filter catalog",
+      "searchPlaceholder": "Filter by name, tag, or endpoint...",
+      "empty": "No APIs match those filters. Try another category or clear the search."
+    },
+    "filters": {
+      "all": "All"
+    },
+    "categories": {
+      "accounts": "Accounts"
+    },
+    "status": {
+      "production": "Production"
+    },
+    "types": {
+      "objectArray": "array of objects"
+    },
+    "card": {
+      "viewApi": "Explore this API"
+    },
+    "signupCta": {
+      "title": "Ready for your first call?",
+      "descriptionLead": "Create your developer account, generate Sandbox credentials, and receive",
+      "descriptionRest": "your first 200 OK in a matter of minutes.",
+      "createAccount": "Create account",
+      "signIn": "Sign in"
+    },
+    "breadcrumb": {
+      "catalog": "API Catalog",
+      "technicalDetail": "Technical details"
+    },
+    "detail": {
+      "requestAccess": "Request access",
+      "summaryEyebrow": "Executive summary",
+      "summaryTitle": "The essentials to evaluate this API",
+      "summaryDescription": "A quick briefing for teams that need to validate scope, access, and technical readiness.",
+      "showSummary": "Show executive summary",
+      "hideSummary": "Hide executive summary",
+      "facts": {
+        "access": "Access",
+        "accessValue": "Bearer + API key",
+        "coverage": "Coverage",
+        "firstCall": "First call",
+        "firstCallFallback": "Use Sandbox to validate the core flow before expanding the integration.",
+        "environments": "Environments",
+        "environmentsValue": "Sandbox and Production",
+        "environmentsDetail": "From functional discovery to automated consumption."
+      },
+      "insightsEyebrow": "Insights",
+      "insightsTitle": "Explore how to get the most from this API",
+      "businessView": "Business view",
+      "insightsDescription": "Switch between value, use cases, technical readiness, and the recommended journey in a single block.",
+      "tabs": {
+        "value": "Value",
+        "useCases": "Use cases",
+        "integration": "Integration",
+        "journey": "Journey"
+      },
+      "valueEyebrow": "Value",
+      "valueTitle": "What you can achieve",
+      "valueDescription": "Direct benefits for teams that prioritize visibility, reconciliation, and operational agility.",
+      "useCasesEyebrow": "Application",
+      "useCasesTitle": "Use cases",
+      "useCasesDescription": "Concrete scenarios where this API adds value in back office, reporting, and daily operations.",
+      "integrationEyebrow": "Integration",
+      "integrationTitle": "How to get started",
+      "integrationDescription": "Everything you need to prepare your first API call and move from exploration to a real integration.",
+      "authenticationEyebrow": "Authentication",
+      "environmentsEyebrow": "Environments",
+      "idealForEyebrow": "Ideal for",
+      "journeyEyebrow": "Journey",
+      "journeyTitle": "Suggested integration path",
+      "journeyDescription": "A simple sequence to validate the API, test the flow, and prepare a controlled move to production.",
+      "journeySteps": {
+        "0": "Request access and set up credentials for the initial environment.",
+        "1": "Validate the transaction inquiry in Sandbox with POST /conciliacion/bancaempresa/movimientos/.",
+        "2": "Add tracing, monitoring, and a controlled cutover to Production."
+      },
+      "nextStepEyebrow": "Next step",
+      "nextStepTitle": "Review the technical details of this API",
+      "nextStepDescription": "Open the visual console, explore endpoints and request/response samples, and prepare a more complete technical validation for {name}.",
+      "technicalEyebrow": "Technical details",
+      "technicalCardDescription": "Open a view focused on integration, visual testing, and operational reference.",
+      "viewTechnicalDetail": "View technical details",
+      "requestContracting": "Request contracting"
+    },
+    "apps": {
+      "title": "Your applications",
+      "description": "Only the apps that use {name}. Total usage and the rest of your products are in My apps.",
+      "signedOut": "Sign in to see the applications already using {name}, or create one to get sandbox credentials.",
+      "createAccount": "Create account",
+      "signIn": "Sign in",
+      "empty": "You do not have an application on {name} yet. Create one here; it will also appear in My apps.",
+      "createApp": "Create application",
+      "createAnother": "Create another for this API",
+      "useExistingTitle": "Use an app you already have",
+      "useExistingDescription": "Link it to {name} with the same credentials. It will still appear in My apps.",
+      "linkToApi": "Link to this API",
+      "callsLast30Days": "{count} calls · 30 days",
+      "openApp": "Open app"
+    },
+    "technical": {
+      "eyebrow": "Technical details",
+      "title": "Explore the {name} integration",
+      "description": "Headers, a test endpoint, and credentials. The full reference is in Documentation.",
+      "requestContracting": "Request contracting",
+      "gateLoadingEyebrow": "Technical",
+      "gateLoadingTitle": "Technical details for this API",
+      "gateEyebrow": "Access required",
+      "gateTitle": "Sign in to view the technical details",
+      "gateDescription": "To review endpoints, examples, and the {name} console you need a developer account. You can create one now or sign in if you already have one.",
+      "createAccount": "Create account",
+      "signIn": "Sign in",
+      "thisApi": "This API",
+      "thisApiLower": "this API",
+      "keyHeaders": "Key headers",
+      "endpoint": "Endpoint",
+      "endpointHelp": "Try the request. The full details are in Documentation.",
+      "commonErrors": "Common errors",
+      "sandboxCredentials": "Sandbox credentials",
+      "viewFullDocs": "View the full documentation for this API →"
+    },
+    "credentials": {
+      "signInTitle": "Sign in to view your keys",
+      "signInDescription": "Sandbox credentials for {name} are tied to your account.",
+      "createAccount": "Create account",
+      "signIn": "Sign in",
+      "emptyTitle": "There are no keys on this API yet",
+      "emptyDescription": "Create a sandbox application for {name} and you will see the consumer key and base URL here.",
+      "createApp": "Create application",
+      "apps": "Apps",
+      "credentials": "Credentials",
+      "openApp": "Open app",
+      "howToUse": "How to use them",
+      "step1": "Pass the consumer key in the x-api-key header.",
+      "step2": "Call the proxy using this application's base URL.",
+      "step3": "These keys apply to sandbox only.",
+      "linkExisting": "Or link an app you already have",
+      "link": "Link"
+    },
+    "playground": {
+      "executeHint": "Execute to see the sample response.",
+      "description": "Description",
+      "parameters": "Parameters",
+      "visualReference": "Visual reference for {label}.",
+      "readyToRun": "Ready to execute"
+    },
+    "products": {
+      "tesoreria": {
+        "name": "API Tesorería",
+        "description": "Optimize corporate liquidity and real-time decision-making. Embed your company's\nconsolidated cash position directly into your core systems.",
+        "heroDescription": "Retrieve movements from a corporate account, with currency filters and pagination.",
+        "intro": "Built for companies that need near real-time financial visibility, this API centralizes the information required to reconcile, forecast cash, and automate back-office processes.",
+        "quickFacts": {
+          "0": { "label": "Product", "value": "Treasury" },
+          "1": { "label": "Best fit", "value": "Corporate B2B" },
+          "2": { "label": "Coverage", "value": "Corporate account activity" },
+          "3": { "label": "Value", "value": "Real-time liquidity" }
+        },
+        "coverage": {
+          "value": "1 endpoint"
+        },
+        "idealFor": "Teams that need visible liquidity, faster reconciliation, and automation across internal workflows.",
+        "benefits": {
+          "0": "Automate reconciliations and reduce manual steps in your internal processes.",
+          "1": "Bring treasury data into ERPs, dashboards, and operational workflows."
+        },
+        "useCases": {
+          "0": "Retrieve movements for a corporate account by tax ID (NIT).",
+          "1": "Retrieve movements within a date range (fechaInicial and fechaFinal).",
+          "2": "Filter movements by currency and paginate the results."
+        },
+        "requirements": {
+          "0": "Have an active developer account and approved access to the product.",
+          "1": "Hold Sandbox or Production credentials, depending on your integration stage.",
+          "2": "Use a secure backend to manage tokens, tracing, and endpoint consumption."
+        },
+        "authentication": {
+          "title": "Client credentials and secure headers",
+          "description": "The integration requires credentials issued by Davivienda and security headers that identify the application and trace every operation."
+        },
+        "environments": {
+          "0": "Sandbox for functional testing",
+          "1": "Production for authorized operations"
+        },
+        "endpoints": {
+          "movimientos": {
+            "description": "Retrieve movements from a corporate account, with currency filters and pagination.",
+            "parameters": {
+              "nit": "Company tax ID (array; more than one value may be accepted)",
+              "fechaInicial": "Start date of the query range",
+              "fechaFinal": "End date of the query range",
+              "filtros": "Additional filters, e.g. { tipo: 'moneda', valor: 'usd' }",
+              "paginacion_ASC": "Ascending (true) or descending (false) sort order",
+              "paginacion_pagina": "Page number, starting at 0",
+              "paginacion_tamanoPagina": "Number of results per page"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Invalid request",
+            "description": "nit, fechaInicial, fechaFinal, or paginacion is missing, or the date range is invalid."
+          },
+          "401": {
+            "title": "Unauthorized",
+            "description": "The access key is invalid, expired, or does not belong to this environment."
+          },
+          "500": {
+            "title": "Internal error",
+            "description": "A temporary issue occurred while processing the query. Try again later."
+          }
+        },
+        "supportNote": "If your use case needs additional validations, multi-account coverage, or high corporate volumes, our team will support you through the enablement process."
+      }
+    }
+  },
   "Footer": {
     "description": "Developer platform for the Open Banking ecosystem. Build secure financial experiences on enterprise-grade banking infrastructure.",
     "platform": "Platform",

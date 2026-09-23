@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
@@ -28,47 +29,45 @@ function ApiGlyph() {
 }
 
 function DescriptionText({ text }: { text: string }) {
-  const marker = "posición ";
-  const index = text.indexOf(marker);
+  const [firstLine, secondLine] = text.split("\n");
 
-  if (index === -1) {
+  if (!secondLine) {
     return text;
   }
 
-  const splitAt = index + marker.length;
-
   return (
     <>
-      {text.slice(0, splitAt).trimEnd()}
-      <br className="hidden md:block" /> {text.slice(splitAt)}
+      {firstLine}
+      <br className="hidden md:block" /> {secondLine}
     </>
   );
 }
 
 export function DetailHero({ api }: { api: ApiDetail }) {
+  const t = useTranslations("Catalog.detail");
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const primaryEndpoint = api.endpoints[0];
   const iconSrc = api.heroImageSrc ?? api.imageSrc;
   const summaryItems = [
     {
-      label: "Acceso",
-      value: "Bearer + API key",
+      label: t("facts.access"),
+      value: t("facts.accessValue"),
     },
     {
-      label: "Cobertura",
+      label: t("facts.coverage"),
       value: api.coverage.value,
       detail: api.coverage.detail,
     },
     {
-      label: "Primer consumo",
+      label: t("facts.firstCall"),
       value: primaryEndpoint?.method ?? "GET",
       path: primaryEndpoint?.path ?? "/balances",
-      detail: primaryEndpoint?.description ?? "Use Sandbox para validar el flujo base antes de ampliar la integración.",
+      detail: primaryEndpoint?.description ?? t("facts.firstCallFallback"),
     },
     {
-      label: "Ambientes",
-      value: "Sandbox y Producción",
-      detail: "Del descubrimiento funcional al consumo automatizado.",
+      label: t("facts.environments"),
+      value: t("facts.environmentsValue"),
+      detail: t("facts.environmentsDetail"),
     },
   ];
 
@@ -108,7 +107,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
             href={`/solicitud-contratacion?producto=${api.slug}`}
             className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[166px]"
           >
-            Solicitar
+            {t("requestAccess")}
           </Link>
         </div>
       </section>
@@ -116,12 +115,12 @@ export function DetailHero({ api }: { api: ApiDetail }) {
       <aside className="rounded-2xl border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-8">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-[13px] font-medium text-[#E1251B]">Resumen Ejecutivo</p>
+            <p className="text-[13px] font-medium text-[#E1251B]">{t("summaryEyebrow")}</p>
             <h2 className="mt-2 text-[22px] font-bold tracking-[0.3px] text-[#404040] sm:text-[26px]">
-              Lo esencial para evaluar esta API
+              {t("summaryTitle")}
             </h2>
             <p className="mt-2 max-w-[640px] text-[14px] font-normal leading-6 text-[#8E8E8E] sm:text-[15px]">
-              Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.
+              {t("summaryDescription")}
             </p>
           </div>
           <button
@@ -129,7 +128,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
             onClick={() => setIsSummaryOpen((current) => !current)}
             className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#E7EAEE] bg-white text-[#404040] transition-all duration-300 hover:border-[#E1251B]/30 hover:text-[#E1251B]"
             aria-expanded={isSummaryOpen}
-            aria-label={isSummaryOpen ? "Ocultar resumen ejecutivo" : "Mostrar resumen ejecutivo"}
+            aria-label={isSummaryOpen ? t("hideSummary") : t("showSummary")}
           >
             <svg
               className={`h-4 w-4 transition-transform duration-300 ${isSummaryOpen ? "rotate-180" : ""}`}

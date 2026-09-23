@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
@@ -76,6 +77,7 @@ function keyParameters(endpoint: ApiEndpoint) {
 }
 
 function CompactEndpointCard({ endpoint }: { endpoint: ApiEndpoint }) {
+  const t = useTranslations("Catalog.playground");
   const [executed, setExecuted] = useState(false);
   const parameters = keyParameters(endpoint);
 
@@ -138,7 +140,7 @@ function CompactEndpointCard({ endpoint }: { endpoint: ApiEndpoint }) {
             </div>
           ) : (
             <p className="flex flex-1 items-start bg-white px-5 py-4 text-[14px] leading-6 text-[#707070]">
-              Ejecute para ver la respuesta de ejemplo.
+              {t("executeHint")}
             </p>
           )}
         </div>

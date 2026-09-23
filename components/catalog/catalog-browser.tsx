@@ -1,41 +1,54 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 import { ApiCard } from "./api-card";
 import { CatalogGlyph } from "./catalog-glyph";
-import { apiCatalogItems, apiCategories, getApiDetailBySlug } from "./content/apis";
+import { apiCatalogItems, apiDetails, getApiDetailBySlug } from "./content/apis";
+import {
+  getCatalogFilterKeys,
+  getCategoryMessageKey,
+  localizeApiDetail,
+  localizeCatalogItem,
+} from "./content/localize-api";
 
 export function CatalogBrowser() {
+  const t = useTranslations("Catalog");
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("Todas");
+  const [category, setCategory] = useState("all");
+  const categoryFilters = getCatalogFilterKeys(apiDetails.map((api) => api.category));
 
-  const filteredItems = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredItems = apiCatalogItems.filter((item) => {
+    if (category !== "all" && getCategoryMessageKey(item.category) !== category) {
+      return false;
+    }
 
-    return apiCatalogItems.filter((item) => {
-      if (category !== "Todas" && item.category !== category) {
-        return false;
-      }
+    if (!normalizedQuery) {
+      return true;
+    }
 
-      if (!normalizedQuery) {
-        return true;
-      }
+    const detail = getApiDetailBySlug(item.slug);
+    const localizedItem = localizeCatalogItem(item, t);
+    const localizedDetail = detail ? localizeApiDetail(detail, t) : undefined;
+    const haystack = [
+      item.name,
+      item.description,
+      item.category,
+      item.status,
+      localizedItem.name,
+      localizedItem.description,
+      localizedItem.category,
+      localizedItem.status,
+      ...(detail?.endpoints.flatMap((endpoint) => [endpoint.method, endpoint.path, endpoint.description]) ?? []),
+      ...(localizedDetail?.endpoints.flatMap((endpoint) => [endpoint.description]) ?? []),
+    ]
+      .join(" ")
+      .toLowerCase();
 
-      const detail = getApiDetailBySlug(item.slug);
-      const haystack = [
-        item.name,
-        item.description,
-        item.category,
-        item.status,
-        ...(detail?.endpoints.flatMap((endpoint) => [endpoint.method, endpoint.path, endpoint.description]) ?? []),
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return haystack.includes(normalizedQuery);
-    });
-  }, [category, query]);
+    return haystack.includes(normalizedQuery);
+  });
 
   return (
     <div className="flex flex-col gap-5">
@@ -48,23 +61,23 @@ export function CatalogBrowser() {
           className="h-8 w-8 object-contain"
           aria-hidden="true"
         />
-        <span>Catálogo de APIs</span>
+        <span>{t("listing.heading")}</span>
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <label className="flex h-10 w-full items-center gap-2 rounded-full border border-[#707070] bg-white px-4 text-[#8E8E8E] sm:w-[408px]">
-          <span className="sr-only">Filtrar catálogo</span>
+          <span className="sr-only">{t("listing.searchAria")}</span>
           <CatalogGlyph src="/catag/main/lupa.svg" className="h-6 w-6" />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Filtre por nombre, etiqueta o endpoint..."
+            placeholder={t("listing.searchPlaceholder")}
             className="h-full w-full bg-transparent text-sm text-[#404040] outline-none placeholder:text-[#8E8E8E] [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
           />
         </label>
         <CatalogGlyph src="/catag/main/filter.svg" className="h-7 w-7" />
-        {apiCategories.map((item) => {
+        {categoryFilters.map((item) => {
           const isActive = item === category;
 
           return (
@@ -78,7 +91,7 @@ export function CatalogBrowser() {
                   : "border-[#707070] bg-white text-[#404040] hover:bg-[#404040] hover:text-white"
               }`}
             >
-              {item}
+              {item === "all" ? t("filters.all") : t(`categories.${item}`)}
             </button>
           );
         })}
@@ -87,12 +100,12 @@ export function CatalogBrowser() {
       {filteredItems.length > 0 ? (
         <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
           {filteredItems.map((api) => (
-            <ApiCard key={api.slug || api.name} api={api} />
+            <ApiCard key={api.slug || api.name} api={localizeCatalogItem(api, t)} />
           ))}
         </div>
       ) : (
         <p className="rounded-[16px] border border-dashed border-[#D5DAE0] px-5 py-8 text-[15px] leading-7 text-[#6A7178]">
-          No encontramos APIs para esos filtros. Pruebe otra categoría o borre el texto de búsqueda.
+          {t("listing.empty")}
         </p>
       )}
     </div>
