@@ -26,6 +26,9 @@ function buildCrumbs(
   profileT: (key: string) => string,
   docsT: (key: string) => string,
   faqT: (key: string) => string,
+  contratacionT: (key: string) => string,
+  navT: (key: string) => string,
+  authT: (key: string) => string,
   homeLabel: string,
 ): Crumb[] {
   if (pathname === "/") {
@@ -103,30 +106,30 @@ function buildCrumbs(
     if (segment === "solicitud-contratacion") {
       const product = productSlug ? getApiDetailBySlug(productSlug) : undefined;
       if (product) {
-        crumbs.push({ href: "/catalogo-apis", label: "Catálogo de APIs" });
-        crumbs.push({ href: `/catalogo-apis/${product.slug}`, label: product.name });
+        crumbs.push({ href: "/catalogo-apis", label: t("breadcrumb.catalog") });
+        crumbs.push({ href: `/catalogo-apis/${product.slug}`, label: localizeApiDetail(product, t).name });
       }
-      crumbs.push({ href, label: "Solicitud de contratación" });
+      crumbs.push({ href, label: contratacionT("breadcrumb.request") });
       return;
     }
 
     if (segment === "iniciar-sesion") {
-      crumbs.push({ href, label: "Iniciar sesión" });
+      crumbs.push({ href, label: navT("signIn") });
       return;
     }
 
     if (segment === "crear-cuenta") {
-      crumbs.push({ href, label: "Crear cuenta" });
+      crumbs.push({ href, label: navT("createAccount") });
       return;
     }
 
     if (segment === "recuperar-clave") {
-      crumbs.push({ href, label: "Recuperar clave" });
+      crumbs.push({ href, label: authT("recover.title") });
       return;
     }
 
     if (segment === "restablecer-clave") {
-      crumbs.push({ href, label: "Restablecer clave" });
+      crumbs.push({ href, label: authT("reset.title") });
       return;
     }
   });
@@ -143,7 +146,10 @@ export function PageBreadcrumb() {
   const profileT = useTranslations("Profile.breadcrumb");
   const docsT = useTranslations("Documentacion.breadcrumb");
   const faqT = useTranslations("Faq");
-  const homeLabel = useTranslations("Navbar")("home");
+  const contratacionT = useTranslations("Contratacion");
+  const navT = useTranslations("Navbar");
+  const authT = useTranslations("Auth");
+  const homeLabel = navT("home");
 
   if (HIDDEN_PATHS.has(pathname)) {
     return null;
@@ -158,6 +164,9 @@ export function PageBreadcrumb() {
     profileT,
     docsT,
     faqT,
+    contratacionT,
+    navT,
+    authT,
     homeLabel,
   );
 

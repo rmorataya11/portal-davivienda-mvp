@@ -1118,6 +1118,112 @@
       }
     }
   },
+  "Contratacion": {
+    "metadata": {
+      "title": "Contracting request | Davivienda API Marketplace",
+      "description": "Request access to extended testing or production for an API already validated in sandbox."
+    },
+    "breadcrumb": {
+      "request": "Contracting request"
+    },
+    "gate": {
+      "title": "Sign in to submit a contracting request",
+      "description": "This request is available to developer accounts that have already validated an API in sandbox."
+    },
+    "form": {
+      "title": "Contracting request",
+      "description": "If you have already validated an API in sandbox and want to move to production, complete these details. Fields marked with an asterisk (*) are required.",
+      "application": "Application:",
+      "products": "Products:",
+      "productOfInterest": "Product of interest:"
+    },
+    "fields": {
+      "companyName": "Legal name / Company name",
+      "companyNamePlaceholder": "My Company S.A. de C.V.",
+      "taxId": "NIT / tax ID",
+      "taxIdPlaceholder": "0614-290191-101-3",
+      "industry": "Industry / sector",
+      "useCase": "Use case",
+      "useCaseHint": "Briefly describe the problem you are solving and how you will use the API.",
+      "useCasePlaceholder": "Reconcile corporate balances in real time for treasury...",
+      "volume": "Estimated monthly transaction volume",
+      "environment": "Target environment",
+      "needsIpWhitelist": "Do you need an IP whitelist for production?",
+      "ipRanges": "IP range(s) to authorize",
+      "ipRangesHint": "Enter one IP or range per line, for example {example}.",
+      "technicalName": "Name",
+      "technicalNamePlaceholder": "Ana Gómez",
+      "technicalEmail": "Email",
+      "technicalEmailPlaceholder": "ana.gomez@empresa.com",
+      "technicalPhone": "Phone",
+      "technicalPhonePlaceholder": "+503 7000 1234"
+    },
+    "industries": {
+      "fintech": "Fintech",
+      "retail": "Retail",
+      "seguros": "Insurance",
+      "telecomunicaciones": "Telecommunications",
+      "otro": "Other"
+    },
+    "volumes": {
+      "lt-1000": "Fewer than 1,000",
+      "1000-10000": "1,000 – 10,000",
+      "10000-100000": "10,000 – 100,000",
+      "gt-100000": "+100,000"
+    },
+    "environments": {
+      "pruebas-extendidas": "Extended testing",
+      "produccion": "Production"
+    },
+    "ipWhitelist": {
+      "si": "Yes",
+      "no": "No"
+    },
+    "consents": {
+      "terms": "I accept the <link>terms and conditions</link> <required></required>",
+      "accuracy": "I confirm that the information provided is true and complete <required></required>"
+    },
+    "actions": {
+      "submit": "Submit request",
+      "sending": "Sending..."
+    },
+    "validation": {
+      "companyName": "Enter the legal name or company name.",
+      "taxId": "Enter the NIT or tax ID.",
+      "industry": "Select the industry or sector.",
+      "useCase": "Briefly describe the use case.",
+      "volume": "Select the estimated transaction volume.",
+      "environment": "Select the target environment.",
+      "needsIpWhitelist": "Indicate whether you need an IP whitelist for production.",
+      "ipRanges": "Enter the IP range or ranges to authorize.",
+      "technicalName": "Enter the technical contact name.",
+      "technicalEmail": "Enter the technical contact email.",
+      "technicalEmailInvalid": "Enter a valid email, for example name@company.com.",
+      "technicalPhone": "Enter the technical contact phone number.",
+      "technicalPhoneInvalid": "Enter a valid phone number.",
+      "terms": "You must accept the terms and conditions.",
+      "dataAccuracy": "You must confirm that the information provided is true and complete."
+    },
+    "errors": {
+      "loginRequired": "You must sign in to submit the request.",
+      "submit": "We could not submit the request. Please try again."
+    },
+    "success": {
+      "eyebrow": "Request received",
+      "title": "Your request was received. We will contact you",
+      "description": "A team member will review the use case, estimated volume, and requested environment to continue the process toward production.",
+      "cta": "Go to my applications"
+    },
+    "terms": {
+      "closeAria": "Close terms and conditions",
+      "eyebrow": "Legal",
+      "title": "Terms and conditions",
+      "p1": "This contracting request applies to companies that already have sandbox access and want to move to an extended-testing or production environment on Davivienda APIs.",
+      "p2": "By submitting the form, you authorize Davivienda to contact the declared technical contact, validate the company information, and assess the use case, estimated volume, and security controls required to enable the requested environment.",
+      "p3": "Acceptance of this request does not imply immediate production activation. Onboarding remains subject to commercial review, compliance, and technical availability.",
+      "understood": "Got it"
+    }
+  },
   "Footer": {
     "description": "Developer platform for the Open Banking ecosystem. Build secure financial experiences on enterprise-grade banking infrastructure.",
     "platform": "Platform",

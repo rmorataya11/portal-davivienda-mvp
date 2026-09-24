@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { ContractingRequestPage } from "@/components/contracting/contracting-request-page";
 
-export const metadata: Metadata = {
-  title: "Solicitud de contratación | Davivienda API Marketplace",
-  description: "Solicite el paso a pruebas extendidas o producción de una API ya validada en sandbox.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Contratacion.metadata");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function SolicitudContratacionRoute({
   searchParams,

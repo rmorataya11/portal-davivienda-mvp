@@ -1118,6 +1118,112 @@
       }
     }
   },
+  "Contratacion": {
+    "metadata": {
+      "title": "Solicitud de contratación | Davivienda API Marketplace",
+      "description": "Solicite el paso a pruebas extendidas o producción de una API ya validada en sandbox."
+    },
+    "breadcrumb": {
+      "request": "Solicitud de contratación"
+    },
+    "gate": {
+      "title": "Inicie sesión para solicitar contratación",
+      "description": "Esta solicitud está disponible para cuentas de desarrollador que ya validaron una API en sandbox."
+    },
+    "form": {
+      "title": "Solicitud de contratación",
+      "description": "Si ya validó una API en sandbox y quiere avanzar a producción, complete estos datos. Los campos con asterisco (*) son obligatorios.",
+      "application": "Aplicación:",
+      "products": "Productos:",
+      "productOfInterest": "Producto de interés:"
+    },
+    "fields": {
+      "companyName": "Razón social / Nombre de la empresa",
+      "companyNamePlaceholder": "Mi Empresa S.A. de C.V.",
+      "taxId": "NIT / identificación fiscal",
+      "taxIdPlaceholder": "0614-290191-101-3",
+      "industry": "Industria / sector",
+      "useCase": "Caso de uso",
+      "useCaseHint": "Describa de forma breve qué problema resuelve y cómo usará la API.",
+      "useCasePlaceholder": "Conciliar saldos corporativos en tiempo real para tesorería...",
+      "volume": "Volumen estimado de transacciones/mes",
+      "environment": "Ambiente destino",
+      "needsIpWhitelist": "¿Necesita whitelist de IPs para producción?",
+      "ipRanges": "Rango(s) de IP a autorizar",
+      "ipRangesHint": "Indique una IP o un rango por línea, por ejemplo {example}.",
+      "technicalName": "Nombre",
+      "technicalNamePlaceholder": "Ana Gómez",
+      "technicalEmail": "Email",
+      "technicalEmailPlaceholder": "ana.gomez@empresa.com",
+      "technicalPhone": "Teléfono",
+      "technicalPhonePlaceholder": "+503 7000 1234"
+    },
+    "industries": {
+      "fintech": "Fintech",
+      "retail": "Retail",
+      "seguros": "Seguros",
+      "telecomunicaciones": "Telecomunicaciones",
+      "otro": "Otro"
+    },
+    "volumes": {
+      "lt-1000": "Menos de 1,000",
+      "1000-10000": "1,000 – 10,000",
+      "10000-100000": "10,000 – 100,000",
+      "gt-100000": "+100,000"
+    },
+    "environments": {
+      "pruebas-extendidas": "Pruebas extendidas",
+      "produccion": "Producción"
+    },
+    "ipWhitelist": {
+      "si": "Sí",
+      "no": "No"
+    },
+    "consents": {
+      "terms": "Acepto los <link>términos y condiciones</link> <required></required>",
+      "accuracy": "Confirmo que la información suministrada es veraz y completa <required></required>"
+    },
+    "actions": {
+      "submit": "Enviar solicitud",
+      "sending": "Enviando..."
+    },
+    "validation": {
+      "companyName": "Ingrese la razón social o el nombre de la empresa.",
+      "taxId": "Ingrese el NIT o la identificación fiscal.",
+      "industry": "Seleccione la industria o el sector.",
+      "useCase": "Describa brevemente el caso de uso.",
+      "volume": "Seleccione el volumen estimado de transacciones.",
+      "environment": "Seleccione el ambiente destino.",
+      "needsIpWhitelist": "Indique si necesita whitelist de IPs para producción.",
+      "ipRanges": "Ingrese el rango o los rangos de IP a autorizar.",
+      "technicalName": "Ingrese el nombre del contacto técnico.",
+      "technicalEmail": "Ingrese el correo del contacto técnico.",
+      "technicalEmailInvalid": "Ingrese un correo válido, por ejemplo nombre@empresa.com.",
+      "technicalPhone": "Ingrese el teléfono del contacto técnico.",
+      "technicalPhoneInvalid": "Ingrese un teléfono válido.",
+      "terms": "Debe aceptar los términos y condiciones.",
+      "dataAccuracy": "Debe confirmar que la información suministrada es veraz y completa."
+    },
+    "errors": {
+      "loginRequired": "Debe iniciar sesión para enviar la solicitud.",
+      "submit": "No pudimos enviar la solicitud. Intente de nuevo."
+    },
+    "success": {
+      "eyebrow": "Solicitud recibida",
+      "title": "Su solicitud fue recibida, le contactaremos",
+      "description": "Un integrante del equipo revisará el caso de uso, el volumen estimado y el ambiente solicitado para continuar el proceso hacia producción.",
+      "cta": "Ir a mis aplicaciones"
+    },
+    "terms": {
+      "closeAria": "Cerrar términos y condiciones",
+      "eyebrow": "Legal",
+      "title": "Términos y condiciones",
+      "p1": "Esta solicitud de contratación aplica a empresas que ya tienen acceso a sandbox y desean avanzar a un ambiente de pruebas extendidas o producción sobre las APIs de Davivienda.",
+      "p2": "Al enviar el formulario, autoriza a Davivienda a contactar al responsable técnico declarado, validar la información de la empresa y evaluar el caso de uso, el volumen estimado y los controles de seguridad necesarios para habilitar el ambiente solicitado.",
+      "p3": "La aceptación de esta solicitud no implica la activación inmediata de producción. El alta queda sujeta a revisión comercial, cumplimiento y disponibilidad técnica.",
+      "understood": "Entendido"
+    }
+  },
   "Footer": {
     "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
     "platform": "Plataforma",
