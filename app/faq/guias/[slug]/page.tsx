@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { localizeGuide } from "@/components/guides/localize-guide";
 import { GuideDetailPage } from "@/components/guides/guide-detail-page";
 import { getGuideBySlug, guides } from "@/lib/guides/guides-content";
 
@@ -11,16 +13,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/faq/guias/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const guide = getGuideBySlug(slug);
+  const t = await getTranslations("Faq");
 
   if (!guide) {
     return {
-      title: "Guía no encontrada | Davivienda API Marketplace",
+      title: t("metadata.guideNotFoundTitle"),
     };
   }
 
+  const localized = localizeGuide(guide, t);
+
   return {
-    title: `${guide.title} | Guías de Integración | Davivienda API Marketplace`,
-    description: guide.description,
+    title: t("metadata.guideTitle", { title: localized.title }),
+    description: localized.description,
   };
 }
 

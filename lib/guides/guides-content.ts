@@ -98,7 +98,7 @@ openssl genrsa -out client.key 2048
 
 # 2) CSR con el subject de su aplicación
 openssl req -new -key client.key -out client.csr \\
-  -subj "/C=CO/O=Su Empresa SAS/OU=Open Banking/CN=app-tesoreria-sandbox"
+  -subj "/C=SV/O=Su Empresa S.A. de C.V./OU=Open Banking/CN=app-tesoreria-sandbox"
 
 # 3) Carga del CSR — la URL exacta depende del contrato
 curl --request POST \\
@@ -113,7 +113,7 @@ curl --request POST \\
             code: `{
   "client_name": "Tesorería Sandbox",
   "token_endpoint_auth_method": "tls_client_auth",
-  "tls_client_auth_subject_dn": "CN=app-tesoreria-sandbox,OU=Open Banking,O=Su Empresa SAS,C=CO",
+  "tls_client_auth_subject_dn": "CN=app-tesoreria-sandbox,OU=Open Banking,O=Su Empresa S.A. de C.V.,C=SV",
   "jwks": {
     "keys": [
       {
@@ -141,7 +141,7 @@ curl --request POST \\
   "client_id": "a8f3c2e1-4b09-4d77-9c1a-2e6b0d8f4a11",
   "client_id_issued_at": 1756944000,
   "token_endpoint_auth_method": "tls_client_auth",
-  "tls_client_auth_subject_dn": "CN=app-tesoreria-sandbox,OU=Open Banking,O=Su Empresa SAS,C=CO",
+  "tls_client_auth_subject_dn": "CN=app-tesoreria-sandbox,OU=Open Banking,O=Su Empresa S.A. de C.V.,C=SV",
   "registration_access_token": "reg-at-7f2c9b...",
   "registration_client_uri": "https://{host-oauth}/connect/register/a8f3c2e1-4b09-4d77-9c1a-2e6b0d8f4a11",
   "grant_types": ["client_credentials", "authorization_code", "refresh_token"],

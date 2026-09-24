@@ -1,12 +1,19 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
+import { localizeGuides } from "@/components/guides/localize-guide";
 import { GuideIcon } from "@/components/guides/guide-icons";
 import { guides } from "@/lib/guides/guides-content";
 
 export function GuideList() {
+  const t = useTranslations("Faq");
+  const localizedGuides = localizeGuides(guides, t);
+
   return (
     <div className="divide-y divide-[#E7EAEE] overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white">
-      {guides.map((guide) => (
+      {localizedGuides.map((guide) => (
         <article key={guide.id} id={`guia-${guide.slug}`} className="scroll-anchor">
           <Link
             href={`/faq/guias/${guide.slug}`}
@@ -22,7 +29,7 @@ export function GuideList() {
                 </span>
                 {!guide.article ? (
                   <span className="rounded-full bg-[#F2F3F5] px-2.5 py-1 text-[11px] font-medium text-[#707070]">
-                    Próximamente
+                    {t("guides.comingSoon")}
                   </span>
                 ) : null}
               </span>
@@ -30,7 +37,10 @@ export function GuideList() {
                 {guide.title}
               </span>
               <span className="mt-1 block text-[13px] leading-5 text-[#8E8E8E]">
-                Nivel {guide.level} · {guide.minutes} min
+                {t("guides.levelMeta", {
+                  level: t(`guides.levels.${guide.level}`),
+                  minutes: guide.minutes,
+                })}
               </span>
             </span>
             <ArrowIcon />

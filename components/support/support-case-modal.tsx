@@ -1,21 +1,21 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { RadioGroup } from "@/components/contracting/radio-group";
 import { saveSupportCase, type SupportCaseSeverity } from "@/lib/support/cases";
 
-const severityOptions = [
-  { value: "bloqueante", label: "Bloqueante (producción afectada o caída)" },
-  { value: "importante", label: "Importante (bug no bloqueante, afecta funcionalidad)" },
-  { value: "consulta", label: "Consulta general (pregunta, no es un problema técnico)" },
-];
+const severityValues = ["bloqueante", "importante", "consulta"] as const;
 
 type FieldErrors = Record<string, string>;
 
 export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const t = useTranslations("Faq.case");
+  const catalogT = useTranslations("Catalog");
   const titleId = useId();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -76,15 +76,15 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
     const nextErrors: FieldErrors = {};
 
     if (!title.trim()) {
-      nextErrors.title = "Ingrese un título corto para el caso.";
+      nextErrors.title = t("titleRequired");
     }
 
     if (!description.trim()) {
-      nextErrors.description = "Describa el problema o la consulta.";
+      nextErrors.description = t("descriptionRequired");
     }
 
     if (!severity) {
-      nextErrors.severity = "Seleccione la severidad del caso.";
+      nextErrors.severity = t("severityRequired");
     }
 
     return nextErrors;
@@ -120,12 +120,17 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
     return null;
   }
 
+  const severityOptions = severityValues.map((value) => ({
+    value,
+    label: t(`severities.${value}`),
+  }));
+
   return (
     <div className="fixed inset-0 z-[80] flex items-center justify-center px-4 py-8">
       <button
         type="button"
         className="absolute inset-0 bg-[#141F25]/45"
-        aria-label="Cerrar"
+        aria-label={t("closeAria")}
         onClick={() => {
           if (!isSubmitting) {
             onClose();
@@ -141,24 +146,22 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
         {submitted ? (
           <div>
             <h2 id={titleId} className="text-[24px] font-bold tracking-[0.3px] text-[#141F25]">
-              Caso creado
+              {t("createdTitle")}
             </h2>
-            <p className="mt-4 text-[15px] leading-7 text-[#5B636A]">Caso creado. Le contactaremos pronto.</p>
+            <p className="mt-4 text-[15px] leading-7 text-[#5B636A]">{t("createdDescription")}</p>
           </div>
         ) : (
           <>
             <h2 id={titleId} className="text-[24px] font-bold tracking-[0.3px] text-[#141F25]">
-              Crear solicitud de soporte
+              {t("title")}
             </h2>
-            <p className="mt-2 text-[14px] leading-6 text-[#6A7178]">
-              Cuéntenos qué ocurrió. Revisamos el caso y le respondemos por este canal.
-            </p>
+            <p className="mt-2 text-[14px] leading-6 text-[#6A7178]">{t("description")}</p>
 
             <form className="mt-6 space-y-4" noValidate onSubmit={handleSubmit}>
               <TextField
                 id="support-title"
                 name="title"
-                label="Título del caso"
+                label={t("fieldTitle")}
                 required
                 value={title}
                 error={errors.title}
@@ -171,7 +174,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
               <TextAreaField
                 id="support-description"
                 name="description"
-                label="Descripción del problema"
+                label={t("fieldDescription")}
                 required
                 value={description}
                 error={errors.description}
@@ -182,7 +185,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
               />
 
               <RadioGroup
-                legend="Severidad"
+                legend={t("severity")}
                 name="severity"
                 required
                 error={errors.severity}
@@ -197,14 +200,14 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
               <SelectField
                 id="support-api"
                 name="apiSlug"
-                label="API afectada"
-                placeholder="No aplica / General"
+                label={t("api")}
+                placeholder={t("apiPlaceholder")}
                 value={apiSlug}
                 onChange={(event) => setApiSlug(event.target.value)}
               >
                 {apiCatalogItems.map((api) => (
                   <option key={api.slug} value={api.slug}>
-                    {api.name}
+                    {localizeCatalogItem(api, catalogT).name}
                   </option>
                 ))}
               </SelectField>
@@ -215,7 +218,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
                   disabled={isSubmitting}
                   className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:translate-y-0 disabled:bg-[#C9CED4]"
                 >
-                  {isSubmitting ? "Enviando..." : "Enviar caso"}
+                  {isSubmitting ? t("sending") : t("submit")}
                 </button>
                 <button
                   type="button"
@@ -223,7 +226,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
                   onClick={onClose}
                   className="inline-flex h-11 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-6 text-[14px] font-semibold text-[#404040] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#E1251B] hover:text-[#E1251B] disabled:opacity-50"
                 >
-                  Cancelar
+                  {t("cancel")}
                 </button>
               </div>
             </form>

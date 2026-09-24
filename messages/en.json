@@ -809,6 +809,315 @@
       }
     }
   },
+  "Faq": {
+    "metadata": {
+      "title": "FAQ | Davivienda API Marketplace",
+      "description": "Find answers, talk to our team, or open a case. Technical and commercial support for your full integration cycle.",
+      "guideNotFoundTitle": "Guide not found | Davivienda API Marketplace",
+      "guideTitle": "{title} | Integration guides | Davivienda API Marketplace"
+    },
+    "breadcrumb": {
+      "faq": "FAQ",
+      "guides": "Integration guides"
+    },
+    "gate": {
+      "eyebrow": "Integration guides",
+      "description": "This guide is private: it holds the integration details. You need a developer account to enter."
+    },
+    "hero": {
+      "title": "FAQ",
+      "description": "Find answers, talk to our team, or open a case."
+    },
+    "cards": {
+      "ayuda": {
+        "title": "Help center",
+        "description": "Frequently asked questions and common troubleshooting.",
+        "link": "View questions →"
+      },
+      "experto": {
+        "title": "Priority support",
+        "description": "For Production customers with a service-level agreement.",
+        "link": "See how to get access →"
+      },
+      "caso": {
+        "title": "Open a case",
+        "description": "Create a technical or commercial support request.",
+        "link": "Create request →"
+      },
+      "guias": {
+        "title": "Integration guides",
+        "description": "Technical tutorials for connecting your systems to our APIs.",
+        "link": "View guides →"
+      }
+    },
+    "questions": {
+      "title": "Frequently asked questions",
+      "searchLabel": "Search frequently asked questions",
+      "searchPlaceholder": "Search questions and answers...",
+      "clearSearch": "Clear search",
+      "empty": "We found no questions about “{query}”. Try other words or <case>open a case</case>.",
+      "seeGuide": "See Integration guides: {title} →",
+      "items": {
+        "sandbox": {
+          "question": "How do I get access to the Sandbox environment?",
+          "answer": "Create a developer account, verify your identity, and generate your Sandbox credentials from the console. Access is immediate and free of charge."
+        },
+        "produccion": {
+          "question": "What do I need to move to Production?",
+          "answer": "Validate the integration in Sandbox, create or select the application in My apps, and submit the contracting request. The team reviews the company, the use case and, if applicable, the IP whitelist before issuing production credentials."
+        },
+        "rate-limits": {
+          "question": "What are the usage limits (rate limits)?",
+          "answer": "Limits depend on the environment and the agreed plan. In Sandbox they are more conservative and intended for testing. In Production they are defined in the contracting request and remain subject to the service-level agreement."
+        },
+        "incidente": {
+          "question": "How do I report an API incident?",
+          "answer": "Open a case from this page and include the API name, environment, date and time, request identifier, and an example of the error. That helps the integrations team trace the event faster."
+        },
+        "credenciales": {
+          "question": "Do Sandbox credentials work in Production?",
+          "answer": "No. Sandbox and Production are separate environments. Test keys do not authenticate production calls; when the request is approved, you will receive new credentials from the console."
+        }
+      }
+    },
+    "feedback": {
+      "prompt": "Was this answer helpful?",
+      "yes": "👍 Yes",
+      "no": "👎 No",
+      "thanks": "Thank you for your feedback!",
+      "stillNeedHelp": "Still have questions? Open a case"
+    },
+    "status": {
+      "title": "Service status",
+      "updated": "Updated just now · {time}",
+      "operational": "Operational"
+    },
+    "priority": {
+      "title": "24/7 priority support",
+      "description": "Available for Production customers with a service-level agreement.",
+      "cta": "Request access"
+    },
+    "changelog": {
+      "title": "What's new",
+      "description": "Recent API changes: additions, updates, and retirements. This sample history is here so you can review the format until the live feed is connected.",
+      "types": {
+        "nuevo": "New",
+        "cambio": "Change",
+        "deprecacion": "Deprecation"
+      },
+      "entries": {
+        "sandbox-dates": {
+          "title": "Account-activity query with a date range in Sandbox",
+          "description": "API Tesorería now lets you filter movements by fechaInicial and fechaFinal in Sandbox. Use it to test reconciliation without requesting the full history."
+        }
+      }
+    },
+    "case": {
+      "title": "Create a support request",
+      "description": "Tell us what happened. We review the case and reply through this channel.",
+      "closeAria": "Close",
+      "fieldTitle": "Case title",
+      "fieldDescription": "Problem description",
+      "severity": "Severity",
+      "api": "Affected API",
+      "apiPlaceholder": "Not applicable / General",
+      "submit": "Submit case",
+      "sending": "Sending...",
+      "cancel": "Cancel",
+      "createdTitle": "Case created",
+      "createdDescription": "Case created. We will contact you soon.",
+      "titleRequired": "Enter a short title for the case.",
+      "descriptionRequired": "Describe the problem or question.",
+      "severityRequired": "Select the case severity.",
+      "severities": {
+        "bloqueante": "Blocking (production impacted or down)",
+        "importante": "Important (non-blocking bug that affects functionality)",
+        "consulta": "General inquiry (a question, not a technical incident)"
+      }
+    },
+    "guides": {
+      "sectionTitle": "Integration guides",
+      "sectionDescription": "Review the technical steps to connect your systems with Davivienda APIs.",
+      "comingSoon": "Coming soon",
+      "levelMeta": "Level {level} · {minutes} min",
+      "guideNumber": "Guide {number}",
+      "minutes": "{minutes} min",
+      "back": "← Back to the guides",
+      "covers": "This guide will cover:",
+      "previous": "Previous",
+      "next": "Next",
+      "inThisGuide": "In this guide",
+      "stepsAria": "Steps in this guide",
+      "pending": "Pending confirmation",
+      "note": "Note",
+      "errorsHeading": "Errors in this step",
+      "cause": "Cause.",
+      "solution": "Solution.",
+      "flowCaption": "End-to-end sequence. You can copy the block and paste it into any Mermaid viewer.",
+      "beforeContinue": "Before you continue",
+      "copy": "Copy",
+      "copied": "Copied",
+      "flow": "Flow",
+      "checklist": "Checklist",
+      "references": "References",
+      "levels": {
+        "básico": "Basic",
+        "intermedio": "Intermediate",
+        "avanzado": "Advanced"
+      },
+      "categories": {
+        "SEGURIDAD": "SECURITY",
+        "OPERACIÓN": "OPERATIONS",
+        "PRODUCCIÓN": "PRODUCTION"
+      },
+      "items": {
+        "autenticacion": {
+          "title": "mTLS + OAuth 2.0 authentication",
+          "description": "The foundation for everything else. We get your certificate and keys in place so the rest of the integrations simply work.",
+          "topics": {
+            "0": "generate the CSR and upload the certificate",
+            "1": "request the access token",
+            "2": "renew and revoke tokens"
+          },
+          "introduction": {
+            "0": "Without an authenticated channel, the rest of the APIs do not exist: the bank does not know who you are, and you have no way to prove you are who you claim to be. This guide covers the first real contract between your application and Davivienda: a client certificate (mTLS) and an access token (OAuth 2.0).",
+            "1": "The problem it solves is simple to state and expensive to ignore. If the certificate is poorly signed, if you request the token with a secret in an invented header, or if you reuse an expired token, every later call —balances, payments, webhooks— fails for the same reason. This is where we set that foundation correctly.",
+            "2": "When you finish, you will be able to generate the CSR, upload the client certificate, request an access token with POST /oauth/token, and renew or revoke it without improvising. The rest of the guides assume this step is already done."
+          },
+          "diagramTitle": "From the CSR to the access token",
+          "diagramMermaid": "sequenceDiagram\n    autonumber\n    actor Dev as Your backend\n    participant Portal as Console / registration\n    participant AS as Authorization Server\n    participant API as Business API\n\n    Dev->>Dev: Generate client.key + CSR\n    Dev->>Portal: Upload CSR / register client (mTLS)\n    Portal-->>Dev: client_id + signed certificate\n    Dev->>AS: POST /oauth/token (client_credentials + mTLS)\n    AS-->>Dev: access_token\n    Dev->>API: GET|POST ... Authorization Bearer\n    API-->>Dev: 200 or 401 if the token expired\n    alt Token about to expire\n      Dev->>AS: POST /oauth/token again\n      AS-->>Dev: new access token\n    else Incident or rotation\n      Dev->>AS: POST /oauth/revoke\n      AS-->>Dev: 200\n    end",
+          "checklist": {
+            "0": "The key pair lives on the server; the CSR you uploaded does not include the private key.",
+            "1": "You can get a 200 from POST /oauth/token with --cert and --key, without a client_secret in the body.",
+            "2": "Store access_token and expires_in, and renew before the token expires —not after the business API already returned 401.",
+            "3": "You tried POST /oauth/revoke and confirmed that the same token no longer authenticates a later call.",
+            "4": "You keep the Sandbox certificate and client_id separate from the Production ones."
+          },
+          "sections": {
+            "csrCertificado": {
+              "title": "Generate the CSR and upload the certificate",
+              "explanation": {
+                "0": "mTLS (Mutual TLS) means exactly that: both sides present a certificate. The bank already has its own. You need a client certificate, bound to the application you registered in the console. The private key never leaves your server; what travels is a certificate signing request (CSR) so the bank’s authority —or the one they designate— can return the finished certificate.",
+                "1": "In a FAPI 2.0 profile the certificate is not decoration: it is proof that the application is who it claims to be. That is why the token endpoint does not authenticate with a plaintext client_secret. It presents the certificate in the TLS handshake (tls_client_auth, RFC 8705 — the mutual-TLS authentication standard for OAuth 2.0, not the client-registration one; registration itself is RFC 7591) and, if the bank requires it, a client_id in the body to match that identity to the registration.",
+                "2": "The practical flow has three moves: generate the key pair, build the CSR with your application data, and upload the CSR (or the already signed certificate) where the portal asks for it. Below is the industry standard. Anything that depends on the Davivienda contract is marked."
+              },
+              "pendingNotes": {
+                "0": "Confirm with the real OAuth API contract the host, the certificate-upload endpoint, and whether onboarding happens in the console, through the registration API (RFC 7591), or both."
+              },
+              "requestCaption": "The CSR is generated on your machine. The JSON below is the typical body of a certificate enrollment or Dynamic Client Registration (RFC 7591); it is not a Davivienda-proprietary field. The tls_client_auth value is defined by RFC 8705 (mTLS), not RFC 7591.",
+              "responseCaption": "Typical response from a client registration (RFC 7591). The client_id is the one you will use on /oauth/token.",
+              "infoNotes": {
+                "0": "The invalid_token code does not apply to the initial registration of a client. That code belongs to later management operations on an already registered client (update or delete), where the registration_access_token is used as the credential."
+              },
+              "errors": {
+                "invalid_redirect_uri": {
+                  "cause": "One or more redirect_uris values are invalid",
+                  "solution": "Use only absolute HTTPS URIs, with no fragment, that match what the bank expects for this application."
+                },
+                "invalid_client_metadata": {
+                  "cause": "One of the client metadata fields is invalid",
+                  "solution": "Check token_endpoint_auth_method, jwks, grant_types, and tls_client_auth_subject_dn against the registration profile. Do not upload the private key."
+                },
+                "invalid_software_statement": {
+                  "cause": "The software statement could not be validated",
+                  "solution": "The assertion is missing, expired, or the signature does not verify against the issuer JWKS. Regenerate the software_statement and try again."
+                },
+                "unapproved_software_statement": {
+                  "cause": "The software statement is valid but not approved",
+                  "solution": "The statement is well formed, but the bank has not yet approved that software_id. Complete the approval in the portal before registering."
+                }
+              }
+            },
+            "llaveDeAcceso": {
+              "title": "Request the access token",
+              "explanation": {
+                "0": "With the certificate already accepted, request the access token. In OAuth 2.0 that is POST /oauth/token with grant_type=client_credentials (RFC 6749 §4.4). There is no end user in this step: you are asking for permission for your application to talk to the bank, not to read a customer account. That comes in the consents guide.",
+                "1": "The standard requires application/x-www-form-urlencoded, not JSON. The JSON beside it is the same payload, written as an object so it is easier to read. In FAPI 2.0 the secret does not travel in the body: the authenticator is the certificate presented in the handshake (--cert and --key in curl). The client_id only matches that identity to the registration.",
+                "2": "The useful response is access_token, token_type=Bearer, and expires_in. Store the token in memory or in an encrypted backend store. Do not leave it in the frontend, do not log it in full, and do not promote it from Sandbox to Production: they are different environments, different certificates, and different tokens."
+              },
+              "pendingNotes": {
+                "0": "Confirm with the real OAuth API contract the Sandbox/Production host, the exact scopes, the expires_in lifetime, and whether they also require private_key_jwt in addition to mTLS."
+              },
+              "requestCaption": "RFC 6749 + RFC 8705 (mTLS). The real body is form-urlencoded; the JSON is the same payload for readability.",
+              "responseCaption": "Standard RFC 6749 §5.1 response. The access token is the access_token.",
+              "errors": {
+                "invalid_request": {
+                  "cause": "grant_type is missing, the body is not form-urlencoded, or you sent raw JSON to the token endpoint.",
+                  "solution": "Send application/x-www-form-urlencoded with grant_type=client_credentials. The JSON in this guide is only for reading, not for pasting as the body."
+                },
+                "invalid_client": {
+                  "cause": "The mTLS handshake failed: expired certificate, DN mismatch, or no certificate was presented.",
+                  "solution": "Check --cert/--key, the intermediate chain, and that the subject DN matches the registration. A 401 here is almost never fixed by rotating the client_id."
+                },
+                "invalid_scope": {
+                  "cause": "You requested a scope that application does not have enabled in Sandbox.",
+                  "solution": "Request only the scopes shown in the console for that app. If you need payments, enable it first; do not invent it in the call."
+                },
+                "unauthorized_client": {
+                  "cause": "The application exists, but it is not allowed to use client_credentials.",
+                  "solution": "Check grant_types in the registration. If it only has authorization_code, this step does not apply: go to the consents guide."
+                }
+              }
+            },
+            "renovarRevocar": {
+              "title": "Renew and revoke tokens",
+              "explanation": {
+                "0": "The access token expires. With client_credentials there is no refresh_token: when expires_in runs out, call POST /oauth/token again with the same certificate and request another one. Do not retry the business operation with an expired token; renew first, then fire the call.",
+                "1": "If you later use the user-authorization flow (consents guide), grant_type=refresh_token can appear there. We mention it so the pattern is familiar, not because this step needs it.",
+                "2": "Revocation is the clean shutdown: POST /oauth/revoke (RFC 7009). Use it when you rotate certificates, retire an app, or suspect the token leaked. The bank invalidates that token; the others for the same application stay alive unless you also revoke the refresh_token. The errors and sign-out guide goes deeper on incidents; here it is enough to know how to cut the token."
+              },
+              "pendingNotes": {
+                "0": "Confirm with the real OAuth API contract whether client_credentials issues a refresh_token (the standard does not), the exact /oauth/revoke path, and whether revocation invalidates only the token or also the certificate."
+              },
+              "requestCaption": "Renewal = a new token. Revocation = RFC 7009. The JSON is again the same payload, not the real content type.",
+              "responseCaption": "RFC 7009: a successful revocation returns 200 with an empty body. That 200 with an empty body is returned both when revocation succeeds and when the token was already invalid or expired — revoking an already invalid token is not an error, because the goal of making that token unusable is already met.",
+              "errors": {
+                "invalid_request": {
+                  "cause": "You sent the token in a Bearer header instead of the token field in the body, or you omitted the token.",
+                  "solution": "Revoke is not an authenticated GET. It is POST, form-urlencoded, token field. An Authorization Bearer header does not replace that field."
+                },
+                "invalid_client": {
+                  "cause": "You tried to revoke without mTLS, or with another application's certificate.",
+                  "solution": "Revoke with the same certificate you used to request the token. If you are rotating certificates, revoke before retiring the old one."
+                },
+                "unsupported_token_type": {
+                  "cause": "The bank does not accept the token_type_hint you sent (for example, a proprietary type).",
+                  "solution": "Use access_token or refresh_token, the RFC 7009 hints. If you are unsure, omit the hint and send only token."
+                }
+              }
+            }
+          }
+        },
+        "idempotencia": {
+          "title": "Idempotency and retries",
+          "description": "The trick so a retry never becomes a double payment. Short and to the point.",
+          "topics": {
+            "0": "generate unique keys",
+            "1": "retry safely",
+            "2": "interpret 409 responses"
+          }
+        },
+        "pasoProduccion": {
+          "title": "Go-live to Production",
+          "description": "The final checklist before you go live: security, agreements, and monitoring, without surprises.",
+          "topics": {
+            "0": "complete the security certification",
+            "1": "sign the service agreement",
+            "2": "homologate and monitor"
+          }
+        },
+        "errores": {
+          "title": "Error handling and sign-out",
+          "description": "When a call fails or the token expires, read the error, do not duplicate the operation, and cut the keys that no longer apply.",
+          "topics": {
+            "0": "interpret 4xx and 5xx",
+            "1": "renew or revoke the token",
+            "2": "log the incident without losing the trail"
+          }
+        }
+      }
+    }
+  },
   "Footer": {
     "description": "Developer platform for the Open Banking ecosystem. Build secure financial experiences on enterprise-grade banking infrastructure.",
     "platform": "Platform",

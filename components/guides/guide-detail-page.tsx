@@ -1,7 +1,11 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import { GuideCodeBlock, GuideJsonBlock, GuideMermaidBlock } from "@/components/guides/guide-code-block";
 import { GuideIcon } from "@/components/guides/guide-icons";
+import { localizeGuide, localizeGuides } from "@/components/guides/localize-guide";
 import { GuideProse } from "@/components/guides/guide-prose";
 import { GuideToc } from "@/components/guides/guide-toc";
 import { SectionContainer } from "@/components/ui/layout";
@@ -10,40 +14,43 @@ import type { Guide } from "@/lib/guides/guides-content";
 import { guides } from "@/lib/guides/guides-content";
 
 export function GuideDetailPage({ guide }: { guide: Guide }) {
-  const article = guide.article;
-  const currentIndex = guides.findIndex((item) => item.slug === guide.slug);
-  const previous = currentIndex > 0 ? guides[currentIndex - 1] : undefined;
-  const next = currentIndex >= 0 && currentIndex < guides.length - 1 ? guides[currentIndex + 1] : undefined;
+  const t = useTranslations("Faq");
+  const localizedGuide = localizeGuide(guide, t);
+  const localizedGuides = localizeGuides(guides, t);
+  const article = localizedGuide.article;
+  const currentIndex = localizedGuides.findIndex((item) => item.slug === localizedGuide.slug);
+  const previous = currentIndex > 0 ? localizedGuides[currentIndex - 1] : undefined;
+  const next = currentIndex >= 0 && currentIndex < localizedGuides.length - 1 ? localizedGuides[currentIndex + 1] : undefined;
 
   return (
     <div>
       <section className="pt-4 pb-6 sm:pt-6 sm:pb-8">
         <SectionContainer>
           <Link href="/faq#guias-integracion" className="text-[14px] font-semibold text-[#E1251B] hover:text-[#C01F16]">
-            ← Volver a las guías
+            {t("guides.back")}
           </Link>
-          <GuideHero guide={guide} />
+          <GuideHero guide={localizedGuide} />
         </SectionContainer>
       </section>
 
       {article ? (
-        <GuideArticleBody guide={guide} previous={previous} next={next} />
+        <GuideArticleBody guide={localizedGuide} previous={previous} next={next} />
       ) : (
-        <GuideComingSoon guide={guide} previous={previous} next={next} />
+        <GuideComingSoon guide={localizedGuide} previous={previous} next={next} />
       )}
     </div>
   );
 }
 
 function GuideHero({ guide }: { guide: Guide }) {
+  const t = useTranslations("Faq");
   const endpoint = guide.endpoint ? splitEndpoint(guide.endpoint) : null;
-  const levelLabel = guide.level.charAt(0).toUpperCase() + guide.level.slice(1);
 
   return (
     <div className="mt-5 rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-5 sm:px-8 sm:py-6">
       <p className="text-[12px] leading-5 text-[#8E8E8E]">
         <span className="font-semibold uppercase tracking-[0.14em] text-[#E1251B]">{guide.category}</span>
-        <span> · Guía {guide.number}</span>
+        <span> · {t("guides.guideNumber", { number: guide.number })}</span>
       </p>
       <div className="mt-3 flex items-center gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-[#FFF1F0] text-[#E1251B]">
@@ -55,8 +62,12 @@ function GuideHero({ guide }: { guide: Guide }) {
       </div>
       <p className="mt-3 max-w-[40rem] text-[15px] leading-6 text-[#707070]">{guide.description}</p>
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-[#F8F9FB] px-3 py-1.5 text-[12px] text-[#404040]">{levelLabel}</span>
-        <span className="rounded-full bg-[#F8F9FB] px-3 py-1.5 text-[12px] text-[#404040]">{guide.minutes} min</span>
+        <span className="rounded-full bg-[#F8F9FB] px-3 py-1.5 text-[12px] text-[#404040]">
+          {t(`guides.levels.${guide.level}`)}
+        </span>
+        <span className="rounded-full bg-[#F8F9FB] px-3 py-1.5 text-[12px] text-[#404040]">
+          {t("guides.minutes", { minutes: guide.minutes })}
+        </span>
         {endpoint ? (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F8F9FB] px-3 py-1.5 font-mono text-[12px] text-[#404040]">
             <span className="font-semibold text-[#E1251B]">{endpoint.method}</span>
@@ -77,13 +88,15 @@ function GuideComingSoon({
   previous?: Guide;
   next?: Guide;
 }) {
+  const t = useTranslations("Faq.guides");
+
   return (
     <section className="pb-16 sm:pb-20">
       <SectionContainer>
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-8 sm:px-8 sm:py-10">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#E1251B]">Próximamente</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#E1251B]">{t("comingSoon")}</p>
           <p className="mt-3 max-w-[40rem] text-[16px] leading-7 text-[#707070]">{guide.description}</p>
-          <p className="mt-6 text-[13px] text-[#8E8E8E]">Esta guía cubrirá:</p>
+          <p className="mt-6 text-[13px] text-[#8E8E8E]">{t("covers")}</p>
           <ol className="mt-3 max-w-[40rem] space-y-2">
             {guide.topics.map((topic, index) => (
               <li key={topic} className="flex gap-3 text-[15px] leading-6 text-[#404040]">
@@ -119,14 +132,20 @@ function GuideArticleBody({
   previous?: Guide;
   next?: Guide;
 }) {
+  const t = useTranslations("Faq.guides");
   const article = guide.article;
 
   if (!article) {
     return null;
   }
 
-  const tocItems = getGuideTocItems(article);
+  const tocItems = getGuideTocItems(article, {
+    flow: t("flow"),
+    checklist: t("checklist"),
+    references: t("references"),
+  });
   const [lead, ...rest] = article.introduction;
+  const highlight = rest.at(-1);
 
   return (
     <section className="pb-16 sm:pb-20">
@@ -146,7 +165,7 @@ function GuideArticleBody({
                 <p
                   key={paragraph}
                   className={`mt-5 text-[16px] leading-7 text-[#707070] ${
-                    paragraph.startsWith("Al terminar") ? "border-l-2 border-[#E1251B] pl-4 text-[#404040]" : ""
+                    paragraph === highlight ? "border-l-2 border-[#E1251B] pl-4 text-[#404040]" : ""
                   }`}
                 >
                   <GuideProse text={paragraph} />
@@ -172,7 +191,7 @@ function GuideArticleBody({
 
                 {section.pendingNotes?.map((note) => (
                   <aside key={note} className="mt-6 border-l-[3px] border-[#C47B17] bg-[#F3EDE3] px-4 py-3">
-                    <p className="text-[12px] font-medium text-[#C47B17]">Pendiente de confirmar</p>
+                    <p className="text-[12px] font-medium text-[#C47B17]">{t("pending")}</p>
                     <p className="mt-1 text-[14px] leading-6 text-[#8A4B00]">
                       <GuideProse text={formatPendingNote(note)} />
                     </p>
@@ -203,7 +222,7 @@ function GuideArticleBody({
 
                 <div className="mt-8">
                   <h3 className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#707070]">
-                    Errores de este paso
+                    {t("errorsHeading")}
                   </h3>
                   <div className="mt-3 divide-y divide-[#E7EAEE] border-y border-[#E7EAEE]">
                     {section.errors.map((error) => (
@@ -213,11 +232,11 @@ function GuideArticleBody({
                           <span className="text-[#404040]">{error.code}</span>
                         </p>
                         <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">
-                          <span className="text-[#8E8E8E]">Causa. </span>
+                          <span className="text-[#8E8E8E]">{t("cause")} </span>
                           <GuideProse text={error.cause} />
                         </p>
                         <p className="mt-0.5 text-[13px] leading-5 text-[#707070]">
-                          <span className="text-[#8E8E8E]">Solución. </span>
+                          <span className="text-[#8E8E8E]">{t("solution")} </span>
                           <GuideProse text={error.solution} />
                         </p>
                       </article>
@@ -227,7 +246,7 @@ function GuideArticleBody({
 
                 {section.infoNotes?.map((note) => (
                   <aside key={note} className="mt-6 border-l-[3px] border-[#404040] bg-[#F8F9FB] px-4 py-3">
-                    <p className="text-[12px] font-medium text-[#404040]">Nota</p>
+                    <p className="text-[12px] font-medium text-[#404040]">{t("note")}</p>
                     <p className="mt-1 text-[14px] leading-6 text-[#707070]">
                       <GuideProse text={note} />
                     </p>
@@ -238,16 +257,14 @@ function GuideArticleBody({
 
             <section id="flujo" className="scroll-anchor border-b border-[#E7EAEE] py-10">
               <StepHeading number={String(article.sections.length + 1).padStart(2, "0")} title={article.diagram.title} />
-              <p className="mt-4 text-[15px] leading-7 text-[#707070]">
-                Secuencia de punta a punta. Puede copiar el bloque y pegarlo en cualquier visor Mermaid.
-              </p>
+              <p className="mt-4 text-[15px] leading-7 text-[#707070]">{t("flowCaption")}</p>
               <div className="mt-4">
                 <GuideMermaidBlock source={article.diagram.mermaid} />
               </div>
             </section>
 
             <section id="checklist" className="scroll-anchor py-10">
-              <StepHeading number={String(article.sections.length + 2).padStart(2, "0")} title="Antes de continuar" />
+              <StepHeading number={String(article.sections.length + 2).padStart(2, "0")} title={t("beforeContinue")} />
               <ol className="mt-6 space-y-3">
                 {article.checklist.map((item) => (
                   <li key={item} className="flex gap-3 text-[15px] leading-6 text-[#404040]">
@@ -263,7 +280,7 @@ function GuideArticleBody({
 
             {article.references?.length ? (
               <section id="referencias" className="scroll-anchor border-t border-[#E7EAEE] py-10">
-                <StepHeading number={String(article.sections.length + 3).padStart(2, "0")} title="Referencias" />
+                <StepHeading number={String(article.sections.length + 3).padStart(2, "0")} title={t("references")} />
                 <ul className="mt-6 space-y-3">
                   {article.references.map((reference) => (
                     <li key={reference.href}>
@@ -290,6 +307,8 @@ function GuideArticleBody({
 }
 
 function GuidePager({ previous, next }: { previous?: Guide; next?: Guide }) {
+  const t = useTranslations("Faq.guides");
+
   return (
     <nav className="flex flex-col gap-3 border-t border-[#E7EAEE] py-8 sm:flex-row sm:justify-between">
       {previous ? (
@@ -297,7 +316,7 @@ function GuidePager({ previous, next }: { previous?: Guide; next?: Guide }) {
           href={`/faq/guias/${previous.slug}`}
           className="rounded-[16px] border border-[#E7EAEE] px-4 py-3 transition-colors hover:border-[#E1251B]/40"
         >
-          <span className="block text-[12px] text-[#8E8E8E]">Anterior</span>
+          <span className="block text-[12px] text-[#8E8E8E]">{t("previous")}</span>
           <span className="mt-1 block text-[14px] font-semibold text-[#404040]">{previous.title}</span>
         </Link>
       ) : (
@@ -308,7 +327,7 @@ function GuidePager({ previous, next }: { previous?: Guide; next?: Guide }) {
           href={`/faq/guias/${next.slug}`}
           className="rounded-[16px] border border-[#E7EAEE] px-4 py-3 text-left transition-colors hover:border-[#E1251B]/40 sm:text-right"
         >
-          <span className="block text-[12px] text-[#8E8E8E]">Siguiente</span>
+          <span className="block text-[12px] text-[#8E8E8E]">{t("next")}</span>
           <span className="mt-1 block text-[14px] font-semibold text-[#404040]">{next.title}</span>
         </Link>
       ) : null}

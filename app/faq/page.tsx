@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { SupportPage } from "@/components/support/support-page";
 
-export const metadata: Metadata = {
-  title: "FAQ | Davivienda API Marketplace",
-  description:
-    "Encuentre respuestas, hable con nuestro equipo o abra un caso. Soporte técnico y comercial para todo su ciclo de integración.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Faq.metadata");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default function FaqRoute() {
   return <SupportPage />;

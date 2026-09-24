@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { getApiDetailBySlug } from "@/components/catalog/content/apis";
 import { localizeApiDetail } from "@/components/catalog/content/localize-api";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { localizeGuide } from "@/components/guides/localize-guide";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
 
 const HIDDEN_PATHS = new Set(["/", "/iniciar-sesion", "/crear-cuenta"]);
@@ -24,6 +25,7 @@ function buildCrumbs(
   dashboardT: (key: string) => string,
   profileT: (key: string) => string,
   docsT: (key: string) => string,
+  faqT: (key: string) => string,
   homeLabel: string,
 ): Crumb[] {
   if (pathname === "/") {
@@ -83,17 +85,18 @@ function buildCrumbs(
     }
 
     if (segment === "faq") {
-      crumbs.push({ href, label: "FAQ" });
+      crumbs.push({ href, label: faqT("breadcrumb.faq") });
       return;
     }
 
     if (segment === "guias" && previous === "faq") {
-      crumbs.push({ href: "/faq#guias-integracion", label: "Guías de Integración" });
+      crumbs.push({ href: "/faq#guias-integracion", label: faqT("breadcrumb.guides") });
       return;
     }
 
     if (previous === "guias") {
-      crumbs.push({ href, label: getGuideBySlug(segment)?.title ?? segment });
+      const guide = getGuideBySlug(segment);
+      crumbs.push({ href, label: guide ? localizeGuide(guide, faqT).title : segment });
       return;
     }
 
@@ -139,13 +142,24 @@ export function PageBreadcrumb() {
   const dashboardT = useTranslations("Dashboard.breadcrumb");
   const profileT = useTranslations("Profile.breadcrumb");
   const docsT = useTranslations("Documentacion.breadcrumb");
+  const faqT = useTranslations("Faq");
   const homeLabel = useTranslations("Navbar")("home");
 
   if (HIDDEN_PATHS.has(pathname)) {
     return null;
   }
 
-  const crumbs = buildCrumbs(pathname, searchParams.get("producto"), getApp, t, dashboardT, profileT, docsT, homeLabel);
+  const crumbs = buildCrumbs(
+    pathname,
+    searchParams.get("producto"),
+    getApp,
+    t,
+    dashboardT,
+    profileT,
+    docsT,
+    faqT,
+    homeLabel,
+  );
 
   return (
     <nav aria-label="Breadcrumb" className="text-[13px] font-normal tracking-[0.2px] text-[#8E8E8E] sm:text-[14px]">

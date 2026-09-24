@@ -1,8 +1,10 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { localizeGuide } from "@/components/guides/localize-guide";
 import { FaqFeedback } from "@/components/support/faq-feedback";
 import { SupportCaseModal } from "@/components/support/support-case-modal";
 import { SupportChangelog } from "@/components/support/support-changelog";
@@ -14,19 +16,66 @@ function normalizeSearch(value: string) {
   return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
 }
 
-type SupportFaq = {
+type FaqDefinition = {
   id: string;
-  question: string;
-  answer: string;
   guideSlug?: string;
+  sourceQuestion: string;
+  sourceAnswer: string;
 };
 
+const faqDefinitions: FaqDefinition[] = [
+  {
+    id: "sandbox",
+    sourceQuestion: "¿Cómo obtengo acceso al entorno Sandbox?",
+    sourceAnswer:
+      "Cree una cuenta de desarrollador, verifique su identidad y genere sus credenciales de Sandbox desde la consola. El acceso es inmediato y sin costo.",
+  },
+  {
+    id: "produccion",
+    guideSlug: "paso-a-produccion",
+    sourceQuestion: "¿Qué necesito para pasar a Producción?",
+    sourceAnswer:
+      "Valide la integración en Sandbox, cree o seleccione la aplicación en Mis apps y envíe la solicitud de contratación. El equipo revisa la empresa, el caso de uso y, si aplica, la whitelist de IPs antes de emitir credenciales de producción.",
+  },
+  {
+    id: "rate-limits",
+    sourceQuestion: "¿Cuáles son los límites de uso (rate limits)?",
+    sourceAnswer:
+      "Los límites dependen del ambiente y del plan acordado. En Sandbox son más conservadores, pensados para pruebas. En Producción se definen en la solicitud de contratación y quedan sujetos al acuerdo de nivel de servicio.",
+  },
+  {
+    id: "incidente",
+    sourceQuestion: "¿Cómo reporto un incidente en una API?",
+    sourceAnswer:
+      "Abra un caso desde esta página e incluya el nombre de la API, el ambiente, la fecha y hora, el identificador de la solicitud y un ejemplo del error. Así el equipo de integraciones puede rastrear el evento con mayor rapidez.",
+  },
+  {
+    id: "credenciales",
+    guideSlug: "autenticacion-mtls-oauth",
+    sourceQuestion: "¿Las credenciales de Sandbox sirven en Producción?",
+    sourceAnswer:
+      "No. Sandbox y Producción son ambientes separados. Las llaves de prueba no autentican llamadas productivas; cuando la solicitud se apruebe, recibirá credenciales nuevas desde la consola.",
+  },
+];
+
+const serviceNames = ["API Tesorería", "API OAuth", "Sandbox"] as const;
+
+const quickAccess = [
+  { id: "ayuda", href: "#preguntas-frecuentes", icon: BookIcon },
+  { id: "experto", href: "#soporte-prioritario", icon: ClockIcon },
+  { id: "caso", href: "#abrir-caso", icon: TicketIcon },
+  { id: "guias", href: "#guias-integracion", icon: IntegrationGuideIcon },
+] as const;
+
 function FaqGuideLink({ slug }: { slug: string }) {
+  const t = useTranslations("Faq");
   const guide = getGuideBySlug(slug);
 
   if (!guide) {
     return null;
   }
+
+  const localized = localizeGuide(guide, t);
 
   return (
     <p className="mt-4">
@@ -34,90 +83,25 @@ function FaqGuideLink({ slug }: { slug: string }) {
         href={`#guia-${guide.slug}`}
         className="text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#E1111C]"
       >
-        Ver Guías de Integración: {guide.title} →
+        {t("questions.seeGuide", { title: localized.title })}
       </Link>
     </p>
   );
 }
 
-const faqs: SupportFaq[] = [
-  {
-    id: "sandbox",
-    question: "¿Cómo obtengo acceso al entorno Sandbox?",
-    answer:
-      "Cree una cuenta de desarrollador, verifique su identidad y genere sus credenciales de Sandbox desde la consola. El acceso es inmediato y sin costo.",
-  },
-  {
-    id: "produccion",
-    question: "¿Qué necesito para pasar a Producción?",
-    answer:
-      "Valide la integración en Sandbox, cree o seleccione la aplicación en Mis apps y envíe la solicitud de contratación. El equipo revisa la empresa, el caso de uso y, si aplica, la whitelist de IPs antes de emitir credenciales de producción.",
-    guideSlug: "paso-a-produccion",
-  },
-  {
-    id: "rate-limits",
-    question: "¿Cuáles son los límites de uso (rate limits)?",
-    answer:
-      "Los límites dependen del ambiente y del plan acordado. En Sandbox son más conservadores, pensados para pruebas. En Producción se definen en la solicitud de contratación y quedan sujetos al acuerdo de nivel de servicio.",
-  },
-  {
-    id: "incidente",
-    question: "¿Cómo reporto un incidente en una API?",
-    answer:
-      "Abra un caso desde esta página e incluya el nombre de la API, el ambiente, la fecha y hora, el identificador de la solicitud y un ejemplo del error. Así el equipo de integraciones puede rastrear el evento con mayor rapidez.",
-  },
-  {
-    id: "credenciales",
-    question: "¿Las credenciales de Sandbox sirven en Producción?",
-    answer:
-      "No. Sandbox y Producción son ambientes separados. Las llaves de prueba no autentican llamadas productivas; cuando la solicitud se apruebe, recibirá credenciales nuevas desde la consola.",
-    guideSlug: "autenticacion-mtls-oauth",
-  },
-];
-
-const serviceStatus = [
-  { name: "API Tesorería", status: "Operativo" },
-  { name: "API OAuth", status: "Operativo" },
-  { name: "Sandbox", status: "Operativo" },
-];
-
-const quickAccess = [
-  {
-    id: "ayuda",
-    title: "Centro de ayuda",
-    description: "Preguntas frecuentes y solución de problemas comunes.",
-    href: "#preguntas-frecuentes",
-    linkLabel: "Ver preguntas →",
-    icon: BookIcon,
-  },
-  {
-    id: "experto",
-    title: "Soporte prioritario",
-    description: "Para clientes en Producción con acuerdo de nivel de servicio.",
-    href: "#soporte-prioritario",
-    linkLabel: "Conocer el acceso →",
-    icon: ClockIcon,
-  },
-  {
-    id: "caso",
-    title: "Abra un caso",
-    description: "Cree una solicitud de soporte técnico o comercial.",
-    href: "#abrir-caso",
-    linkLabel: "Crear solicitud →",
-    icon: TicketIcon,
-  },
-  {
-    id: "guias",
-    title: "Guías de Integración",
-    description: "Tutoriales técnicos para integrar sus sistemas con nuestras APIs.",
-    href: "#guias-integracion",
-    linkLabel: "Ver guías →",
-    icon: IntegrationGuideIcon,
-  },
-];
-
 export function SupportPage() {
-  const [openFaqId, setOpenFaqId] = useState(faqs[0]?.id ?? "");
+  const t = useTranslations("Faq");
+  const locale = useLocale();
+  const faqs = useMemo(
+    () =>
+      faqDefinitions.map((item) => ({
+        ...item,
+        question: t(`questions.items.${item.id}.question`),
+        answer: t(`questions.items.${item.id}.answer`),
+      })),
+    [t],
+  );
+  const [openFaqId, setOpenFaqId] = useState(faqDefinitions[0]?.id ?? "");
   const [faqQuery, setFaqQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [statusUpdatedLabel, setStatusUpdatedLabel] = useState("");
@@ -126,9 +110,9 @@ export function SupportPage() {
   useEffect(() => {
     // TODO: reemplazar con timestamp real cuando el monitoreo de Apigee esté conectado.
     const checkedAt = new Date();
-    const time = checkedAt.toLocaleTimeString("es", { hour: "2-digit", minute: "2-digit" });
-    setStatusUpdatedLabel(`Actualizado ahora · ${time}`);
-  }, []);
+    const time = checkedAt.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+    setStatusUpdatedLabel(t("status.updated", { time }));
+  }, [locale, t]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -145,8 +129,10 @@ export function SupportPage() {
       return faqs;
     }
 
-    return faqs.filter((item) => normalizeSearch(`${item.question} ${item.answer}`).includes(term));
-  }, [debouncedQuery]);
+    return faqs.filter((item) =>
+      normalizeSearch(`${item.question} ${item.answer} ${item.sourceQuestion} ${item.sourceAnswer}`).includes(term),
+    );
+  }, [debouncedQuery, faqs]);
 
   useEffect(() => {
     if (filteredFaqs.length === 0) {
@@ -164,10 +150,10 @@ export function SupportPage() {
       <section className="pt-6 pb-8 sm:pt-8 sm:pb-10">
         <SectionContainer>
           <h1 className="max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">
-            FAQ
+            {t("hero.title")}
           </h1>
           <p className="mt-3 max-w-[640px] text-[16px] leading-7 tracking-[0.24px] text-[#707070]">
-            Encuentre respuestas, hable con nuestro equipo o abra un caso.
+            {t("hero.description")}
           </p>
         </SectionContainer>
       </section>
@@ -186,22 +172,24 @@ export function SupportPage() {
                   <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[#FFF1F0] text-[#E1251B]">
                     <Icon />
                   </div>
-                  <h2 className="mt-4 text-[18px] font-bold tracking-[0.2px] text-[#404040]">{item.title}</h2>
-                  <p className="mt-2 text-[14px] leading-6 text-[#707070]">{item.description}</p>
+                  <h2 className="mt-4 text-[18px] font-bold tracking-[0.2px] text-[#404040]">
+                    {t(`cards.${item.id}.title`)}
+                  </h2>
+                  <p className="mt-2 text-[14px] leading-6 text-[#707070]">{t(`cards.${item.id}.description`)}</p>
                   {item.id === "caso" ? (
                     <button
                       type="button"
                       onClick={() => setCaseModalOpen(true)}
                       className="mt-auto inline-flex pt-4 text-left text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
                     >
-                      {item.linkLabel}
+                      {t(`cards.${item.id}.link`)}
                     </button>
                   ) : (
                     <Link
                       href={item.href}
                       className="mt-auto inline-flex pt-4 text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
                     >
-                      {item.linkLabel}
+                      {t(`cards.${item.id}.link`)}
                     </Link>
                   )}
                 </article>
@@ -213,18 +201,17 @@ export function SupportPage() {
 
       <section id="preguntas-frecuentes" className="scroll-anchor pb-8 pt-2">
         <SectionContainer>
-          <h2 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">Preguntas frecuentes</h2>
+          <h2 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("questions.title")}</h2>
           <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
             <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-7">
-
               <label className="flex h-11 items-center rounded-[12px] border border-[#E7EAEE] bg-[#F8F9FB] px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9] focus-within:bg-white">
                 <SearchIcon />
-                <span className="sr-only">Buscar en preguntas frecuentes</span>
+                <span className="sr-only">{t("questions.searchLabel")}</span>
                 <input
                   type="search"
                   value={faqQuery}
                   onChange={(event) => setFaqQuery(event.target.value)}
-                  placeholder="Buscar en preguntas y respuestas..."
+                  placeholder={t("questions.searchPlaceholder")}
                   className="ml-2 h-full w-full bg-transparent text-[14px] text-[#404040] outline-none placeholder:text-[#8E8E8E] [&::-webkit-search-cancel-button]:hidden"
                 />
                 {faqQuery ? (
@@ -232,7 +219,7 @@ export function SupportPage() {
                     type="button"
                     onClick={() => setFaqQuery("")}
                     className="ml-2 inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#8E8E8E] transition-colors hover:text-[#404040]"
-                    aria-label="Limpiar búsqueda"
+                    aria-label={t("questions.clearSearch")}
                   >
                     <ClearIcon />
                   </button>
@@ -241,15 +228,18 @@ export function SupportPage() {
 
               {filteredFaqs.length === 0 ? (
                 <p className="mt-6 text-[15px] leading-7 text-[#707070]">
-                  No encontramos preguntas sobre “{debouncedQuery.trim()}”. Pruebe con otras palabras o{" "}
-                  <button
-                    type="button"
-                    onClick={() => setCaseModalOpen(true)}
-                    className="font-semibold text-[#E1251B] hover:text-[#C01F16]"
-                  >
-                    abra un caso
-                  </button>
-                  .
+                  {t.rich("questions.empty", {
+                    query: debouncedQuery.trim(),
+                    case: (chunks) => (
+                      <button
+                        type="button"
+                        onClick={() => setCaseModalOpen(true)}
+                        className="font-semibold text-[#E1251B] hover:text-[#C01F16]"
+                      >
+                        {chunks}
+                      </button>
+                    ),
+                  })}
                 </p>
               ) : (
                 <div className="mt-6 border-t border-[#E7EAEE]">
@@ -295,18 +285,18 @@ export function SupportPage() {
             <aside className="space-y-5">
               <section className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                  <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">Estado del servicio</h2>
+                  <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("status.title")}</h2>
                   {statusUpdatedLabel ? (
                     <p className="text-[12px] text-[#8E8E8E]">{statusUpdatedLabel}</p>
                   ) : null}
                 </div>
                 <ul className="mt-5 space-y-4">
-                  {serviceStatus.map((item) => (
-                    <li key={item.name} className="flex items-center justify-between gap-3 text-[14px]">
-                      <span className="min-w-0 text-[#404040]">{item.name}</span>
+                  {serviceNames.map((name) => (
+                    <li key={name} className="flex items-center justify-between gap-3 text-[14px]">
+                      <span className="min-w-0 text-[#404040]">{name}</span>
                       <span className="inline-flex shrink-0 items-center justify-end gap-2 font-medium text-[#347659]">
                         <span className="h-2 w-2 rounded-full bg-[#347659]" aria-hidden="true" />
-                        {item.status}
+                        {t("status.operational")}
                       </span>
                     </li>
                   ))}
@@ -317,15 +307,13 @@ export function SupportPage() {
                 id="soporte-prioritario"
                 className="scroll-anchor rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6"
               >
-                <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">Soporte prioritario 24/7</h2>
-                <p className="mt-3 text-[15px] leading-7 text-[#707070]">
-                  Disponible para clientes en Producción con acuerdo de nivel de servicio.
-                </p>
+                <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("priority.title")}</h2>
+                <p className="mt-3 text-[15px] leading-7 text-[#707070]">{t("priority.description")}</p>
                 <Link
                   href="/solicitud-contratacion"
                   className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
                 >
-                  Solicitar acceso
+                  {t("priority.cta")}
                 </Link>
               </section>
             </aside>
@@ -335,9 +323,9 @@ export function SupportPage() {
 
       <section id="guias-integracion" className="scroll-anchor pb-12 pt-2 sm:pb-16">
         <SectionContainer>
-          <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">Guías de Integración</h2>
+          <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("guides.sectionTitle")}</h2>
           <p className="mt-3 mb-5 max-w-[720px] text-[15px] leading-7 text-[#707070]">
-            Consulte los pasos técnicos para conectar sus sistemas con las APIs Davivienda.
+            {t("guides.sectionDescription")}
           </p>
           <GuideList />
         </SectionContainer>

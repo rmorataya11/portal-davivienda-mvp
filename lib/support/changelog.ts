@@ -1,6 +1,7 @@
 export type ChangelogType = "nuevo" | "cambio" | "deprecacion";
 
 export type ChangelogEntry = {
+  id: string;
   date: string;
   type: ChangelogType;
   title: string;
@@ -10,6 +11,7 @@ export type ChangelogEntry = {
 
 export const changelogEntries: ChangelogEntry[] = [
   {
+    id: "sandbox-dates",
     date: "2026-09-01",
     type: "nuevo",
     title: "Consulta de movimientos con rango de fechas en Sandbox",

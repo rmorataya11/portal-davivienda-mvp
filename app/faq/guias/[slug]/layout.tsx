@@ -1,13 +1,16 @@
 import type { ReactNode } from "react";
+import { getTranslations } from "next-intl/server";
 
 import { ContentAccessGate } from "@/components/auth/content-access-gate";
 
-export default function GuideDetailLayout({ children }: { children: ReactNode }) {
+export default async function GuideDetailLayout({ children }: { children: ReactNode }) {
+  const t = await getTranslations("Faq.gate");
+
   return (
     <ContentAccessGate
-      eyebrow="Guías de Integración"
+      eyebrow={t("eyebrow")}
       fallbackPath="/faq#guias-integracion"
-      description="Esta guía es privada: ahí está el detalle de la integración. Necesita una cuenta de desarrollador para entrar."
+      description={t("description")}
     >
       {children}
     </ContentAccessGate>

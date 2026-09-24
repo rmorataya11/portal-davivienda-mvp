@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import type { GuideTocItem } from "@/lib/guides/guide-toc";
@@ -11,6 +12,7 @@ export function GuideToc({
   items: GuideTocItem[];
   variant: "mobile" | "desktop";
 }) {
+  const t = useTranslations("Faq.guides");
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export function GuideToc({
   if (variant === "mobile") {
     return (
       <nav
-        aria-label="Pasos de esta guía"
+        aria-label={t("stepsAria")}
         className="sticky top-[92px] z-30 border-b border-[#E7EAEE] bg-[#F2F3F5]/95 px-5 backdrop-blur-sm sm:top-[100px] sm:px-8 lg:hidden"
       >
         <div className="flex items-end gap-1 overflow-x-auto pt-2">
@@ -70,8 +72,8 @@ export function GuideToc({
   }
 
   return (
-    <nav aria-label="Pasos de esta guía">
-      <p className="text-[13px] text-[#8E8E8E]">En esta guía</p>
+    <nav aria-label={t("stepsAria")}>
+      <p className="text-[13px] text-[#8E8E8E]">{t("inThisGuide")}</p>
       <ol className="mt-4 border-l border-[#E7EAEE]">
         {items.map((item) => {
           const isActive = item.id === active?.id;

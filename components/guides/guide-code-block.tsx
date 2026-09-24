@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
@@ -41,6 +42,7 @@ const daviviendaCodeTheme = {
 };
 
 function CopyButton({ content }: { content: string }) {
+  const t = useTranslations("Faq.guides");
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -55,7 +57,7 @@ function CopyButton({ content }: { content: string }) {
       onClick={handleCopy}
       className="h-8 px-2 font-mono text-[11px] text-[#8E8E8E] transition-colors hover:text-[#404040]"
     >
-      {copied ? "Copiado" : "Copiar"}
+      {copied ? t("copied") : t("copy")}
     </button>
   );
 }
@@ -144,9 +146,11 @@ export function GuideJsonBlock({
 }
 
 export function GuideMermaidBlock({ source }: { source: string }) {
+  const t = useTranslations("Faq.guides");
+
   return (
     <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">
-      <SampleBar title="Flujo">
+      <SampleBar title={t("flow")}>
         <CopyButton content={source} />
       </SampleBar>
       <pre className="overflow-x-auto px-4 py-4 font-mono text-[13px] leading-7 text-[#404040]">{source}</pre>

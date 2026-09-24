@@ -809,6 +809,315 @@
       }
     }
   },
+  "Faq": {
+    "metadata": {
+      "title": "FAQ | Davivienda API Marketplace",
+      "description": "Encuentre respuestas, hable con nuestro equipo o abra un caso. Soporte técnico y comercial para todo su ciclo de integración.",
+      "guideNotFoundTitle": "Guía no encontrada | Davivienda API Marketplace",
+      "guideTitle": "{title} | Guías de Integración | Davivienda API Marketplace"
+    },
+    "breadcrumb": {
+      "faq": "FAQ",
+      "guides": "Guías de Integración"
+    },
+    "gate": {
+      "eyebrow": "Guías de Integración",
+      "description": "Esta guía es privada: ahí está el detalle de la integración. Necesita una cuenta de desarrollador para entrar."
+    },
+    "hero": {
+      "title": "FAQ",
+      "description": "Encuentre respuestas, hable con nuestro equipo o abra un caso."
+    },
+    "cards": {
+      "ayuda": {
+        "title": "Centro de ayuda",
+        "description": "Preguntas frecuentes y solución de problemas comunes.",
+        "link": "Ver preguntas →"
+      },
+      "experto": {
+        "title": "Soporte prioritario",
+        "description": "Para clientes en Producción con acuerdo de nivel de servicio.",
+        "link": "Conocer el acceso →"
+      },
+      "caso": {
+        "title": "Abra un caso",
+        "description": "Cree una solicitud de soporte técnico o comercial.",
+        "link": "Crear solicitud →"
+      },
+      "guias": {
+        "title": "Guías de Integración",
+        "description": "Tutoriales técnicos para integrar sus sistemas con nuestras APIs.",
+        "link": "Ver guías →"
+      }
+    },
+    "questions": {
+      "title": "Preguntas frecuentes",
+      "searchLabel": "Buscar en preguntas frecuentes",
+      "searchPlaceholder": "Buscar en preguntas y respuestas...",
+      "clearSearch": "Limpiar búsqueda",
+      "empty": "No encontramos preguntas sobre “{query}”. Pruebe con otras palabras o <case>abra un caso</case>.",
+      "seeGuide": "Ver Guías de Integración: {title} →",
+      "items": {
+        "sandbox": {
+          "question": "¿Cómo obtengo acceso al entorno Sandbox?",
+          "answer": "Cree una cuenta de desarrollador, verifique su identidad y genere sus credenciales de Sandbox desde la consola. El acceso es inmediato y sin costo."
+        },
+        "produccion": {
+          "question": "¿Qué necesito para pasar a Producción?",
+          "answer": "Valide la integración en Sandbox, cree o seleccione la aplicación en Mis apps y envíe la solicitud de contratación. El equipo revisa la empresa, el caso de uso y, si aplica, la whitelist de IPs antes de emitir credenciales de producción."
+        },
+        "rate-limits": {
+          "question": "¿Cuáles son los límites de uso (rate limits)?",
+          "answer": "Los límites dependen del ambiente y del plan acordado. En Sandbox son más conservadores, pensados para pruebas. En Producción se definen en la solicitud de contratación y quedan sujetos al acuerdo de nivel de servicio."
+        },
+        "incidente": {
+          "question": "¿Cómo reporto un incidente en una API?",
+          "answer": "Abra un caso desde esta página e incluya el nombre de la API, el ambiente, la fecha y hora, el identificador de la solicitud y un ejemplo del error. Así el equipo de integraciones puede rastrear el evento con mayor rapidez."
+        },
+        "credenciales": {
+          "question": "¿Las credenciales de Sandbox sirven en Producción?",
+          "answer": "No. Sandbox y Producción son ambientes separados. Las llaves de prueba no autentican llamadas productivas; cuando la solicitud se apruebe, recibirá credenciales nuevas desde la consola."
+        }
+      }
+    },
+    "feedback": {
+      "prompt": "¿Le sirvió esta respuesta?",
+      "yes": "👍 Sí",
+      "no": "👎 No",
+      "thanks": "¡Gracias por su comentario!",
+      "stillNeedHelp": "¿Sigue con dudas? Abra un caso"
+    },
+    "status": {
+      "title": "Estado del servicio",
+      "updated": "Actualizado ahora · {time}",
+      "operational": "Operativo"
+    },
+    "priority": {
+      "title": "Soporte prioritario 24/7",
+      "description": "Disponible para clientes en Producción con acuerdo de nivel de servicio.",
+      "cta": "Solicitar acceso"
+    },
+    "changelog": {
+      "title": "Qué hay de nuevo",
+      "description": "Cambios recientes en las APIs: altas, ajustes y retiros. El historial de ejemplo sirve para revisar el formato hasta que el feed real esté conectado.",
+      "types": {
+        "nuevo": "Nuevo",
+        "cambio": "Cambio",
+        "deprecacion": "Deprecación"
+      },
+      "entries": {
+        "sandbox-dates": {
+          "title": "Consulta de movimientos con rango de fechas en Sandbox",
+          "description": "API Tesorería ya permite filtrar movimientos por fechaInicial y fechaFinal en Sandbox. Sirve para probar conciliación sin pedir el histórico completo."
+        }
+      }
+    },
+    "case": {
+      "title": "Crear solicitud de soporte",
+      "description": "Cuéntenos qué ocurrió. Revisamos el caso y le respondemos por este canal.",
+      "closeAria": "Cerrar",
+      "fieldTitle": "Título del caso",
+      "fieldDescription": "Descripción del problema",
+      "severity": "Severidad",
+      "api": "API afectada",
+      "apiPlaceholder": "No aplica / General",
+      "submit": "Enviar caso",
+      "sending": "Enviando...",
+      "cancel": "Cancelar",
+      "createdTitle": "Caso creado",
+      "createdDescription": "Caso creado. Le contactaremos pronto.",
+      "titleRequired": "Ingrese un título corto para el caso.",
+      "descriptionRequired": "Describa el problema o la consulta.",
+      "severityRequired": "Seleccione la severidad del caso.",
+      "severities": {
+        "bloqueante": "Bloqueante (producción afectada o caída)",
+        "importante": "Importante (bug no bloqueante, afecta funcionalidad)",
+        "consulta": "Consulta general (pregunta, no es un problema técnico)"
+      }
+    },
+    "guides": {
+      "sectionTitle": "Guías de Integración",
+      "sectionDescription": "Consulte los pasos técnicos para conectar sus sistemas con las APIs Davivienda.",
+      "comingSoon": "Próximamente",
+      "levelMeta": "Nivel {level} · {minutes} min",
+      "guideNumber": "Guía {number}",
+      "minutes": "{minutes} min",
+      "back": "← Volver a las guías",
+      "covers": "Esta guía cubrirá:",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "inThisGuide": "En esta guía",
+      "stepsAria": "Pasos de esta guía",
+      "pending": "Pendiente de confirmar",
+      "note": "Nota",
+      "errorsHeading": "Errores de este paso",
+      "cause": "Causa.",
+      "solution": "Solución.",
+      "flowCaption": "Secuencia de punta a punta. Puede copiar el bloque y pegarlo en cualquier visor Mermaid.",
+      "beforeContinue": "Antes de continuar",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "flow": "Flujo",
+      "checklist": "Checklist",
+      "references": "Referencias",
+      "levels": {
+        "básico": "Básico",
+        "intermedio": "Intermedio",
+        "avanzado": "Avanzado"
+      },
+      "categories": {
+        "SEGURIDAD": "SEGURIDAD",
+        "OPERACIÓN": "OPERACIÓN",
+        "PRODUCCIÓN": "PRODUCCIÓN"
+      },
+      "items": {
+        "autenticacion": {
+          "title": "Autenticación mTLS + OAuth 2.0",
+          "description": "La base de todo. Dejamos su certificado y sus llaves bien puestos para que el resto de las integraciones simplemente funcione.",
+          "topics": {
+            "0": "generar el CSR y cargar el certificado",
+            "1": "solicitar la llave de acceso",
+            "2": "renovar y revocar llaves"
+          },
+          "introduction": {
+            "0": "Sin un canal autenticado, el resto de las APIs no existen: el banco no sabe quién es usted y usted no tiene cómo demostrar que es quien dice ser. Esta guía cubre el primer contrato de verdad entre su aplicación y Davivienda: un certificado de cliente (mTLS) y una llave de acceso (OAuth 2.0).",
+            "1": "El problema que resuelve es simple de enunciar y caro de ignorar. Si el certificado está mal firmado, si pide la llave con un secreto en un header inventado, o si reutiliza una llave vencida, cada llamada posterior —saldos, pagos, webhooks— se cae por la misma razón. Aquí dejamos esa base bien puesta.",
+            "2": "Al terminar va a poder generar el CSR, cargar el certificado de cliente, pedir una llave de acceso con POST /oauth/token y renovarla o revocarla sin improvisar. El resto de las guías asume que este paso ya está hecho."
+          },
+          "diagramTitle": "De la CSR a la llave de acceso",
+          "diagramMermaid": "sequenceDiagram\n    autonumber\n    actor Dev as Su backend\n    participant Portal as Consola / registro\n    participant AS as Authorization Server\n    participant API as API de negocio\n\n    Dev->>Dev: Genera client.key + CSR\n    Dev->>Portal: Carga CSR / registra cliente (mTLS)\n    Portal-->>Dev: client_id + certificado firmado\n    Dev->>AS: POST /oauth/token (client_credentials + mTLS)\n    AS-->>Dev: access_token (llave de acceso)\n    Dev->>API: GET|POST ... Authorization Bearer\n    API-->>Dev: 200 o 401 si la llave venció\n    alt Llave por vencer\n      Dev->>AS: POST /oauth/token otra vez\n      AS-->>Dev: nueva llave de acceso\n    else Incidente o rotación\n      Dev->>AS: POST /oauth/revoke\n      AS-->>Dev: 200\n    end",
+          "checklist": {
+            "0": "El par de llaves vive en el servidor; el CSR que subió no incluye la llave privada.",
+            "1": "Puede obtener un 200 en POST /oauth/token con --cert y --key, sin client_secret en el body.",
+            "2": "Guarde access_token y expires_in, y renueve antes de que la llave se venza —no cuando la API de negocio ya respondió 401.",
+            "3": "Probó POST /oauth/revoke y confirmó que la misma llave ya no autentica una llamada siguiente.",
+            "4": "Tiene separado el certificado y el client_id de Sandbox de los de Producción."
+          },
+          "sections": {
+            "csrCertificado": {
+              "title": "Generar el CSR y cargar el certificado",
+              "explanation": {
+                "0": "mTLS (Mutual TLS) quiere decir exactamente eso: los dos lados muestran certificado. El banco ya tiene el suyo. A usted le toca un certificado de cliente, atado a la aplicación que registró en la consola. La llave privada no sale de su servidor; lo que viaja es una solicitud de firma (CSR) para que la autoridad del banco —o la que ellos indiquen— le devuelva el certificado listo.",
+                "1": "En un perfil FAPI 2.0 el certificado no es un adorno: es la prueba de que la aplicación es quien dice ser. Por eso el token endpoint no se autentica con un client_secret en texto plano. Presenta el certificado en el handshake TLS (tls_client_auth, RFC 8705 — el estándar de autenticación mutua-TLS para OAuth 2.0, no el de registro de clientes; el alta en sí es RFC 7591) y, si el banco lo pide, un client_id en el cuerpo para empatar esa identidad con el registro.",
+                "2": "El flujo práctico es de tres movimientos: genere el par de llaves, arme el CSR con los datos de su aplicación y cargue el CSR (o el certificado ya firmado) donde el portal se lo pida. Abajo va el estándar de la industria. Lo que dependa del contrato de Davivienda queda marcado."
+              },
+              "pendingNotes": {
+                "0": "Confirmar con el contrato real de la API de OAuth el host, el endpoint de carga de certificados y si el alta se hace por consola, por API de registro (RFC 7591) o por ambos."
+              },
+              "requestCaption": "El CSR se genera en su máquina. El JSON de abajo es el cuerpo típico de un alta de certificado o de Dynamic Client Registration (RFC 7591); no es un campo propietario de Davivienda. El valor tls_client_auth lo define RFC 8705 (mTLS), no RFC 7591.",
+              "responseCaption": "Respuesta típica de un registro de cliente (RFC 7591). El client_id es el que va a usar en /oauth/token.",
+              "infoNotes": {
+                "0": "El código invalid_token no aplica al registro inicial de un cliente. Ese código pertenece a operaciones posteriores de gestión del cliente ya registrado (actualizar o eliminar), donde se usa el registration_access_token como credencial."
+              },
+              "errors": {
+                "invalid_redirect_uri": {
+                  "cause": "El valor de una o más redirect_uris es inválido",
+                  "solution": "Use solo URIs absolutas HTTPS, sin fragmento, y que coincidan con las que el banco espera para esta aplicación."
+                },
+                "invalid_client_metadata": {
+                  "cause": "El valor de uno de los campos de metadata del cliente es inválido",
+                  "solution": "Revise token_endpoint_auth_method, jwks, grant_types y tls_client_auth_subject_dn contra el perfil de registro. No suba la llave privada."
+                },
+                "invalid_software_statement": {
+                  "cause": "El software statement no pudo validarse",
+                  "solution": "El assertion está ausente, vencido o la firma no cierra con el JWKS del emisor. Regenere el software_statement y reintente."
+                },
+                "unapproved_software_statement": {
+                  "cause": "El software statement es válido pero no está aprobado",
+                  "solution": "El statement está bien formado, pero el banco todavía no aprobó ese software_id. Complete la aprobación en el portal antes de registrar."
+                }
+              }
+            },
+            "llaveDeAcceso": {
+              "title": "Solicitar la llave de acceso",
+              "explanation": {
+                "0": "Con el certificado ya aceptado, pida la llave de acceso. En OAuth 2.0 eso es POST /oauth/token con grant_type=client_credentials (RFC 6749 §4.4). No hay usuario en este paso: está pidiendo permiso para que su aplicación hable con el banco, no para leer la cuenta de un cliente. Eso viene en la guía de consentimientos.",
+                "1": "El estándar manda application/x-www-form-urlencoded, no JSON. El JSON de al lado es la misma carga útil, escrita como objeto para que se lea fácil. En FAPI 2.0 el secreto no viaja en el body: el autenticador es el certificado que presenta en el handshake (--cert y --key en curl). El client_id solo empató esa identidad con el registro.",
+                "2": "La respuesta útil es access_token, token_type=Bearer y expires_in. Guarde la llave en memoria o en un almacén cifrado de su backend. No la deje en el front, no la loguee completa y no la rebase de Sandbox a Producción: son ambientes distintos, certificados distintos, llaves distintas."
+              },
+              "pendingNotes": {
+                "0": "Confirmar con el contrato real de la API de OAuth el host de Sandbox/Producción, los scopes exactos, el lifetime de expires_in y si exigen private_key_jwt además de mTLS."
+              },
+              "requestCaption": "RFC 6749 + RFC 8705 (mTLS). El body real va en form-urlencoded; el JSON es la misma carga útil para lectura.",
+              "responseCaption": "Respuesta estándar de RFC 6749 §5.1. La llave de acceso es el access_token.",
+              "errors": {
+                "invalid_request": {
+                  "cause": "Falta grant_type, el body no es form-urlencoded, o mandó JSON crudo al token endpoint.",
+                  "solution": "Envíe application/x-www-form-urlencoded con grant_type=client_credentials. El JSON de esta guía es solo para leer, no para pegar como body."
+                },
+                "invalid_client": {
+                  "cause": "El handshake mTLS falló: certificado vencido, DN que no coincide, o no presentó certificado.",
+                  "solution": "Verifique --cert/--key, la cadena intermedia y que el subject DN sea el mismo del registro. Un 401 aquí casi nunca se arregla rotando el client_id."
+                },
+                "invalid_scope": {
+                  "cause": "Pidió un scope que esa aplicación no tiene habilitado en Sandbox.",
+                  "solution": "Pida solo los scopes que aparecen en la consola para esa app. Si necesita payments, habilítelo antes; no lo invente en la llamada."
+                },
+                "unauthorized_client": {
+                  "cause": "La aplicación existe, pero no tiene permitido client_credentials.",
+                  "solution": "Revise grant_types en el registro. Si solo tiene authorization_code, este paso no aplica: vaya a la guía de consentimientos."
+                }
+              }
+            },
+            "renovarRevocar": {
+              "title": "Renovar y revocar llaves",
+              "explanation": {
+                "0": "La llave de acceso se vence. Con client_credentials no hay refresh_token: cuando expires_in se acaba, vuelve a POST /oauth/token con el mismo certificado y pide otra. No reintente la operación de negocio con una llave vencida; primero renueve, después dispare el llamado.",
+                "1": "Si más adelante usa el flujo de autorización de usuario (guía de consentimientos), ahí sí puede aparecer grant_type=refresh_token. Lo dejamos escrito para que el patrón le suene, no porque este paso lo necesite.",
+                "2": "Revocar es el cierre limpio: POST /oauth/revoke (RFC 7009). Sirve cuando rota certificados, apaga una app o sospecha que la llave se filtró. El banco invalida esa llave; las demás de la misma aplicación siguen vivas salvo que revoque también el refresh_token. La guía de errores y cierre de sesión profundiza el incidente; aquí alcanza con saber cortar la llave."
+              },
+              "pendingNotes": {
+                "0": "Confirmar con el contrato real de la API de OAuth si client_credentials emite refresh_token (el estándar no lo hace), el path exacto de /oauth/revoke y si la revocación invalida solo la llave o también el certificado."
+              },
+              "requestCaption": "Renovación = un token nuevo. Revocación = RFC 7009. El JSON otra vez es la misma carga útil, no el content-type real.",
+              "responseCaption": "RFC 7009: una revocación exitosa responde 200 con body vacío. Esta respuesta (200 con body vacío) se recibe tanto si la revocación fue exitosa como si el token ya era inválido o había expirado — revocar un token ya inválido no es un error, porque el objetivo de que ese token deje de servir ya está cumplido.",
+              "errors": {
+                "invalid_request": {
+                  "cause": "Mandó el token en un header Bearer en vez del campo token del body, o no indicó el token.",
+                  "solution": "El revoke no es un GET autenticado. Va POST, form-urlencoded, campo token. Authorization Bearer no sustituye ese campo."
+                },
+                "invalid_client": {
+                  "cause": "Intentó revocar sin mTLS, o con el certificado de otra aplicación.",
+                  "solution": "Revoque con el mismo certificado que usó para pedir la llave. Si está rotando certificados, revoque antes de dar de baja el viejo."
+                },
+                "unsupported_token_type": {
+                  "cause": "El banco no acepta el token_type_hint que envió (por ejemplo, un tipo propietario).",
+                  "solution": "Use access_token o refresh_token, que son los hints de RFC 7009. Si duda, omita el hint y mande solo token."
+                }
+              }
+            }
+          }
+        },
+        "idempotencia": {
+          "title": "Idempotencia y reintentos",
+          "description": "El truco para que un reintento nunca se convierta en un pago doble. Corto y al grano.",
+          "topics": {
+            "0": "generar marcas únicas",
+            "1": "reintentar de forma segura",
+            "2": "interpretar respuestas 409"
+          }
+        },
+        "pasoProduccion": {
+          "title": "Paso a Producción",
+          "description": "La lista de chequeo final antes de salir en vivo: seguridad, acuerdos y monitoreo, sin sorpresas.",
+          "topics": {
+            "0": "completar la certificación de seguridad",
+            "1": "firmar el acuerdo de servicio",
+            "2": "homologar y monitorear"
+          }
+        },
+        "errores": {
+          "title": "Manejo de errores y cierre de sesión",
+          "description": "Cuando una llamada falla o el token se vence, hay que leer el error, no duplicar la operación y cortar las llaves que ya no sirven.",
+          "topics": {
+            "0": "interpretar 4xx y 5xx",
+            "1": "renovar o revocar el token",
+            "2": "registrar el incidente sin perder el rastro"
+          }
+        }
+      }
+    }
+  },
   "Footer": {
     "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
     "platform": "Plataforma",

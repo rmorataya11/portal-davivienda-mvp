@@ -6,7 +6,10 @@ export type GuideTocItem = {
   label: string;
 };
 
-export function getGuideTocItems(article: GuideArticle): GuideTocItem[] {
+export function getGuideTocItems(
+  article: GuideArticle,
+  labels: { flow: string; checklist: string; references: string },
+): GuideTocItem[] {
   const steps = article.sections.map((section, index) => ({
     id: section.id,
     number: String(index + 1).padStart(2, "0"),
@@ -18,12 +21,12 @@ export function getGuideTocItems(article: GuideArticle): GuideTocItem[] {
     {
       id: "flujo",
       number: String(steps.length + 1).padStart(2, "0"),
-      label: "Flujo",
+      label: labels.flow,
     },
     {
       id: "checklist",
       number: String(steps.length + 2).padStart(2, "0"),
-      label: "Checklist",
+      label: labels.checklist,
     },
   ];
 
@@ -31,7 +34,7 @@ export function getGuideTocItems(article: GuideArticle): GuideTocItem[] {
     items.push({
       id: "referencias",
       number: String(items.length + 1).padStart(2, "0"),
-      label: "Referencias",
+      label: labels.references,
     });
   }
 
