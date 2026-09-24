@@ -126,7 +126,7 @@ function ApiAppRow({ app }: { app: DeveloperApp }) {
       </div>
       <p className="mt-3 text-[20px] font-bold text-[#141F25]">{formatMoney(stats.consumedUsd)}</p>
       <p className="mt-1 text-[13px] text-[#8E8E8E]">
-        {t("callsLast30Days", { count: stats.callsLast30Days.toLocaleString(locale === "en" ? "en-US" : "es-CO") })}
+        {t("callsLast30Days", { count: stats.callsLast30Days.toLocaleString(locale === "en" ? "en-US" : "es") })}
       </p>
       <div className="mt-4">
         <Link href={`/dashboard/apps/${app.id}`} className="text-[13px] font-medium text-[#E1251B]">

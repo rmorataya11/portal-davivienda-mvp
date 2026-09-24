@@ -1,4 +1,5 @@
 import { SectionContainer } from "@/components/ui/layout";
+import { parseCalendarDate } from "@/lib/format/date";
 import { changelogEntries, type ChangelogType } from "@/lib/support/changelog";
 
 const typeLabel: Record<ChangelogType, string> = {
@@ -14,8 +15,12 @@ const typeClass: Record<ChangelogType, string> = {
 };
 
 function formatDate(value: string) {
-  const parsed = new Date(`${value}T00:00:00`);
-  return new Intl.DateTimeFormat("es-CO", {
+  const parsed = parseCalendarDate(value);
+  if (!parsed) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("es", {
     day: "numeric",
     month: "short",
     year: "numeric",

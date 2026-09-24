@@ -65,7 +65,7 @@ export type ApiDetail = ApiCatalogItem & {
 
 const tesoreriaMovimientosRequest = `{
   "nit": [
-    "90012345601"
+    "0614-290191-101-3"
   ],
   "fechaInicial": "2025-01-01",
   "fechaFinal": "2025-01-09",
@@ -237,7 +237,7 @@ const tesoreria: ApiDetail = {
   -H "x-api-key: TU_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "nit": ["90012345601"],
+    "nit": ["0614-290191-101-3"],
     "fechaInicial": "2025-01-01",
     "fechaFinal": "2025-01-09",
     "filtros": [{ "tipo": "moneda", "valor": "usd" }],

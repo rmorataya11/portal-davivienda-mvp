@@ -434,7 +434,7 @@
       "idNumber": "ID number",
       "idNumberPlaceholder": "00000000-0",
       "companyName": "Name or registered company name",
-      "companyNamePlaceholder": "My Company S.A.S.",
+      "companyNamePlaceholder": "My Company S.A. de C.V.",
       "reason": "What do you need?",
       "environment": "Environment",
       "product": "API product",

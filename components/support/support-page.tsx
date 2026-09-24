@@ -126,7 +126,7 @@ export function SupportPage() {
   useEffect(() => {
     // TODO: reemplazar con timestamp real cuando el monitoreo de Apigee esté conectado.
     const checkedAt = new Date();
-    const time = checkedAt.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+    const time = checkedAt.toLocaleTimeString("es", { hour: "2-digit", minute: "2-digit" });
     setStatusUpdatedLabel(`Actualizado ahora · ${time}`);
   }, []);
 

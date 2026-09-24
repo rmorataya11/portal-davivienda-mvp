@@ -4,10 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { mockCurrentPlan, mockInvoices, mockNextCharge, mockPaymentMethod } from "@/components/mock/mockBilling";
 import { formatMoney } from "@/lib/developer-apps/factory";
-
-function formatDate(value: string, locale: string) {
-  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "es", { dateStyle: "medium" }).format(new Date(value));
-}
+import { formatCalendarDate } from "@/lib/format/date";
 
 export function ProfileBilling() {
   const t = useTranslations("Profile.billing");
@@ -51,7 +48,7 @@ export function ProfileBilling() {
           <section className="rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
             <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("nextCharge")}</p>
             <p className="mt-2 text-[22px] font-bold text-[#141F25]">{formatMoney(mockNextCharge.amountUsd)}</p>
-            <p className="mt-1 text-[15px] text-[#6A7178]">{formatDate(mockNextCharge.date, locale)}</p>
+            <p className="mt-1 text-[15px] text-[#6A7178]">{formatCalendarDate(mockNextCharge.date, locale)}</p>
           </section>
 
           <section className="rounded-[22px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
@@ -90,7 +87,7 @@ export function ProfileBilling() {
                 return (
                   <tr key={invoice.id} className="border-t border-[#E7EAEE]">
                     <td className="px-5 py-4 font-semibold text-[#141F25]">{invoice.id}</td>
-                    <td className="px-5 py-4 text-[#6A7178]">{formatDate(invoice.date, locale)}</td>
+                    <td className="px-5 py-4 text-[#6A7178]">{formatCalendarDate(invoice.date, locale)}</td>
                     <td className="px-5 py-4 text-[#404040]">{formatMoney(invoice.amountUsd)}</td>
                     <td className="px-5 py-4">
                       <span className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>

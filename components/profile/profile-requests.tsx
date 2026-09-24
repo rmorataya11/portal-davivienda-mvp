@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
+import { formatCalendarDate } from "@/lib/format/date";
 
 type RequestRow = {
   id: string;
@@ -27,12 +28,7 @@ function formatDate(value: string, locale: string) {
     return "—";
   }
 
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return "—";
-  }
-
-  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "es", { dateStyle: "medium" }).format(date);
+  return formatCalendarDate(value, locale) || "—";
 }
 
 function folioFromId(id: string) {

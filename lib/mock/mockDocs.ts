@@ -430,7 +430,7 @@ const consultaMovimientos: DocsEndpoint = {
   requestExamples: {
     json: `{
   "nit": [
-    "90012345601"
+    "0614-290191-101-3"
   ],
   "fechaInicial": "2025-01-01",
   "fechaFinal": "2025-01-09",
@@ -450,7 +450,7 @@ const consultaMovimientos: DocsEndpoint = {
   -H "x-api-key: TU_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "nit": ["90012345601"],
+    "nit": ["0614-290191-101-3"],
     "fechaInicial": "2025-01-01",
     "fechaFinal": "2025-01-09",
     "filtros": [{ "tipo": "moneda", "valor": "usd" }],
@@ -463,7 +463,7 @@ const consultaMovimientos: DocsEndpoint = {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    nit: ["90012345601"],
+    nit: ["0614-290191-101-3"],
     fechaInicial: "2025-01-01",
     fechaFinal: "2025-01-09",
     filtros: [{ tipo: "moneda", valor: "usd" }],
@@ -477,7 +477,7 @@ response = requests.post(
     "https://api.davivienda.com/conciliacion/bancaempresa/movimientos/",
     headers={"x-api-key": "TU_API_KEY", "Content-Type": "application/json"},
     json={
-        "nit": ["90012345601"],
+        "nit": ["0614-290191-101-3"],
         "fechaInicial": "2025-01-01",
         "fechaFinal": "2025-01-09",
         "filtros": [{"tipo": "moneda", "valor": "usd"}],

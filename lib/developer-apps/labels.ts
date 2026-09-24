@@ -1,3 +1,5 @@
+import { parseCalendarDate } from "@/lib/format/date";
+
 import type { AppStatus } from "./types";
 
 export const appStatusStyles: Record<AppStatus, string> = {
@@ -15,14 +17,24 @@ export function formatAppDate(value: string | null, locale?: string) {
     return "";
   }
 
+  const date = parseCalendarDate(value);
+  if (!date) {
+    return "";
+  }
+
   return new Intl.DateTimeFormat(dateLocale(locale), {
     dateStyle: "medium",
-  }).format(new Date(value));
+  }).format(date);
 }
 
 export function formatAppDateTime(value: string, locale?: string) {
+  const date = parseCalendarDate(value);
+  if (!date) {
+    return "";
+  }
+
   return new Intl.DateTimeFormat(dateLocale(locale), {
     dateStyle: "medium",
     timeStyle: "short",
-  }).format(new Date(value));
+  }).format(date);
 }

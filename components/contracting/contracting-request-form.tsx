@@ -274,7 +274,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             label="Razón social / Nombre de la empresa"
             required
             autoComplete="organization"
-            placeholder="Mi Empresa S.A.S."
+            placeholder="Mi Empresa S.A. de C.V."
             value={companyName}
             error={errors.companyName}
             onChange={(event) => {
@@ -287,7 +287,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             name="taxId"
             label="NIT / identificación fiscal"
             required
-            placeholder="900123456-7"
+            placeholder="0614-290191-101-3"
             error={errors.taxId}
             onChange={() => clearError("taxId")}
           />
@@ -367,8 +367,8 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
               label="Rango(s) de IP a autorizar"
               required
               rows={4}
-              hint="Indique una IP o un rango por línea, por ejemplo 190.25.10.0/24."
-              placeholder={"190.25.10.0/24\n181.49.20.15"}
+              hint="Indique una IP o un rango por línea, por ejemplo 203.0.113.0/24."
+              placeholder={"203.0.113.0/24\n198.51.100.15"}
               error={errors.ipRanges}
               onChange={() => clearError("ipRanges")}
             />
@@ -405,7 +405,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
               label="Teléfono"
               required
               autoComplete="tel"
-              placeholder="+57 300 123 4567"
+              placeholder="+503 7000 1234"
               error={errors.technicalPhone}
               onChange={() => clearError("technicalPhone")}
             />
