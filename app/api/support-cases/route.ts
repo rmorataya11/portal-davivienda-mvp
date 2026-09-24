@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { createSupportCase, isSupportCaseSeverity } from "@/lib/db/support-cases";
-import { escapeHtml, sendNotificationEmail } from "@/lib/email/resend";
+import { escapeHtml, sendNotificationEmail } from "@/lib/email/mailer";
 import { readTrimmedString } from "@/lib/validation/fields";
 
 export const runtime = "nodejs";

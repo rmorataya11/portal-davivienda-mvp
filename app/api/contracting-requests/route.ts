@@ -4,7 +4,7 @@ import {
   createContractingRequest,
   getContractingRequestsByDeveloper,
 } from '@/lib/db/contracting-requests';
-import { escapeHtml, sendNotificationEmail } from '@/lib/email/resend';
+import { escapeHtml, sendNotificationEmail } from '@/lib/email/mailer';
 import {
   isExplicitTrue,
   isValidEmail,

@@ -14,15 +14,16 @@
     "google-auth-library": "^11.0.2",
     "next": "16.3.1",
     "next-intl": "^4.14.6",
+    "nodemailer": "^10.0.10",
     "pg": "^8.23.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-syntax-highlighter": "^16.1.1",
-    "resend": "^6.28.1"
+    "react-syntax-highlighter": "^16.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.2",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
