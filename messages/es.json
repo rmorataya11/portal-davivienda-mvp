@@ -926,6 +926,7 @@
       "cancel": "Cancelar",
       "createdTitle": "Caso creado",
       "createdDescription": "Caso creado. Le contactaremos pronto.",
+      "submitError": "No pudimos enviar el caso. Intente de nuevo.",
       "titleRequired": "Ingrese un título corto para el caso.",
       "descriptionRequired": "Describa el problema o la consulta.",
       "severityRequired": "Seleccione la severidad del caso.",

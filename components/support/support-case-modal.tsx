@@ -3,11 +3,12 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { RadioGroup } from "@/components/contracting/radio-group";
-import { saveSupportCase, type SupportCaseSeverity } from "@/lib/support/cases";
+import { type SupportCaseSeverity } from "@/lib/support/cases";
 
 const severityValues = ["bloqueante", "importante", "consulta"] as const;
 
@@ -16,6 +17,7 @@ type FieldErrors = Record<string, string>;
 export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const t = useTranslations("Faq.case");
   const catalogT = useTranslations("Catalog");
+  const { user, developerId } = useAuth();
   const titleId = useId();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,6 +26,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     if (!open) {
@@ -58,6 +61,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
     setErrors({});
     setIsSubmitting(false);
     setSubmitted(false);
+    setFormError("");
   }, [open]);
 
   function clearError(field: string) {
@@ -94,26 +98,40 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
     event.preventDefault();
     const nextErrors = validate();
     setErrors(nextErrors);
+    setFormError("");
 
     if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
     setIsSubmitting(true);
-    await new Promise((resolve) => window.setTimeout(resolve, 400));
 
-    saveSupportCase({
-      title: title.trim(),
-      description: description.trim(),
-      severity: severity as SupportCaseSeverity,
-      apiSlug: apiSlug || null,
-    });
+    try {
+      const response = await fetch("/api/support-cases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          titulo: title.trim(),
+          descripcion: description.trim(),
+          severidad: severity as SupportCaseSeverity,
+          apiSlug: apiSlug || undefined,
+          developerId: developerId ?? user?.uid ?? undefined,
+        }),
+      });
 
-    setIsSubmitting(false);
-    setSubmitted(true);
-    window.setTimeout(() => {
-      onClose();
-    }, 2200);
+      if (!response.ok) {
+        throw new Error(t("submitError"));
+      }
+
+      setSubmitted(true);
+      window.setTimeout(() => {
+        onClose();
+      }, 2200);
+    } catch {
+      setFormError(t("submitError"));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (!open) {
@@ -229,6 +247,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
                   {t("cancel")}
                 </button>
               </div>
+              {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
             </form>
           </>
         )}
