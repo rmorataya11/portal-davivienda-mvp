@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
 import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
@@ -45,10 +46,10 @@ const daviviendaCodeTheme = {
 };
 
 const languageTabs = [
-  { id: "json", label: "JSON", language: "json" },
-  { id: "curl", label: "cURL", language: "bash" },
-  { id: "javascript", label: "JavaScript", language: "javascript" },
-  { id: "python", label: "Python", language: "python" },
+  { id: "json", language: "json" },
+  { id: "curl", language: "bash" },
+  { id: "javascript", language: "javascript" },
+  { id: "python", language: "python" },
 ] as const;
 
 type ExampleLanguage = (typeof languageTabs)[number]["id"];
@@ -62,6 +63,7 @@ function prettyPrintJson(value: string) {
 }
 
 function CopyButton({ content }: { content: string }) {
+  const t = useTranslations("Documentacion.explorer");
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -76,7 +78,7 @@ function CopyButton({ content }: { content: string }) {
       onClick={handleCopy}
       className="h-8 px-2 font-mono text-[11px] text-[#8E8E8E] transition-colors hover:text-[#404040]"
     >
-      {copied ? "Copiado" : "Copiar"}
+      {copied ? t("copied") : t("copy")}
     </button>
   );
 }
@@ -86,6 +88,7 @@ export function DocsRequestCode({
 }: {
   examples: { json: string; curl: string; javascript: string; python: string };
 }) {
+  const t = useTranslations("Documentacion.explorer");
   const [language, setLanguage] = useState<ExampleLanguage>("json");
   const activeTab = languageTabs.find((tab) => tab.id === language) ?? languageTabs[0];
   const rawCode = examples[activeTab.id];
@@ -107,7 +110,7 @@ export function DocsRequestCode({
                   isActive ? "font-semibold text-[#404040]" : "text-[#8E8E8E] hover:text-[#404040]"
                 }`}
               >
-                {tab.label}
+                {t(`languages.${tab.id}`)}
               </button>
             );
           })}

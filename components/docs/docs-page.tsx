@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
+import { findLocalizedDocsEndpoint, localizeDocsApis } from "@/components/docs/localize-docs";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import { SectionContainer } from "@/components/ui/layout";
 import {
   defaultDocsEndpointId,
   docsApis,
-  docsBreadcrumbLabel,
   findDocsApi,
-  findDocsEndpoint,
   type DocsEndpoint,
   type DocsHttpMethod,
 } from "@/lib/mock/mockDocs";
@@ -60,6 +60,9 @@ function docsStateFromApiQuery(apiParam: string | null) {
 }
 
 export function DocsPage() {
+  const t = useTranslations("Documentacion.explorer");
+  const docsT = useTranslations("Documentacion");
+  const catalogT = useTranslations("Catalog");
   const searchParams = useSearchParams();
   const apiFromQuery = searchParams.get("api");
   const initialDocsState = docsStateFromApiQuery(apiFromQuery);
@@ -72,14 +75,16 @@ export function DocsPage() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
 
+  const localizedApis = useMemo(() => localizeDocsApis(docsApis, docsT, catalogT), [catalogT, docsT]);
+
   const filteredApis = useMemo(() => {
     const normalized = query.trim().toLowerCase();
 
     if (!normalized) {
-      return docsApis;
+      return localizedApis;
     }
 
-    return docsApis
+    return localizedApis
       .map((api) => ({
         ...api,
         endpoints: api.endpoints.filter((endpoint) =>
@@ -90,9 +95,9 @@ export function DocsPage() {
         ),
       }))
       .filter((api) => api.endpoints.length > 0);
-  }, [query]);
+  }, [localizedApis, query]);
 
-  const activeMatch = activeTabId ? findDocsEndpoint(activeTabId) : undefined;
+  const activeMatch = activeTabId ? findLocalizedDocsEndpoint(localizedApis, activeTabId) : undefined;
 
   function openEndpoint(endpointId: string) {
     setOpenTabIds((current) => (current.includes(endpointId) ? current : [...current, endpointId]));
@@ -151,7 +156,7 @@ export function DocsPage() {
       <section className="pt-6 pb-16 sm:pb-20">
         <SectionContainer>
           <h1 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">
-            Explore endpoints como en su editor
+            {t("title")}
           </h1>
           <div className="flex min-h-[640px] overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white lg:h-[calc(100dvh-168px)] lg:min-h-[680px]">
             <aside
@@ -181,7 +186,7 @@ export function DocsPage() {
                   type="button"
                   onClick={() => setMobileSidebarOpen(true)}
                   className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-[#E7EAEE] bg-white text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:hidden"
-                  aria-label="Abrir explorador de endpoints"
+                  aria-label={t("openExplorer")}
                 >
                   <ExplorerIcon />
                 </button>
@@ -189,14 +194,14 @@ export function DocsPage() {
                   type="button"
                   onClick={() => setDesktopSidebarOpen((current) => !current)}
                   className="hidden h-11 w-11 items-center justify-center text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:inline-flex"
-                  aria-label={desktopSidebarOpen ? "Ocultar explorador" : "Mostrar explorador"}
+                  aria-label={desktopSidebarOpen ? t("hideExplorer") : t("showExplorer")}
                 >
                   <ExplorerIcon />
                 </button>
 
                 <div className="flex min-w-0 flex-1 items-stretch overflow-x-auto">
                   {openTabIds.map((tabId) => {
-                    const match = findDocsEndpoint(tabId);
+                    const match = findLocalizedDocsEndpoint(localizedApis, tabId);
                     if (!match) {
                       return null;
                     }
@@ -223,7 +228,7 @@ export function DocsPage() {
                             type="button"
                             onClick={() => closeTab(tabId)}
                             className="mr-1 inline-flex h-6 w-6 items-center justify-center rounded-[6px] text-[#8E8E8E] transition-colors hover:bg-[#EEF1F4] hover:text-[#141F25]"
-                            aria-label={`Cerrar ${match.endpoint.name}`}
+                            aria-label={t("closeTab", { name: match.endpoint.name })}
                           >
                             <CloseIcon />
                           </button>
@@ -255,7 +260,7 @@ export function DocsPage() {
           <button
             type="button"
             className="absolute inset-0 bg-[#141F25]/45"
-            aria-label="Cerrar explorador"
+            aria-label={t("closeExplorer")}
             onClick={() => setMobileSidebarOpen(false)}
           />
           <aside className="relative flex h-full w-[min(280px,86vw)] flex-col bg-[#FAFBFC] shadow-[0_18px_50px_rgba(20,31,37,0.18)]">
@@ -264,7 +269,7 @@ export function DocsPage() {
                 type="button"
                 onClick={() => setMobileSidebarOpen(false)}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] text-[#6A7178] hover:bg-[#EEF1F4]"
-                aria-label="Cerrar explorador"
+                aria-label={t("closeExplorer")}
               >
                 <CloseIcon />
               </button>
@@ -307,17 +312,19 @@ function ExplorerTree({
   activeTabId: string;
   onOpenEndpoint: (endpointId: string) => void;
 }) {
+  const t = useTranslations("Documentacion.explorer");
+
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div className="border-b border-[#E7EAEE] px-3 py-3">
         <label className="flex h-10 items-center rounded-[12px] border border-[#E3E7EC] bg-white px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9]">
           <SearchIcon />
-          <span className="sr-only">Buscar endpoints</span>
+          <span className="sr-only">{t("searchLabel")}</span>
           <input
             type="search"
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
-            placeholder="Buscar endpoint..."
+            placeholder={t("searchPlaceholder")}
             className="ml-2 h-full w-full bg-transparent text-[13px] text-[#30383F] outline-none placeholder:text-[#8E8E8E]"
           />
         </label>
@@ -325,7 +332,7 @@ function ExplorerTree({
 
       <div className="min-h-0 flex-1 overflow-y-auto px-2 py-3">
         {filteredApis.length === 0 ? (
-          <p className="px-3 py-6 text-[13px] leading-6 text-[#6A7178]">No se encontraron endpoints con esa búsqueda.</p>
+          <p className="px-3 py-6 text-[13px] leading-6 text-[#6A7178]">{t("noResults")}</p>
         ) : (
           <ul className="space-y-1">
             {filteredApis.map((api) => {
@@ -378,12 +385,13 @@ function ExplorerTree({
 }
 
 function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsEndpoint }) {
+  const t = useTranslations("Documentacion.explorer");
   const [responseOpen, setResponseOpen] = useState(true);
 
   return (
     <div className="px-5 py-6 sm:px-7 sm:py-8">
       <p className="font-mono text-[12px] tracking-[0.2px] text-[#8E8E8E] sm:text-[13px]">
-        {docsBreadcrumbLabel(apiName)}
+        {apiName}
         <span className="px-2">/</span>
         {endpoint.name.replace(/\.(get|post|put|delete)$/i, "")}
       </p>
@@ -400,7 +408,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
       <p className="mt-5 text-[15px] leading-7 text-[#707070]">{endpoint.description}</p>
 
       <div className="mt-10">
-        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">Parámetros</h2>
+        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">{t("parameters")}</h2>
         <div className="mt-3 overflow-x-auto rounded-[18px] border border-[#E7EAEE]">
           <table className="w-full table-fixed border-collapse text-left">
             <colgroup>
@@ -411,10 +419,10 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
             </colgroup>
             <thead>
               <tr className="bg-[#F7F8FA] text-[11px] font-medium uppercase tracking-[0.14em] text-[#8E8E8E]">
-                <th className="px-4 py-3 font-medium">Nombre</th>
-                <th className="px-4 py-3 font-medium">Tipo</th>
-                <th className="px-4 py-3 font-medium">Uso</th>
-                <th className="px-4 py-3 font-medium">Descripción</th>
+                <th className="px-4 py-3 font-medium">{t("name")}</th>
+                <th className="px-4 py-3 font-medium">{t("type")}</th>
+                <th className="px-4 py-3 font-medium">{t("usage")}</th>
+                <th className="px-4 py-3 font-medium">{t("description")}</th>
               </tr>
             </thead>
             <tbody>
@@ -434,7 +442,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
                         parameter.required ? "bg-[#FFEAEA] text-[#A11B1B]" : "bg-[#F2F3F5] text-[#6A7178]"
                       }`}
                     >
-                      {parameter.required ? "Requerido" : "Opcional"}
+                      {parameter.required ? t("required") : t("optional")}
                     </span>
                   </td>
                   <td className="min-w-0 px-4 py-3.5 align-middle text-[13px] leading-6 [overflow-wrap:normal] [word-break:normal] text-[#6A7178]">
@@ -448,7 +456,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
       </div>
 
       <div className="mt-10">
-        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">Ejemplo de solicitud</h2>
+        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">{t("requestExample")}</h2>
         <div className="mt-3">
           <DocsRequestCode examples={endpoint.requestExamples} />
         </div>
@@ -461,7 +469,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
           className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] bg-[#F8F9FB] px-4 py-3 text-left"
           aria-expanded={responseOpen}
         >
-          <span className="text-[16px] font-medium text-[#404040]">Ejemplo de respuesta</span>
+          <span className="text-[16px] font-medium text-[#404040]">{t("responseExample")}</span>
           <ChevronIcon open={responseOpen} />
         </button>
         {responseOpen ? (
@@ -475,14 +483,16 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
 }
 
 function EmptyState() {
+  const t = useTranslations("Documentacion.explorer");
+
   return (
     <div className="flex min-h-[420px] flex-col items-center justify-center px-6 py-16 text-center">
       <div className="flex h-14 w-14 items-center justify-center rounded-[16px] bg-[#FFF1F0] text-[#E1251B]">
         <CodeIcon />
       </div>
-      <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[#141F25]">Seleccione un endpoint</h2>
+      <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[#141F25]">{t("emptyTitle")}</h2>
       <p className="mt-3 max-w-[420px] text-[15px] leading-7 text-[#6A7178]">
-        Seleccione consulta-movimientos en el explorador de la izquierda para ver la documentación.
+        {t("emptyDescription", { endpoint: "consulta-movimientos" })}
       </p>
     </div>
   );

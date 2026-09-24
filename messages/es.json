@@ -738,6 +738,77 @@
       "inReview": "En revisión"
     }
   },
+  "Documentacion": {
+    "metadata": {
+      "title": "Documentación técnica | Davivienda API Marketplace",
+      "description": "Consulte el endpoint, parámetros y ejemplos de API Tesorería."
+    },
+    "breadcrumb": {
+      "documentation": "Documentación"
+    },
+    "gate": {
+      "eyebrow": "Documentación",
+      "description": "La documentación técnica es privada: ahí están los endpoints, parámetros y ejemplos. Necesita una cuenta de desarrollador para entrar."
+    },
+    "explorer": {
+      "title": "Explore endpoints como en su editor",
+      "openExplorer": "Abrir explorador de endpoints",
+      "hideExplorer": "Ocultar explorador",
+      "showExplorer": "Mostrar explorador",
+      "closeExplorer": "Cerrar explorador",
+      "closeTab": "Cerrar {name}",
+      "searchLabel": "Buscar endpoints",
+      "searchPlaceholder": "Buscar endpoint...",
+      "noResults": "No se encontraron endpoints con esa búsqueda.",
+      "parameters": "Parámetros",
+      "name": "Nombre",
+      "type": "Tipo",
+      "usage": "Uso",
+      "description": "Descripción",
+      "required": "Requerido",
+      "optional": "Opcional",
+      "requestExample": "Ejemplo de solicitud",
+      "responseExample": "Ejemplo de respuesta",
+      "emptyTitle": "Seleccione un endpoint",
+      "emptyDescription": "Seleccione {endpoint} en el explorador de la izquierda para ver la documentación.",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "languages": {
+        "json": "JSON",
+        "curl": "cURL",
+        "javascript": "JavaScript",
+        "python": "Python"
+      }
+    },
+    "contenido": {
+      "consultaMovimientos": {
+        "descripcion": "Consulta los movimientos de una cuenta empresarial, con soporte de filtros por moneda y paginación.",
+        "parametros": {
+          "nit": {
+            "descripcion": "NIT de la empresa (array, puede aceptar más de uno)"
+          },
+          "fechaInicial": {
+            "descripcion": "Fecha inicial del rango de consulta"
+          },
+          "fechaFinal": {
+            "descripcion": "Fecha final del rango de consulta"
+          },
+          "filtros": {
+            "descripcion": "Filtros adicionales, ej. { tipo: 'moneda', valor: 'usd' }"
+          },
+          "paginacion_ASC": {
+            "descripcion": "Orden ascendente (true) o descendente (false)"
+          },
+          "paginacion_pagina": {
+            "descripcion": "Número de página, empieza en 0"
+          },
+          "paginacion_tamanoPagina": {
+            "descripcion": "Cantidad de resultados por página"
+          }
+        }
+      }
+    }
+  },
   "Footer": {
     "description": "Plataforma de desarrolladores para el ecosistema Open Banking. Construya experiencias financieras seguras sobre infraestructura bancaria de grado empresarial.",
     "platform": "Plataforma",

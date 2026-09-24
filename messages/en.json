@@ -738,6 +738,77 @@
       "inReview": "Under review"
     }
   },
+  "Documentacion": {
+    "metadata": {
+      "title": "Technical documentation | Davivienda API Marketplace",
+      "description": "Review the endpoint, parameters, and examples for API Tesorería."
+    },
+    "breadcrumb": {
+      "documentation": "Documentation"
+    },
+    "gate": {
+      "eyebrow": "Documentation",
+      "description": "Technical documentation is private: it holds the endpoints, parameters, and examples. You need a developer account to enter."
+    },
+    "explorer": {
+      "title": "Explore endpoints the way you do in your editor",
+      "openExplorer": "Open endpoint explorer",
+      "hideExplorer": "Hide explorer",
+      "showExplorer": "Show explorer",
+      "closeExplorer": "Close explorer",
+      "closeTab": "Close {name}",
+      "searchLabel": "Search endpoints",
+      "searchPlaceholder": "Search endpoint...",
+      "noResults": "No endpoints matched that search.",
+      "parameters": "Parameters",
+      "name": "Name",
+      "type": "Type",
+      "usage": "Usage",
+      "description": "Description",
+      "required": "Required",
+      "optional": "Optional",
+      "requestExample": "Request example",
+      "responseExample": "Response example",
+      "emptyTitle": "Select an endpoint",
+      "emptyDescription": "Select {endpoint} in the explorer on the left to view the documentation.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "languages": {
+        "json": "JSON",
+        "curl": "cURL",
+        "javascript": "JavaScript",
+        "python": "Python"
+      }
+    },
+    "contenido": {
+      "consultaMovimientos": {
+        "descripcion": "Retrieve movements from a corporate account, with currency filters and pagination.",
+        "parametros": {
+          "nit": {
+            "descripcion": "Company tax ID (array; more than one value may be accepted)"
+          },
+          "fechaInicial": {
+            "descripcion": "Start date of the query range"
+          },
+          "fechaFinal": {
+            "descripcion": "End date of the query range"
+          },
+          "filtros": {
+            "descripcion": "Additional filters, e.g. { tipo: 'moneda', valor: 'usd' }"
+          },
+          "paginacion_ASC": {
+            "descripcion": "Ascending (true) or descending (false) sort order"
+          },
+          "paginacion_pagina": {
+            "descripcion": "Page number, starting at 0"
+          },
+          "paginacion_tamanoPagina": {
+            "descripcion": "Number of results per page"
+          }
+        }
+      }
+    }
+  },
   "Footer": {
     "description": "Developer platform for the Open Banking ecosystem. Build secure financial experiences on enterprise-grade banking infrastructure.",
     "platform": "Platform",
