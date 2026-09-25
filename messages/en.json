@@ -500,6 +500,75 @@
           }
         },
         "supportNote": "If your use case needs recurring charges, high volumes, or a different integration model, our team will support you through the enablement process."
+      },
+      "validacionCuenta": {
+        "name": "API Validación de Cuenta",
+        "description": "Reduce fraud and rejection risk by instantly verifying account ownership and active status before originating any transaction or contract.",
+        "heroDescription": "Instantly verify the ownership and active status of a bank account before originating a payment or a contract.",
+        "intro": "Built for onboarding, disbursements, and direct-debit setups, this API confirms whether the destination account is active and belongs to the declared owner.",
+        "quickFacts": {
+          "0": { "label": "Product", "value": "Validación de Cuenta" },
+          "1": { "label": "Best fit", "value": "Onboarding and disbursements" },
+          "2": { "label": "Coverage", "value": "Account ownership and status" },
+          "3": { "label": "Value", "value": "Less fraud and fewer rejections" }
+        },
+        "coverage": {
+          "value": "1 endpoint"
+        },
+        "idealFor": "Teams that need to confirm a bank account before paying, contracting, or registering a customer or supplier.",
+        "benefits": {
+          "0": "Reduce rejections and fraud by verifying account ownership before processing any payment or contract.",
+          "1": "Speed up onboarding and disbursement by confirming in seconds that the destination account is active."
+        },
+        "useCases": {
+          "0": "Pre-disbursement validation: before transferring funds to a supplier or employee, the system confirms that the destination account is active and belongs to the declared owner.",
+          "1": "Onboarding fraud prevention: when registering a new customer or supplier, the provided bank account is validated as truly theirs, reducing impersonation.",
+          "2": "Confirmation before recurring contracts: the counterparty bank account is validated before originating a direct-debit or recurring-payment contract."
+        },
+        "requirements": {
+          "0": "Have an active developer account and approved access to the product.",
+          "1": "Hold Sandbox or Production credentials, depending on your integration stage.",
+          "2": "Use a secure backend to handle the validation response with traceability."
+        },
+        "authentication": {
+          "title": "Client credentials and secure headers",
+          "description": "The integration requires credentials issued by Davivienda and security headers that identify the application and trace every operation."
+        },
+        "environments": {
+          "0": "Sandbox for functional testing",
+          "1": "Production for authorized operations"
+        },
+        "journeySteps": {
+          "0": "Request access and obtain your Sandbox credentials.",
+          "1": "Validate test queries across scenarios (active account, inactive account, owner mismatch).",
+          "2": "Integrate monitoring and move to Production."
+        },
+        "endpoints": {
+          "validacion": {
+            "description": "Validates the ownership and active status of a bank account. Illustrative content, subject to the real specs.",
+            "parameters": {
+              "tipoDocumento": "Owner document type, for example NIT or DUI",
+              "numeroDocumento": "Document number of the declared owner",
+              "numeroCuenta": "Account number to validate",
+              "tipoCuenta": "Account type, for example checking or savings"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Invalid request",
+            "description": "tipoDocumento, numeroDocumento, or numeroCuenta is missing, or the data is invalid."
+          },
+          "401": {
+            "title": "Unauthorized",
+            "description": "The access key is invalid, expired, or does not belong to this environment."
+          },
+          "500": {
+            "title": "Internal error",
+            "description": "A temporary issue occurred while processing the query. Try again later."
+          }
+        },
+        "supportNote": "If your use case needs bulk validations, more document types, or a different onboarding flow, our team will support you through the enablement process."
       }
     }
   },

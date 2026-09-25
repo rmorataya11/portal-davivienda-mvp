@@ -4,6 +4,7 @@ export const productMessageKeys = {
   "api-tesoreria": "tesoreria",
   "api-estatus-pagos": "estatusPagos",
   "api-pay-davivienda": "payDavivienda",
+  "api-validacion-cuenta": "validacionCuenta",
 } as const;
 
 export const categoryMessageKeys = {
@@ -26,9 +27,24 @@ const endpointMessageKeys: Record<string, string> = {
   "/pagos/estatus/bloqueo/": "bloqueo",
   "/pagos/pay/cobro/": "cobro",
   "/pagos/pay/reembolso/": "reembolso",
+  "/cuentas/validacion/": "validacion",
 };
 
-export type CatalogTranslate = (key: string) => string;
+export type CatalogTranslate = ((key: string) => string) & {
+  has?: (key: string) => boolean;
+};
+
+function catalogMessage(t: CatalogTranslate, key: string, fallback: string) {
+  if (t.has && !t.has(key)) {
+    return fallback;
+  }
+
+  try {
+    return t(key);
+  } catch {
+    return fallback;
+  }
+}
 
 export function getProductMessageKey(slug: string) {
   return slug in productMessageKeys ? productMessageKeys[slug as keyof typeof productMessageKeys] : slug;
@@ -53,10 +69,10 @@ export function localizeCatalogItem(item: ApiCatalogItem, t: CatalogTranslate): 
 
   return {
     ...item,
-    name: t(`products.${productKey}.name`),
-    description: t(`products.${productKey}.description`),
-    category: t(`categories.${getCategoryMessageKey(item.category)}`),
-    status: t(`status.${getStatusMessageKey(item.status)}`) as ApiCatalogItem["status"],
+    name: catalogMessage(t, `products.${productKey}.name`, item.name),
+    description: catalogMessage(t, `products.${productKey}.description`, item.description),
+    category: catalogMessage(t, `categories.${getCategoryMessageKey(item.category)}`, item.category),
+    status: catalogMessage(t, `status.${getStatusMessageKey(item.status)}`, item.status) as ApiCatalogItem["status"],
   };
 }
 
@@ -67,34 +83,40 @@ export function localizeApiDetail(api: ApiDetail, t: CatalogTranslate): ApiDetai
   return {
     ...api,
     ...item,
-    heroDescription: t(`products.${productKey}.heroDescription`),
-    intro: t(`products.${productKey}.intro`),
+    heroDescription: catalogMessage(t, `products.${productKey}.heroDescription`, api.heroDescription),
+    intro: catalogMessage(t, `products.${productKey}.intro`, api.intro),
     quickFacts: api.quickFacts.map((fact, index) => ({
-      label: t(`products.${productKey}.quickFacts.${index}.label`),
-      value: t(`products.${productKey}.quickFacts.${index}.value`),
+      label: catalogMessage(t, `products.${productKey}.quickFacts.${index}.label`, fact.label),
+      value: catalogMessage(t, `products.${productKey}.quickFacts.${index}.value`, fact.value),
     })),
     coverage: {
-      value: t(`products.${productKey}.coverage.value`),
+      value: catalogMessage(t, `products.${productKey}.coverage.value`, api.coverage.value),
       detail: api.coverage.detail,
     },
-    idealFor: t(`products.${productKey}.idealFor`),
-    benefits: api.benefits.map((_, index) => t(`products.${productKey}.benefits.${index}`)),
-    useCases: api.useCases.map((_, index) => t(`products.${productKey}.useCases.${index}`)),
-    requirements: api.requirements.map((_, index) => t(`products.${productKey}.requirements.${index}`)),
+    idealFor: catalogMessage(t, `products.${productKey}.idealFor`, api.idealFor),
+    benefits: api.benefits.map((benefit, index) => catalogMessage(t, `products.${productKey}.benefits.${index}`, benefit)),
+    useCases: api.useCases.map((useCase, index) => catalogMessage(t, `products.${productKey}.useCases.${index}`, useCase)),
+    requirements: api.requirements.map((requirement, index) =>
+      catalogMessage(t, `products.${productKey}.requirements.${index}`, requirement),
+    ),
     authentication: {
       ...api.authentication,
-      title: t(`products.${productKey}.authentication.title`),
-      description: t(`products.${productKey}.authentication.description`),
+      title: catalogMessage(t, `products.${productKey}.authentication.title`, api.authentication.title),
+      description: catalogMessage(t, `products.${productKey}.authentication.description`, api.authentication.description),
     },
-    environments: api.environments.map((_, index) => t(`products.${productKey}.environments.${index}`)),
-    journeySteps: (api.journeySteps ?? []).map((_, index) => t(`products.${productKey}.journeySteps.${index}`)),
+    environments: api.environments.map((environment, index) =>
+      catalogMessage(t, `products.${productKey}.environments.${index}`, environment),
+    ),
+    journeySteps: (api.journeySteps ?? []).map((step, index) =>
+      catalogMessage(t, `products.${productKey}.journeySteps.${index}`, step),
+    ),
     endpoints: api.endpoints.map((endpoint) => localizeEndpoint(endpoint, productKey, t)),
     errors: api.errors.map((error) => ({
       ...error,
-      title: t(`products.${productKey}.errors.${error.code}.title`),
-      description: t(`products.${productKey}.errors.${error.code}.description`),
+      title: catalogMessage(t, `products.${productKey}.errors.${error.code}.title`, error.title),
+      description: catalogMessage(t, `products.${productKey}.errors.${error.code}.description`, error.description),
     })),
-    supportNote: t(`products.${productKey}.supportNote`),
+    supportNote: catalogMessage(t, `products.${productKey}.supportNote`, api.supportNote),
   };
 }
 
@@ -103,14 +125,20 @@ function localizeEndpoint(endpoint: ApiEndpoint, productKey: string, t: CatalogT
 
   return {
     ...endpoint,
-    description: t(`products.${productKey}.endpoints.${endpointKey}.description`),
+    description: catalogMessage(
+      t,
+      `products.${productKey}.endpoints.${endpointKey}.description`,
+      endpoint.description,
+    ),
     playground: {
       ...endpoint.playground,
       parameters: endpoint.playground.parameters.map((parameter) => ({
         ...parameter,
         type: localizeParameterType(parameter.type, t),
-        description: t(
+        description: catalogMessage(
+          t,
           `products.${productKey}.endpoints.${endpointKey}.parameters.${parameter.name.replace(/\./g, "_")}`,
+          parameter.description,
         ),
       })),
     },
@@ -118,5 +146,6 @@ function localizeEndpoint(endpoint: ApiEndpoint, productKey: string, t: CatalogT
 }
 
 function localizeParameterType(type: string, t: CatalogTranslate) {
-  return type in parameterTypeKeys ? t(`types.${parameterTypeKeys[type as keyof typeof parameterTypeKeys]}`) : type;
+  const typeKey = parameterTypeKeys[type as keyof typeof parameterTypeKeys];
+  return typeKey ? catalogMessage(t, `types.${typeKey}`, type) : type;
 }

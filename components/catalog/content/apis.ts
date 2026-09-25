@@ -673,8 +673,153 @@ const payDavivienda: ApiDetail = {
     "Si su caso de uso requiere cobros recurrentes, volúmenes altos o un modelo de integración distinto, nuestro equipo le acompaña en el proceso de habilitación.",
 };
 
+/** Contenido ilustrativo: actualizar cuando existan las specs reales de API Validación de Cuenta. */
+const validacionCuentaRequest = `{
+  "tipoDocumento": "NIT",
+  "numeroDocumento": "06142901911013",
+  "numeroCuenta": "1234567890",
+  "tipoCuenta": "corriente"
+}`;
+
+const validacionCuentaResponse = `{
+  "code": "OK",
+  "message": "Exito",
+  "response": {
+    "cuentaActiva": true,
+    "titularCoincide": true,
+    "tipoCuenta": "corriente"
+  }
+}`;
+
+const validacionCuenta: ApiDetail = {
+  slug: "api-validacion-cuenta",
+  name: "API Validación de Cuenta",
+  description:
+    "Mitigue el riesgo de fraude y rechazos verificando al instante la titularidad y el estado activo de las cuentas bancarias antes de originar cualquier transacción o contrato.",
+  category: "Cuentas",
+  status: "Producción",
+  imageSrc: "/catag/icons_apis/api_valid_cuenta.svg",
+  heroDescription:
+    "Verifique al instante la titularidad y el estado activo de una cuenta bancaria antes de originar un pago o un contrato.",
+  intro:
+    "Pensada para onboarding, desembolsos y domiciliaciones, esta API confirma si la cuenta destino está activa y pertenece al titular declarado.",
+  quickFacts: [
+    { label: "Producto", value: "Validación de Cuenta" },
+    { label: "Uso ideal", value: "Onboarding y desembolsos" },
+    { label: "Cobertura", value: "Titularidad y estado de cuenta" },
+    { label: "Valor", value: "Menos fraude y menos rechazos" },
+  ],
+  coverage: {
+    value: "1 endpoint",
+    detail: "POST /cuentas/validacion/",
+  },
+  idealFor:
+    "Equipos que necesitan confirmar una cuenta bancaria antes de pagar, contratar o registrar un cliente o proveedor.",
+  benefits: [
+    "Reduzca rechazos y fraude verificando la titularidad de la cuenta antes de procesar cualquier pago o contrato.",
+    "Agilice sus procesos de onboarding y desembolso confirmando en segundos el estado activo de la cuenta destino.",
+  ],
+  useCases: [
+    "Validación previa a desembolsos: antes de transferir fondos a un proveedor o empleado, el sistema confirma que la cuenta destino está activa y pertenece al titular declarado.",
+    "Prevención de fraude en onboarding: al registrar un nuevo cliente o proveedor, se valida que la cuenta bancaria proporcionada realmente le pertenece, evitando suplantación.",
+    "Confirmación antes de contratos recurrentes: se valida la cuenta bancaria de la contraparte antes de originar un contrato de domiciliación o pago recurrente.",
+  ],
+  requirements: [
+    "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
+    "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
+    "Disponer de un backend seguro para manejar la respuesta de validación con trazabilidad.",
+  ],
+  authentication: {
+    title: "Credenciales de cliente y cabeceras seguras",
+    description:
+      "La integración requiere credenciales provistas por Davivienda y el envío de cabeceras de seguridad para identificar la aplicación y rastrear cada operación.",
+    headers: ["x-api-key: TU_API_KEY", "Content-Type: application/json"],
+  },
+  environments: ["Sandbox para pruebas funcionales", "Producción para operaciones autorizadas"],
+  journeySteps: [
+    "Solicite acceso y obtenga sus credenciales de Sandbox.",
+    "Valide consultas de prueba con distintos escenarios (cuenta activa, inactiva, titular no coincide).",
+    "Integre monitoreo y pase a Producción.",
+  ],
+  endpoints: [
+    {
+      method: "POST",
+      path: "/cuentas/validacion/",
+      description:
+        "Valida la titularidad y el estado activo de una cuenta bancaria. Contenido ilustrativo, sujeto a las specs reales.",
+      playground: {
+        httpUrl: "https://api.davivienda.com/cuentas/validacion/",
+        contentType: "application/json",
+        credentialsLabel: "ApiKeyAuth",
+        parameters: [
+          {
+            name: "tipoDocumento",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Tipo de documento del titular, por ejemplo NIT o DUI",
+          },
+          {
+            name: "numeroDocumento",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Número de documento del titular declarado",
+          },
+          {
+            name: "numeroCuenta",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Número de cuenta a validar",
+          },
+          {
+            name: "tipoCuenta",
+            type: "string",
+            required: false,
+            location: "body",
+            description: "Tipo de cuenta, por ejemplo corriente o ahorro",
+          },
+        ],
+        requestBody: validacionCuentaRequest,
+        responseStatus: "200 OK",
+        responseBody: validacionCuentaResponse,
+      },
+    },
+  ],
+  sampleRequest: `curl -X POST https://api.davivienda.com/cuentas/validacion/ \\
+  -H "x-api-key: TU_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "tipoDocumento": "NIT",
+    "numeroDocumento": "06142901911013",
+    "numeroCuenta": "1234567890",
+    "tipoCuenta": "corriente"
+  }'`,
+  sampleResponse: validacionCuentaResponse,
+  errors: [
+    {
+      code: "400",
+      title: "Solicitud inválida",
+      description: "Faltan tipoDocumento, numeroDocumento, numeroCuenta o los datos no son válidos.",
+    },
+    {
+      code: "401",
+      title: "No autorizado",
+      description: "La llave de acceso es inválida, expiró o no corresponde a este ambiente.",
+    },
+    {
+      code: "500",
+      title: "Error interno",
+      description: "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde.",
+    },
+  ],
+  supportNote:
+    "Si su caso de uso requiere validaciones masivas, más tipos de documento o un flujo de onboarding distinto, nuestro equipo le acompaña en el proceso de habilitación.",
+};
+
 /** Fuente única del catálogo. */
-export const apiDetails: ApiDetail[] = [tesoreria, estatusPagos, payDavivienda];
+export const apiDetails: ApiDetail[] = [tesoreria, estatusPagos, payDavivienda, validacionCuenta];
 
 export const apiCatalogItems: ApiCatalogItem[] = apiDetails.map((api) => ({
   slug: api.slug,
