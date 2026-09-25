@@ -296,9 +296,9 @@
           "1": "Integre información de tesorería en ERPs, dashboards y flujos operativos."
         },
         "useCases": {
-          "0": "Consultar movimientos de una cuenta empresarial por NIT.",
-          "1": "Consultar movimientos en un rango de fechas (fechaInicial y fechaFinal).",
-          "2": "Filtrar movimientos por moneda y paginar los resultados."
+          "0": "Conciliación bancaria automática: el cliente corporativo concilia cada día los movimientos de su cuenta contra el ERP o el sistema contable, sin intervención manual. Con fechaInicial y fechaFinal limita la consulta a las transacciones del día.",
+          "1": "Detección de pagos duplicados o inconsistencias: el equipo de tesorería cruza los movimientos con sus registros internos para identificar transacciones repetidas o montos inusuales. El NIT permite aislar cuentas específicas dentro de un grupo empresarial y la paginación recorre el histórico sin saturar el proceso.",
+          "2": "Reportería financiera para el cierre de mes: el área de finanzas genera reportes consolidados del flujo de caja para juntas directivas o auditorías. Filtra por moneda y por periodo con fechaInicial y fechaFinal, y pagina los resultados para armar la posición de tesorería del mes."
         },
         "requirements": {
           "0": "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
@@ -320,7 +320,7 @@
               "nit": "NIT de la empresa (array, puede aceptar más de uno)",
               "fechaInicial": "Fecha inicial del rango de consulta",
               "fechaFinal": "Fecha final del rango de consulta",
-              "filtros": "Filtros adicionales, ej. '{' tipo: ''moneda'', valor: ''usd'' '}'",
+              "filtros": "Filtros adicionales, por ejemplo tipo moneda y valor usd",
               "paginacion_ASC": "Orden ascendente (true) o descendente (false)",
               "paginacion_pagina": "Número de página, empieza en 0",
               "paginacion_tamanoPagina": "Cantidad de resultados por página"

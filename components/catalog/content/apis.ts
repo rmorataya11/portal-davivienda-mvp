@@ -151,9 +151,9 @@ const tesoreria: ApiDetail = {
     "Integre información de tesorería en ERPs, dashboards y flujos operativos.",
   ],
   useCases: [
-    "Consultar movimientos de una cuenta empresarial por NIT.",
-    "Consultar movimientos en un rango de fechas (fechaInicial y fechaFinal).",
-    "Filtrar movimientos por moneda y paginar los resultados.",
+    "Conciliación bancaria automática: el cliente corporativo concilia cada día los movimientos de su cuenta contra el ERP o el sistema contable, sin intervención manual. Con fechaInicial y fechaFinal limita la consulta a las transacciones del día.",
+    "Detección de pagos duplicados o inconsistencias: el equipo de tesorería cruza los movimientos con sus registros internos para identificar transacciones repetidas o montos inusuales. El NIT permite aislar cuentas específicas dentro de un grupo empresarial y la paginación recorre el histórico sin saturar el proceso.",
+    "Reportería financiera para el cierre de mes: el área de finanzas genera reportes consolidados del flujo de caja para juntas directivas o auditorías. Filtra por moneda y por periodo con fechaInicial y fechaFinal, y pagina los resultados para armar la posición de tesorería del mes.",
   ],
   requirements: [
     "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
@@ -203,7 +203,7 @@ const tesoreria: ApiDetail = {
             type: "array de objetos",
             required: false,
             location: "body",
-            description: "Filtros adicionales, ej. { tipo: 'moneda', valor: 'usd' }",
+            description: "Filtros adicionales, por ejemplo tipo moneda y valor usd",
           },
           {
             name: "paginacion.ASC",

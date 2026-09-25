@@ -296,9 +296,9 @@
           "1": "Bring treasury data into ERPs, dashboards, and operational workflows."
         },
         "useCases": {
-          "0": "Retrieve movements for a corporate account by tax ID (NIT).",
-          "1": "Retrieve movements within a date range (fechaInicial and fechaFinal).",
-          "2": "Filter movements by currency and paginate the results."
+          "0": "Automated bank reconciliation: the corporate client reconciles account movements against its ERP or accounting system every day, without manual work. fechaInicial and fechaFinal limit the query to that day's transactions.",
+          "1": "Duplicate payment and inconsistency detection: the treasury team matches movements to internal records to spot repeated transactions or unusual amounts. The NIT isolates specific accounts within a corporate group, and pagination walks the history without overloading the process.",
+          "2": "Month-end financial reporting: finance produces consolidated cash-flow reports for board meetings or audits. Currency filters plus the fechaInicial and fechaFinal range, with pagination, build the month's treasury position."
         },
         "requirements": {
           "0": "Have an active developer account and approved access to the product.",
@@ -320,7 +320,7 @@
               "nit": "Company tax ID (array; more than one value may be accepted)",
               "fechaInicial": "Start date of the query range",
               "fechaFinal": "End date of the query range",
-              "filtros": "Additional filters, e.g. '{' tipo: ''moneda'', valor: ''usd'' '}'",
+              "filtros": "Additional filters, for example currency type and usd value",
               "paginacion_ASC": "Ascending (true) or descending (false) sort order",
               "paginacion_pagina": "Page number, starting at 0",
               "paginacion_tamanoPagina": "Number of results per page"
