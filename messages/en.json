@@ -138,7 +138,8 @@
     },
     "categories": {
       "accounts": "Accounts",
-      "payments": "Payments"
+      "payments": "Payments",
+      "paymentsCards": "Payments / Cards"
     },
     "status": {
       "production": "Production"
@@ -422,6 +423,83 @@
           }
         },
         "supportNote": "If your use case needs additional validations, more authorized NITs, or high corporate volumes, our team will support you through the enablement process."
+      },
+      "payDavivienda": {
+        "name": "API Pay Davivienda",
+        "description": "Embed our robust payment gateway in your e-commerce site or application. Process credit and debit card charges securely, with high conversion standards.",
+        "heroDescription": "Process credit and debit card charges securely, with a checkout designed to convert.",
+        "intro": "Built for e-commerce and digital collections, this API lets you process card payments, tokenize cards for recurring charges, and manage refunds from your backend.",
+        "quickFacts": {
+          "0": { "label": "Product", "value": "Pay Davivienda" },
+          "1": { "label": "Best fit", "value": "E-commerce and digital collections" },
+          "2": { "label": "Coverage", "value": "Credit and debit cards" },
+          "3": { "label": "Value", "value": "Secure checkout and high conversion" }
+        },
+        "coverage": {
+          "value": "2 endpoints"
+        },
+        "idealFor": "Merchants and platforms that need to charge cards, store a token for subscriptions, and return funds through the API.",
+        "benefits": {
+          "0": "Increase your conversion rates with an optimized checkout and secure card tokenization.",
+          "1": "Reduce fraud risk with antifraud validations built into every transaction."
+        },
+        "useCases": {
+          "0": "E-commerce checkout: the merchant processes card payments directly from its site, without redirecting the customer to an external gateway.",
+          "1": "Recurring charges and subscriptions: a subscription business charges automatically each month using a stored card token, without asking for the data again.",
+          "2": "Refunds and chargebacks: the support team processes partial or full refunds via API when a customer cancels a purchase."
+        },
+        "requirements": {
+          "0": "Have an active developer account and approved access to the product.",
+          "1": "Hold Sandbox or Production credentials, depending on your integration stage.",
+          "2": "Meet card data security requirements (PCI DSS) according to the integration level you choose."
+        },
+        "authentication": {
+          "title": "Client credentials and secure headers",
+          "description": "The integration requires credentials issued by Davivienda and security headers that identify the application and trace every operation."
+        },
+        "environments": {
+          "0": "Sandbox for functional testing",
+          "1": "Production for authorized operations"
+        },
+        "journeySteps": {
+          "0": "Request access and obtain your Sandbox credentials.",
+          "1": "Integrate checkout and validate test transactions (approved, declined, and refunds).",
+          "2": "Complete the required security certification and move to Production."
+        },
+        "endpoints": {
+          "cobro": {
+            "description": "Processes a charge with a tokenized card. Illustrative content, subject to the real specs.",
+            "parameters": {
+              "monto": "Amount to charge",
+              "moneda": "Currency code, for example USD",
+              "tokenTarjeta": "Card token; do not send the full card number",
+              "descripcion": "Charge description shown on the receipt"
+            }
+          },
+          "reembolso": {
+            "description": "Processes a partial or full refund of an approved transaction. Illustrative content.",
+            "parameters": {
+              "idTransaccion": "Identifier of the original transaction",
+              "monto": "Amount to refund",
+              "motivo": "Reason for the refund"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Invalid request",
+            "description": "monto, moneda, or tokenTarjeta is missing, or the refund does not match a valid transaction."
+          },
+          "401": {
+            "title": "Unauthorized",
+            "description": "The access key is invalid, expired, or does not belong to this environment."
+          },
+          "500": {
+            "title": "Internal error",
+            "description": "A temporary issue occurred while processing the query. Try again later."
+          }
+        },
+        "supportNote": "If your use case needs recurring charges, high volumes, or a different integration model, our team will support you through the enablement process."
       }
     }
   },

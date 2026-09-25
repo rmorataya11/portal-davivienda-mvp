@@ -138,7 +138,8 @@
     },
     "categories": {
       "accounts": "Cuentas",
-      "payments": "Pagos"
+      "payments": "Pagos",
+      "paymentsCards": "Pagos / Tarjetas"
     },
     "status": {
       "production": "Producción"
@@ -422,6 +423,83 @@
           }
         },
         "supportNote": "Si su caso de uso requiere validaciones adicionales, más NITs autorizados o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación."
+      },
+      "payDavivienda": {
+        "name": "API Pay Davivienda",
+        "description": "Incorpore nuestra robusta pasarela de pagos en su e-commerce o aplicación. Procese cobros con tarjetas de crédito y débito de forma segura y con los más altos estándares de conversión.",
+        "heroDescription": "Procese cobros con tarjetas de crédito y débito de forma segura, con un checkout pensado para convertir.",
+        "intro": "Pensada para e-commerce y cobros digitales, esta API permite procesar pagos con tarjeta, tokenizar para cobros recurrentes y gestionar reembolsos desde su backend.",
+        "quickFacts": {
+          "0": { "label": "Producto", "value": "Pay Davivienda" },
+          "1": { "label": "Uso ideal", "value": "E-commerce y cobros digitales" },
+          "2": { "label": "Cobertura", "value": "Tarjetas de crédito y débito" },
+          "3": { "label": "Valor", "value": "Checkout seguro y alta conversión" }
+        },
+        "coverage": {
+          "value": "2 endpoints"
+        },
+        "idealFor": "Comercios y plataformas que necesitan cobrar con tarjeta, guardar un token para suscripciones y devolver fondos por API.",
+        "benefits": {
+          "0": "Aumente sus tasas de conversión con un checkout optimizado y tokenización segura de tarjetas.",
+          "1": "Reduzca el riesgo de fraude con validaciones antifraude integradas en cada transacción."
+        },
+        "useCases": {
+          "0": "Checkout de e-commerce: el comercio procesa pagos con tarjeta directamente desde su sitio, sin redirigir al cliente a una pasarela externa.",
+          "1": "Cobros recurrentes/suscripciones: un negocio de suscripción cobra automáticamente cada mes usando un token de tarjeta guardado, sin pedir los datos de nuevo.",
+          "2": "Reembolsos y contracargos: el equipo de soporte procesa reembolsos parciales o totales vía API cuando un cliente cancela una compra."
+        },
+        "requirements": {
+          "0": "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
+          "1": "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
+          "2": "Cumplir con los requisitos de seguridad de datos de tarjeta (PCI DSS) según el nivel de integración elegido."
+        },
+        "authentication": {
+          "title": "Credenciales de cliente y cabeceras seguras",
+          "description": "La integración requiere credenciales provistas por Davivienda y el envío de cabeceras de seguridad para identificar la aplicación y rastrear cada operación."
+        },
+        "environments": {
+          "0": "Sandbox para pruebas funcionales",
+          "1": "Producción para operaciones autorizadas"
+        },
+        "journeySteps": {
+          "0": "Solicite acceso y obtenga sus credenciales de Sandbox.",
+          "1": "Integre el checkout y valide transacciones de prueba (aprobadas, rechazadas, reembolsos).",
+          "2": "Complete la certificación de seguridad requerida y pase a Producción."
+        },
+        "endpoints": {
+          "cobro": {
+            "description": "Procesa un cobro con tarjeta tokenizada. Contenido ilustrativo, sujeto a las specs reales.",
+            "parameters": {
+              "monto": "Monto a cobrar",
+              "moneda": "Código de moneda, por ejemplo USD",
+              "tokenTarjeta": "Token de la tarjeta, no envíe el número completo",
+              "descripcion": "Descripción del cobro visible en el comprobante"
+            }
+          },
+          "reembolso": {
+            "description": "Procesa un reembolso parcial o total de una transacción aprobada. Contenido ilustrativo.",
+            "parameters": {
+              "idTransaccion": "Identificador de la transacción original",
+              "monto": "Monto a reembolsar",
+              "motivo": "Motivo del reembolso"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Solicitud inválida",
+            "description": "Faltan monto, moneda, tokenTarjeta o el reembolso no corresponde a una transacción válida."
+          },
+          "401": {
+            "title": "No autorizado",
+            "description": "La llave de acceso es inválida, expiró o no corresponde a este ambiente."
+          },
+          "500": {
+            "title": "Error interno",
+            "description": "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde."
+          }
+        },
+        "supportNote": "Si su caso de uso requiere cobros recurrentes, volúmenes altos o un modelo de integración distinto, nuestro equipo le acompaña en el proceso de habilitación."
       }
     }
   },

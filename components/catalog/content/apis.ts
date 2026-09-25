@@ -474,8 +474,207 @@ const estatusPagos: ApiDetail = {
     "Si su caso de uso requiere validaciones adicionales, más NITs autorizados o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación.",
 };
 
+/** Contenido ilustrativo: actualizar cuando existan las specs reales de API Pay Davivienda. */
+const payDaviviendaCobroRequest = `{
+  "monto": 25.50,
+  "moneda": "USD",
+  "tokenTarjeta": "tok_tarjeta_ejemplo_001",
+  "descripcion": "Pedido 1042"
+}`;
+
+const payDaviviendaCobroResponse = `{
+  "code": "OK",
+  "message": "Exito",
+  "response": {
+    "idTransaccion": "pay_ejemplo_001",
+    "estado": "aprobada",
+    "monto": 25.50,
+    "moneda": "USD"
+  }
+}`;
+
+const payDaviviendaReembolsoRequest = `{
+  "idTransaccion": "pay_ejemplo_001",
+  "monto": 25.50,
+  "motivo": "cancelacion"
+}`;
+
+const payDaviviendaReembolsoResponse = `{
+  "code": "OK",
+  "message": "Exito",
+  "response": {
+    "idTransaccion": "pay_ejemplo_001",
+    "idReembolso": "ref_ejemplo_001",
+    "estado": "reembolsada",
+    "monto": 25.50
+  }
+}`;
+
+const payDavivienda: ApiDetail = {
+  slug: "api-pay-davivienda",
+  name: "API Pay Davivienda",
+  description:
+    "Incorpore nuestra robusta pasarela de pagos en su e-commerce o aplicación. Procese cobros con tarjetas de crédito y débito de forma segura y con los más altos estándares de conversión.",
+  category: "Pagos / Tarjetas",
+  status: "Producción",
+  imageSrc: "/catag/icons_apis/api_pay.svg",
+  heroDescription:
+    "Procese cobros con tarjetas de crédito y débito de forma segura, con un checkout pensado para convertir.",
+  intro:
+    "Pensada para e-commerce y cobros digitales, esta API permite procesar pagos con tarjeta, tokenizar para cobros recurrentes y gestionar reembolsos desde su backend.",
+  quickFacts: [
+    { label: "Producto", value: "Pay Davivienda" },
+    { label: "Uso ideal", value: "E-commerce y cobros digitales" },
+    { label: "Cobertura", value: "Tarjetas de crédito y débito" },
+    { label: "Valor", value: "Checkout seguro y alta conversión" },
+  ],
+  coverage: {
+    value: "2 endpoints",
+    detail: "POST /pagos/pay/cobro/ · POST /pagos/pay/reembolso/",
+  },
+  idealFor:
+    "Comercios y plataformas que necesitan cobrar con tarjeta, guardar un token para suscripciones y devolver fondos por API.",
+  benefits: [
+    "Aumente sus tasas de conversión con un checkout optimizado y tokenización segura de tarjetas.",
+    "Reduzca el riesgo de fraude con validaciones antifraude integradas en cada transacción.",
+  ],
+  useCases: [
+    "Checkout de e-commerce: el comercio procesa pagos con tarjeta directamente desde su sitio, sin redirigir al cliente a una pasarela externa.",
+    "Cobros recurrentes/suscripciones: un negocio de suscripción cobra automáticamente cada mes usando un token de tarjeta guardado, sin pedir los datos de nuevo.",
+    "Reembolsos y contracargos: el equipo de soporte procesa reembolsos parciales o totales vía API cuando un cliente cancela una compra.",
+  ],
+  requirements: [
+    "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
+    "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
+    "Cumplir con los requisitos de seguridad de datos de tarjeta (PCI DSS) según el nivel de integración elegido.",
+  ],
+  authentication: {
+    title: "Credenciales de cliente y cabeceras seguras",
+    description:
+      "La integración requiere credenciales provistas por Davivienda y el envío de cabeceras de seguridad para identificar la aplicación y rastrear cada operación.",
+    headers: ["x-api-key: TU_API_KEY", "Content-Type: application/json"],
+  },
+  environments: ["Sandbox para pruebas funcionales", "Producción para operaciones autorizadas"],
+  journeySteps: [
+    "Solicite acceso y obtenga sus credenciales de Sandbox.",
+    "Integre el checkout y valide transacciones de prueba (aprobadas, rechazadas, reembolsos).",
+    "Complete la certificación de seguridad requerida y pase a Producción.",
+  ],
+  endpoints: [
+    {
+      method: "POST",
+      path: "/pagos/pay/cobro/",
+      description:
+        "Procesa un cobro con tarjeta tokenizada. Contenido ilustrativo, sujeto a las specs reales.",
+      playground: {
+        httpUrl: "https://api.davivienda.com/pagos/pay/cobro/",
+        contentType: "application/json",
+        credentialsLabel: "ApiKeyAuth",
+        parameters: [
+          {
+            name: "monto",
+            type: "number",
+            required: true,
+            location: "body",
+            description: "Monto a cobrar",
+          },
+          {
+            name: "moneda",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Código de moneda, por ejemplo USD",
+          },
+          {
+            name: "tokenTarjeta",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Token de la tarjeta, no envíe el número completo",
+          },
+          {
+            name: "descripcion",
+            type: "string",
+            required: false,
+            location: "body",
+            description: "Descripción del cobro visible en el comprobante",
+          },
+        ],
+        requestBody: payDaviviendaCobroRequest,
+        responseStatus: "200 OK",
+        responseBody: payDaviviendaCobroResponse,
+      },
+    },
+    {
+      method: "POST",
+      path: "/pagos/pay/reembolso/",
+      description: "Procesa un reembolso parcial o total de una transacción aprobada. Contenido ilustrativo.",
+      playground: {
+        httpUrl: "https://api.davivienda.com/pagos/pay/reembolso/",
+        contentType: "application/json",
+        credentialsLabel: "ApiKeyAuth",
+        parameters: [
+          {
+            name: "idTransaccion",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Identificador de la transacción original",
+          },
+          {
+            name: "monto",
+            type: "number",
+            required: true,
+            location: "body",
+            description: "Monto a reembolsar",
+          },
+          {
+            name: "motivo",
+            type: "string",
+            required: false,
+            location: "body",
+            description: "Motivo del reembolso",
+          },
+        ],
+        requestBody: payDaviviendaReembolsoRequest,
+        responseStatus: "200 OK",
+        responseBody: payDaviviendaReembolsoResponse,
+      },
+    },
+  ],
+  sampleRequest: `curl -X POST https://api.davivienda.com/pagos/pay/cobro/ \\
+  -H "x-api-key: TU_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "monto": 25.50,
+    "moneda": "USD",
+    "tokenTarjeta": "tok_tarjeta_ejemplo_001",
+    "descripcion": "Pedido 1042"
+  }'`,
+  sampleResponse: payDaviviendaCobroResponse,
+  errors: [
+    {
+      code: "400",
+      title: "Solicitud inválida",
+      description: "Faltan monto, moneda, tokenTarjeta o el reembolso no corresponde a una transacción válida.",
+    },
+    {
+      code: "401",
+      title: "No autorizado",
+      description: "La llave de acceso es inválida, expiró o no corresponde a este ambiente.",
+    },
+    {
+      code: "500",
+      title: "Error interno",
+      description: "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde.",
+    },
+  ],
+  supportNote:
+    "Si su caso de uso requiere cobros recurrentes, volúmenes altos o un modelo de integración distinto, nuestro equipo le acompaña en el proceso de habilitación.",
+};
+
 /** Fuente única del catálogo. */
-export const apiDetails: ApiDetail[] = [tesoreria, estatusPagos];
+export const apiDetails: ApiDetail[] = [tesoreria, estatusPagos, payDavivienda];
 
 export const apiCatalogItems: ApiCatalogItem[] = apiDetails.map((api) => ({
   slug: api.slug,

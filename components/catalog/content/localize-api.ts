@@ -3,11 +3,13 @@ import type { ApiCatalogItem, ApiDetail, ApiEndpoint } from "./apis";
 export const productMessageKeys = {
   "api-tesoreria": "tesoreria",
   "api-estatus-pagos": "estatusPagos",
+  "api-pay-davivienda": "payDavivienda",
 } as const;
 
 export const categoryMessageKeys = {
   Cuentas: "accounts",
   Pagos: "payments",
+  "Pagos / Tarjetas": "paymentsCards",
 } as const;
 
 export const statusMessageKeys = {
@@ -22,6 +24,8 @@ const endpointMessageKeys: Record<string, string> = {
   "/conciliacion/bancaempresa/movimientos/": "movimientos",
   "/pagos/estatus/busqueda/": "busqueda",
   "/pagos/estatus/bloqueo/": "bloqueo",
+  "/pagos/pay/cobro/": "cobro",
+  "/pagos/pay/reembolso/": "reembolso",
 };
 
 export type CatalogTranslate = (key: string) => string;
