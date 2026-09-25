@@ -139,6 +139,7 @@
     "categories": {
       "accounts": "Cuentas",
       "payments": "Pagos",
+      "cards": "Tarjetas",
       "paymentsCards": "Pagos / Tarjetas"
     },
     "status": {

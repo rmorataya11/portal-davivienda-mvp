@@ -7,8 +7,9 @@ import { ApiCard } from "./api-card";
 import { CatalogGlyph } from "./catalog-glyph";
 import { apiCatalogItems, apiDetails, getApiDetailBySlug } from "./content/apis";
 import {
+  catalogItemMatchesFilter,
   getCatalogFilterKeys,
-  getCategoryMessageKey,
+  getFilterChipLabel,
   localizeApiDetail,
   localizeCatalogItem,
 } from "./content/localize-api";
@@ -21,7 +22,7 @@ export function CatalogBrowser() {
 
   const normalizedQuery = query.trim().toLowerCase();
   const filteredItems = apiCatalogItems.filter((item) => {
-    if (category !== "all" && getCategoryMessageKey(item.category) !== category) {
+    if (!catalogItemMatchesFilter(item.category, category)) {
       return false;
     }
 
@@ -91,7 +92,7 @@ export function CatalogBrowser() {
                   : "border-[#707070] bg-white text-[#404040] hover:bg-[#404040] hover:text-white"
               }`}
             >
-              {item === "all" ? t("filters.all") : t(`categories.${item}`)}
+              {getFilterChipLabel(t, item)}
             </button>
           );
         })}

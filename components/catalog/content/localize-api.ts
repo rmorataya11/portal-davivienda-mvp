@@ -10,6 +10,7 @@ export const productMessageKeys = {
 export const categoryMessageKeys = {
   Cuentas: "accounts",
   Pagos: "payments",
+  Tarjetas: "cards",
   "Pagos / Tarjetas": "paymentsCards",
 } as const;
 
@@ -56,12 +57,43 @@ export function getCategoryMessageKey(category: string) {
     : category;
 }
 
+export function getCategoryTags(category: string) {
+  return category
+    .split("/")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+}
+
 export function getStatusMessageKey(status: string) {
   return status in statusMessageKeys ? statusMessageKeys[status as keyof typeof statusMessageKeys] : status;
 }
 
 export function getCatalogFilterKeys(categories: string[]) {
-  return ["all", ...Array.from(new Set(categories.map(getCategoryMessageKey)))];
+  return ["all", ...Array.from(new Set(categories.flatMap(getCategoryTags).map(getCategoryMessageKey)))];
+}
+
+export function catalogItemMatchesFilter(category: string, filterKey: string) {
+  if (filterKey === "all") {
+    return true;
+  }
+
+  return getCategoryTags(category).some((tag) => getCategoryMessageKey(tag) === filterKey);
+}
+
+const filterChipFallbacks: Record<string, string> = {
+  all: "Todas",
+  accounts: "Cuentas",
+  payments: "Pagos",
+  cards: "Tarjetas",
+  paymentsCards: "Pagos / Tarjetas",
+};
+
+export function getFilterChipLabel(t: CatalogTranslate, filterKey: string) {
+  if (filterKey === "all") {
+    return catalogMessage(t, "filters.all", filterChipFallbacks.all);
+  }
+
+  return catalogMessage(t, `categories.${filterKey}`, filterChipFallbacks[filterKey] ?? filterKey);
 }
 
 export function localizeCatalogItem(item: ApiCatalogItem, t: CatalogTranslate): ApiCatalogItem {
