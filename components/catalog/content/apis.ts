@@ -148,7 +148,8 @@ const tesoreria: ApiDetail = {
     "Equipos que necesitan liquidez visible, conciliación rápida y automatización en sus flujos internos.",
   benefits: [
     "Automatice conciliaciones y reduzca pasos manuales en sus procesos internos.",
-    "Integre información de tesorería en ERPs, dashboards y flujos operativos.",
+    "Tenga visibilidad de la liquidez de su empresa en tiempo casi real y decida con información actualizada.",
+    "Gane agilidad operativa: reduzca el tiempo de cierre contable y responda antes ante inconsistencias.",
   ],
   useCases: [
     "Conciliación bancaria automática: el cliente corporativo concilia cada día los movimientos de su cuenta contra el ERP o el sistema contable, sin intervención manual. Con fechaInicial y fechaFinal limita la consulta a las transacciones del día.",

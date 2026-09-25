@@ -197,12 +197,13 @@
       "integrationDescription": "Todo lo necesario para preparar su primer consumo de la API y pasar de exploración a integración real.",
       "authenticationEyebrow": "Autenticación",
       "environmentsEyebrow": "Ambientes",
-      "idealForEyebrow": "Ideal para",
+      "requirementsEyebrow": "Requisitos",
+      "headersEyebrow": "Cabeceras",
       "journeyEyebrow": "Journey",
       "journeyTitle": "Ruta de integración sugerida",
       "journeyDescription": "Una secuencia simple para validar la API, probar su flujo y dejar lista la salida a producción.",
       "journeySteps": {
-        "0": "Solicite acceso y configure las credenciales del ambiente inicial.",
+        "0": "Solicite acceso y configure las credenciales del ambiente inicial. El detalle de autenticación y requisitos está en la pestaña Integración.",
         "1": "Valide la consulta de movimientos en Sandbox con POST /conciliacion/bancaempresa/movimientos/.",
         "2": "Integre trazabilidad, monitoreo y paso controlado a Producción."
       },
@@ -293,7 +294,8 @@
         "idealFor": "Equipos que necesitan liquidez visible, conciliación rápida y automatización en sus flujos internos.",
         "benefits": {
           "0": "Automatice conciliaciones y reduzca pasos manuales en sus procesos internos.",
-          "1": "Integre información de tesorería en ERPs, dashboards y flujos operativos."
+          "1": "Tenga visibilidad de la liquidez de su empresa en tiempo casi real y decida con información actualizada.",
+          "2": "Gane agilidad operativa: reduzca el tiempo de cierre contable y responda antes ante inconsistencias."
         },
         "useCases": {
           "0": "Conciliación bancaria automática: el cliente corporativo concilia cada día los movimientos de su cuenta contra el ERP o el sistema contable, sin intervención manual. Con fechaInicial y fechaFinal limita la consulta a las transacciones del día.",

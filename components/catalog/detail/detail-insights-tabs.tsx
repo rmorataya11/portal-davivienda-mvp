@@ -102,6 +102,26 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                     <p className="mt-3 text-[18px] font-medium tracking-[0.24px] text-[#30383F]">
                       {api.authentication.title}
                     </p>
+                    <p className="mt-3 text-[15px] leading-7 tracking-[0.24px] text-[#5F676E]">
+                      {api.authentication.description}
+                    </p>
+                    {api.authentication.headers.length ? (
+                      <div className="mt-4">
+                        <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">
+                          {t("headersEyebrow")}
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {api.authentication.headers.map((header) => (
+                            <code
+                              key={header}
+                              className="inline-flex items-center rounded-full border border-[#E5E8ED] bg-white px-4 py-2 text-[13px] text-[#404040]"
+                            >
+                              {header}
+                            </code>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5">
                     <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("environmentsEyebrow")}</p>
@@ -116,11 +136,18 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                       ))}
                     </div>
                   </div>
-                  <div className="rounded-[22px] bg-[linear-gradient(135deg,#202A31_0%,#334049_100%)] px-6 py-5 text-white shadow-[0_18px_40px_rgba(20,31,37,0.12)]">
-                    <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-white/58">{t("idealForEyebrow")}</p>
-                    <p className="mt-3 text-[18px] leading-8 tracking-[0.24px] text-white/88">
-                      {api.idealFor}
-                    </p>
+                  <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5">
+                    <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("requirementsEyebrow")}</p>
+                    <ol className="mt-4 space-y-3">
+                      {api.requirements.map((requirement, index) => (
+                        <li key={requirement} className="flex items-start gap-3">
+                          <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#E1251B]/24 bg-[#FFF1F0] text-[12px] font-bold text-[#E1251B]">
+                            {index + 1}
+                          </span>
+                          <p className="pt-0.5 text-[15px] leading-7 tracking-[0.24px] text-[#3C444B]">{requirement}</p>
+                        </li>
+                      ))}
+                    </ol>
                   </div>
                 </div>
               </div>

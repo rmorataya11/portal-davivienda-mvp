@@ -197,12 +197,13 @@
       "integrationDescription": "Everything you need to prepare your first API call and move from exploration to a real integration.",
       "authenticationEyebrow": "Authentication",
       "environmentsEyebrow": "Environments",
-      "idealForEyebrow": "Ideal for",
+      "requirementsEyebrow": "Requirements",
+      "headersEyebrow": "Headers",
       "journeyEyebrow": "Journey",
       "journeyTitle": "Suggested integration path",
       "journeyDescription": "A simple sequence to validate the API, test the flow, and prepare a controlled move to production.",
       "journeySteps": {
-        "0": "Request access and set up credentials for the initial environment.",
+        "0": "Request access and set up credentials for the initial environment. Authentication and requirements details are in the Integration tab.",
         "1": "Validate the transaction inquiry in Sandbox with POST /conciliacion/bancaempresa/movimientos/.",
         "2": "Add tracing, monitoring, and a controlled cutover to Production."
       },
@@ -293,7 +294,8 @@
         "idealFor": "Teams that need visible liquidity, faster reconciliation, and automation across internal workflows.",
         "benefits": {
           "0": "Automate reconciliations and reduce manual steps in your internal processes.",
-          "1": "Bring treasury data into ERPs, dashboards, and operational workflows."
+          "1": "See your company's liquidity in near real time and make decisions with up-to-date information.",
+          "2": "Gain operational agility: shorten accounting close times and respond faster to inconsistencies."
         },
         "useCases": {
           "0": "Automated bank reconciliation: the corporate client reconciles account movements against its ERP or accounting system every day, without manual work. fechaInicial and fechaFinal limit the query to that day's transactions.",
