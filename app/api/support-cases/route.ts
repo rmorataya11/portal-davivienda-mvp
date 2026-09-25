@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { getRequestSession } from "@/lib/auth/server";
 import { createSupportCase, isSupportCaseSeverity } from "@/lib/db/support-cases";
 import { sendConfirmationEmail, sendNotificationEmail } from "@/lib/email/mailer";
 import { renderSupportCaseConfirmationEmail, renderSupportCaseEmail } from "@/lib/email/templates";
@@ -21,13 +22,22 @@ type SupportCaseBody = {
 
 export async function POST(request: Request) {
   try {
+    const session = await getRequestSession(request);
+
+    if (!session) {
+      return NextResponse.json(
+        { message: "Debe iniciar sesión para abrir un caso de soporte" },
+        { status: 401 },
+      );
+    }
+
     const body = (await request.json()) as SupportCaseBody;
     const titulo = readTrimmedString(body.titulo) || readTrimmedString(body.title);
     const descripcion = readTrimmedString(body.descripcion) || readTrimmedString(body.description);
     const severidad = readTrimmedString(body.severidad) || readTrimmedString(body.severity);
     const developerId = readTrimmedString(body.developerId);
     const apiSlug = readTrimmedString(body.apiSlug);
-    const email = readTrimmedString(body.email);
+    const email = session.email || readTrimmedString(body.email);
 
     if (!titulo || !descripcion || !severidad) {
       return NextResponse.json(
@@ -41,7 +51,7 @@ export async function POST(request: Request) {
     }
 
     const created = await createSupportCase({
-      developerId: developerId || undefined,
+      developerId: developerId || session.uid,
       titulo,
       descripcion,
       severidad,

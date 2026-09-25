@@ -4,10 +4,12 @@ import { useTranslations } from "next-intl";
 import { useEffect, useId, useState, type FormEvent } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
+import { ContentAccessGate } from "@/components/auth/content-access-gate";
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { RadioGroup } from "@/components/contracting/radio-group";
+import { getSessionIdToken } from "@/lib/auth/session";
 import { type SupportCaseSeverity } from "@/lib/support/cases";
 
 const severityValues = ["bloqueante", "importante", "consulta"] as const;
@@ -107,9 +109,18 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
     setIsSubmitting(true);
 
     try {
+      const token = await getSessionIdToken();
+
+      if (!token) {
+        throw new Error(t("submitError"));
+      }
+
       const response = await fetch("/api/support-cases", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           titulo: title.trim(),
           descripcion: description.trim(),
@@ -170,7 +181,13 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
             <p className="mt-4 text-[15px] leading-7 text-[#5B636A]">{t("createdDescription")}</p>
           </div>
         ) : (
-          <>
+          <ContentAccessGate
+            embedded
+            titleId={titleId}
+            eyebrow={t("gateEyebrow")}
+            description={t("gateDescription")}
+            fallbackPath="/faq"
+          >
             <h2 id={titleId} className="text-[24px] font-bold tracking-[0.3px] text-[#141F25]">
               {t("title")}
             </h2>
@@ -250,7 +267,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
               </div>
               {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
             </form>
-          </>
+          </ContentAccessGate>
         )}
       </div>
     </div>

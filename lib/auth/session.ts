@@ -92,6 +92,11 @@ export function getCurrentUser(): Promise<AuthUser | null> {
   });
 }
 
+export async function getSessionIdToken() {
+  const user = getFirebaseAuth().currentUser;
+  return user ? user.getIdToken() : null;
+}
+
 export function onAuthChange(
   callback: (user: AuthUser | null) => void,
 ): () => void {

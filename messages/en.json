@@ -915,6 +915,8 @@
     "case": {
       "title": "Create a support request",
       "description": "Tell us what happened. We review the case and reply through this channel.",
+      "gateEyebrow": "Open a case",
+      "gateDescription": "You need a developer account to open a support case. Sign in or create an account to continue.",
       "closeAria": "Close",
       "fieldTitle": "Case title",
       "fieldDescription": "Problem description",

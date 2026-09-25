@@ -915,6 +915,8 @@
     "case": {
       "title": "Crear solicitud de soporte",
       "description": "Cuéntenos qué ocurrió. Revisamos el caso y le respondemos por este canal.",
+      "gateEyebrow": "Abra un caso",
+      "gateDescription": "Para abrir un caso de soporte necesita una cuenta de desarrollador. Inicie sesión o cree una cuenta para continuar.",
       "closeAria": "Cerrar",
       "fieldTitle": "Título del caso",
       "fieldDescription": "Descripción del problema",
