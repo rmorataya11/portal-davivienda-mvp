@@ -116,6 +116,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
           severidad: severity as SupportCaseSeverity,
           apiSlug: apiSlug || undefined,
           developerId: developerId ?? user?.uid ?? undefined,
+          email: user?.email || undefined,
         }),
       });
 

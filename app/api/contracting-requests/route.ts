@@ -4,7 +4,8 @@ import {
   createContractingRequest,
   getContractingRequestsByDeveloper,
 } from '@/lib/db/contracting-requests';
-import { escapeHtml, sendNotificationEmail } from '@/lib/email/mailer';
+import { sendNotificationEmail } from '@/lib/email/mailer';
+import { renderContractingRequestEmail } from '@/lib/email/templates';
 import {
   isExplicitTrue,
   isValidEmail,
@@ -116,21 +117,20 @@ export async function POST(request: Request) {
     });
 
     await sendNotificationEmail(
-      `Nueva solicitud de contratación: ${razonSocial}`,
-      `
-        <h1>Nueva solicitud de contratación</h1>
-        <p><strong>ID:</strong> ${escapeHtml(created.id)}</p>
-        <p><strong>Razón social:</strong> ${escapeHtml(created.razonSocial)}</p>
-        <p><strong>NIT:</strong> ${escapeHtml(created.nit)}</p>
-        <p><strong>Industria:</strong> ${escapeHtml(created.industria)}</p>
-        <p><strong>Caso de uso:</strong> ${escapeHtml(created.casoUso)}</p>
-        <p><strong>Volumen estimado:</strong> ${escapeHtml(created.volumenEstimado)}</p>
-        <p><strong>Ambiente destino:</strong> ${escapeHtml(created.ambienteDestino)}</p>
-        <p><strong>IP whitelist:</strong> ${escapeHtml(created.ipWhitelist ?? "No aplica")}</p>
-        <p><strong>Contacto técnico:</strong> ${escapeHtml(created.contactoTecnicoNombre)}</p>
-        <p><strong>Email técnico:</strong> ${escapeHtml(created.contactoTecnicoEmail)}</p>
-        <p><strong>Teléfono técnico:</strong> ${escapeHtml(created.contactoTecnicoTelefono ?? "")}</p>
-      `,
+      `[CONTRATACIÓN] Nueva solicitud de contratación: ${razonSocial}`,
+      renderContractingRequestEmail({
+        id: created.id,
+        razonSocial: created.razonSocial,
+        nit: created.nit,
+        industria: created.industria,
+        casoUso: created.casoUso,
+        volumenEstimado: created.volumenEstimado,
+        ambienteDestino: created.ambienteDestino,
+        ipWhitelist: created.ipWhitelist,
+        contactoTecnicoNombre: created.contactoTecnicoNombre,
+        contactoTecnicoEmail: created.contactoTecnicoEmail,
+        contactoTecnicoTelefono: created.contactoTecnicoTelefono,
+      }),
     );
 
     return NextResponse.json(created, { status: 201 });
