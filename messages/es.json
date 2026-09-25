@@ -221,16 +221,18 @@
     "apps": {
       "title": "Sus aplicaciones",
       "description": "Solo las apps que usan {name}. El consumo total y el resto de productos están en Mis apps.",
-      "signedOut": "Inicie sesión para ver las aplicaciones que ya usa con {name}, o cree una para obtener credenciales de sandbox.",
+      "signedOut": "Inicie sesión para ver las aplicaciones que ya usa con {name}.",
       "createAccount": "Crear cuenta",
       "signIn": "Iniciar sesión",
-      "empty": "Todavía no tiene una aplicación en {name}. Créela aquí; también aparecerá en Mis apps.",
+      "empty": "Todavía no tiene una aplicación que use {name}. Puede crear o vincular una desde Mis apps en el Dashboard.",
+      "goToDashboard": "Ir a Mis apps",
       "createApp": "Crear aplicación",
       "createAnother": "Crear otra para esta API",
       "useExistingTitle": "Usar una app que ya tiene",
       "useExistingDescription": "La vincula a {name} con las mismas credenciales. Seguirá viéndose en Mis apps.",
       "linkToApi": "Vincular a esta API",
       "callsLast30Days": "{count} llamadas · 30 días",
+      "created": "Creada el {date}",
       "openApp": "Abrir app"
     },
     "technical": {

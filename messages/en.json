@@ -221,16 +221,18 @@
     "apps": {
       "title": "Your applications",
       "description": "Only the apps that use {name}. Total usage and the rest of your products are in My apps.",
-      "signedOut": "Sign in to see the applications already using {name}, or create one to get sandbox credentials.",
+      "signedOut": "Sign in to see the applications already using {name}.",
       "createAccount": "Create account",
       "signIn": "Sign in",
-      "empty": "You do not have an application on {name} yet. Create one here; it will also appear in My apps.",
+      "empty": "You do not have an application using {name} yet. You can create or link one from My apps in the Dashboard.",
+      "goToDashboard": "Go to My apps",
       "createApp": "Create application",
       "createAnother": "Create another for this API",
       "useExistingTitle": "Use an app you already have",
       "useExistingDescription": "Link it to {name} with the same credentials. It will still appear in My apps.",
       "linkToApi": "Link to this API",
       "callsLast30Days": "{count} calls · 30 days",
+      "created": "Created {date}",
       "openApp": "Open app"
     },
     "technical": {
