@@ -105,7 +105,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
 
           <Link
             href={`/solicitud-contratacion?producto=${api.slug}`}
-            className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[166px]"
+            className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-auto sm:min-w-[166px]"
           >
             {t("requestAccess")}
           </Link>
