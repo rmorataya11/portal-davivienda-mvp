@@ -2,10 +2,12 @@ import type { ApiCatalogItem, ApiDetail, ApiEndpoint } from "./apis";
 
 export const productMessageKeys = {
   "api-tesoreria": "tesoreria",
+  "api-estatus-pagos": "estatusPagos",
 } as const;
 
 export const categoryMessageKeys = {
   Cuentas: "accounts",
+  Pagos: "payments",
 } as const;
 
 export const statusMessageKeys = {
@@ -18,6 +20,8 @@ const parameterTypeKeys = {
 
 const endpointMessageKeys: Record<string, string> = {
   "/conciliacion/bancaempresa/movimientos/": "movimientos",
+  "/pagos/estatus/busqueda/": "busqueda",
+  "/pagos/estatus/bloqueo/": "bloqueo",
 };
 
 export type CatalogTranslate = (key: string) => string;
@@ -79,6 +83,7 @@ export function localizeApiDetail(api: ApiDetail, t: CatalogTranslate): ApiDetai
       description: t(`products.${productKey}.authentication.description`),
     },
     environments: api.environments.map((_, index) => t(`products.${productKey}.environments.${index}`)),
+    journeySteps: (api.journeySteps ?? []).map((_, index) => t(`products.${productKey}.journeySteps.${index}`)),
     endpoints: api.endpoints.map((endpoint) => localizeEndpoint(endpoint, productKey, t)),
     errors: api.errors.map((error) => ({
       ...error,

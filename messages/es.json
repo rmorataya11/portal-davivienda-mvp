@@ -137,7 +137,8 @@
       "all": "Todas"
     },
     "categories": {
-      "accounts": "Cuentas"
+      "accounts": "Cuentas",
+      "payments": "Pagos"
     },
     "status": {
       "production": "Producción"
@@ -344,6 +345,83 @@
           }
         },
         "supportNote": "Si su caso de uso requiere validaciones adicionales, cobertura por múltiples cuentas o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación."
+      },
+      "estatusPagos": {
+        "name": "API Estatus de Pagos",
+        "description": "Consulte en tiempo real el estado de pagos interbancarios recibidos, bloquee transacciones sospechosas antes de liquidarlas y reduzca reclamos por pagos duplicados o retrasados.",
+        "heroDescription": "Consulte el estado de pagos interbancarios recibidos y bloquee transacciones sospechosas antes de liquidarlas.",
+        "intro": "Pensada para tesorería y operación, esta API permite buscar pagos entrantes, confirmar su estado y bloquear movimientos sospechosos antes de que se liquiden.",
+        "quickFacts": {
+          "0": { "label": "Producto", "value": "Estatus de Pagos" },
+          "1": { "label": "Uso ideal", "value": "B2B corporativo" },
+          "2": { "label": "Cobertura", "value": "Pagos interbancarios recibidos" },
+          "3": { "label": "Valor", "value": "Visibilidad y control en tiempo real" }
+        },
+        "coverage": {
+          "value": "2 endpoints"
+        },
+        "idealFor": "Equipos de tesorería y operación que necesitan ver pagos entrantes y bloquear transacciones sospechosas a tiempo.",
+        "benefits": {
+          "0": "Reduzca fraude y pérdidas operativas bloqueando pagos sospechosos antes de que se confirmen.",
+          "1": "Tenga visibilidad en tiempo real de los pagos entrantes confirmados para su empresa, sin depender de conciliaciones manuales contra el banco."
+        },
+        "useCases": {
+          "0": "Bloqueo preventivo de fraude: el equipo de tesorería identifica un pago sospechoso en la búsqueda y lo bloquea antes de que se liquide, usando el token de la transacción.",
+          "1": "Conciliación de pagos confirmados: el área contable consulta únicamente los pagos ya confirmados/bloqueados para conciliarlos contra sus registros internos, sin reprocesar pagos disponibles que aún no aplican.",
+          "2": "Búsqueda de pagos entrantes por criterios: el equipo operativo busca pagos por nombre del remitente, banco emisor, rango de monto o fecha, para dar seguimiento a transferencias específicas."
+        },
+        "requirements": {
+          "0": "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
+          "1": "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
+          "2": "Disponer de un backend seguro para gestionar el token de bloqueo con trazabilidad."
+        },
+        "authentication": {
+          "title": "Credenciales de cliente y cabeceras seguras",
+          "description": "La integración requiere credenciales provistas por Davivienda y cabeceras de seguridad. Incluya API_ESTATUS_NITS con los NITs autorizados de su empresa, separados por coma; las consultas quedan limitadas a las cuentas asociadas a esos NITs."
+        },
+        "environments": {
+          "0": "Sandbox para pruebas funcionales",
+          "1": "Producción para operaciones autorizadas"
+        },
+        "journeySteps": {
+          "0": "Solicite acceso y configure el header API_ESTATUS_NITS con los NITs autorizados de su empresa.",
+          "1": "Valide la búsqueda de pagos y el bloqueo de una transacción en Sandbox.",
+          "2": "Integre monitoreo y paso controlado a Producción."
+        },
+        "endpoints": {
+          "busqueda": {
+            "description": "Busca pagos interbancarios recibidos por remitente, banco emisor, rango de monto o fecha.",
+            "parameters": {
+              "nombreRemitente": "Nombre del remitente del pago",
+              "bancoEmisor": "Banco emisor de la transferencia",
+              "montoMinimo": "Monto mínimo del rango de búsqueda",
+              "montoMaximo": "Monto máximo del rango de búsqueda",
+              "fechaInicial": "Fecha inicial del rango de búsqueda",
+              "fechaFinal": "Fecha final del rango de búsqueda"
+            }
+          },
+          "bloqueo": {
+            "description": "Bloquea un pago sospechoso antes de liquidarlo, usando el token de la transacción.",
+            "parameters": {
+              "token": "Token de la transacción a bloquear"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Solicitud inválida",
+            "description": "Faltan criterios de búsqueda, el token de bloqueo o el header API_ESTATUS_NITS no es válido."
+          },
+          "401": {
+            "title": "No autorizado",
+            "description": "La llave de acceso es inválida, expiró o no corresponde a este ambiente."
+          },
+          "500": {
+            "title": "Error interno",
+            "description": "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde."
+          }
+        },
+        "supportNote": "Si su caso de uso requiere validaciones adicionales, más NITs autorizados o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación."
       }
     }
   },

@@ -56,6 +56,7 @@ export type ApiDetail = ApiCatalogItem & {
     headers: string[];
   };
   environments: string[];
+  journeySteps?: string[];
   endpoints: ApiEndpoint[];
   sampleRequest: string;
   sampleResponse: string;
@@ -266,8 +267,215 @@ const tesoreria: ApiDetail = {
     "Si su caso de uso requiere validaciones adicionales, cobertura por múltiples cuentas o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación.",
 };
 
-/** Fuente única del catálogo. El MVP publica únicamente API Tesorería. */
-export const apiDetails: ApiDetail[] = [tesoreria];
+const estatusPagosBusquedaRequest = `{
+  "nombreRemitente": "Empresa de Ejemplo S.A. de C.V.",
+  "bancoEmisor": "Banco de Ejemplo",
+  "montoMinimo": 100,
+  "montoMaximo": 5000,
+  "fechaInicial": "2025-01-01",
+  "fechaFinal": "2025-01-09"
+}`;
+
+const estatusPagosBusquedaResponse = `{
+  "code": "OK",
+  "message": "Exito",
+  "response": {
+    "pagos": [
+      {
+        "token": "tok_pago_ejemplo_001",
+        "estado": "disponible",
+        "nombreRemitente": "Empresa de Ejemplo S.A. de C.V.",
+        "bancoEmisor": "Banco de Ejemplo",
+        "monto": 1250.00,
+        "moneda": "USD",
+        "fecha": "2025-01-08T14:32:00"
+      }
+    ]
+  }
+}`;
+
+const estatusPagosBloqueoRequest = `{
+  "token": "tok_pago_ejemplo_001"
+}`;
+
+const estatusPagosBloqueoResponse = `{
+  "code": "OK",
+  "message": "Exito",
+  "response": {
+    "token": "tok_pago_ejemplo_001",
+    "estado": "bloqueado"
+  }
+}`;
+
+const estatusPagos: ApiDetail = {
+  slug: "api-estatus-pagos",
+  name: "API Estatus de Pagos",
+  description:
+    "Consulte en tiempo real el estado de pagos interbancarios recibidos, bloquee transacciones sospechosas antes de liquidarlas y reduzca reclamos por pagos duplicados o retrasados.",
+  category: "Pagos",
+  status: "Producción",
+  imageSrc: "/catag/icons_apis/api_estatus_pago.svg",
+  heroDescription:
+    "Consulte el estado de pagos interbancarios recibidos y bloquee transacciones sospechosas antes de liquidarlas.",
+  intro:
+    "Pensada para tesorería y operación, esta API permite buscar pagos entrantes, confirmar su estado y bloquear movimientos sospechosos antes de que se liquiden.",
+  quickFacts: [
+    { label: "Producto", value: "Estatus de Pagos" },
+    { label: "Uso ideal", value: "B2B corporativo" },
+    { label: "Cobertura", value: "Pagos interbancarios recibidos" },
+    { label: "Valor", value: "Visibilidad y control en tiempo real" },
+  ],
+  coverage: {
+    value: "2 endpoints",
+    detail: "POST /pagos/estatus/busqueda/ · POST /pagos/estatus/bloqueo/",
+  },
+  idealFor:
+    "Equipos de tesorería y operación que necesitan ver pagos entrantes y bloquear transacciones sospechosas a tiempo.",
+  benefits: [
+    "Reduzca fraude y pérdidas operativas bloqueando pagos sospechosos antes de que se confirmen.",
+    "Tenga visibilidad en tiempo real de los pagos entrantes confirmados para su empresa, sin depender de conciliaciones manuales contra el banco.",
+  ],
+  useCases: [
+    "Bloqueo preventivo de fraude: el equipo de tesorería identifica un pago sospechoso en la búsqueda y lo bloquea antes de que se liquide, usando el token de la transacción.",
+    "Conciliación de pagos confirmados: el área contable consulta únicamente los pagos ya confirmados/bloqueados para conciliarlos contra sus registros internos, sin reprocesar pagos disponibles que aún no aplican.",
+    "Búsqueda de pagos entrantes por criterios: el equipo operativo busca pagos por nombre del remitente, banco emisor, rango de monto o fecha, para dar seguimiento a transferencias específicas.",
+  ],
+  requirements: [
+    "Tener una cuenta de desarrollador activa y acceso aprobado al producto.",
+    "Contar con credenciales del ambiente Sandbox o Producción según la etapa de integración.",
+    "Disponer de un backend seguro para gestionar el token de bloqueo con trazabilidad.",
+  ],
+  authentication: {
+    title: "Credenciales de cliente y cabeceras seguras",
+    description:
+      "La integración requiere credenciales provistas por Davivienda y cabeceras de seguridad. Incluya API_ESTATUS_NITS con los NITs autorizados de su empresa, separados por coma; las consultas quedan limitadas a las cuentas asociadas a esos NITs.",
+    headers: [
+      "x-api-key: TU_API_KEY",
+      "Content-Type: application/json",
+      "API_ESTATUS_NITS: 038403410,038403411",
+    ],
+  },
+  environments: ["Sandbox para pruebas funcionales", "Producción para operaciones autorizadas"],
+  journeySteps: [
+    "Solicite acceso y configure el header API_ESTATUS_NITS con los NITs autorizados de su empresa.",
+    "Valide la búsqueda de pagos y el bloqueo de una transacción en Sandbox.",
+    "Integre monitoreo y paso controlado a Producción.",
+  ],
+  endpoints: [
+    {
+      method: "POST",
+      path: "/pagos/estatus/busqueda/",
+      description:
+        "Busca pagos interbancarios recibidos por remitente, banco emisor, rango de monto o fecha.",
+      playground: {
+        httpUrl: "https://api.davivienda.com/pagos/estatus/busqueda/",
+        contentType: "application/json",
+        credentialsLabel: "ApiKeyAuth",
+        parameters: [
+          {
+            name: "nombreRemitente",
+            type: "string",
+            required: false,
+            location: "body",
+            description: "Nombre del remitente del pago",
+          },
+          {
+            name: "bancoEmisor",
+            type: "string",
+            required: false,
+            location: "body",
+            description: "Banco emisor de la transferencia",
+          },
+          {
+            name: "montoMinimo",
+            type: "number",
+            required: false,
+            location: "body",
+            description: "Monto mínimo del rango de búsqueda",
+          },
+          {
+            name: "montoMaximo",
+            type: "number",
+            required: false,
+            location: "body",
+            description: "Monto máximo del rango de búsqueda",
+          },
+          {
+            name: "fechaInicial",
+            type: "string (YYYY-MM-DD)",
+            required: false,
+            location: "body",
+            description: "Fecha inicial del rango de búsqueda",
+          },
+          {
+            name: "fechaFinal",
+            type: "string (YYYY-MM-DD)",
+            required: false,
+            location: "body",
+            description: "Fecha final del rango de búsqueda",
+          },
+        ],
+        requestBody: estatusPagosBusquedaRequest,
+        responseStatus: "200 OK",
+        responseBody: estatusPagosBusquedaResponse,
+      },
+    },
+    {
+      method: "POST",
+      path: "/pagos/estatus/bloqueo/",
+      description: "Bloquea un pago sospechoso antes de liquidarlo, usando el token de la transacción.",
+      playground: {
+        httpUrl: "https://api.davivienda.com/pagos/estatus/bloqueo/",
+        contentType: "application/json",
+        credentialsLabel: "ApiKeyAuth",
+        parameters: [
+          {
+            name: "token",
+            type: "string",
+            required: true,
+            location: "body",
+            description: "Token de la transacción a bloquear",
+          },
+        ],
+        requestBody: estatusPagosBloqueoRequest,
+        responseStatus: "200 OK",
+        responseBody: estatusPagosBloqueoResponse,
+      },
+    },
+  ],
+  sampleRequest: `curl -X POST https://api.davivienda.com/pagos/estatus/busqueda/ \\
+  -H "x-api-key: TU_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -H "API_ESTATUS_NITS: 038403410,038403411" \\
+  -d '{
+    "nombreRemitente": "Empresa de Ejemplo S.A. de C.V.",
+    "fechaInicial": "2025-01-01",
+    "fechaFinal": "2025-01-09"
+  }'`,
+  sampleResponse: estatusPagosBusquedaResponse,
+  errors: [
+    {
+      code: "400",
+      title: "Solicitud inválida",
+      description: "Faltan criterios de búsqueda, el token de bloqueo o el header API_ESTATUS_NITS no es válido.",
+    },
+    {
+      code: "401",
+      title: "No autorizado",
+      description: "La llave de acceso es inválida, expiró o no corresponde a este ambiente.",
+    },
+    {
+      code: "500",
+      title: "Error interno",
+      description: "Ocurrió una incidencia temporal al procesar la consulta. Reintente más tarde.",
+    },
+  ],
+  supportNote:
+    "Si su caso de uso requiere validaciones adicionales, más NITs autorizados o volúmenes corporativos altos, nuestro equipo le acompaña en el proceso de habilitación.",
+};
+
+/** Fuente única del catálogo. */
+export const apiDetails: ApiDetail[] = [tesoreria, estatusPagos];
 
 export const apiCatalogItems: ApiCatalogItem[] = apiDetails.map((api) => ({
   slug: api.slug,

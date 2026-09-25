@@ -137,7 +137,8 @@
       "all": "All"
     },
     "categories": {
-      "accounts": "Accounts"
+      "accounts": "Accounts",
+      "payments": "Payments"
     },
     "status": {
       "production": "Production"
@@ -344,6 +345,83 @@
           }
         },
         "supportNote": "If your use case needs additional validations, multi-account coverage, or high corporate volumes, our team will support you through the enablement process."
+      },
+      "estatusPagos": {
+        "name": "API Estatus de Pagos",
+        "description": "Query the status of incoming interbank payments in real time, block suspicious transactions before they settle, and reduce claims for duplicate or delayed payments.",
+        "heroDescription": "Query the status of incoming interbank payments and block suspicious transactions before they settle.",
+        "intro": "Built for treasury and operations teams, this API lets you search incoming payments, confirm their status, and block suspicious movements before they settle.",
+        "quickFacts": {
+          "0": { "label": "Product", "value": "Estatus de Pagos" },
+          "1": { "label": "Best fit", "value": "Corporate B2B" },
+          "2": { "label": "Coverage", "value": "Incoming interbank payments" },
+          "3": { "label": "Value", "value": "Real-time visibility and control" }
+        },
+        "coverage": {
+          "value": "2 endpoints"
+        },
+        "idealFor": "Treasury and operations teams that need to see incoming payments and block suspicious transactions in time.",
+        "benefits": {
+          "0": "Reduce fraud and operational losses by blocking suspicious payments before they are confirmed.",
+          "1": "Have real-time visibility of confirmed incoming payments for your company, without relying on manual reconciliations against the bank."
+        },
+        "useCases": {
+          "0": "Preventive fraud blocking: the treasury team identifies a suspicious payment in the search and blocks it before it settles, using the transaction token.",
+          "1": "Confirmed payment reconciliation: accounting queries only payments that are already confirmed or blocked to reconcile them against internal records, without reprocessing available payments that do not yet apply.",
+          "2": "Incoming payment search by criteria: the operations team searches payments by sender name, originating bank, amount range, or date to follow up on specific transfers."
+        },
+        "requirements": {
+          "0": "Have an active developer account and approved access to the product.",
+          "1": "Hold Sandbox or Production credentials, depending on your integration stage.",
+          "2": "Use a secure backend to manage the block token with traceability."
+        },
+        "authentication": {
+          "title": "Client credentials and secure headers",
+          "description": "The integration requires credentials issued by Davivienda and security headers. Include API_ESTATUS_NITS with your company's authorized NITs, separated by commas; queries are limited to the accounts associated with those NITs."
+        },
+        "environments": {
+          "0": "Sandbox for functional testing",
+          "1": "Production for authorized operations"
+        },
+        "journeySteps": {
+          "0": "Request access and configure the API_ESTATUS_NITS header with your company's authorized NITs.",
+          "1": "Validate payment search and the blocking of a transaction in Sandbox.",
+          "2": "Integrate monitoring and move to Production in a controlled way."
+        },
+        "endpoints": {
+          "busqueda": {
+            "description": "Search incoming interbank payments by sender, originating bank, amount range, or date.",
+            "parameters": {
+              "nombreRemitente": "Name of the payment sender",
+              "bancoEmisor": "Originating bank of the transfer",
+              "montoMinimo": "Minimum amount of the search range",
+              "montoMaximo": "Maximum amount of the search range",
+              "fechaInicial": "Start date of the search range",
+              "fechaFinal": "End date of the search range"
+            }
+          },
+          "bloqueo": {
+            "description": "Blocks a suspicious payment before it settles, using the transaction token.",
+            "parameters": {
+              "token": "Token of the transaction to block"
+            }
+          }
+        },
+        "errors": {
+          "400": {
+            "title": "Invalid request",
+            "description": "Search criteria, the block token, or the API_ESTATUS_NITS header is missing or invalid."
+          },
+          "401": {
+            "title": "Unauthorized",
+            "description": "The access key is invalid, expired, or does not belong to this environment."
+          },
+          "500": {
+            "title": "Internal error",
+            "description": "A temporary issue occurred while processing the query. Try again later."
+          }
+        },
+        "supportNote": "If your use case needs additional validations, more authorized NITs, or high corporate volumes, our team will support you through the enablement process."
       }
     }
   },

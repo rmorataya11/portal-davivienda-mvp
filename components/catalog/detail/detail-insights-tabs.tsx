@@ -166,7 +166,10 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                   </p>
                 </div>
                 <div className="grid gap-4">
-                  {[t("journeySteps.0"), t("journeySteps.1"), t("journeySteps.2")].map((step, index) => (
+                  {(api.journeySteps?.length
+                    ? api.journeySteps
+                    : [t("journeySteps.0"), t("journeySteps.1"), t("journeySteps.2")]
+                  ).map((step, index) => (
                     <div
                       key={step}
                       className="flex gap-4 rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-5 py-5 shadow-[0_12px_30px_rgba(20,31,37,0.04)]"
