@@ -94,9 +94,17 @@ export function DashboardHome() {
         </div>
       ) : (
         <div className="mt-8">
-          <div className="mb-4 flex items-baseline justify-between gap-3">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-[22px] font-bold text-[#141F25]">{t("yourApps")}</h2>
-            <p className="text-[13px] text-[#8E8E8E]">{t("appsTotal", { count: apps.length })}</p>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              <p className="text-[13px] text-[#8E8E8E]">{t("appsTotal", { count: apps.length })}</p>
+              <Link
+                href="/dashboard/apps/nueva"
+                className="inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
+              >
+                {t("createApp")}
+              </Link>
+            </div>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {apps.map((app) => (
