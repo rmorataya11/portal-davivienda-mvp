@@ -16,10 +16,27 @@ const connector = new Connector();
 
 let pool: Pool | null = null;
 
+function resolveDbIpType(): IpAddressTypes {
+  const raw = process.env.DB_IP_TYPE?.trim().toUpperCase();
+
+  if (!raw || raw === IpAddressTypes.PUBLIC) {
+    return IpAddressTypes.PUBLIC;
+  }
+
+  if (raw === IpAddressTypes.PRIVATE || raw === IpAddressTypes.PSC) {
+    return raw;
+  }
+
+  console.warn(
+    `DB_IP_TYPE="${process.env.DB_IP_TYPE}" no es válido. Use PUBLIC, PRIVATE o PSC. Se usa PUBLIC.`,
+  );
+  return IpAddressTypes.PUBLIC;
+}
+
 async function createPool(): Promise<Pool> {
   const clientOpts = await connector.getOptions({
     instanceConnectionName: process.env.INSTANCE_CONNECTION_NAME!,
-    ipType: IpAddressTypes.PUBLIC,
+    ipType: resolveDbIpType(),
   });
 
   return new Pool({
