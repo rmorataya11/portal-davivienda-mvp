@@ -8,7 +8,7 @@ import { createPortal } from "react-dom";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
-import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { LanguageDropdown } from "@/components/shared/language-dropdown";
 import { AccountAvatar } from "@/components/profile/account-avatar";
 import { accountInitials, accountLabel } from "@/lib/account/display";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
@@ -183,7 +183,7 @@ export function MarketplaceMobileMenu({
                 </Link>
                 <div className="flex items-center justify-between gap-3 px-1 py-1">
                   <span className="text-[14px] font-medium text-white">{languageT("label")}</span>
-                  <LanguageSwitcher theme="dark" />
+                  <LanguageDropdown theme="dark" />
                 </div>
                 <button
                   type="button"
@@ -201,7 +201,7 @@ export function MarketplaceMobileMenu({
             ) : (
               <div className="flex flex-col gap-3">
                 <div className="flex justify-center pb-1">
-                  <LanguageSwitcher compact theme="dark" />
+                  <LanguageDropdown theme="dark" align="left" />
                 </div>
                 <AuthReturnLink
                   href={signupHref}

@@ -15,11 +15,7 @@
     "navigationMenu": "Navigation menu"
   },
   "Language": {
-    "label": "Language",
-    "spanish": "Spanish",
-    "english": "English",
-    "shortSpanish": "ES",
-    "shortEnglish": "EN"
+    "label": "Language"
   },
   "Global": {
     "metadata": {

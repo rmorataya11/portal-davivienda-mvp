@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
-import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { LanguageDropdown } from "@/components/shared/language-dropdown";
 import { AccountAvatar } from "@/components/profile/account-avatar";
 import { accountInitials, accountLabel } from "@/lib/account/display";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
@@ -89,7 +89,7 @@ export function AuthNav() {
         {open ? (
           <div
             role="menu"
-            className="absolute right-0 z-[80] mt-2 w-[280px] overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-white py-2 shadow-[0_18px_44px_rgba(20,31,37,0.16)]"
+            className="absolute right-0 z-[80] mt-2 w-[280px] overflow-visible rounded-[16px] border border-[#E7EAEE] bg-white py-2 shadow-[0_18px_44px_rgba(20,31,37,0.16)]"
           >
             <div className="flex items-center gap-3 px-4 py-3">
               <AccountAvatar name={initials} size="md" />
@@ -113,7 +113,7 @@ export function AuthNav() {
             <div className="my-1 h-px bg-[#E7EAEE]" />
             <div className="flex items-center justify-between gap-3 px-4 py-2.5">
               <span className="text-[14px] font-medium text-[#141F25]">{languageT("label")}</span>
-              <LanguageSwitcher />
+              <LanguageDropdown />
             </div>
             <div className="my-1 h-px bg-[#E7EAEE]" />
             <button
@@ -136,7 +136,7 @@ export function AuthNav() {
 
   return (
     <div className="flex items-center gap-4 sm:gap-6">
-      <LanguageSwitcher compact theme="dark" />
+      <LanguageDropdown theme="dark" />
       <AuthReturnLink
         href={signupHref}
         returnTo={returnTo}
