@@ -320,7 +320,7 @@
               "nit": "NIT de la empresa (array, puede aceptar más de uno)",
               "fechaInicial": "Fecha inicial del rango de consulta",
               "fechaFinal": "Fecha final del rango de consulta",
-              "filtros": "Filtros adicionales, ej. { tipo: 'moneda', valor: 'usd' }",
+              "filtros": "Filtros adicionales, ej. '{' tipo: ''moneda'', valor: ''usd'' '}'",
               "paginacion_ASC": "Orden ascendente (true) o descendente (false)",
               "paginacion_pagina": "Número de página, empieza en 0",
               "paginacion_tamanoPagina": "Cantidad de resultados por página"
@@ -790,7 +790,7 @@
             "descripcion": "Fecha final del rango de consulta"
           },
           "filtros": {
-            "descripcion": "Filtros adicionales, ej. { tipo: 'moneda', valor: 'usd' }"
+            "descripcion": "Filtros adicionales, ej. '{' tipo: ''moneda'', valor: ''usd'' '}'"
           },
           "paginacion_ASC": {
             "descripcion": "Orden ascendente (true) o descendente (false)"

@@ -320,7 +320,7 @@
               "nit": "Company tax ID (array; more than one value may be accepted)",
               "fechaInicial": "Start date of the query range",
               "fechaFinal": "End date of the query range",
-              "filtros": "Additional filters, e.g. { tipo: 'moneda', valor: 'usd' }",
+              "filtros": "Additional filters, e.g. '{' tipo: ''moneda'', valor: ''usd'' '}'",
               "paginacion_ASC": "Ascending (true) or descending (false) sort order",
               "paginacion_pagina": "Page number, starting at 0",
               "paginacion_tamanoPagina": "Number of results per page"
@@ -790,7 +790,7 @@
             "descripcion": "End date of the query range"
           },
           "filtros": {
-            "descripcion": "Additional filters, e.g. { tipo: 'moneda', valor: 'usd' }"
+            "descripcion": "Additional filters, e.g. '{' tipo: ''moneda'', valor: ''usd'' '}'"
           },
           "paginacion_ASC": {
             "descripcion": "Ascending (true) or descending (false) sort order"
