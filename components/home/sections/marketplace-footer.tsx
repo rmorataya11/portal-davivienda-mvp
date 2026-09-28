@@ -28,12 +28,6 @@ export function MarketplaceFooter() {
           <Link href="#terminos" className="transition-colors duration-300 hover:text-[#E1251B]">
             {t("terms")}
           </Link>
-          <Link href="#privacidad" className="transition-colors duration-300 hover:text-[#E1251B]">
-            {t("privacy")}
-          </Link>
-          <Link href="#seguridad" className="transition-colors duration-300 hover:text-[#E1251B]">
-            {t("security")}
-          </Link>
         </div>
       </div>
     </footer>
