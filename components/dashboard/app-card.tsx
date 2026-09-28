@@ -53,7 +53,9 @@ export function AppCard({ app }: { app: DeveloperApp }) {
           <p className="text-[12px] text-[#707070]">{t("card.calls30")}</p>
           <p className="mt-1 text-[20px] font-bold text-[#404040]">{stats.callsLast30Days.toLocaleString(numberLocale)}</p>
           <p className="mt-1 text-[12px] text-[#707070]">
-            {t("card.estimatedNotBilled", { amount: formatMoney(stats.consumedUsd) })}
+            {app.status === "production"
+              ? t("card.billed", { amount: formatMoney(stats.consumedUsd) })
+              : t("card.estimated", { amount: formatMoney(stats.consumedUsd) })}
           </p>
         </div>
         <div className="text-right">

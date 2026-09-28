@@ -3,7 +3,7 @@ import { parseCalendarDate } from "@/lib/format/date";
 import type { AppStatus } from "./types";
 
 export const appStatusStyles: Record<AppStatus, string> = {
-  sandbox: "bg-[#EFFCF5] text-[#347659]",
+  sandbox: "bg-[#FEF3C7] text-[#B45309]",
   contracting: "bg-[#FFF6E8] text-[#A15C12]",
   production: "bg-[#EEF3FF] text-[#2F4EA1]",
 };

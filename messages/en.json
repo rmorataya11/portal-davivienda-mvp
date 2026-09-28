@@ -763,7 +763,8 @@
       "emptyDescription": "In a minute you get sandbox credentials and can try an API from the catalog.",
       "createApp": "Create application",
       "yourApps": "Your applications",
-      "appsTotal": "{count} in total"
+      "appsTotal": "{count} in total",
+      "sandboxBillingNote": "Sandbox applications do not generate billing."
     },
     "chart": {
       "title": "This week's activity",
@@ -784,6 +785,8 @@
       "noDescription": "No description yet",
       "noApis": "No APIs linked",
       "calls30": "Calls / 30 days",
+      "estimated": "{amount} estimated",
+      "billed": "{amount} billed",
       "estimatedNotBilled": "{amount} estimated · not billed",
       "open": "Open →",
       "created": "Created {date}"

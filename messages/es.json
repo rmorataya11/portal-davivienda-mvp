@@ -763,7 +763,8 @@
       "emptyDescription": "En un minuto obtiene credenciales de sandbox y puede probar una API del catálogo.",
       "createApp": "Crear aplicación",
       "yourApps": "Sus aplicaciones",
-      "appsTotal": "{count} en total"
+      "appsTotal": "{count} en total",
+      "sandboxBillingNote": "Las aplicaciones en Sandbox no generan facturación."
     },
     "chart": {
       "title": "Actividad de la semana",
@@ -784,6 +785,8 @@
       "noDescription": "Sin descripción todavía",
       "noApis": "Sin APIs vinculadas",
       "calls30": "Llamadas / 30 días",
+      "estimated": "{amount} estimado",
+      "billed": "{amount} facturado",
       "estimatedNotBilled": "{amount} estimado · no se factura",
       "open": "Abrir →",
       "created": "Creada {date}"
