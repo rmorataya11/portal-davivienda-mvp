@@ -28,7 +28,6 @@ type ContractingRequestBody = {
   contactoTecnicoEmail?: unknown;
   contactoTecnicoTelefono?: unknown;
   aceptaTerminos?: unknown;
-  confirmaVeracidad?: unknown;
 };
 
 export async function GET(request: Request) {
@@ -112,7 +111,6 @@ export async function POST(request: Request) {
       contactoTecnicoEmail,
       contactoTecnicoTelefono,
       aceptaTerminos,
-      confirmaVeracidad: false,
     });
 
     await sendNotificationEmail(

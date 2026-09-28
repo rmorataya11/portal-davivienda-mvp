@@ -14,7 +14,6 @@ export type CreateContractingRequestInput = {
   contactoTecnicoEmail: string;
   contactoTecnicoTelefono: string;
   aceptaTerminos: boolean;
-  confirmaVeracidad: boolean;
 };
 
 export type ContractingRequest = {
@@ -110,10 +109,9 @@ export async function createContractingRequest(
        contacto_tecnico_nombre,
        contacto_tecnico_email,
        contacto_tecnico_telefono,
-       acepta_terminos,
-       confirma_veracidad
+       acepta_terminos
      )
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
      RETURNING
        id,
        developer_id,
@@ -145,7 +143,6 @@ export async function createContractingRequest(
       data.contactoTecnicoEmail,
       data.contactoTecnicoTelefono.trim() || null,
       data.aceptaTerminos,
-      data.confirmaVeracidad,
     ],
   );
 
