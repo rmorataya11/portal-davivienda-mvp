@@ -155,10 +155,6 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
       nextErrors.terms = t("validation.terms");
     }
 
-    if (!form.get("dataAccuracy")) {
-      nextErrors.dataAccuracy = t("validation.dataAccuracy");
-    }
-
     return nextErrors;
   }
 
@@ -203,7 +199,6 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           contactoTecnicoEmail: String(formData.get("technicalEmail") ?? "").trim(),
           contactoTecnicoTelefono: String(formData.get("technicalPhone") ?? "").trim(),
           aceptaTerminos: formData.get("terms") === "on",
-          confirmaVeracidad: formData.get("dataAccuracy") === "on",
         }),
       });
 
@@ -465,36 +460,17 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             {errors.terms ? <p className="mt-2 pl-8 text-[13px] text-[#E1251B]">{errors.terms}</p> : null}
           </div>
 
-          <div>
-            <div className="flex items-start gap-3 text-[15px] text-[#404040]">
-              <input
-                id="dataAccuracy"
-                type="checkbox"
-                name="dataAccuracy"
-                required
-                onChange={() => clearError("dataAccuracy")}
-                className="mt-0.5 h-[18px] w-[18px] shrink-0 rounded-[4px] border border-[#C9CED4] accent-[#E1251B]"
-              />
-              <p>
-                <label htmlFor="dataAccuracy" className="cursor-pointer">
-                  {t.rich("consents.accuracy", {
-                    required: () => <span className="text-[#E1251B]">*</span>,
-                  })}
-                </label>
-              </p>
-            </div>
-            {errors.dataAccuracy ? <p className="mt-2 pl-8 text-[13px] text-[#E1251B]">{errors.dataAccuracy}</p> : null}
+          <div className="flex flex-col items-center gap-3 pt-2">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
+            >
+              {isSubmitting ? t("actions.sending") : t("actions.submit")}
+              {isSubmitting ? null : <span aria-hidden="true">→</span>}
+            </button>
+            {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
           </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none"
-          >
-            {isSubmitting ? t("actions.sending") : t("actions.submit")}
-            {isSubmitting ? null : <span aria-hidden="true">→</span>}
-          </button>
-          {formError ? <p className="text-[13px] text-[#E1251B]">{formError}</p> : null}
         </FormSection>
       </form>
 

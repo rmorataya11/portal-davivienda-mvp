@@ -65,7 +65,6 @@ export async function POST(request: Request) {
     const contactoTecnicoTelefono = readTrimmedString(body.contactoTecnicoTelefono);
     const ipWhitelist = readTrimmedString(body.ipWhitelist);
     const aceptaTerminos = isExplicitTrue(body.aceptaTerminos);
-    const confirmaVeracidad = isExplicitTrue(body.confirmaVeracidad);
 
     if (
       !developerId ||
@@ -93,9 +92,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Ingrese un teléfono válido.' }, { status: 400 });
     }
 
-    if (!aceptaTerminos || !confirmaVeracidad) {
+    if (!aceptaTerminos) {
       return NextResponse.json(
-        { message: 'Debe aceptar los términos y confirmar la veracidad de los datos.' },
+        { message: 'Debe aceptar los términos y condiciones.' },
         { status: 400 },
       );
     }
@@ -113,7 +112,7 @@ export async function POST(request: Request) {
       contactoTecnicoEmail,
       contactoTecnicoTelefono,
       aceptaTerminos,
-      confirmaVeracidad,
+      confirmaVeracidad: false,
     });
 
     await sendNotificationEmail(
