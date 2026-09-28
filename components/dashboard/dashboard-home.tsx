@@ -108,7 +108,7 @@ export function DashboardHome() {
           {sandboxCount > 0 ? (
             <p className="mb-4 text-[13px] leading-6 text-[#8E8E8E]">{t("sandboxBillingNote")}</p>
           ) : null}
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
             {apps.map((app) => (
               <AppCard key={app.id} app={app} />
             ))}
