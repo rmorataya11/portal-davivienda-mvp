@@ -1,5 +1,6 @@
 "use client";
 
+import { CircleCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -206,7 +207,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
         }),
       });
 
-      if (!response.ok) {
+      if (response.status !== 201) {
         throw new Error(t("errors.submit"));
       }
 
@@ -224,15 +225,17 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
 
   if (submitted) {
     return (
-      <div className="py-4 sm:py-6">
-        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">{t("success.eyebrow")}</p>
-        <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
+      <div className="flex flex-col items-center py-8 text-center sm:py-10">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#EFFCF5]">
+          <CircleCheck className="h-10 w-10 text-[#347659]" strokeWidth={1.5} aria-hidden="true" />
+        </div>
+        <h1 className="mt-6 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px]">
           {t("success.title")}
         </h1>
         <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">{t("success.description")}</p>
         <Link
-          href={linkedApp ? `/dashboard/apps/${linkedApp.id}` : "/dashboard"}
-          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
+          href="/dashboard"
+          className="mt-8 inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
         >
           {t("success.cta")}
         </Link>

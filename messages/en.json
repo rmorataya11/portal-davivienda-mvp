@@ -1441,10 +1441,9 @@
       "submit": "We could not submit the request. Please try again."
     },
     "success": {
-      "eyebrow": "Request received",
-      "title": "Your request was received. We will contact you",
-      "description": "A team member will review the use case, estimated volume, and requested environment to continue the process toward production.",
-      "cta": "Go to my applications"
+      "title": "Request submitted",
+      "description": "We have received your contracting request. Our team will review it and contact you shortly to continue the process.",
+      "cta": "Back to My apps"
     },
     "terms": {
       "closeAria": "Close terms and conditions",

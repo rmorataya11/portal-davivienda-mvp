@@ -1441,10 +1441,9 @@
       "submit": "No pudimos enviar la solicitud. Intente de nuevo."
     },
     "success": {
-      "eyebrow": "Solicitud recibida",
-      "title": "Su solicitud fue recibida, le contactaremos",
-      "description": "Un integrante del equipo revisará el caso de uso, el volumen estimado y el ambiente solicitado para continuar el proceso hacia producción.",
-      "cta": "Ir a mis aplicaciones"
+      "title": "Solicitud enviada",
+      "description": "Hemos recibido su solicitud de contratación. Nuestro equipo la revisará y se pondrá en contacto con usted a la brevedad para continuar con el proceso.",
+      "cta": "Volver a Mis apps"
     },
     "terms": {
       "closeAria": "Cerrar términos y condiciones",
