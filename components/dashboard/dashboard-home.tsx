@@ -1,12 +1,14 @@
 "use client";
 
-import { AppWindow } from "lucide-react";
+import { AppWindow, Rocket } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
-import { hasProductionApps, isProductionApp } from "@/lib/developer-apps/labels";
+import { hasProductionApps, isProductionApp, isSandboxGroupApp } from "@/lib/developer-apps/labels";
+import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { AppCard } from "./app-card";
 import { useDeveloperApps } from "./apps-provider";
@@ -29,6 +31,7 @@ export function DashboardHome() {
   const greetingName = displayNameFromEmail(user?.email);
   const stats = apps.map((app) => appUsageStats(app));
   const productionApps = apps.filter(isProductionApp);
+  const sandboxGroupApps = apps.filter(isSandboxGroupApp);
   const productionStats = productionApps.map((app) => appUsageStats(app));
   const showBillingSummary = hasProductionApps(apps);
   const totalCalls = stats.reduce((sum, item) => sum + item.callsLast30Days, 0);
@@ -113,16 +116,45 @@ export function DashboardHome() {
             </Link>
           </div>
         ) : (
-          <>
-            {sandboxCount > 0 ? (
-              <p className="mb-4 text-[13px] leading-6 text-[#8E8E8E]">{t("sandboxBillingNote")}</p>
-            ) : null}
-            <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
-              {apps.map((app) => (
-                <AppCard key={app.id} app={app} />
-              ))}
-            </div>
-          </>
+          <div className="space-y-8">
+            <EnvironmentSection
+              title={t("sandboxSection", { count: sandboxGroupApps.length })}
+              dotClassName="bg-[#F59E0B]"
+            >
+              {sandboxCount > 0 ? (
+                <p className="mb-4 text-[13px] leading-6 text-[#8E8E8E]">{t("sandboxBillingNote")}</p>
+              ) : null}
+              {sandboxGroupApps.length > 0 ? (
+                <AppGrid apps={sandboxGroupApps} />
+              ) : (
+                <p className="rounded-[16px] border border-[#E7EAEE] bg-white px-5 py-8 text-[15px] leading-7 text-[#6A7178]">
+                  {t("emptySandbox")}
+                </p>
+              )}
+            </EnvironmentSection>
+
+            <EnvironmentSection
+              title={t("productionSection", { count: productionApps.length })}
+              dotClassName="bg-[#55B685]"
+            >
+              {productionApps.length > 0 ? (
+                <AppGrid apps={productionApps} />
+              ) : (
+                <div className="flex min-h-[220px] flex-col items-center justify-center rounded-[16px] border border-dashed border-[#D5DAE0] bg-white px-8 py-12 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5F6F8]">
+                    <Rocket className="h-8 w-8 text-[#8E8E8E]" strokeWidth={1.5} aria-hidden="true" />
+                  </div>
+                  <p className="mt-5 max-w-[420px] text-[15px] leading-7 text-[#6A7178]">{t("emptyProduction")}</p>
+                  <Link
+                    href="/solicitud-contratacion"
+                    className="mt-6 inline-flex h-[46px] items-center justify-center rounded-[30px] border border-[#E1251B] bg-transparent px-6 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
+                  >
+                    {t("requestContracting")}
+                  </Link>
+                </div>
+              )}
+            </EnvironmentSection>
+          </div>
         )}
       </div>
     </div>
@@ -134,6 +166,36 @@ function MiniStat({ label, value }: { label: string; value: string }) {
     <div className="rounded-[20px] border border-[#E7EAEE] bg-white px-5 py-4">
       <p className="text-[13px] text-[#8E8E8E]">{label}</p>
       <p className="mt-1 text-[22px] font-bold text-[#141F25]">{value}</p>
+    </div>
+  );
+}
+
+function EnvironmentSection({
+  title,
+  dotClassName,
+  children,
+}: {
+  title: string;
+  dotClassName: string;
+  children: ReactNode;
+}) {
+  return (
+    <section>
+      <h3 className="mb-4 flex items-center gap-2 text-[16px] font-semibold tracking-[0.2px] text-[#141F25]">
+        <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${dotClassName}`} aria-hidden="true" />
+        {title}
+      </h3>
+      {children}
+    </section>
+  );
+}
+
+function AppGrid({ apps }: { apps: DeveloperApp[] }) {
+  return (
+    <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
+      {apps.map((app) => (
+        <AppCard key={app.id} app={app} />
+      ))}
     </div>
   );
 }

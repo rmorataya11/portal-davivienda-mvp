@@ -15,6 +15,27 @@ function randomToken(length = 18) {
   return Array.from(bytes, (byte) => alphabet[byte % alphabet.length]).join("");
 }
 
+export const DEMO_PRODUCTION_APP_ID = "app_demo_production";
+
+export function createDemoProductionApp(): DeveloperApp {
+  const createdAt = new Date("2026-08-12T15:00:00.000Z");
+  const expires = new Date(createdAt.getTime() + 365 * 24 * 60 * 60 * 1000);
+
+  return {
+    id: DEMO_PRODUCTION_APP_ID,
+    name: "Tesorería corporativa",
+    description: "Integración de conciliación de movimientos en ambiente de producción.",
+    productSlugs: ["api-tesoreria"],
+    status: "production",
+    consumerKey: "dvn_pk_live_tesoreria_corporativa",
+    consumerSecret: "dvn_sk_live_tesoreria_corporativa_demo",
+    baseUrl: "https://demo.nip.io/v1",
+    expiresAt: expires.toISOString(),
+    createdAt: createdAt.toISOString(),
+    lastUsedAt: new Date().toISOString(),
+  };
+}
+
 export function createDeveloperAppRecord(input: CreateAppInput): DeveloperApp {
   const now = new Date();
   const expires = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);

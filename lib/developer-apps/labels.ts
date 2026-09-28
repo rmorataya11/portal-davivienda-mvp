@@ -12,6 +12,10 @@ export function isProductionApp(app: { status: AppStatus }) {
   return app.status === "production";
 }
 
+export function isSandboxGroupApp(app: { status: AppStatus }) {
+  return app.status === "sandbox" || app.status === "contracting";
+}
+
 export function hasProductionApps(apps: Array<{ status: AppStatus }>) {
   return apps.some(isProductionApp);
 }

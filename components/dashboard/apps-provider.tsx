@@ -3,7 +3,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { createDeveloperAppRecord } from "@/lib/developer-apps/factory";
+import {
+  createDemoProductionApp,
+  createDeveloperAppRecord,
+  DEMO_PRODUCTION_APP_ID,
+} from "@/lib/developer-apps/factory";
 import { loadDeveloperApps, saveDeveloperApps } from "@/lib/developer-apps/storage";
 import type { CreateAppInput, DeveloperApp, UpdateAppInput } from "@/lib/developer-apps/types";
 
@@ -19,6 +23,10 @@ type AppsContextValue = {
 };
 
 const AppsContext = createContext<AppsContextValue | null>(null);
+
+function demoProductionSeedKey(userId: string) {
+  return `davivienda-demo-production-seeded:${userId}`;
+}
 
 export function AppsProvider({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
@@ -36,7 +44,18 @@ export function AppsProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    setApps(loadDeveloperApps(user.uid));
+    const loaded = loadDeveloperApps(user.uid);
+    const alreadySeeded = window.localStorage.getItem(demoProductionSeedKey(user.uid)) === "1";
+    const hasDemo = loaded.some((app) => app.id === DEMO_PRODUCTION_APP_ID);
+
+    if (!hasDemo && !alreadySeeded) {
+      const next = [createDemoProductionApp(), ...loaded];
+      saveDeveloperApps(user.uid, next);
+      window.localStorage.setItem(demoProductionSeedKey(user.uid), "1");
+      setApps(next);
+    } else {
+      setApps(loaded);
+    }
     setReady(true);
   }, [loading, user]);
 

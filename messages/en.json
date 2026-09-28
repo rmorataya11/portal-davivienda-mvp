@@ -764,7 +764,12 @@
       "createApp": "Create application",
       "yourApps": "Your applications",
       "appsTotal": "{count} in total",
-      "sandboxBillingNote": "Sandbox applications do not generate billing."
+      "sandboxBillingNote": "Sandbox applications do not generate billing.",
+      "sandboxSection": "Sandbox · {count} apps",
+      "productionSection": "Production · {count} apps",
+      "emptySandbox": "You do not have any applications in Sandbox.",
+      "emptyProduction": "Request contracting to move an app to production.",
+      "requestContracting": "Request contracting"
     },
     "chart": {
       "title": "This week's activity",

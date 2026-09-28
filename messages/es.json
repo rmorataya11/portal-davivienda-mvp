@@ -764,7 +764,12 @@
       "createApp": "Crear aplicación",
       "yourApps": "Sus aplicaciones",
       "appsTotal": "{count} en total",
-      "sandboxBillingNote": "Las aplicaciones en Sandbox no generan facturación."
+      "sandboxBillingNote": "Las aplicaciones en Sandbox no generan facturación.",
+      "sandboxSection": "Sandbox · {count} apps",
+      "productionSection": "Producción · {count} apps",
+      "emptySandbox": "No tiene aplicaciones en Sandbox.",
+      "emptyProduction": "Solicite contratación para pasar una app a producción.",
+      "requestContracting": "Solicitar contratación"
     },
     "chart": {
       "title": "Actividad de la semana",
