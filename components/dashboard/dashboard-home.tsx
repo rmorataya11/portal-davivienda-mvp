@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
+import { hasProductionApps, isProductionApp } from "@/lib/developer-apps/labels";
 
 import { AppCard } from "./app-card";
 import { useDeveloperApps } from "./apps-provider";
@@ -27,9 +28,12 @@ export function DashboardHome() {
 
   const greetingName = displayNameFromEmail(user?.email);
   const stats = apps.map((app) => appUsageStats(app));
+  const productionApps = apps.filter(isProductionApp);
+  const productionStats = productionApps.map((app) => appUsageStats(app));
+  const showBillingSummary = hasProductionApps(apps);
   const totalCalls = stats.reduce((sum, item) => sum + item.callsLast30Days, 0);
-  const consumedUsd = stats.reduce((sum, item) => sum + item.consumedUsd, 0);
-  const budgetUsd = apps.length > 0 ? Math.max(...stats.map((item) => item.budgetUsd)) : 600;
+  const consumedUsd = productionStats.reduce((sum, item) => sum + item.consumedUsd, 0);
+  const budgetUsd = productionStats.length > 0 ? Math.max(...productionStats.map((item) => item.budgetUsd)) : 600;
   const consumedRatio = Math.min(consumedUsd / budgetUsd, 1);
   const weekActivity =
     stats.length > 0
@@ -50,27 +54,33 @@ export function DashboardHome() {
       </div>
 
       <section className="mt-8 overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.06)]">
-        <div className="grid xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="px-6 py-7 sm:px-8 sm:py-8">
-            <p className="text-[13px] font-medium text-[#8E8E8E]">{t("consumption30")}</p>
-            <p className="mt-3 text-[34px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[42px] lg:text-[48px]">
-              {formatMoney(consumedUsd)}
-            </p>
-            <p className="mt-3 text-[15px] text-[#6A7178]">{t("ofEstimate", { amount: formatMoney(budgetUsd) })}</p>
-            <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#F2F3F5]">
-              <div
-                className="h-full rounded-full bg-[#E1251B] transition-[width] duration-500"
-                style={{ width: `${Math.max(consumedRatio * 100, apps.length ? 4 : 0)}%` }}
-              />
+        <div className={showBillingSummary ? "grid xl:grid-cols-[1.15fr_0.85fr]" : undefined}>
+          {showBillingSummary ? (
+            <div className="px-6 py-7 sm:px-8 sm:py-8">
+              <p className="text-[13px] font-medium text-[#8E8E8E]">{t("consumption30")}</p>
+              <p className="mt-3 text-[34px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[42px] lg:text-[48px]">
+                {formatMoney(consumedUsd)}
+              </p>
+              <p className="mt-3 text-[15px] text-[#6A7178]">{t("ofEstimate", { amount: formatMoney(budgetUsd) })}</p>
+              <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#F2F3F5]">
+                <div
+                  className="h-full rounded-full bg-[#E1251B] transition-[width] duration-500"
+                  style={{ width: `${Math.max(consumedRatio * 100, 4)}%` }}
+                />
+              </div>
+              <p className="mt-2 text-[13px] text-[#8E8E8E]">
+                {t("consumedRatio", { percent: Math.round(consumedRatio * 100) })}
+              </p>
             </div>
-            <p className="mt-2 text-[13px] text-[#8E8E8E]">
-              {apps.length === 0
-                ? t("emptyConsumption")
-                : t("consumedRatio", { percent: Math.round(consumedRatio * 100) })}
-            </p>
-          </div>
+          ) : null}
 
-          <div className="border-t border-[#E7EAEE] bg-[#F8F9FB] px-6 py-7 sm:px-8 xl:border-t-0 xl:border-l">
+          <div
+            className={
+              showBillingSummary
+                ? "border-t border-[#E7EAEE] bg-[#F8F9FB] px-6 py-7 sm:px-8 xl:border-t-0 xl:border-l"
+                : "bg-[#F8F9FB] px-6 py-7 sm:px-8"
+            }
+          >
             <WeekActivityChart values={weekActivity} />
           </div>
         </div>

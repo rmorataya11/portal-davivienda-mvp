@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
-import { formatAppDate } from "@/lib/developer-apps/labels";
+import { formatAppDate, isProductionApp } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { AppStatusBadge } from "./app-status-badge";
@@ -61,11 +61,11 @@ export function AppCard({ app }: { app: DeveloperApp }) {
           <p className="mt-0.5 text-[18px] font-bold leading-6 text-[#404040]">
             {stats.callsLast30Days.toLocaleString(numberLocale)}
           </p>
-          <p className="mt-0.5 truncate text-[11px] text-[#707070]">
-            {app.status === "production"
-              ? t("card.billed", { amount: formatMoney(stats.consumedUsd) })
-              : t("card.estimated", { amount: formatMoney(stats.consumedUsd) })}
-          </p>
+          {isProductionApp(app) ? (
+            <p className="mt-0.5 truncate text-[11px] text-[#707070]">
+              {t("card.billed", { amount: formatMoney(stats.consumedUsd) })}
+            </p>
+          ) : null}
         </div>
         <div className="min-w-0 shrink-0 text-right">
           <p className="text-[13px] font-semibold text-[#E1251B] transition-colors group-hover:text-[#C01F16]">

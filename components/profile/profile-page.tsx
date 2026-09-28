@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
+import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { hasProductionApps } from "@/lib/developer-apps/labels";
+
 import { ProfileBilling } from "./profile-billing";
 import { ProfileDangerZone } from "./profile-danger-zone";
 import { ProfileDataForm } from "./profile-data-form";
@@ -13,12 +16,15 @@ type TabId = "datos" | "solicitudes" | "facturacion";
 
 export function ProfilePage() {
   const t = useTranslations("Profile");
+  const { apps, ready } = useDeveloperApps();
   const [activeTab, setActiveTab] = useState<TabId>("datos");
+  const showBillingTab = ready && hasProductionApps(apps);
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "datos", label: t("tabs.data") },
     { id: "solicitudes", label: t("tabs.requests") },
-    { id: "facturacion", label: t("tabs.billing") },
+    ...(showBillingTab ? [{ id: "facturacion" as const, label: t("tabs.billing") }] : []),
   ];
+  const resolvedTab = tabs.some((tab) => tab.id === activeTab) ? activeTab : "datos";
 
   return (
     <div>
@@ -26,7 +32,7 @@ export function ProfilePage() {
 
       <div className="mt-6 flex gap-1 overflow-x-auto border-b border-[#E7EAEE]">
         {tabs.map((tab) => {
-          const isActive = tab.id === activeTab;
+          const isActive = tab.id === resolvedTab;
 
           return (
             <button
@@ -46,7 +52,7 @@ export function ProfilePage() {
       </div>
 
       <div className="mt-6">
-        {activeTab === "datos" ? (
+        {resolvedTab === "datos" ? (
           <div className="space-y-5">
             <ProfileDataForm />
             <div className="grid gap-5 lg:grid-cols-2">
@@ -55,8 +61,8 @@ export function ProfilePage() {
             </div>
           </div>
         ) : null}
-        {activeTab === "solicitudes" ? <ProfileRequests /> : null}
-        {activeTab === "facturacion" ? <ProfileBilling /> : null}
+        {resolvedTab === "solicitudes" ? <ProfileRequests /> : null}
+        {resolvedTab === "facturacion" && showBillingTab ? <ProfileBilling /> : null}
       </div>
     </div>
   );

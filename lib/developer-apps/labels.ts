@@ -8,6 +8,14 @@ export const appStatusStyles: Record<AppStatus, string> = {
   production: "bg-[#EEF3FF] text-[#2F4EA1]",
 };
 
+export function isProductionApp(app: { status: AppStatus }) {
+  return app.status === "production";
+}
+
+export function hasProductionApps(apps: Array<{ status: AppStatus }>) {
+  return apps.some(isProductionApp);
+}
+
 function dateLocale(locale?: string) {
   return locale === "en" ? "en-US" : "es";
 }

@@ -2,14 +2,21 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { mockCurrentPlan, mockInvoices, mockNextCharge, mockPaymentMethod } from "@/components/mock/mockBilling";
 import { formatMoney } from "@/lib/developer-apps/factory";
+import { hasProductionApps } from "@/lib/developer-apps/labels";
 import { formatCalendarDate } from "@/lib/format/date";
 
 export function ProfileBilling() {
   const t = useTranslations("Profile.billing");
   const locale = useLocale();
+  const { apps, ready } = useDeveloperApps();
   const features = [t("featureCalls"), t("featureSla"), t("featureProduction")];
+
+  if (!ready || !hasProductionApps(apps)) {
+    return null;
+  }
 
   function invoiceStatusCopy(status: (typeof mockInvoices)[number]["status"]) {
     if (status === "pagada") {
