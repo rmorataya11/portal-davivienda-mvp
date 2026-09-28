@@ -1,5 +1,6 @@
 "use client";
 
+import { AppWindow } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -9,6 +10,9 @@ import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 import { AppCard } from "./app-card";
 import { useDeveloperApps } from "./apps-provider";
 import { WeekActivityChart } from "./week-activity-chart";
+
+const createAppButtonClassName =
+  "inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]";
 
 export function DashboardHome() {
   const { user } = useAuth();
@@ -78,43 +82,39 @@ export function DashboardHome() {
         <MiniStat label={t("calls30")} value={totalCalls.toLocaleString(numberLocale)} />
       </div>
 
-      {apps.length === 0 ? (
-        <div className="mt-8 rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-10 text-center shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:py-12">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFF1F0] text-[28px] font-bold text-[#E1251B]">
-            +
-          </div>
-          <h2 className="mt-5 text-[24px] font-bold text-[#141F25]">{t("emptyTitle")}</h2>
-          <p className="mx-auto mt-3 max-w-[480px] text-[16px] leading-7 text-[#6A7178]">{t("emptyDescription")}</p>
-          <Link
-            href="/dashboard/apps/nueva"
-            className="mt-7 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
-          >
-            {t("createApp")}
-          </Link>
-        </div>
-      ) : (
-        <div className="mt-8">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-[22px] font-bold text-[#141F25]">{t("yourApps")}</h2>
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-              <Link
-                href="/dashboard/apps/nueva"
-                className="inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
-              >
-                {t("createApp")}
-              </Link>
-            </div>
-          </div>
-          {sandboxCount > 0 ? (
-            <p className="mb-4 text-[13px] leading-6 text-[#8E8E8E]">{t("sandboxBillingNote")}</p>
+      <div className="mt-8">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-[22px] font-bold text-[#141F25]">{t("yourApps")}</h2>
+          {apps.length > 0 ? (
+            <Link href="/dashboard/apps/nueva" className={createAppButtonClassName}>
+              {t("createApp")}
+            </Link>
           ) : null}
-          <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
-            {apps.map((app) => (
-              <AppCard key={app.id} app={app} />
-            ))}
-          </div>
         </div>
-      )}
+        {apps.length === 0 ? (
+          <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[16px] border border-[#E7EAEE] bg-white px-8 py-16 text-center sm:min-h-[360px] sm:px-12 sm:py-20">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#F5F6F8]">
+              <AppWindow className="h-10 w-10 text-[#8E8E8E]" strokeWidth={1.5} aria-hidden="true" />
+            </div>
+            <h3 className="mt-6 text-[22px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[24px]">{t("emptyTitle")}</h3>
+            <p className="mt-3 max-w-[440px] text-[15px] leading-7 text-[#6A7178]">{t("emptyDescription")}</p>
+            <Link href="/dashboard/apps/nueva" className={`mt-8 ${createAppButtonClassName}`}>
+              {t("createApp")}
+            </Link>
+          </div>
+        ) : (
+          <>
+            {sandboxCount > 0 ? (
+              <p className="mb-4 text-[13px] leading-6 text-[#8E8E8E]">{t("sandboxBillingNote")}</p>
+            ) : null}
+            <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
+              {apps.map((app) => (
+                <AppCard key={app.id} app={app} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
