@@ -26,7 +26,6 @@ type RegisterDeveloperBody = {
   subject?: unknown;
   description?: unknown;
   terms?: unknown;
-  privacy?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -80,9 +79,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Ingrese un teléfono válido.' }, { status: 400 });
     }
 
-    if (!isExplicitTrue(body.terms) || !isExplicitTrue(body.privacy)) {
+    if (!isExplicitTrue(body.terms)) {
       return NextResponse.json(
-        { message: 'Debe aceptar los términos y autorizar el tratamiento de datos personales.' },
+        { message: 'Debe aceptar los términos y condiciones.' },
         { status: 400 },
       );
     }

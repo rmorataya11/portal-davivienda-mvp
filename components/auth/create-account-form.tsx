@@ -109,10 +109,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
       nextErrors.terms = t("errors.termsRequired");
     }
 
-    if (!form.get("privacy")) {
-      nextErrors.privacy = t("errors.privacyRequired");
-    }
-
     return nextErrors;
   }
 
@@ -153,7 +149,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
           subject: String(formData.get("subject") ?? "").trim(),
           description: String(formData.get("description") ?? "").trim(),
           terms: formData.get("terms") === "on",
-          privacy: formData.get("privacy") === "on",
         }),
       });
 
@@ -349,28 +344,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
             </span>
           </label>
           {errors.terms ? <p className="pl-8 text-[13px] text-[#E1251B]">{errors.terms}</p> : null}
-
-          <label className="flex cursor-pointer items-start gap-3 text-[15px] text-[#404040]">
-            <input
-              id="privacy"
-              type="checkbox"
-              name="privacy"
-              required
-              onChange={() => clearError("privacy")}
-              className="mt-0.5 h-[18px] w-[18px] shrink-0 rounded-[4px] border border-[#C9CED4] accent-[#E1251B]"
-            />
-            <span>
-              {t.rich("signup.privacy", {
-                link: (chunks) => (
-                  <Link href="#privacidad" className="font-semibold text-[#E1251B] underline-offset-2 hover:underline">
-                    {chunks}
-                  </Link>
-                ),
-                required: () => <span className="text-[#E1251B]">*</span>,
-              })}
-            </span>
-          </label>
-          {errors.privacy ? <p className="pl-8 text-[13px] text-[#E1251B]">{errors.privacy}</p> : null}
         </div>
 
         <div className="flex flex-col items-center gap-4 pt-2 text-center">

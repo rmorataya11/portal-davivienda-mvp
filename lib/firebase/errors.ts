@@ -32,7 +32,8 @@ const KNOWN_MESSAGE_KEYS: Record<string, string> = {
   "Seleccione un tipo de identificación válido.": "invalidIdType",
   "Ingrese el número de identificación.": "idNumberRequired",
   "Ingrese un teléfono válido.": "invalidPhone",
-  "Debe aceptar los términos y autorizar el tratamiento de datos personales.": "termsAndPrivacyRequired",
+  "Debe aceptar los términos y condiciones.": "termsRequired",
+  "Debe aceptar los términos y autorizar el tratamiento de datos personales.": "termsRequired",
   "Ocurrió un error interno al registrar el developer.": "registrationInternal",
 };
 
@@ -52,7 +53,7 @@ const FALLBACK_MESSAGES: Record<string, string> = {
   invalidIdType: "Seleccione un tipo de identificación válido.",
   idNumberRequired: "Ingrese el número de identificación.",
   invalidPhone: "Ingrese un teléfono válido.",
-  termsAndPrivacyRequired: "Debe aceptar los términos y autorizar el tratamiento de datos personales.",
+  termsRequired: "Debe aceptar los términos y condiciones.",
   registrationInternal: "Ocurrió un error interno al registrar el developer.",
 };
 
