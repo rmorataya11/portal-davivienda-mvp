@@ -39,8 +39,15 @@ export function AppCard({ app }: { app: DeveloperApp }) {
           products.map((product) => (
             <span
               key={product.slug}
-              className="rounded-full border border-[#E7EAEE] bg-[#F8F9FB] px-3 py-1.5 text-[13px] font-medium text-[#404040]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#E7EAEE] bg-[#F8F9FB] py-1.5 pr-3 pl-1.5 text-[13px] font-medium text-[#404040]"
             >
+              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-[8px] bg-white">
+                {product.imageSrc ? (
+                  <img src={product.imageSrc} alt="" className="h-4 w-4 object-contain" aria-hidden="true" />
+                ) : (
+                  <span className="h-2 w-2 rounded-full bg-[#8E8E8E]" aria-hidden="true" />
+                )}
+              </span>
               {product.name}
             </span>
           ))
