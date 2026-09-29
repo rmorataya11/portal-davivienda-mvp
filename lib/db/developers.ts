@@ -207,6 +207,12 @@ export async function createDeveloper({
   }
 }
 
+export async function findDeveloperIdByIdentityUid(identityUid: string): Promise<string | null> {
+  const result = await query(`SELECT id FROM developers WHERE identity_uid = $1 LIMIT 1`, [identityUid]);
+  const id = result.rows[0]?.id;
+  return typeof id === 'string' ? id : null;
+}
+
 export async function getDeveloperProfile(developerId: string): Promise<DeveloperProfile | null> {
   const result = await query(
     `SELECT id, identity_uid, email, full_name, company_name, document_type, document_id, phone, notify_before_expiration
