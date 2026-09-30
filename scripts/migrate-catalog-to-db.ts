@@ -24,6 +24,8 @@ type ProductCopy = {
     description: string;
   };
   journeySteps?: IndexedText;
+  quickFacts?: Record<string, { label: string; value: string }>;
+  coverage?: { value?: string };
 };
 
 const englishProducts = enMessages.Catalog.products as Record<string, ProductCopy>;
@@ -60,6 +62,17 @@ function contentFromApi(api: (typeof apiDetails)[number], copy: ProductCopy | un
     },
     requirements: locale === 'es' ? api.requirements : indexedList(copy!.requirements),
     journeySteps: journey?.length ? journey : indexedList(sharedJourney),
+    quickFacts:
+      locale === 'es'
+        ? api.quickFacts
+        : api.quickFacts.map((fact, index) => copy?.quickFacts?.[String(index)] ?? fact),
+    coverage:
+      locale === 'es'
+        ? api.coverage
+        : {
+            value: copy?.coverage?.value ?? api.coverage.value,
+            detail: api.coverage.detail,
+          },
   };
 }
 
