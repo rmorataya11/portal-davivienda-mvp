@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { CreateAccountPage } from "@/components/auth/create-account-page";
-import { apiCatalogItems } from "@/components/catalog/content/apis";
+import { presentCatalogApi } from "@/lib/catalog/present";
+import { getCatalogApis } from "@/lib/catalog/queries";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Auth.metadata");
@@ -20,7 +21,9 @@ export default async function CrearCuentaRoute({
 }) {
   const params = await searchParams;
   const requestedProduct = Array.isArray(params.producto) ? params.producto[0] : params.producto;
-  const matchedProduct = apiCatalogItems.find(
+  const locale = await getLocale();
+  const products = (await getCatalogApis()).map((api) => presentCatalogApi(api, locale));
+  const matchedProduct = products.find(
     (item) => item.name === requestedProduct || item.slug === requestedProduct,
   );
 

@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { signUp } from "@/lib/auth/session";
 import { getAuthErrorKey } from "@/lib/firebase/errors";
 import { getLoginHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
@@ -25,11 +24,7 @@ type CreateAccountFormProps = {
 export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProps) {
   const router = useRouter();
   const t = useTranslations("Auth");
-  const catalogT = useTranslations("Catalog");
-  const productOptions = useMemo(
-    () => Array.from(new Map(apiCatalogItems.map((item) => [item.name, item])).values()),
-    [],
-  );
+  const productOptions = useCatalogViews();
 
   const [product, setProduct] = useState(initialProduct);
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -294,8 +289,8 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
           }}
         >
           {productOptions.map((item) => (
-            <option key={item.name} value={item.name}>
-              {localizeCatalogItem(item, catalogT).name}
+            <option key={item.slug} value={item.name}>
+              {item.name}
             </option>
           ))}
         </SelectField>

@@ -1,4 +1,4 @@
-import type { ApiEndpoint } from "@/components/catalog/content/apis";
+import type { ApiEndpoint } from "@/components/catalog/content/types";
 
 export type DocsHttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 

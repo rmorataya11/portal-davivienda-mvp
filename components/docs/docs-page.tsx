@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
+import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { findLocalizedDocsEndpoint, localizeDocsApis } from "@/components/docs/localize-docs";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import { SectionContainer } from "@/components/ui/layout";
@@ -63,6 +64,7 @@ export function DocsPage() {
   const t = useTranslations("Documentacion.explorer");
   const docsT = useTranslations("Documentacion");
   const catalogT = useTranslations("Catalog");
+  const products = useCatalogViews();
   const searchParams = useSearchParams();
   const apiFromQuery = searchParams.get("api");
   const initialDocsState = docsStateFromApiQuery(apiFromQuery);
@@ -75,7 +77,10 @@ export function DocsPage() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
 
-  const localizedApis = useMemo(() => localizeDocsApis(docsApis, docsT, catalogT), [catalogT, docsT]);
+  const localizedApis = useMemo(
+    () => localizeDocsApis(docsApis, docsT, catalogT, products),
+    [catalogT, docsT, products],
+  );
 
   const filteredApis = useMemo(() => {
     const normalized = query.trim().toLowerCase();

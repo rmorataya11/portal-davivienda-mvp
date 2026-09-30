@@ -1,3 +1,5 @@
+import { cache } from 'react';
+
 import { query } from '@/lib/db/client';
 
 export type CatalogApiContent = {
@@ -117,7 +119,7 @@ function mapCatalogApi(row: CatalogApiRow): CatalogApi {
   };
 }
 
-export async function getCatalogApis(): Promise<CatalogApi[]> {
+export const getCatalogApis = cache(async function getCatalogApis(): Promise<CatalogApi[]> {
   const result = await query(
     `SELECT ${CATALOG_COLUMNS}
      FROM catalog_apis
@@ -125,9 +127,9 @@ export async function getCatalogApis(): Promise<CatalogApi[]> {
   );
 
   return result.rows.map((row) => mapCatalogApi(row as CatalogApiRow));
-}
+});
 
-export async function getCatalogApiBySlug(slug: string): Promise<CatalogApi | null> {
+export const getCatalogApiBySlug = cache(async function getCatalogApiBySlug(slug: string): Promise<CatalogApi | null> {
   const result = await query(
     `SELECT ${CATALOG_COLUMNS}
      FROM catalog_apis
@@ -137,4 +139,4 @@ export async function getCatalogApiBySlug(slug: string): Promise<CatalogApi | nu
 
   const row = result.rows[0] as CatalogApiRow | undefined;
   return row ? mapCatalogApi(row) : null;
-}
+});

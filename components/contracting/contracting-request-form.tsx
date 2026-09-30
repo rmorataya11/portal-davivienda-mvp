@@ -8,8 +8,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -31,7 +30,6 @@ type FieldErrors = Record<string, string>;
 
 export function ContractingRequestForm({ productName = "" }: { productName?: string }) {
   const t = useTranslations("Contratacion");
-  const catalogT = useTranslations("Catalog");
   const searchParams = useSearchParams();
   const { user, developerId } = useAuth();
   const { getApp, markContracting, ready } = useDeveloperApps();
@@ -63,8 +61,8 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
     };
   }, [appId, getApp, ready]);
 
-  const productItem = apiCatalogItems.find((item) => item.slug === linkedApp?.apiProduct);
-  const displayProduct = productItem ? localizeCatalogItem(productItem, catalogT).name : productName;
+  const linkedProduct = useCatalogView(linkedApp?.apiProduct ?? "");
+  const displayProduct = linkedProduct?.name ?? productName;
   const [companyName, setCompanyName] = useState("");
   const [environment, setEnvironment] = useState("");
   const [needsIpWhitelist, setNeedsIpWhitelist] = useState("");

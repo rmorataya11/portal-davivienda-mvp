@@ -7,10 +7,10 @@ import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
 
-import type { ApiDetail } from "../content/apis";
+import type { CatalogView } from "@/lib/catalog/present";
 import { DetailSectionCard } from "./detail-primitives";
 
-export function TechnicalAccessGate({ api, children }: { api: ApiDetail; children: ReactNode }) {
+export function TechnicalAccessGate({ api, children }: { api: CatalogView; children: ReactNode }) {
   const { user, loading } = useAuth();
   const t = useTranslations("Catalog.technical");
 

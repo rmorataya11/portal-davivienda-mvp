@@ -1,5 +1,5 @@
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem, type CatalogTranslate } from "@/components/catalog/content/localize-api";
+import type { CatalogTranslate } from "@/components/catalog/content/localize-api";
+import type { CatalogView } from "@/lib/catalog/present";
 import type { DocsApi, DocsEndpoint, DocsParameter } from "@/lib/mock/mockDocs";
 
 export type DocsTranslate = (key: string) => string;
@@ -38,18 +38,28 @@ function localizeEndpoint(endpoint: DocsEndpoint, docsT: DocsTranslate, catalogT
   };
 }
 
-export function localizeDocsApi(api: DocsApi, docsT: DocsTranslate, catalogT: CatalogTranslate): DocsApi {
-  const catalogItem = apiCatalogItems.find((item) => item.slug === api.apiId);
+export function localizeDocsApi(
+  api: DocsApi,
+  docsT: DocsTranslate,
+  catalogT: CatalogTranslate,
+  products: CatalogView[] = [],
+): DocsApi {
+  const catalogItem = products.find((item) => item.slug === api.apiId);
 
   return {
     ...api,
-    apiName: catalogItem ? localizeCatalogItem(catalogItem, catalogT).name : api.apiName,
+    apiName: catalogItem?.name ?? api.apiName,
     endpoints: api.endpoints.map((endpoint) => localizeEndpoint(endpoint, docsT, catalogT)),
   };
 }
 
-export function localizeDocsApis(apis: DocsApi[], docsT: DocsTranslate, catalogT: CatalogTranslate) {
-  return apis.map((api) => localizeDocsApi(api, docsT, catalogT));
+export function localizeDocsApis(
+  apis: DocsApi[],
+  docsT: DocsTranslate,
+  catalogT: CatalogTranslate,
+  products: CatalogView[] = [],
+) {
+  return apis.map((api) => localizeDocsApi(api, docsT, catalogT, products));
 }
 
 export function findLocalizedDocsEndpoint(apis: DocsApi[], endpointId: string) {

@@ -4,9 +4,9 @@ import { useTranslations } from "next-intl";
 import { ContractingRequestLink } from "@/components/contracting/contracting-request-link";
 import { SectionContainer } from "@/components/ui/layout";
 
-import type { ApiDetail } from "../content/apis";
+import type { CatalogView } from "@/lib/catalog/present";
 
-export function DetailFinalCta({ api }: { api: ApiDetail }) {
+export function DetailFinalCta({ api }: { api: CatalogView }) {
   const t = useTranslations("Catalog.detail");
   return (
     <section id="next-steps" className="scroll-anchor pb-16">

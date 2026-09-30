@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-import { apiCatalogItems, getApiDetailBySlug } from "@/components/catalog/content/apis";
-import { localizeApiDetail, localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogView } from "@/components/catalog/catalog-provider";
+import { catalogCategoryLabel } from "@/components/catalog/content/localize-api";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import { CredentialField } from "@/components/ui/credential-field";
 import { AppsRequestError } from "@/lib/developer-apps/api";
@@ -25,6 +25,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
   const errorsT = useTranslations("Dashboard.errors");
   const catalogT = useTranslations("Catalog");
   const locale = useLocale();
+  const product = useCatalogView(app?.apiProduct ?? "");
 
   useEffect(() => {
     if (!ready) {
@@ -89,11 +90,6 @@ export function AppDetailPage({ appId }: { appId: string }) {
     );
   }
 
-  const productItem = apiCatalogItems.find((item) => item.slug === app.apiProduct);
-  const product = productItem ? localizeCatalogItem(productItem, catalogT) : null;
-  const detail = product ? getApiDetailBySlug(product.slug) : undefined;
-  const localizedDetail = detail ? localizeApiDetail(detail, catalogT) : undefined;
-  const endpoint = localizedDetail?.endpoints[0];
   const productionHref = `/solicitud-contratacion?app=${app.id}&producto=${app.apiProduct}`;
   const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
   const expires = formatAppDateTime(app.expiresAt, locale);
@@ -181,22 +177,22 @@ export function AppDetailPage({ appId }: { appId: string }) {
             {product ? (
               <div className="rounded-[16px] border border-[#E7EAEE] bg-white px-4 py-4">
                 <p className="text-[18px] font-semibold text-[#404040]">{product.name}</p>
-                <p className="mt-1 text-[13px] text-[#707070]">{product.category}</p>
-                {endpoint ? (
+                <p className="mt-1 text-[13px] text-[#707070]">{catalogCategoryLabel(product.category, catalogT)}</p>
+                {product.endpoints[0] ? (
                   <div className="mt-4">
                     <div className="flex flex-wrap items-center gap-2">
                       <span
                         className={`inline-flex min-w-14 items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
-                          endpoint.method === "POST" ? "bg-[#E1251B] text-white" : "bg-[#EFFCF5] text-[#347659]"
+                          product.endpoints[0].method === "POST" ? "bg-[#E1251B] text-white" : "bg-[#EFFCF5] text-[#347659]"
                         }`}
                       >
-                        {endpoint.method}
+                        {product.endpoints[0].method}
                       </span>
                       <code className="min-w-0 text-[13px] text-[#404040]">
-                        <BreakablePath value={endpoint.path} />
+                        <BreakablePath value={product.endpoints[0].path} />
                       </code>
                     </div>
-                    <p className="mt-2 text-[13px] leading-5 text-[#707070]">{endpoint.description}</p>
+                    <p className="mt-2 text-[13px] leading-5 text-[#707070]">{product.endpoints[0].description}</p>
                   </div>
                 ) : null}
                 <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">

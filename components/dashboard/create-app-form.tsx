@@ -6,8 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { CredentialField } from "@/components/ui/credential-field";
 import { AppsRequestError } from "@/lib/developer-apps/api";
 import type { CreatedAppResult } from "@/lib/developer-apps/types";
@@ -20,9 +19,9 @@ export function CreateAppForm() {
   const t = useTranslations("Dashboard.create");
   const createdT = useTranslations("Dashboard.created");
   const errorsT = useTranslations("Dashboard.errors");
-  const catalogT = useTranslations("Catalog");
-  const lockedProduct = apiCatalogItems.find((item) => item.slug === (searchParams.get("producto") ?? ""));
-  const lockedProductName = lockedProduct ? localizeCatalogItem(lockedProduct, catalogT).name : "";
+  const products = useCatalogViews();
+  const lockedProduct = products.find((item) => item.slug === (searchParams.get("producto") ?? ""));
+  const lockedProductName = lockedProduct?.name ?? "";
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -101,8 +100,8 @@ export function CreateAppForm() {
   }
 
   if (created) {
-    const product = apiCatalogItems.find((item) => item.slug === created.app.apiProduct);
-    const productName = product ? localizeCatalogItem(product, catalogT).name : created.app.apiProduct;
+    const product = products.find((item) => item.slug === created.app.apiProduct);
+    const productName = product?.name ?? created.app.apiProduct;
 
     return (
       <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
@@ -184,7 +183,7 @@ export function CreateAppForm() {
               </legend>
               <p className="mt-1 text-[14px] leading-6 text-[#8A9096]">{t("apisHelp")}</p>
               <div className="mt-4 flex flex-wrap gap-3" role="radiogroup" aria-label={t("apisLegend")}>
-                {apiCatalogItems.map((item) => {
+                {products.map((item) => {
                   const selected = apiProduct === item.slug;
 
                   return (
@@ -200,7 +199,7 @@ export function CreateAppForm() {
                           : "border-[#D5DAE0] bg-white text-[#404040] hover:border-[#E1251B] hover:text-[#E1251B]"
                       }`}
                     >
-                      {localizeCatalogItem(item, catalogT).name}
+                      {item.name}
                     </button>
                   );
                 })}

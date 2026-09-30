@@ -5,8 +5,10 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
+import type { CatalogView } from "@/lib/catalog/present";
+
 import { CatalogGlyph } from "../catalog-glyph";
-import type { ApiDetail } from "../content/apis";
+import { catalogCategoryLabel, catalogStatusLabel } from "../content/localize-api";
 
 function ApiGlyph() {
   return (
@@ -43,12 +45,13 @@ function DescriptionText({ text }: { text: string }) {
   );
 }
 
-export function DetailHero({ api }: { api: ApiDetail }) {
+export function DetailHero({ api }: { api: CatalogView }) {
   const t = useTranslations("Catalog.detail");
+  const catalogT = useTranslations("Catalog");
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const iconSrc = api.icon;
   const primaryEndpoint = api.endpoints[0];
-  const iconSrc = api.heroImageSrc ?? api.imageSrc;
-  const summaryItems = [
+  const summaryItems: Array<{ label: string; value: string; path?: string; detail?: string }> = [
     {
       label: t("facts.access"),
       value: t("facts.accessValue"),
@@ -61,7 +64,7 @@ export function DetailHero({ api }: { api: ApiDetail }) {
     {
       label: t("facts.firstCall"),
       value: primaryEndpoint?.method ?? "GET",
-      path: primaryEndpoint?.path ?? "/balances",
+      path: primaryEndpoint?.path,
       detail: primaryEndpoint?.description ?? t("facts.firstCallFallback"),
     },
     {
@@ -93,11 +96,11 @@ export function DetailHero({ api }: { api: ApiDetail }) {
               <div className="mt-4 flex flex-wrap items-center gap-4">
                 <span className="inline-flex items-center gap-2 text-[14px] font-normal text-[#8E8E8E]">
                   <CatalogGlyph src="/catag/main/filter.svg" className="h-6 w-6" />
-                  {api.category}
+                  {catalogCategoryLabel(api.category, catalogT)}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#EFFCF5] px-3 py-1 text-[13px] font-medium text-[#347659]">
                   <span className="h-2 w-2 rounded-full bg-[#55B685]" />
-                  {api.status}
+                  {catalogStatusLabel(api.status, catalogT)}
                 </span>
               </div>
             </div>
@@ -158,12 +161,12 @@ export function DetailHero({ api }: { api: ApiDetail }) {
                   <p className="mt-3 min-w-0 text-[18px] font-bold leading-7 tracking-[0.2px] text-[#404040] sm:text-[20px]">
                     {item.value}
                   </p>
-                  {"path" in item && item.path ? (
+                  {item.path ? (
                     <p className="mt-1 min-w-0 w-full font-mono text-[12px] leading-5 text-[#404040] sm:text-[13px]">
                       <BreakablePath value={item.path} />
                     </p>
                   ) : null}
-                  {"detail" in item && item.detail ? (
+                  {item.detail ? (
                     <p className="mt-auto min-w-0 w-full pt-3 text-[13px] font-normal leading-5 text-[#8E8E8E]">
                       {item.detail.includes("/") ? <BreakablePath value={item.detail} /> : item.detail}
                     </p>

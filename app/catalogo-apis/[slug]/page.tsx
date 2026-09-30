@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { ApiDetailPage } from "@/components/catalog/api-detail-page";
-import { apiDetails, getApiDetailBySlug } from "@/components/catalog/content/apis";
-import { localizeApiDetail } from "@/components/catalog/content/localize-api";
-
-export function generateStaticParams() {
-  return apiDetails.map((api) => ({ slug: api.slug }));
-}
+import { presentCatalogApi } from "@/lib/catalog/present";
+import { getCatalogApiBySlug } from "@/lib/catalog/queries";
 
 export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const api = getApiDetailBySlug(slug);
+  const api = await getCatalogApiBySlug(slug);
   const t = await getTranslations("Catalog");
 
   if (!api) {
@@ -21,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[sl
     };
   }
 
-  const localized = localizeApiDetail(api, t);
+  const localized = presentCatalogApi(api, await getLocale());
 
   return {
     title: t("metadata.detailTitle", { name: localized.name }),
@@ -31,11 +27,11 @@ export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[sl
 
 export default async function ApiDetailRoute({ params }: PageProps<"/catalogo-apis/[slug]">) {
   const { slug } = await params;
-  const api = getApiDetailBySlug(slug);
+  const api = await getCatalogApiBySlug(slug);
 
   if (!api) {
     notFound();
   }
 
-  return <ApiDetailPage api={api} />;
+  return <ApiDetailPage api={presentCatalogApi(api, await getLocale())} />;
 }

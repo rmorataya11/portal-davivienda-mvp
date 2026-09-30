@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+import type { CatalogView } from "@/lib/catalog/present";
+
 import { CatalogGlyph } from "./catalog-glyph";
-import type { ApiCatalogItem } from "./content/apis";
+import { catalogCategoryLabel, catalogStatusLabel } from "./content/localize-api";
 
 function CoinIcon() {
   return (
@@ -13,19 +15,20 @@ function CoinIcon() {
   );
 }
 
-export function ApiCard({ api }: { api: ApiCatalogItem }) {
+export function ApiCard({ api }: { api: CatalogView }) {
   const t = useTranslations("Catalog.card");
+  const catalogT = useTranslations("Catalog");
   const detailHref = api.slug ? `/catalogo-apis/${api.slug}` : "#";
 
   return (
     <article className="group flex min-h-[348px] w-full flex-col rounded-[16px] border border-[#707070] bg-white px-[18px] pb-[16px] pt-[24px]">
       <div className="flex items-start justify-between gap-4">
         <div className="flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-[16px] bg-[#F2F3F5]">
-          {api.imageSrc ? <img src={api.imageSrc} alt="" className="h-9 w-9 object-contain" /> : <CoinIcon />}
+          {api.icon ? <img src={api.icon} alt="" className="h-9 w-9 object-contain" /> : <CoinIcon />}
         </div>
         <div className="inline-flex h-7 items-center justify-center gap-2 rounded-[24px] bg-[#EFFCF5] px-3 text-[12px] font-medium text-[#347659]">
           <span className="h-2 w-2 rounded-full bg-[#55B685]" />
-          {api.status}
+          {catalogStatusLabel(api.status, catalogT)}
         </div>
       </div>
 
@@ -37,7 +40,7 @@ export function ApiCard({ api }: { api: ApiCatalogItem }) {
       <div className="mt-auto flex flex-col gap-4 border-t border-[#707070]/30 pt-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-[16px] leading-7 tracking-[0.32px] text-[#8E8E8E]">
           <CatalogGlyph src="/catag/main/filter.svg" className="h-6 w-6" />
-          {api.category}
+          {catalogCategoryLabel(api.category, catalogT)}
         </div>
         <Link
           href={detailHref}

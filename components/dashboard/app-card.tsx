@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { formatAppDate } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -12,10 +11,8 @@ import { AppStatusBadge } from "./app-status-badge";
 
 export function AppCard({ app }: { app: DeveloperApp }) {
   const t = useTranslations("Dashboard");
-  const catalogT = useTranslations("Catalog");
   const locale = useLocale();
-  const productItem = apiCatalogItems.find((item) => item.slug === app.apiProduct);
-  const product = productItem ? localizeCatalogItem(productItem, catalogT) : null;
+  const product = useCatalogView(app.apiProduct);
   const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
 
   return (
@@ -37,8 +34,8 @@ export function AppCard({ app }: { app: DeveloperApp }) {
       <div className="mt-3 mb-4 flex min-w-0 flex-wrap gap-1.5">
         {product ? (
           <span className="inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-full border border-[#E7EAEE] bg-[#F8F9FB] px-2.5 py-1 text-[12px] font-medium text-[#404040]">
-            {product.imageSrc ? (
-              <img src={product.imageSrc} alt="" className="h-4 w-4 shrink-0 object-contain" aria-hidden="true" />
+            {product.icon ? (
+              <img src={product.icon} alt="" className="h-4 w-4 shrink-0 object-contain" aria-hidden="true" />
             ) : null}
             <span className="min-w-0 truncate">{product.name}</span>
           </span>

@@ -6,8 +6,7 @@ import { useEffect, useId, useState, type FormEvent } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { ContentAccessGate } from "@/components/auth/content-access-gate";
 import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { RadioGroup } from "@/components/contracting/radio-group";
 import { getSessionIdToken } from "@/lib/auth/session";
 import { type SupportCaseSeverity } from "@/lib/support/cases";
@@ -18,7 +17,7 @@ type FieldErrors = Record<string, string>;
 
 export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const t = useTranslations("Faq.case");
-  const catalogT = useTranslations("Catalog");
+  const products = useCatalogViews();
   const { user, developerId } = useAuth();
   const titleId = useId();
   const [title, setTitle] = useState("");
@@ -241,9 +240,9 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
                 value={apiSlug}
                 onChange={(event) => setApiSlug(event.target.value)}
               >
-                {apiCatalogItems.map((api) => (
+                {products.map((api) => (
                   <option key={api.slug} value={api.slug}>
-                    {localizeCatalogItem(api, catalogT).name}
+                    {api.name}
                   </option>
                 ))}
               </SelectField>

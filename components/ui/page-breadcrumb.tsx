@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { getApiDetailBySlug } from "@/components/catalog/content/apis";
-import { localizeApiDetail } from "@/components/catalog/content/localize-api";
+import { useCatalogViews } from "@/components/catalog/catalog-provider";
+import type { CatalogView } from "@/lib/catalog/present";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { localizeGuide } from "@/components/guides/localize-guide";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
@@ -17,9 +17,14 @@ type Crumb = {
   label: string;
 };
 
+function findProduct(products: CatalogView[], slug: string) {
+  return products.find((product) => product.slug === slug);
+}
+
 function buildCrumbs(
   pathname: string,
   productSlug: string | null,
+  products: CatalogView[],
   getApp: (id: string) => { name: string } | undefined,
   t: (key: string) => string,
   dashboardT: (key: string) => string,
@@ -48,8 +53,8 @@ function buildCrumbs(
     }
 
     if (previous === "catalogo-apis") {
-      const api = getApiDetailBySlug(segment);
-      crumbs.push({ href, label: api ? localizeApiDetail(api, t).name : segment });
+      const api = findProduct(products, segment);
+      crumbs.push({ href, label: api?.name ?? segment });
       return;
     }
 
@@ -104,10 +109,10 @@ function buildCrumbs(
     }
 
     if (segment === "solicitud-contratacion") {
-      const product = productSlug ? getApiDetailBySlug(productSlug) : undefined;
+      const product = productSlug ? findProduct(products, productSlug) : undefined;
       if (product) {
         crumbs.push({ href: "/catalogo-apis", label: t("breadcrumb.catalog") });
-        crumbs.push({ href: `/catalogo-apis/${product.slug}`, label: localizeApiDetail(product, t).name });
+        crumbs.push({ href: `/catalogo-apis/${product.slug}`, label: product.name });
       }
       crumbs.push({ href, label: contratacionT("breadcrumb.request") });
       return;
@@ -155,9 +160,11 @@ export function PageBreadcrumb() {
     return null;
   }
 
+  const products = useCatalogViews();
   const crumbs = buildCrumbs(
     pathname,
     searchParams.get("producto"),
+    products,
     (id) => apps.find((app) => app.id === id),
     t,
     dashboardT,

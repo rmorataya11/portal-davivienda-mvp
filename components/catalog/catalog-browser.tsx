@@ -3,25 +3,20 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { useCatalogViews } from "./catalog-provider";
 import { ApiCard } from "./api-card";
 import { CatalogGlyph } from "./catalog-glyph";
-import { apiCatalogItems, apiDetails, getApiDetailBySlug } from "./content/apis";
-import {
-  catalogItemMatchesFilter,
-  getCatalogFilterKeys,
-  getFilterChipLabel,
-  localizeApiDetail,
-  localizeCatalogItem,
-} from "./content/localize-api";
+import { catalogItemMatchesFilter, getCatalogFilterKeys, getFilterChipLabel } from "./content/localize-api";
 
 export function CatalogBrowser() {
   const t = useTranslations("Catalog");
+  const products = useCatalogViews();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const categoryFilters = getCatalogFilterKeys(apiDetails.map((api) => api.category));
+  const categoryFilters = getCatalogFilterKeys(products.map((api) => api.category));
 
   const normalizedQuery = query.trim().toLowerCase();
-  const filteredItems = apiCatalogItems.filter((item) => {
+  const filteredItems = products.filter((item) => {
     if (!catalogItemMatchesFilter(item.category, category)) {
       return false;
     }
@@ -30,20 +25,15 @@ export function CatalogBrowser() {
       return true;
     }
 
-    const detail = getApiDetailBySlug(item.slug);
-    const localizedItem = localizeCatalogItem(item, t);
-    const localizedDetail = detail ? localizeApiDetail(detail, t) : undefined;
     const haystack = [
       item.name,
       item.description,
+      item.subtitle,
       item.category,
       item.status,
-      localizedItem.name,
-      localizedItem.description,
-      localizedItem.category,
-      localizedItem.status,
-      ...(detail?.endpoints.flatMap((endpoint) => [endpoint.method, endpoint.path, endpoint.description]) ?? []),
-      ...(localizedDetail?.endpoints.flatMap((endpoint) => [endpoint.description]) ?? []),
+      ...item.valor,
+      ...item.casosDeUso,
+      ...item.endpoints.flatMap((endpoint) => [endpoint.method, endpoint.path, endpoint.description]),
     ]
       .join(" ")
       .toLowerCase();
@@ -101,7 +91,7 @@ export function CatalogBrowser() {
       {filteredItems.length > 0 ? (
         <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
           {filteredItems.map((api) => (
-            <ApiCard key={api.slug || api.name} api={localizeCatalogItem(api, t)} />
+            <ApiCard key={api.slug || api.name} api={api} />
           ))}
         </div>
       ) : (

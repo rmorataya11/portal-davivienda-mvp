@@ -5,12 +5,12 @@ import { useState } from "react";
 
 import { SectionContainer } from "@/components/ui/layout";
 
-import type { ApiDetail } from "../content/apis";
+import type { CatalogView } from "@/lib/catalog/present";
 import { DetailSectionCard, ItemGrid } from "./detail-primitives";
 
 type TabId = "value" | "use-cases" | "integration" | "journey";
 
-export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
+export function DetailInsightsTabs({ api }: { api: CatalogView }) {
   const t = useTranslations("Catalog.detail");
   const [activeTab, setActiveTab] = useState<TabId>("value");
 
@@ -68,7 +68,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                     {t("valueDescription")}
                   </p>
                 </div>
-                <ItemGrid items={api.benefits} />
+                <ItemGrid items={api.valor} />
               </div>
             ) : null}
 
@@ -82,7 +82,7 @@ export function DetailInsightsTabs({ api }: { api: ApiDetail }) {
                     {t("useCasesDescription")}
                   </p>
                 </div>
-                <ItemGrid items={api.useCases} />
+                <ItemGrid items={api.casosDeUso} />
               </div>
             ) : null}
 

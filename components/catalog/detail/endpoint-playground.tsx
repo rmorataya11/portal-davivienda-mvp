@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
-import type { ApiEndpoint } from "../content/apis";
+import type { ApiEndpoint } from "../content/types";
 
 function methodClasses(method: ApiEndpoint["method"]) {
   if (method === "POST") {

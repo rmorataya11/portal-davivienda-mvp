@@ -6,7 +6,7 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 
 import { BreakablePath } from "@/components/ui/breakable-path";
-import type { ApiEndpoint } from "../content/apis";
+import type { ApiEndpoint } from "../content/types";
 
 SyntaxHighlighter.registerLanguage("json", json);
 

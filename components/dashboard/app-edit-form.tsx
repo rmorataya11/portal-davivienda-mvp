@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
-import { apiCatalogItems } from "@/components/catalog/content/apis";
-import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { AppsRequestError } from "@/lib/developer-apps/api";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -24,9 +23,8 @@ export function AppEditForm({
   const { updateApp } = useDeveloperApps();
   const t = useTranslations("Dashboard");
   const errorsT = useTranslations("Dashboard.errors");
-  const catalogT = useTranslations("Catalog");
-  const product = apiCatalogItems.find((item) => item.slug === app.apiProduct);
-  const productName = product ? localizeCatalogItem(product, catalogT).name : app.apiProduct;
+  const product = useCatalogView(app.apiProduct);
+  const productName = product?.name ?? app.apiProduct;
   const [name, setName] = useState(app.name);
   const [description, setDescription] = useState(app.description ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
