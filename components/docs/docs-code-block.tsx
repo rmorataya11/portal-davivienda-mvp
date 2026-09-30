@@ -8,7 +8,7 @@ import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javasc
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
 
-import type { DocsResponseExample } from "@/lib/mock/mockDocs";
+import type { CodeResponseExample as DocsResponseExample } from "@/lib/catalog/generate-code-samples";
 
 SyntaxHighlighter.registerLanguage("bash", bash);
 SyntaxHighlighter.registerLanguage("javascript", javascript);

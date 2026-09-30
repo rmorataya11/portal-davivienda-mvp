@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { ApiTechnicalPage } from "@/components/catalog/api-technical-page";
 import { presentCatalogApi } from "@/lib/catalog/present";
-import { getCatalogApiBySlug } from "@/lib/catalog/queries";
+import { getCatalogApiBySlug, getEndpointsForApi } from "@/lib/catalog/queries";
 
 export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[slug]/detalle-tecnico">): Promise<Metadata> {
   const { slug } = await params;
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[sl
     };
   }
 
-  const localized = presentCatalogApi(api, await getLocale());
+  const localized = presentCatalogApi(api, await getLocale(), await getEndpointsForApi(api.id));
 
   return {
     title: t("metadata.technicalTitle", { name: localized.name }),
@@ -33,5 +33,5 @@ export default async function ApiTechnicalRoute({ params }: PageProps<"/catalogo
     notFound();
   }
 
-  return <ApiTechnicalPage api={presentCatalogApi(api, await getLocale())} />;
+  return <ApiTechnicalPage api={presentCatalogApi(api, await getLocale(), await getEndpointsForApi(api.id))} />;
 }

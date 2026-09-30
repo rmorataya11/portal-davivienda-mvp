@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { ApiDetailPage } from "@/components/catalog/api-detail-page";
 import { presentCatalogApi } from "@/lib/catalog/present";
-import { getCatalogApiBySlug } from "@/lib/catalog/queries";
+import { getCatalogApiBySlug, getEndpointsForApi } from "@/lib/catalog/queries";
 
 export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/catalogo-apis/[sl
     };
   }
 
-  const localized = presentCatalogApi(api, await getLocale());
+  const localized = presentCatalogApi(api, await getLocale(), await getEndpointsForApi(api.id));
 
   return {
     title: t("metadata.detailTitle", { name: localized.name }),
@@ -33,5 +33,5 @@ export default async function ApiDetailRoute({ params }: PageProps<"/catalogo-ap
     notFound();
   }
 
-  return <ApiDetailPage api={presentCatalogApi(api, await getLocale())} />;
+  return <ApiDetailPage api={presentCatalogApi(api, await getLocale(), await getEndpointsForApi(api.id))} />;
 }

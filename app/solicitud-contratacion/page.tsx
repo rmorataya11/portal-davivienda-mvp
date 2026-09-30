@@ -23,7 +23,7 @@ export default async function SolicitudContratacionRoute({
   const requestedProduct = Array.isArray(params.producto) ? params.producto[0] : params.producto;
   const requestedApp = Array.isArray(params.app) ? params.app[0] : params.app;
   const locale = await getLocale();
-  const products = (await getCatalogApis()).map((api) => presentCatalogApi(api, locale));
+  const products = (await getCatalogApis()).map((api) => presentCatalogApi(api, locale, []));
   const matchedProduct = products.find(
     (item) => item.name === requestedProduct || item.slug === requestedProduct,
   );

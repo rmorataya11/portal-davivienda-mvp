@@ -1,21 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
 import { useCatalogViews } from "@/components/catalog/catalog-provider";
-import { findLocalizedDocsEndpoint, localizeDocsApis } from "@/components/docs/localize-docs";
-import { BreakablePath } from "@/components/ui/breakable-path";
-import { SectionContainer } from "@/components/ui/layout";
 import {
-  defaultDocsEndpointId,
-  docsApis,
-  findDocsApi,
+  findLocalizedDocsEndpoint,
+  localizeDocsEndpoint,
+  type DocsApi,
   type DocsEndpoint,
   type DocsHttpMethod,
-} from "@/lib/mock/mockDocs";
+} from "@/components/docs/localize-docs";
+import { BreakablePath } from "@/components/ui/breakable-path";
+import { SectionContainer } from "@/components/ui/layout";
+import type { CatalogEndpoint } from "@/lib/catalog/queries";
 
 function methodIconClass(method: DocsHttpMethod) {
   if (method === "POST") {
@@ -49,38 +49,47 @@ function methodBadgeClass(method: DocsHttpMethod) {
   return "bg-[#EFFCF5] text-[#347659]";
 }
 
-function docsStateFromApiQuery(apiParam: string | null) {
-  const matchedApi = apiParam ? findDocsApi(apiParam) : undefined;
-  const firstEndpoint = matchedApi?.endpoints[0];
+function docsStateFromApis(apiParam: string | null, apis: DocsApi[]) {
+  const matchedApi = apiParam ? apis.find((api) => api.apiId === apiParam) : undefined;
+  const firstEndpoint = matchedApi?.endpoints[0] ?? apis[0]?.endpoints[0];
 
   return {
     query: matchedApi?.apiName ?? "",
-    openTabIds: firstEndpoint ? [firstEndpoint.id] : defaultDocsEndpointId ? [defaultDocsEndpointId] : [],
-    activeTabId: firstEndpoint?.id ?? defaultDocsEndpointId,
+    openTabIds: firstEndpoint ? [firstEndpoint.id] : [],
+    activeTabId: firstEndpoint?.id ?? "",
   };
 }
 
-export function DocsPage() {
+export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
   const t = useTranslations("Documentacion.explorer");
-  const docsT = useTranslations("Documentacion");
-  const catalogT = useTranslations("Catalog");
   const products = useCatalogViews();
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const apiFromQuery = searchParams.get("api");
-  const initialDocsState = docsStateFromApiQuery(apiFromQuery);
+  const localizedApis = useMemo(() => {
+    if (!endpoint) {
+      return [];
+    }
+
+    const product = products.find((item) => item.slug === "api-tesoreria");
+
+    return [
+      {
+        apiId: "api-tesoreria",
+        apiName: product?.name ?? "API Tesorería",
+        endpoints: [localizeDocsEndpoint(endpoint, locale, "api-tesoreria")],
+      },
+    ];
+  }, [endpoint, locale, products]);
+  const initialDocsState = docsStateFromApis(apiFromQuery, localizedApis);
   const [query, setQuery] = useState(initialDocsState.query);
   const [openTabIds, setOpenTabIds] = useState<string[]>(initialDocsState.openTabIds);
   const [activeTabId, setActiveTabId] = useState(initialDocsState.activeTabId);
   const [expandedApis, setExpandedApis] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(docsApis.map((api) => [api.apiId, true])),
+    Object.fromEntries(localizedApis.map((api) => [api.apiId, true])),
   );
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
-
-  const localizedApis = useMemo(
-    () => localizeDocsApis(docsApis, docsT, catalogT, products),
-    [catalogT, docsT, products],
-  );
 
   const filteredApis = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -129,17 +138,17 @@ export function DocsPage() {
       return;
     }
 
-    const matchedApi = findDocsApi(apiFromQuery);
+    const matchedApi = localizedApis.find((api) => api.apiId === apiFromQuery);
     if (!matchedApi) {
       return;
     }
 
-    const next = docsStateFromApiQuery(apiFromQuery);
+    const next = docsStateFromApis(apiFromQuery, localizedApis);
     setQuery(next.query);
     setExpandedApis((current) => ({ ...current, [matchedApi.apiId]: true }));
     setOpenTabIds(next.openTabIds);
     setActiveTabId(next.activeTabId);
-  }, [apiFromQuery]);
+  }, [apiFromQuery, localizedApis]);
 
   useEffect(() => {
     if (!mobileSidebarOpen) {
@@ -310,7 +319,7 @@ function ExplorerTree({
 }: {
   query: string;
   onQueryChange: (value: string) => void;
-  filteredApis: typeof docsApis;
+  filteredApis: DocsApi[];
   expandedApis: Record<string, boolean>;
   onToggleApi: (apiId: string) => void;
   forceExpanded: boolean;

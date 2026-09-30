@@ -4,19 +4,27 @@ import { useLocale } from "next-intl";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 import { presentCatalogApi, type CatalogView } from "@/lib/catalog/present";
-import type { CatalogApi } from "@/lib/catalog/queries";
+import type { CatalogApi, CatalogEndpoint } from "@/lib/catalog/queries";
 
-const CatalogContext = createContext<CatalogApi[]>([]);
+export type CatalogRecord = {
+  api: CatalogApi;
+  endpoints: CatalogEndpoint[];
+};
 
-export function CatalogProvider({ apis, children }: { apis: CatalogApi[]; children: ReactNode }) {
-  return <CatalogContext.Provider value={apis}>{children}</CatalogContext.Provider>;
+const CatalogContext = createContext<CatalogRecord[]>([]);
+
+export function CatalogProvider({ records, children }: { records: CatalogRecord[]; children: ReactNode }) {
+  return <CatalogContext.Provider value={records}>{children}</CatalogContext.Provider>;
 }
 
-export function useCatalogViews() {
-  const apis = useContext(CatalogContext);
+export function useCatalogViews(): CatalogView[] {
+  const records = useContext(CatalogContext);
   const locale = useLocale();
 
-  return useMemo(() => apis.map((api) => presentCatalogApi(api, locale)), [apis, locale]);
+  return useMemo(
+    () => records.map((record) => presentCatalogApi(record.api, locale, record.endpoints)),
+    [records, locale],
+  );
 }
 
 export function useCatalogView(slug: string) {

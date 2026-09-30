@@ -1,65 +1,44 @@
-import type { CatalogTranslate } from "@/components/catalog/content/localize-api";
-import type { CatalogView } from "@/lib/catalog/present";
-import type { DocsApi, DocsEndpoint, DocsParameter } from "@/lib/mock/mockDocs";
+import { toDocsEndpoint, type CodeSampleMethod, type CodeSampleSource, type GeneratedDocsEndpoint } from "@/lib/catalog/generate-code-samples";
+import type { CatalogEndpoint } from "@/lib/catalog/queries";
 
-export type DocsTranslate = (key: string) => string;
+export type DocsHttpMethod = CodeSampleMethod;
+export type DocsEndpoint = GeneratedDocsEndpoint;
 
-const parameterTypeKeys = {
-  "array de objetos": "objectArray",
-} as const;
+export type DocsApi = {
+  apiId: string;
+  apiName: string;
+  endpoints: DocsEndpoint[];
+};
 
-function toContentKey(endpointId: string) {
-  return endpointId.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase());
+const CONTENT_TYPE = "application/json";
+
+function asMethod(value: string): CodeSampleMethod {
+  if (value === "GET" || value === "POST" || value === "PUT" || value === "DELETE") {
+    return value;
+  }
+
+  throw new Error(`Método HTTP no soportado: ${value}`);
 }
 
-function toParameterKey(name: string) {
-  return name.replace(/\./g, "_");
-}
+export function toCodeSampleSource(endpoint: CatalogEndpoint, locale: string): CodeSampleSource {
+  const content = locale === "en" ? endpoint.contentEn : endpoint.contentEs;
 
-function localizeParameterType(type: string, catalogT: CatalogTranslate) {
-  return type in parameterTypeKeys ? catalogT(`types.${parameterTypeKeys[type as keyof typeof parameterTypeKeys]}`) : type;
-}
-
-function localizeParameter(parameter: DocsParameter, endpointKey: string, docsT: DocsTranslate, catalogT: CatalogTranslate): DocsParameter {
   return {
-    ...parameter,
-    type: localizeParameterType(parameter.type, catalogT),
-    description: docsT(`contenido.${endpointKey}.parametros.${toParameterKey(parameter.name)}.descripcion`),
+    method: asMethod(endpoint.method),
+    path: endpoint.path,
+    httpUrl: endpoint.httpUrl,
+    contentType: CONTENT_TYPE,
+    description: content.description,
+    requestBody: content.requestBody,
+    responseStatus: content.responseStatus,
+    responseBody: content.responseBody,
+    parameters: content.parameters,
+    errors: content.errors,
   };
 }
 
-function localizeEndpoint(endpoint: DocsEndpoint, docsT: DocsTranslate, catalogT: CatalogTranslate): DocsEndpoint {
-  const endpointKey = toContentKey(endpoint.id);
-
-  return {
-    ...endpoint,
-    description: docsT(`contenido.${endpointKey}.descripcion`),
-    parameters: endpoint.parameters.map((parameter) => localizeParameter(parameter, endpointKey, docsT, catalogT)),
-  };
-}
-
-export function localizeDocsApi(
-  api: DocsApi,
-  docsT: DocsTranslate,
-  catalogT: CatalogTranslate,
-  products: CatalogView[] = [],
-): DocsApi {
-  const catalogItem = products.find((item) => item.slug === api.apiId);
-
-  return {
-    ...api,
-    apiName: catalogItem?.name ?? api.apiName,
-    endpoints: api.endpoints.map((endpoint) => localizeEndpoint(endpoint, docsT, catalogT)),
-  };
-}
-
-export function localizeDocsApis(
-  apis: DocsApi[],
-  docsT: DocsTranslate,
-  catalogT: CatalogTranslate,
-  products: CatalogView[] = [],
-) {
-  return apis.map((api) => localizeDocsApi(api, docsT, catalogT, products));
+export function localizeDocsEndpoint(endpoint: CatalogEndpoint, locale: string, apiId: string): DocsEndpoint {
+  return toDocsEndpoint(apiId, toCodeSampleSource(endpoint, locale));
 }
 
 export function findLocalizedDocsEndpoint(apis: DocsApi[], endpointId: string) {

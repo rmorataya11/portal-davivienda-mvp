@@ -25,12 +25,12 @@ function methodClasses(method: ApiEndpoint["method"]) {
 export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) {
   const t = useTranslations("Catalog.playground");
   const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint>(endpoints[0]);
-  const [requestBody, setRequestBody] = useState(endpoints[0]?.playground.requestBody ?? "");
+  const [requestBody, setRequestBody] = useState(endpoints[0]?.requestBody ?? "");
   const [credentialValue, setCredentialValue] = useState("ApiKeyAuth");
   const [executed, setExecuted] = useState(false);
 
   useEffect(() => {
-    setRequestBody(selectedEndpoint.playground.requestBody);
+    setRequestBody(selectedEndpoint.requestBody);
     setExecuted(false);
   }, [selectedEndpoint]);
 
@@ -81,7 +81,7 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
           <div className="px-6 py-6">
             <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">HTTP URL</p>
             <code className="mt-3 block rounded-[14px] bg-[#F7F8FA] px-4 py-3 text-[13px] leading-6 text-[#30383F]">
-              <BreakablePath value={selectedEndpoint.playground.httpUrl} />
+              <BreakablePath value={selectedEndpoint.httpUrl} />
             </code>
 
             <div className="mt-6">
@@ -92,7 +92,7 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
             <div className="mt-6">
               <p className="text-[20px] font-medium text-[#202A31]">{t("parameters")}</p>
               <div className="mt-3 overflow-hidden rounded-[18px] border border-[#E7EAEE]">
-                {selectedEndpoint.playground.parameters.map((parameter, index) => (
+                {selectedEndpoint.parameters.map((parameter, index) => (
                   <div
                     key={`${parameter.location}-${parameter.name}`}
                     className={`grid gap-2 px-4 py-4 md:grid-cols-[1.1fr_0.7fr_1.8fr] ${index !== 0 ? "border-t border-[#EEF1F4]" : ""}`}
@@ -122,7 +122,7 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
         <div className="bg-[#F7F7F8] px-5 py-6">
           <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">Request body</p>
           <div className="mt-3 rounded-[14px] border border-[#E3E7EC] bg-white px-4 py-3 text-[13px] text-[#6A7178]">
-            {selectedEndpoint.playground.contentType}
+            {selectedEndpoint.contentType}
           </div>
           <textarea
             value={requestBody}
@@ -138,7 +138,7 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
               className="mt-3 h-11 w-full rounded-[14px] border border-[#E3E7EC] bg-white px-4 text-[14px] text-[#30383F] outline-none transition-colors duration-300 focus:border-[#CBD2D9]"
             />
             <p className="mt-2 text-[12px] leading-6 text-[#6A7178]">
-              {t("visualReference", { label: selectedEndpoint.playground.credentialsLabel })}
+              {t("visualReference", { label: selectedEndpoint.credentialsLabel })}
             </p>
           </div>
 
@@ -152,10 +152,10 @@ export function EndpointPlayground({ endpoints }: { endpoints: ApiEndpoint[] }) 
 
           <div className="mt-5 overflow-hidden rounded-[16px] border border-[#E3E7EC]">
             <div className={`px-4 py-3 text-[13px] font-semibold ${executed ? "bg-[#FF4545] text-white" : "bg-[#ECEFF2] text-[#6A7178]"}`}>
-              {executed ? selectedEndpoint.playground.responseStatus : t("readyToRun")}
+              {executed ? selectedEndpoint.responseStatus : t("readyToRun")}
             </div>
             <pre className="overflow-x-auto bg-[#141F25] px-4 py-4 text-[13px] leading-6 text-white">
-              <code>{executed ? selectedEndpoint.playground.responseBody : requestBody}</code>
+              <code>{executed ? selectedEndpoint.responseBody : requestBody}</code>
             </pre>
           </div>
         </div>

@@ -5,16 +5,23 @@ import { NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
 import { AuthProvider } from "@/components/auth/auth-provider";
-import { CatalogProvider } from "@/components/catalog/catalog-provider";
+import { CatalogProvider, type CatalogRecord } from "@/components/catalog/catalog-provider";
 import { AppsProvider } from "@/components/dashboard/apps-provider";
 import { loadMessages, localeCookieName, resolveLocale } from "@/i18n/config";
-import { getCatalogApis, type CatalogApi } from "@/lib/catalog/queries";
+import { getCatalogApis, getEndpointsForApi } from "@/lib/catalog/queries";
 
 import "./globals.css";
 
-async function loadCatalog(): Promise<CatalogApi[]> {
+async function loadCatalog(): Promise<CatalogRecord[]> {
   try {
-    return await getCatalogApis();
+    const apis = await getCatalogApis();
+
+    return await Promise.all(
+      apis.map(async (api) => ({
+        api,
+        endpoints: await getEndpointsForApi(api.id),
+      })),
+    );
   } catch (error) {
     console.error("No se pudo cargar el catálogo.", error);
     return [];
@@ -54,7 +61,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <CatalogProvider apis={catalog}>
+          <CatalogProvider records={catalog}>
             <AuthProvider>
               <AppsProvider>
                 {children}

@@ -1,10 +1,3 @@
-export const productMessageKeys = {
-  "api-tesoreria": "tesoreria",
-  "api-estatus-pagos": "estatusPagos",
-  "api-pay-davivienda": "payDavivienda",
-  "api-validacion-cuenta": "validacionCuenta",
-} as const;
-
 export const categoryMessageKeys = {
   Cuentas: "accounts",
   Pagos: "payments",
@@ -30,10 +23,6 @@ function catalogMessage(t: CatalogTranslate, key: string, fallback: string) {
   } catch {
     return fallback;
   }
-}
-
-export function getProductMessageKey(slug: string) {
-  return slug in productMessageKeys ? productMessageKeys[slug as keyof typeof productMessageKeys] : slug;
 }
 
 export function getCategoryMessageKey(category: string) {

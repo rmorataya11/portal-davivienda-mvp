@@ -71,7 +71,7 @@ export function selectSummaryEndpoints(endpoints: ApiEndpoint[]) {
 }
 
 function keyParameters(endpoint: ApiEndpoint) {
-  const candidates = endpoint.playground.parameters.filter((parameter) => parameter.name !== "Authorization");
+  const candidates = endpoint.parameters.filter((parameter) => parameter.name !== "Authorization");
   const required = candidates.filter((parameter) => parameter.required);
   return (required.length > 0 ? required : candidates).slice(0, 3);
 }
@@ -124,19 +124,19 @@ function CompactEndpointCard({ endpoint }: { endpoint: ApiEndpoint }) {
             </button>
           </div>
           <div className="min-h-0 flex-1 overflow-auto bg-white px-5 py-4">
-            <JsonPreview value={endpoint.playground.requestBody} />
+            <JsonPreview value={endpoint.requestBody} />
           </div>
         </div>
 
         <div className="flex min-h-0 flex-col">
           <div className="flex h-12 shrink-0 items-center bg-[#F2F3F5] px-5">
             <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#707070]">
-              {executed ? endpoint.playground.responseStatus : "Response"}
+              {executed ? endpoint.responseStatus : "Response"}
             </p>
           </div>
           {executed ? (
             <div className="min-h-0 flex-1 overflow-auto bg-white px-5 py-4">
-              <JsonPreview value={endpoint.playground.responseBody} />
+              <JsonPreview value={endpoint.responseBody} />
             </div>
           ) : (
             <p className="flex flex-1 items-start bg-white px-5 py-4 text-[14px] leading-6 text-[#707070]">
