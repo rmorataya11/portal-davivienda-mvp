@@ -16,10 +16,10 @@ type CreateDeveloperInput = {
   documentId: string;
   phone?: string;
   reason: string;
-  environment: string;
-  product: string;
-  subject: string;
-  description: string;
+  environment: string | null;
+  product: string | null;
+  subject: string | null;
+  description: string | null;
 };
 
 type CreatedDeveloper = {

@@ -5,28 +5,21 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
-import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { signUp } from "@/lib/auth/session";
 import { getAuthErrorKey } from "@/lib/firebase/errors";
 import { getLoginHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
 
-import { PasswordField, SelectField, TextAreaField, TextField } from "./auth-form-fields";
-import { caseReasons, environments, identificationTypes } from "./content/create-account";
+import { PasswordField, SelectField, TextField } from "./auth-form-fields";
+import { caseReasons, identificationTypes } from "./content/create-account";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FieldErrors = Record<string, string>;
 
-type CreateAccountFormProps = {
-  initialProduct?: string;
-};
-
-export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProps) {
+export function CreateAccountForm() {
   const router = useRouter();
   const t = useTranslations("Auth");
-  const productOptions = useCatalogViews();
 
-  const [product, setProduct] = useState(initialProduct);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -84,22 +77,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
       nextErrors.reason = t("errors.reasonRequired");
     }
 
-    if (!form.get("environment")) {
-      nextErrors.environment = t("errors.environmentRequired");
-    }
-
-    if (!form.get("product")) {
-      nextErrors.product = t("errors.productRequired");
-    }
-
-    if (!String(form.get("subject") ?? "").trim()) {
-      nextErrors.subject = t("errors.subjectRequired");
-    }
-
-    if (!String(form.get("description") ?? "").trim()) {
-      nextErrors.description = t("errors.descriptionRequired");
-    }
-
     if (!form.get("terms")) {
       nextErrors.terms = t("errors.termsRequired");
     }
@@ -139,10 +116,6 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
           documentType: String(formData.get("idType") ?? "").trim(),
           documentId: String(formData.get("idNumber") ?? "").trim(),
           reason: String(formData.get("reason") ?? "").trim(),
-          environment: String(formData.get("environment") ?? "").trim(),
-          product: String(formData.get("product") ?? "").trim(),
-          subject: String(formData.get("subject") ?? "").trim(),
-          description: String(formData.get("description") ?? "").trim(),
           terms: formData.get("terms") === "on",
         }),
       });
@@ -245,77 +218,20 @@ export function CreateAccountForm({ initialProduct = "" }: CreateAccountFormProp
           onChange={() => clearError("companyName")}
         />
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <SelectField
-            id="reason"
-            name="reason"
-            label={t("signup.reason")}
-            required
-            error={errors.reason}
-            onChange={() => clearError("reason")}
-          >
-            {caseReasons.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(`signup.reasons.${option.value}`)}
-              </option>
-            ))}
-          </SelectField>
-          <SelectField
-            id="environment"
-            name="environment"
-            label={t("signup.environment")}
-            required
-            error={errors.environment}
-            onChange={() => clearError("environment")}
-          >
-            {environments.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(`signup.environments.${option.value}`)}
-              </option>
-            ))}
-          </SelectField>
-        </div>
-
         <SelectField
-          id="product"
-          name="product"
-          label={t("signup.product")}
+          id="reason"
+          name="reason"
+          label={t("signup.reason")}
           required
-          value={product}
-          error={errors.product}
-          onChange={(event) => {
-            setProduct(event.target.value);
-            clearError("product");
-          }}
+          error={errors.reason}
+          onChange={() => clearError("reason")}
         >
-          {productOptions.map((item) => (
-            <option key={item.slug} value={item.name}>
-              {item.name}
+          {caseReasons.map((option) => (
+            <option key={option.value} value={option.value}>
+              {t(`signup.reasons.${option.value}`)}
             </option>
           ))}
         </SelectField>
-
-        <TextField
-          id="subject"
-          name="subject"
-          label={t("signup.subject")}
-          required
-          placeholder={t("signup.subjectPlaceholder")}
-          error={errors.subject}
-          onChange={() => clearError("subject")}
-        />
-
-        <TextAreaField
-          id="description"
-          name="description"
-          label={t("signup.descriptionLabel")}
-          required
-          rows={6}
-          hint={t("signup.descriptionHint")}
-          placeholder={t("signup.descriptionPlaceholder")}
-          error={errors.description}
-          onChange={() => clearError("description")}
-        />
 
         <div className="space-y-3">
           <label className="flex cursor-pointer items-start gap-3 text-[15px] text-[#404040]">

@@ -6,7 +6,7 @@ import { SurfaceCard } from "@/components/ui/layout";
 
 import { CreateAccountForm } from "./create-account-form";
 
-export function CreateAccountPage({ initialProduct = "" }: { initialProduct?: string }) {
+export function CreateAccountPage() {
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
       <MarketplaceHeader />
@@ -15,7 +15,7 @@ export function CreateAccountPage({ initialProduct = "" }: { initialProduct?: st
         <div className="mx-auto max-w-[760px] px-4 sm:px-6">
           <SurfaceCard className="px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10">
             <Suspense fallback={<div className="h-64 animate-pulse rounded-[18px] bg-[#F2F3F5]" />}>
-              <CreateAccountForm initialProduct={initialProduct} />
+              <CreateAccountForm />
             </Suspense>
           </SurfaceCard>
         </div>

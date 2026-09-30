@@ -6,7 +6,6 @@ import { useTranslations } from "next-intl";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import type { ApiError } from "../content/types";
 import { CompactEndpointPlayground } from "./compact-endpoint-playground";
-import { CredentialsPanel } from "./credentials-panel";
 
 type TechnicalTabsProps = {
   description: string;
@@ -79,15 +78,6 @@ export function TechnicalTabs({
                 <p className="mt-1 text-[13px] leading-6 text-[#6A7178]">{error.description}</p>
               </div>
             ))}
-          </div>
-        </section>
-      ) : null}
-
-      {slug ? (
-        <section>
-          <h3 className="text-[16px] font-bold tracking-[0.24px] text-[#30383F]">{t("sandboxCredentials")}</h3>
-          <div className="mt-3">
-            <CredentialsPanel slug={slug} apiName={apiName ?? t("thisApiLower")} />
           </div>
         </section>
       ) : null}

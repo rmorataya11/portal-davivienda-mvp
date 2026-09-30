@@ -21,7 +21,6 @@ const menuItemClassName =
 export function AuthNav() {
   const { user, loading, displayName, companyName, signOut } = useAuth();
   const t = useTranslations("Navbar");
-  const languageT = useTranslations("Language");
   const router = useRouter();
   const pathname = usePathname();
   const { loginHref, signupHref } = getAuthHrefs(pathname);
@@ -61,19 +60,26 @@ export function AuthNav() {
   }, [open]);
 
   if (loading) {
-    return <div className="h-11 min-h-[44px] w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:w-[156px]" />;
+    return (
+      <div className="flex items-center gap-4 sm:gap-6">
+        <LanguageDropdown theme="dark" />
+        <div className="h-11 min-h-[44px] w-[120px] rounded-full bg-white/15 sm:w-[132px] lg:w-[156px]" />
+      </div>
+    );
   }
 
   if (user) {
     return (
-      <div ref={menuRef} className="relative">
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-haspopup="menu"
-          onClick={() => setOpen((current) => !current)}
-          className={`${buttonClassName} gap-2`}
-        >
+      <div className="flex items-center gap-4 sm:gap-6">
+        <LanguageDropdown theme="dark" />
+        <div ref={menuRef} className="relative">
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-haspopup="menu"
+            onClick={() => setOpen((current) => !current)}
+            className={`${buttonClassName} gap-2`}
+          >
           <AccountAvatar name={initials} />
           <span className="max-w-[140px] truncate">{label}</span>
           <svg
@@ -84,10 +90,10 @@ export function AuthNav() {
           >
             <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </button>
+          </button>
 
-        {open ? (
-          <div
+          {open ? (
+            <div
             role="menu"
             className="absolute right-0 z-[80] mt-2 w-[280px] overflow-visible rounded-[16px] border border-[#E7EAEE] bg-white py-2 shadow-[0_18px_44px_rgba(20,31,37,0.16)]"
           >
@@ -111,11 +117,6 @@ export function AuthNav() {
               {t("requestContracting")}
             </Link>
             <div className="my-1 h-px bg-[#E7EAEE]" />
-            <div className="flex items-center justify-between gap-3 px-4 py-2.5">
-              <span className="text-[14px] font-medium text-[#141F25]">{languageT("label")}</span>
-              <LanguageDropdown />
-            </div>
-            <div className="my-1 h-px bg-[#E7EAEE]" />
             <button
               type="button"
               role="menuitem"
@@ -128,8 +129,9 @@ export function AuthNav() {
             >
               {t("signOut")}
             </button>
-          </div>
-        ) : null}
+            </div>
+          ) : null}
+        </div>
       </div>
     );
   }

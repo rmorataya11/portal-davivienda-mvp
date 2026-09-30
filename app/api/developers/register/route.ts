@@ -44,19 +44,7 @@ export async function POST(request: Request) {
     const subject = readTrimmedString(body.subject);
     const description = readTrimmedString(body.description);
 
-    if (
-      !identityUid ||
-      !email ||
-      !fullName ||
-      !companyName ||
-      !documentType ||
-      !documentId ||
-      !reason ||
-      !environment ||
-      !product ||
-      !subject ||
-      !description
-    ) {
+    if (!identityUid || !email || !fullName || !companyName || !documentType || !documentId || !reason) {
       return NextResponse.json(
         { message: 'Faltan campos obligatorios para completar el registro.' },
         { status: 400 },
@@ -95,10 +83,10 @@ export async function POST(request: Request) {
       documentId,
       phone: phone || undefined,
       reason,
-      environment,
-      product,
-      subject,
-      description,
+      environment: environment || null,
+      product: product || null,
+      subject: subject || null,
+      description: description || null,
     });
 
     return NextResponse.json(developer, { status: 201 });

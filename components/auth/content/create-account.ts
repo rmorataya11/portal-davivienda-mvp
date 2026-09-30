@@ -10,9 +10,3 @@ export const caseReasons = [
   { value: "consulta-comercial", label: "Consulta comercial" },
   { value: "soporte", label: "Soporte técnico" },
 ];
-
-export const environments = [
-  { value: "sandbox", label: "Sandbox" },
-  { value: "produccion", label: "Producción" },
-  { value: "ambos", label: "Sandbox y Producción" },
-];

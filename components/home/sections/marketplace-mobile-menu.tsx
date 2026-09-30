@@ -30,7 +30,6 @@ export function MarketplaceMobileMenu({
   const router = useRouter();
   const { user, loading, displayName, companyName, signOut } = useAuth();
   const t = useTranslations("Navbar");
-  const languageT = useTranslations("Language");
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const titleId = useId();
@@ -149,6 +148,9 @@ export function MarketplaceMobileMenu({
           </nav>
 
           <div className="mt-auto border-t border-white/20 px-4 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            <div className="flex justify-center pb-3">
+              <LanguageDropdown theme="dark" align="left" />
+            </div>
             {loading ? (
               <div className="h-11 w-full rounded-full bg-white/15" />
             ) : user ? (
@@ -181,10 +183,6 @@ export function MarketplaceMobileMenu({
                 >
                   {t("requestContracting")}
                 </Link>
-                <div className="flex items-center justify-between gap-3 px-1 py-1">
-                  <span className="text-[14px] font-medium text-white">{languageT("label")}</span>
-                  <LanguageDropdown theme="dark" />
-                </div>
                 <button
                   type="button"
                   tabIndex={open ? 0 : -1}
@@ -200,9 +198,6 @@ export function MarketplaceMobileMenu({
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                <div className="flex justify-center pb-1">
-                  <LanguageDropdown theme="dark" align="left" />
-                </div>
                 <AuthReturnLink
                   href={signupHref}
                   returnTo={returnTo}
