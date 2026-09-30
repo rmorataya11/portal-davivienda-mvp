@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 import { hasProductionApps, isProductionApp, isSandboxGroupApp } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -19,8 +18,9 @@ const createAppButtonClassName =
 
 export function DashboardHome() {
   const { user } = useAuth();
-  const { apps, ready } = useDeveloperApps();
+  const { apps, ready, loadError } = useDeveloperApps();
   const t = useTranslations("Dashboard.home");
+  const errorsT = useTranslations("Dashboard.errors");
   const locale = useLocale();
   const numberLocale = locale === "en" ? "en-US" : "es";
 
@@ -29,20 +29,11 @@ export function DashboardHome() {
   }
 
   const greetingName = displayNameFromEmail(user?.email);
-  const stats = apps.map((app) => appUsageStats(app));
   const productionApps = apps.filter(isProductionApp);
   const sandboxGroupApps = apps.filter(isSandboxGroupApp);
-  const productionStats = productionApps.map((app) => appUsageStats(app));
   const showBillingSummary = hasProductionApps(apps);
-  const totalCalls = stats.reduce((sum, item) => sum + item.callsLast30Days, 0);
-  const consumedUsd = productionStats.reduce((sum, item) => sum + item.consumedUsd, 0);
-  const budgetUsd = productionStats.length > 0 ? Math.max(...productionStats.map((item) => item.budgetUsd)) : 600;
-  const consumedRatio = Math.min(consumedUsd / budgetUsd, 1);
-  const weekActivity =
-    stats.length > 0
-      ? [0, 1, 2, 3, 4, 5, 6].map((index) => stats.reduce((sum, item) => sum + item.weekActivity[index], 0))
-      : [0, 0, 0, 0, 0, 0, 0];
-  const sandboxCount = apps.filter((app) => app.status === "sandbox").length;
+  const weekActivity = [0, 0, 0, 0, 0, 0, 0];
+  const sandboxCount = apps.filter((app) => app.environment === "sandbox").length;
 
   return (
     <div>
@@ -61,19 +52,7 @@ export function DashboardHome() {
           {showBillingSummary ? (
             <div className="px-6 py-7 sm:px-8 sm:py-8">
               <p className="text-[13px] font-medium text-[#8E8E8E]">{t("consumption30")}</p>
-              <p className="mt-3 text-[34px] font-bold leading-none tracking-[0.2px] text-[#141F25] sm:text-[42px] lg:text-[48px]">
-                {formatMoney(consumedUsd)}
-              </p>
-              <p className="mt-3 text-[15px] text-[#6A7178]">{t("ofEstimate", { amount: formatMoney(budgetUsd) })}</p>
-              <div className="mt-5 h-3 overflow-hidden rounded-full bg-[#F2F3F5]">
-                <div
-                  className="h-full rounded-full bg-[#E1251B] transition-[width] duration-500"
-                  style={{ width: `${Math.max(consumedRatio * 100, 4)}%` }}
-                />
-              </div>
-              <p className="mt-2 text-[13px] text-[#8E8E8E]">
-                {t("consumedRatio", { percent: Math.round(consumedRatio * 100) })}
-              </p>
+              <p className="mt-3 max-w-[420px] text-[16px] leading-7 text-[#6A7178]">{t("emptyConsumption")}</p>
             </div>
           ) : null}
 
@@ -89,10 +68,12 @@ export function DashboardHome() {
         </div>
       </section>
 
+      {loadError ? <p className="mt-5 text-[14px] leading-6 text-[#E1251B]">{errorsT("loadFailed")}</p> : null}
+
       <div className="mt-5 grid gap-3 md:grid-cols-3">
         <MiniStat label={t("applications")} value={String(apps.length)} />
         <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
-        <MiniStat label={t("calls30")} value={totalCalls.toLocaleString(numberLocale)} />
+        <MiniStat label={t("calls30")} value={(0).toLocaleString(numberLocale)} />
       </div>
 
       <div className="mt-8">

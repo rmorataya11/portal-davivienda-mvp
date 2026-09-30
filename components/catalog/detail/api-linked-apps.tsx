@@ -7,7 +7,6 @@ import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
-import { appUsageStats, formatMoney } from "@/lib/developer-apps/factory";
 import { formatAppDate } from "@/lib/developer-apps/labels";
 import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
@@ -55,7 +54,7 @@ export function ApiLinkedApps({
     );
   }
 
-  const linkedApps = apps.filter((app) => app.productSlugs.includes(slug));
+  const linkedApps = apps.filter((app) => app.apiProduct === slug);
 
   if (linkedApps.length === 0) {
     return (
@@ -85,19 +84,14 @@ export function ApiLinkedApps({
 function ApiAppRow({ app }: { app: DeveloperApp }) {
   const t = useTranslations("Catalog.apps");
   const locale = useLocale();
-  const stats = appUsageStats(app);
   const created = formatAppDate(app.createdAt, locale);
 
   return (
     <div className="rounded-[22px] border border-[#E7EAEE] bg-white p-5">
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-[18px] font-bold text-[#141F25]">{app.name}</h3>
-        <AppStatusBadge status={app.status} />
+        <AppStatusBadge environment={app.environment} />
       </div>
-      <p className="mt-3 text-[20px] font-bold text-[#141F25]">{formatMoney(stats.consumedUsd)}</p>
-      <p className="mt-1 text-[13px] text-[#8E8E8E]">
-        {t("callsLast30Days", { count: stats.callsLast30Days.toLocaleString(locale === "en" ? "en-US" : "es") })}
-      </p>
       {created ? <p className="mt-3 text-[13px] text-[#8E8E8E]">{t("created", { date: created })}</p> : null}
     </div>
   );

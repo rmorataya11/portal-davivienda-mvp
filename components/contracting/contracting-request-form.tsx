@@ -11,6 +11,7 @@ import { SelectField, TextAreaField, TextField } from "@/components/auth/auth-fo
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import {
   destinationEnvironmentValues,
@@ -33,14 +34,37 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
   const catalogT = useTranslations("Catalog");
   const searchParams = useSearchParams();
   const { user, developerId } = useAuth();
-  const { getApp, markContracting } = useDeveloperApps();
+  const { getApp, markContracting, ready } = useDeveloperApps();
   const appId = searchParams.get("app") ?? "";
-  const linkedApp = appId ? getApp(appId) : undefined;
-  const linkedProducts = apiCatalogItems
-    .filter((item) => linkedApp?.productSlugs.includes(item.slug))
-    .map((item) => localizeCatalogItem(item, catalogT).name)
-    .join(", ");
-  const displayProduct = linkedProducts || productName;
+  const [linkedApp, setLinkedApp] = useState<DeveloperApp | null>(null);
+
+  useEffect(() => {
+    if (!ready || !appId) {
+      setLinkedApp(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    getApp(appId)
+      .then((app) => {
+        if (!cancelled) {
+          setLinkedApp(app);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLinkedApp(null);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [appId, getApp, ready]);
+
+  const productItem = apiCatalogItems.find((item) => item.slug === linkedApp?.apiProduct);
+  const displayProduct = productItem ? localizeCatalogItem(productItem, catalogT).name : productName;
   const [companyName, setCompanyName] = useState("");
   const [environment, setEnvironment] = useState("");
   const [needsIpWhitelist, setNeedsIpWhitelist] = useState("");
@@ -206,8 +230,8 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
         throw new Error(t("errors.submit"));
       }
 
-      if (linkedApp) {
-        markContracting(linkedApp.id);
+      if (linkedApp?.environment === "sandbox") {
+        await markContracting(linkedApp.id);
       }
 
       setSubmitted(true);

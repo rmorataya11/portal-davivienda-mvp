@@ -1,22 +1,22 @@
 import { parseCalendarDate } from "@/lib/format/date";
 
-import type { AppStatus } from "./types";
+import type { AppEnvironment } from "./types";
 
-export const appStatusStyles: Record<AppStatus, string> = {
+export const appStatusStyles: Record<AppEnvironment, string> = {
   sandbox: "bg-[#FEF3C7] text-[#B45309]",
   contracting: "bg-[#FFF6E8] text-[#A15C12]",
   production: "bg-[#EEF3FF] text-[#2F4EA1]",
 };
 
-export function isProductionApp(app: { status: AppStatus }) {
-  return app.status === "production";
+export function isProductionApp(app: { environment: AppEnvironment }) {
+  return app.environment === "production";
 }
 
-export function isSandboxGroupApp(app: { status: AppStatus }) {
-  return app.status === "sandbox" || app.status === "contracting";
+export function isSandboxGroupApp(app: { environment: AppEnvironment }) {
+  return app.environment === "sandbox" || app.environment === "contracting";
 }
 
-export function hasProductionApps(apps: Array<{ status: AppStatus }>) {
+export function hasProductionApps(apps: Array<{ environment: AppEnvironment }>) {
   return apps.some(isProductionApp);
 }
 
@@ -39,7 +39,11 @@ export function formatAppDate(value: string | null, locale?: string) {
   }).format(date);
 }
 
-export function formatAppDateTime(value: string, locale?: string) {
+export function formatAppDateTime(value: string | null, locale?: string) {
+  if (!value) {
+    return "";
+  }
+
   const date = parseCalendarDate(value);
   if (!date) {
     return "";

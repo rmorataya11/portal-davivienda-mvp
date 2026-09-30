@@ -140,7 +140,7 @@ function buildCrumbs(
 export function PageBreadcrumb() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { getApp } = useDeveloperApps();
+  const { apps } = useDeveloperApps();
   const t = useTranslations("Catalog");
   const dashboardT = useTranslations("Dashboard.breadcrumb");
   const profileT = useTranslations("Profile.breadcrumb");
@@ -158,7 +158,7 @@ export function PageBreadcrumb() {
   const crumbs = buildCrumbs(
     pathname,
     searchParams.get("producto"),
-    getApp,
+    (id) => apps.find((app) => app.id === id),
     t,
     dashboardT,
     profileT,

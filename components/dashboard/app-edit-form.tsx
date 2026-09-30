@@ -7,32 +7,31 @@ import { useState, type FormEvent } from "react";
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { AppsRequestError } from "@/lib/developer-apps/api";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { useDeveloperApps } from "./apps-provider";
 
-export function AppEditForm({ app, onCancel }: { app: DeveloperApp; onCancel: () => void }) {
+export function AppEditForm({
+  app,
+  onCancel,
+  onSaved,
+}: {
+  app: DeveloperApp;
+  onCancel: () => void;
+  onSaved: (app: DeveloperApp) => void;
+}) {
   const { updateApp } = useDeveloperApps();
   const t = useTranslations("Dashboard");
+  const errorsT = useTranslations("Dashboard.errors");
   const catalogT = useTranslations("Catalog");
+  const product = apiCatalogItems.find((item) => item.slug === app.apiProduct);
+  const productName = product ? localizeCatalogItem(product, catalogT).name : app.apiProduct;
   const [name, setName] = useState(app.name);
-  const [description, setDescription] = useState(app.description);
-  const [productSlugs, setProductSlugs] = useState<string[]>(app.productSlugs);
+  const [description, setDescription] = useState(app.description ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  function toggleProduct(slug: string) {
-    setProductSlugs((current) =>
-      current.includes(slug) ? current.filter((item) => item !== slug) : [...current, slug],
-    );
-    setErrors((current) => {
-      if (!current.products) {
-        return current;
-      }
-      const next = { ...current };
-      delete next.products;
-      return next;
-    });
-  }
+  const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,22 +41,27 @@ export function AppEditForm({ app, onCancel }: { app: DeveloperApp; onCancel: ()
       nextErrors.name = t("create.nameRequired");
     }
 
-    if (productSlugs.length === 0) {
-      nextErrors.products = t("create.apisRequired");
-    }
-
     setErrors(nextErrors);
+    setFormError("");
 
     if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
+    setIsSubmitting(true);
     updateApp(app.id, {
       name: name.trim(),
       description: description.trim(),
-      productSlugs,
-    });
-    onCancel();
+    })
+      .then((updated) => {
+        onSaved(updated);
+      })
+      .catch((error: unknown) => {
+        setFormError(messageForStatus(error, errorsT));
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   return (
@@ -89,38 +93,24 @@ export function AppEditForm({ app, onCancel }: { app: DeveloperApp; onCancel: ()
         value={description}
         onChange={(event) => setDescription(event.target.value)}
       />
-      <fieldset>
-        <legend className="text-[15px] font-bold tracking-[0.2px] text-[#141F25]">
-          {t("create.apisLegend")} <span className="text-[#E1251B]">*</span>
-        </legend>
-        <div className="mt-4 flex flex-wrap gap-3">
-          {apiCatalogItems.map((item) => {
-            const selected = productSlugs.includes(item.slug);
-
-            return (
-              <button
-                key={item.slug}
-                type="button"
-                onClick={() => toggleProduct(item.slug)}
-                className={`rounded-full border px-4 py-2 text-[14px] font-medium transition-all duration-300 ${
-                  selected
-                    ? "border-[#E1251B] bg-[#E1251B] text-white"
-                    : "border-[#D5DAE0] bg-white text-[#404040] hover:border-[#E1251B] hover:text-[#E1251B]"
-                }`}
-              >
-                {localizeCatalogItem(item, catalogT).name}
-              </button>
-            );
-          })}
+      <div>
+        <p className="text-[15px] font-bold tracking-[0.2px] text-[#141F25]">{t("create.apisLegend")}</p>
+        <p className="mt-1 text-[14px] leading-6 text-[#8A9096]">{t("edit.productLocked")}</p>
+        <div
+          aria-disabled="true"
+          className="mt-4 inline-flex cursor-not-allowed rounded-full border border-[#E7EAEE] bg-[#F5F6F8] px-4 py-2 text-[14px] font-medium text-[#6A7178]"
+        >
+          {productName}
         </div>
-        {errors.products ? <p className="mt-2 text-[13px] text-[#E1251B]">{errors.products}</p> : null}
-      </fieldset>
+      </div>
+      {formError ? <p className="text-[14px] leading-6 text-[#E1251B]">{formError}</p> : null}
       <div className="flex flex-wrap gap-3">
         <button
           type="submit"
-          className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
+          disabled={isSubmitting}
+          className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] disabled:translate-y-0 disabled:bg-[#C9CED4]"
         >
-          {t("edit.save")}
+          {isSubmitting ? t("edit.saving") : t("edit.save")}
         </button>
         <button
           type="button"
@@ -138,7 +128,10 @@ export function AppDeleteControl({ appId, appName }: { appId: string; appName: s
   const router = useRouter();
   const { deleteApp } = useDeveloperApps();
   const t = useTranslations("Dashboard.edit");
+  const errorsT = useTranslations("Dashboard.errors");
   const [confirming, setConfirming] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [formError, setFormError] = useState("");
 
   if (!confirming) {
     return (
@@ -159,16 +152,26 @@ export function AppDeleteControl({ appId, appName }: { appId: string; appName: s
           name: () => <span className="font-semibold">{appName}</span>,
         })}
       </p>
+      {formError ? <p className="text-[13px] leading-5 text-[#E1251B]">{formError}</p> : null}
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
+          disabled={isDeleting}
           onClick={() => {
-            deleteApp(appId);
-            router.replace("/dashboard");
+            setIsDeleting(true);
+            setFormError("");
+            deleteApp(appId)
+              .then(() => {
+                router.replace("/dashboard");
+              })
+              .catch((error: unknown) => {
+                setFormError(messageForStatus(error, errorsT));
+                setIsDeleting(false);
+              });
           }}
-          className="inline-flex h-10 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[13px] font-semibold text-white"
+          className="inline-flex h-10 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[13px] font-semibold text-white disabled:bg-[#C9CED4]"
         >
-          {t("deleteYes")}
+          {isDeleting ? t("deleting") : t("deleteYes")}
         </button>
         <button
           type="button"
@@ -180,4 +183,28 @@ export function AppDeleteControl({ appId, appName }: { appId: string; appName: s
       </div>
     </div>
   );
+}
+
+function messageForStatus(error: unknown, t: (key: "unauthorized" | "forbidden" | "notFound" | "invalid" | "generic") => string) {
+  if (!(error instanceof AppsRequestError)) {
+    return t("generic");
+  }
+
+  if (error.status === 401) {
+    return t("unauthorized");
+  }
+
+  if (error.status === 403) {
+    return t("forbidden");
+  }
+
+  if (error.status === 404) {
+    return t("notFound");
+  }
+
+  if (error.status === 400) {
+    return t("invalid");
+  }
+
+  return t("generic");
 }

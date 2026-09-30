@@ -4,34 +4,46 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 
 import { useAuth } from "@/components/auth/auth-provider";
 import {
-  createDemoProductionApp,
-  createDeveloperAppRecord,
-  DEMO_PRODUCTION_APP_ID,
-} from "@/lib/developer-apps/factory";
-import { loadDeveloperApps, saveDeveloperApps } from "@/lib/developer-apps/storage";
-import type { CreateAppInput, DeveloperApp, UpdateAppInput } from "@/lib/developer-apps/types";
+  createDeveloperApp,
+  fetchDeveloperApp,
+  fetchDeveloperApps,
+  markDeveloperAppContracting,
+  revokeDeveloperApp,
+  updateDeveloperApp,
+} from "@/lib/developer-apps/api";
+import type { CreateAppInput, CreatedAppResult, DeveloperApp, UpdateAppInput } from "@/lib/developer-apps/types";
 
 type AppsContextValue = {
   apps: DeveloperApp[];
   ready: boolean;
-  createApp: (input: CreateAppInput) => DeveloperApp;
-  updateApp: (appId: string, input: UpdateAppInput) => DeveloperApp | undefined;
-  deleteApp: (appId: string) => void;
-  getApp: (id: string) => DeveloperApp | undefined;
-  linkProduct: (appId: string, productSlug: string) => void;
-  markContracting: (appId: string) => void;
+  loadError: number | null;
+  createApp: (input: CreateAppInput) => Promise<CreatedAppResult>;
+  updateApp: (appId: string, input: UpdateAppInput) => Promise<DeveloperApp>;
+  deleteApp: (appId: string) => Promise<void>;
+  getApp: (id: string) => Promise<DeveloperApp>;
+  markContracting: (appId: string) => Promise<DeveloperApp>;
 };
 
 const AppsContext = createContext<AppsContextValue | null>(null);
 
-function demoProductionSeedKey(userId: string) {
-  return `davivienda-demo-production-seeded:${userId}`;
+function replaceApp(apps: DeveloperApp[], nextApp: DeveloperApp) {
+  if (nextApp.status !== "active") {
+    return apps.filter((app) => app.id !== nextApp.id);
+  }
+
+  const exists = apps.some((app) => app.id === nextApp.id);
+  if (!exists) {
+    return [nextApp, ...apps];
+  }
+
+  return apps.map((app) => (app.id === nextApp.id ? nextApp : app));
 }
 
 export function AppsProvider({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const [apps, setApps] = useState<DeveloperApp[]>([]);
   const [ready, setReady] = useState(false);
+  const [loadError, setLoadError] = useState<number | null>(null);
 
   useEffect(() => {
     if (loading) {
@@ -40,109 +52,80 @@ export function AppsProvider({ children }: { children: ReactNode }) {
 
     if (!user) {
       setApps([]);
+      setLoadError(null);
       setReady(true);
       return;
     }
 
-    const loaded = loadDeveloperApps(user.uid);
-    const alreadySeeded = window.localStorage.getItem(demoProductionSeedKey(user.uid)) === "1";
-    const hasDemo = loaded.some((app) => app.id === DEMO_PRODUCTION_APP_ID);
+    let cancelled = false;
+    setReady(false);
 
-    if (!hasDemo && !alreadySeeded) {
-      const next = [createDemoProductionApp(), ...loaded];
-      saveDeveloperApps(user.uid, next);
-      window.localStorage.setItem(demoProductionSeedKey(user.uid), "1");
-      setApps(next);
-    } else {
-      setApps(loaded);
-    }
-    setReady(true);
+    fetchDeveloperApps()
+      .then((next) => {
+        if (cancelled) {
+          return;
+        }
+
+        setApps(next);
+        setLoadError(null);
+        setReady(true);
+      })
+      .catch((error: unknown) => {
+        if (cancelled) {
+          return;
+        }
+
+        setApps([]);
+        setLoadError(error instanceof Error && "status" in error && typeof error.status === "number" ? error.status : 500);
+        setReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [loading, user]);
 
-  const persist = useCallback(
-    (next: DeveloperApp[]) => {
-      if (!user) {
-        return;
-      }
+  const createApp = useCallback(async (input: CreateAppInput) => {
+    const created = await createDeveloperApp(input);
+    setApps((current) => replaceApp(current, created.app));
+    return created;
+  }, []);
 
-      saveDeveloperApps(user.uid, next);
-      setApps(next);
-    },
-    [user],
-  );
+  const getApp = useCallback(async (id: string) => {
+    const app = await fetchDeveloperApp(id);
+    setApps((current) => replaceApp(current, app));
+    return app;
+  }, []);
 
-  const createApp = useCallback(
-    (input: CreateAppInput) => {
-      const app = createDeveloperAppRecord(input);
-      persist([app, ...apps]);
-      return app;
-    },
-    [apps, persist],
-  );
+  const updateApp = useCallback(async (appId: string, input: UpdateAppInput) => {
+    const app = await updateDeveloperApp(appId, input);
+    setApps((current) => replaceApp(current, app));
+    return app;
+  }, []);
 
-  const getApp = useCallback((id: string) => apps.find((app) => app.id === id), [apps]);
+  const deleteApp = useCallback(async (appId: string) => {
+    await revokeDeveloperApp(appId);
+    setApps((current) => current.filter((app) => app.id !== appId));
+  }, []);
 
-  const updateApp = useCallback(
-    (appId: string, input: UpdateAppInput) => {
-      const current = apps.find((app) => app.id === appId);
-      if (!current) {
-        return undefined;
-      }
-
-      const nextApp: DeveloperApp = {
-        ...current,
-        name: input.name,
-        description: input.description,
-        productSlugs: input.productSlugs,
-      };
-
-      persist(apps.map((app) => (app.id === appId ? nextApp : app)));
-      return nextApp;
-    },
-    [apps, persist],
-  );
-
-  const deleteApp = useCallback(
-    (appId: string) => {
-      persist(apps.filter((app) => app.id !== appId));
-    },
-    [apps, persist],
-  );
-
-  const linkProduct = useCallback(
-    (appId: string, productSlug: string) => {
-      persist(
-        apps.map((app) =>
-          app.id === appId && !app.productSlugs.includes(productSlug)
-            ? { ...app, productSlugs: [...app.productSlugs, productSlug] }
-            : app,
-        ),
-      );
-    },
-    [apps, persist],
-  );
-
-  const markContracting = useCallback(
-    (appId: string) => {
-      persist(
-        apps.map((app) => (app.id === appId && app.status === "sandbox" ? { ...app, status: "contracting" } : app)),
-      );
-    },
-    [apps, persist],
-  );
+  const markContracting = useCallback(async (appId: string) => {
+    const app = await markDeveloperAppContracting(appId);
+    setApps((current) => replaceApp(current, app));
+    return app;
+  }, []);
 
   const value = useMemo<AppsContextValue>(
     () => ({
       apps,
       ready,
+      loadError,
       createApp,
       updateApp,
       deleteApp,
       getApp,
-      linkProduct,
       markContracting,
     }),
-    [apps, createApp, deleteApp, getApp, linkProduct, markContracting, ready, updateApp],
+    [apps, createApp, deleteApp, getApp, loadError, markContracting, ready, updateApp],
   );
 
   return <AppsContext.Provider value={value}>{children}</AppsContext.Provider>;

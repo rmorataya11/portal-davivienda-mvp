@@ -1,36 +1,39 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { apiCatalogItems } from "@/components/catalog/content/apis";
 import { localizeCatalogItem } from "@/components/catalog/content/localize-api";
+import { CredentialField } from "@/components/ui/credential-field";
+import { AppsRequestError } from "@/lib/developer-apps/api";
+import type { CreatedAppResult } from "@/lib/developer-apps/types";
 
 import { useDeveloperApps } from "./apps-provider";
 
 export function CreateAppForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { createApp } = useDeveloperApps();
   const t = useTranslations("Dashboard.create");
+  const createdT = useTranslations("Dashboard.created");
+  const errorsT = useTranslations("Dashboard.errors");
   const catalogT = useTranslations("Catalog");
   const lockedProduct = apiCatalogItems.find((item) => item.slug === (searchParams.get("producto") ?? ""));
   const lockedProductName = lockedProduct ? localizeCatalogItem(lockedProduct, catalogT).name : "";
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [productSlugs, setProductSlugs] = useState<string[]>(
-    lockedProduct ? [lockedProduct.slug] : apiCatalogItems.map((item) => item.slug),
-  );
+  const [apiProduct, setApiProduct] = useState(lockedProduct?.slug ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [created, setCreated] = useState<CreatedAppResult | null>(null);
 
-  function toggleProduct(slug: string) {
-    setProductSlugs((current) =>
-      current.includes(slug) ? current.filter((item) => item !== slug) : [...current, slug],
-    );
+  function selectProduct(slug: string) {
+    setApiProduct(slug);
     setErrors((current) => {
       if (!current.products) {
         return current;
@@ -49,23 +52,85 @@ export function CreateAppForm() {
       nextErrors.name = t("nameRequired");
     }
 
-    if (productSlugs.length === 0) {
+    if (!apiProduct) {
       nextErrors.products = t("apisRequired");
     }
 
     setErrors(nextErrors);
+    setFormError("");
 
     if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
     setIsSubmitting(true);
-    const app = createApp({
+    createApp({
       name: name.trim(),
       description: description.trim(),
-      productSlugs,
-    });
-    router.replace(`/dashboard/apps/${app.id}`);
+      apiProduct,
+    })
+      .then((result) => {
+        setCreated(result);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof AppsRequestError && error.status === 409) {
+          setFormError(errorsT("limitReached"));
+          return;
+        }
+
+        if (error instanceof AppsRequestError && error.status === 401) {
+          setFormError(errorsT("unauthorized"));
+          return;
+        }
+
+        if (error instanceof AppsRequestError && error.status === 403) {
+          setFormError(errorsT("forbidden"));
+          return;
+        }
+
+        if (error instanceof AppsRequestError && error.status === 400) {
+          setFormError(errorsT("invalid"));
+          return;
+        }
+
+        setFormError(errorsT("generic"));
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  }
+
+  if (created) {
+    const product = apiCatalogItems.find((item) => item.slug === created.app.apiProduct);
+    const productName = product ? localizeCatalogItem(product, catalogT).name : created.app.apiProduct;
+
+    return (
+      <div className="rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-7 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
+        <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{createdT("eyebrow")}</p>
+        <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
+          {createdT("title", { name: created.app.name })}
+        </h1>
+        <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
+        <p className="mt-4 max-w-[640px] text-[16px] leading-7 text-[#6A7178]">
+          {createdT("description", { product: productName })}
+        </p>
+
+        <div className="mt-8 space-y-3">
+          <CredentialField label={createdT("consumerKey")} value={created.app.consumerKey ?? ""} />
+          <div className="rounded-[18px] border border-[#F3D7A1] bg-[#FFF8EB] px-5 py-4 text-[14px] leading-6 text-[#8A5A12]">
+            {createdT("secretWarning")}
+          </div>
+          <CredentialField label={createdT("consumerSecret")} value={created.consumerSecret} />
+        </div>
+
+        <Link
+          href={`/dashboard/apps/${created.app.id}`}
+          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
+        >
+          {createdT("continue")}
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -118,15 +183,17 @@ export function CreateAppForm() {
                 {t("apisLegend")} <span className="text-[#E1251B]">*</span>
               </legend>
               <p className="mt-1 text-[14px] leading-6 text-[#8A9096]">{t("apisHelp")}</p>
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="mt-4 flex flex-wrap gap-3" role="radiogroup" aria-label={t("apisLegend")}>
                 {apiCatalogItems.map((item) => {
-                  const selected = productSlugs.includes(item.slug);
+                  const selected = apiProduct === item.slug;
 
                   return (
                     <button
                       key={item.slug}
                       type="button"
-                      onClick={() => toggleProduct(item.slug)}
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => selectProduct(item.slug)}
                       className={`rounded-full border px-4 py-2 text-[14px] font-medium transition-all duration-300 ${
                         selected
                           ? "border-[#E1251B] bg-[#E1251B] text-white"
@@ -141,6 +208,8 @@ export function CreateAppForm() {
               {errors.products ? <p className="mt-2 text-[13px] text-[#E1251B]">{errors.products}</p> : null}
             </fieldset>
           ) : null}
+
+          {formError ? <p className="text-[14px] leading-6 text-[#E1251B]">{formError}</p> : null}
 
           <button
             type="submit"

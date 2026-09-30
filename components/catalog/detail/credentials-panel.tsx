@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
@@ -9,14 +9,18 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { CredentialField } from "@/components/ui/credential-field";
+import { formatAppDateTime } from "@/lib/developer-apps/labels";
 import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
-import type { DeveloperApp } from "@/lib/developer-apps/types";
+
+const SANDBOX_BASE_URL = "https://demo.nip.io/v1";
 
 export function CredentialsPanel({ slug, apiName }: { slug: string; apiName: string }) {
   const t = useTranslations("Catalog.credentials");
+  const dashboardT = useTranslations("Dashboard");
+  const locale = useLocale();
   const returnTo = `/catalogo-apis/${slug}/detalle-tecnico`;
   const { user, loading } = useAuth();
-  const { apps, ready, linkProduct } = useDeveloperApps();
+  const { apps, ready } = useDeveloperApps();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   if (loading || !ready) {
@@ -50,8 +54,7 @@ export function CredentialsPanel({ slug, apiName }: { slug: string; apiName: str
     );
   }
 
-  const linkedApps = apps.filter((app) => app.productSlugs.includes(slug));
-  const otherApps = apps.filter((app) => !app.productSlugs.includes(slug));
+  const linkedApps = apps.filter((app) => app.apiProduct === slug);
   const selected = linkedApps.find((app) => app.id === selectedId) ?? linkedApps[0];
   const showAppRail = linkedApps.length > 1;
 
@@ -68,9 +71,6 @@ export function CredentialsPanel({ slug, apiName }: { slug: string; apiName: str
         >
           {t("createApp")}
         </Link>
-        {otherApps.length > 0 ? (
-          <ExistingAppsList apps={otherApps} onLink={(appId) => linkProduct(appId, slug)} />
-        ) : null}
       </EmptyPanel>
     );
   }
@@ -113,7 +113,7 @@ export function CredentialsPanel({ slug, apiName }: { slug: string; apiName: str
               </h3>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <AppStatusBadge status={selected.status} />
+              <AppStatusBadge environment={selected.environment} />
               <Link
                 href={`/dashboard/apps/${selected.id}`}
                 className="inline-flex h-9 items-center justify-center rounded-full border border-[#D5DAE0] px-4 text-[13px] font-medium text-[#404040] transition-all duration-300 hover:border-[#E1251B] hover:text-[#E1251B]"
@@ -125,8 +125,20 @@ export function CredentialsPanel({ slug, apiName }: { slug: string; apiName: str
 
           <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_280px]">
             <div className="space-y-3 px-5 py-5 sm:px-6 sm:py-6">
-              <CredentialField label="Consumer key / API key" value={selected.consumerKey} secret />
-              <CredentialField label="Base URL" value={selected.baseUrl} />
+              {selected.consumerKey ? (
+                <CredentialField label={dashboardT("detail.consumerKey")} value={selected.consumerKey} secret />
+              ) : null}
+              <CredentialField label={t("baseUrl")} value={SANDBOX_BASE_URL} />
+              <CredentialField
+                label={dashboardT("detail.expires")}
+                value={formatAppDateTime(selected.expiresAt, locale) || dashboardT("dates.noActivity")}
+              />
+              <Link
+                href={`/documentacion?api=${slug}`}
+                className="inline-flex text-[13px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
+              >
+                {t("viewTechnicalDocs")}
+              </Link>
             </div>
 
             <aside className="border-t border-[#EEF1F4] bg-[#FAFBFC] px-5 py-5 lg:border-l lg:border-t-0 sm:px-6 sm:py-6">
@@ -141,11 +153,6 @@ export function CredentialsPanel({ slug, apiName }: { slug: string; apiName: str
         </div>
       </div>
 
-      {otherApps.length > 0 ? (
-        <div className="border-t border-[#E7EAEE] bg-white px-5 py-4 sm:px-6">
-          <ExistingAppsList apps={otherApps} compact onLink={(appId) => linkProduct(appId, slug)} />
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -169,37 +176,3 @@ function EmptyPanel({ children }: { children: ReactNode }) {
   );
 }
 
-function ExistingAppsList({
-  apps,
-  onLink,
-  compact = false,
-}: {
-  apps: DeveloperApp[];
-  onLink: (appId: string) => void;
-  compact?: boolean;
-}) {
-  const t = useTranslations("Catalog.credentials");
-
-  return (
-    <div className={compact ? "" : "mt-8 max-w-[520px]"}>
-      <p className="text-[13px] font-semibold text-[#30383F]">{t("linkExisting")}</p>
-      <div className={`mt-3 ${compact ? "flex flex-wrap gap-2" : "space-y-2"}`}>
-        {apps.map((app) => (
-          <button
-            key={app.id}
-            type="button"
-            onClick={() => onLink(app.id)}
-            className={
-              compact
-                ? "inline-flex h-9 items-center rounded-full border border-[#E3E7EC] bg-white px-4 text-[13px] font-medium text-[#404040] transition-colors hover:border-[#202A31] hover:text-[#141F25]"
-                : "flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] bg-white px-4 py-3 text-left text-[14px] text-[#141F25] transition-colors hover:border-[#202A31]"
-            }
-          >
-            <span className="min-w-0 truncate">{app.name}</span>
-            {compact ? null : <span className="shrink-0 text-[13px] font-medium text-[#6A7178]">{t("link")}</span>}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}

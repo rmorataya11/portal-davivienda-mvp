@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { mockCurrentPlan, mockInvoices, mockNextCharge, mockPaymentMethod } from "@/components/mock/mockBilling";
-import { formatMoney } from "@/lib/developer-apps/factory";
+import { formatMoney } from "@/lib/format/money";
 import { hasProductionApps } from "@/lib/developer-apps/labels";
 import { formatCalendarDate } from "@/lib/format/date";
 
