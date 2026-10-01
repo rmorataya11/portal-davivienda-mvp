@@ -15,6 +15,16 @@ import {
 
 export const runtime = 'nodejs';
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function readOptionalUuid(value: unknown): string | null {
+  if (value == null || value === '') return null;
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return UUID_PATTERN.test(trimmed) ? trimmed : null;
+}
+
 type ContractingRequestBody = {
   developerId?: unknown;
   razonSocial?: unknown;
@@ -28,6 +38,7 @@ type ContractingRequestBody = {
   contactoTecnicoEmail?: unknown;
   contactoTecnicoTelefono?: unknown;
   aceptaTerminos?: unknown;
+  app_id?: unknown;
 };
 
 export async function GET(request: Request) {
@@ -64,6 +75,11 @@ export async function POST(request: Request) {
     const contactoTecnicoTelefono = readTrimmedString(body.contactoTecnicoTelefono);
     const ipWhitelist = readTrimmedString(body.ipWhitelist);
     const aceptaTerminos = isExplicitTrue(body.aceptaTerminos);
+    const appId = readOptionalUuid(body.app_id);
+
+    if (body.app_id != null && body.app_id !== '' && !appId) {
+      return NextResponse.json({ message: 'app_id no es un identificador válido.' }, { status: 400 });
+    }
 
     if (
       !developerId ||
@@ -111,6 +127,7 @@ export async function POST(request: Request) {
       contactoTecnicoEmail,
       contactoTecnicoTelefono,
       aceptaTerminos,
+      appId,
     });
 
     await sendNotificationEmail(

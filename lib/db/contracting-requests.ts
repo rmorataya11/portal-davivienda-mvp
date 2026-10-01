@@ -14,6 +14,7 @@ export type CreateContractingRequestInput = {
   contactoTecnicoEmail: string;
   contactoTecnicoTelefono: string;
   aceptaTerminos: boolean;
+  appId?: string | null;
 };
 
 export type ContractingRequest = {
@@ -31,6 +32,7 @@ export type ContractingRequest = {
   contactoTecnicoTelefono: string | null;
   aceptaTerminos: boolean;
   confirmaVeracidad: boolean;
+  appId: string | null;
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -51,6 +53,7 @@ type ContractingRequestRow = {
   contacto_tecnico_telefono: string | null;
   acepta_terminos: boolean;
   confirma_veracidad: boolean;
+  app_id: string | null;
   status: string;
   created_at: Date | string;
   updated_at: Date | string;
@@ -76,6 +79,7 @@ function mapContractingRequest(row: ContractingRequestRow): ContractingRequest {
     contactoTecnicoTelefono: row.contacto_tecnico_telefono,
     aceptaTerminos: row.acepta_terminos,
     confirmaVeracidad: row.confirma_veracidad,
+    appId: row.app_id,
     status: row.status,
     createdAt: toIso(row.created_at),
     updatedAt: toIso(row.updated_at),
@@ -109,9 +113,10 @@ export async function createContractingRequest(
        contacto_tecnico_nombre,
        contacto_tecnico_email,
        contacto_tecnico_telefono,
-       acepta_terminos
+       acepta_terminos,
+       app_id
      )
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
      RETURNING
        id,
        developer_id,
@@ -127,6 +132,7 @@ export async function createContractingRequest(
        contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad,
+       app_id,
        status,
        created_at,
        updated_at`,
@@ -143,6 +149,7 @@ export async function createContractingRequest(
       data.contactoTecnicoEmail,
       data.contactoTecnicoTelefono.trim() || null,
       data.aceptaTerminos,
+      data.appId?.trim() || null,
     ],
   );
 
@@ -174,6 +181,7 @@ export async function getContractingRequestsByDeveloper(
        contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad,
+       app_id,
        status,
        created_at,
        updated_at

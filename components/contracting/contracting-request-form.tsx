@@ -221,6 +221,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           contactoTecnicoEmail: String(formData.get("technicalEmail") ?? "").trim(),
           contactoTecnicoTelefono: String(formData.get("technicalPhone") ?? "").trim(),
           aceptaTerminos: formData.get("terms") === "on",
+          app_id: linkedApp?.id ?? null,
         }),
       });
 
