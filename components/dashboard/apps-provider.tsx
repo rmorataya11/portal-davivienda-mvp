@@ -8,6 +8,7 @@ import {
   fetchDeveloperApp,
   fetchDeveloperApps,
   markDeveloperAppContracting,
+  retryInitialAppsLoad,
   revokeDeveloperApp,
   updateDeveloperApp,
 } from "@/lib/developer-apps/api";
@@ -60,7 +61,7 @@ export function AppsProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     setReady(false);
 
-    fetchDeveloperApps()
+    retryInitialAppsLoad(() => fetchDeveloperApps())
       .then((next) => {
         if (cancelled) {
           return;

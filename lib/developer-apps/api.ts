@@ -12,6 +12,46 @@ export class AppsRequestError extends Error {
   }
 }
 
+const INITIAL_LIST_RETRY_LIMIT = 2;
+const INITIAL_LIST_RETRY_DELAY_MS = 1500;
+
+function isInitialListConnectionFailure(error: unknown) {
+  if (error instanceof AppsRequestError) {
+    return error.status === 408 || error.status >= 500;
+  }
+
+  if (error instanceof TypeError) {
+    return true;
+  }
+
+  return error instanceof Error && (error.name === "AbortError" || error.name === "TimeoutError");
+}
+
+function waitForListRetry(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+// Reintenta el GET inicial si Neon está despertando: corte de red, timeout o 5xx.
+// Un 401, un 403 u otro error de negocio se devuelve en el primer intento.
+export async function retryInitialAppsLoad<T>(load: () => Promise<T>): Promise<T> {
+  let attempt = 0;
+
+  for (;;) {
+    try {
+      return await load();
+    } catch (error) {
+      if (attempt >= INITIAL_LIST_RETRY_LIMIT || !isInitialListConnectionFailure(error)) {
+        throw error;
+      }
+
+      attempt += 1;
+      await waitForListRetry(INITIAL_LIST_RETRY_DELAY_MS);
+    }
+  }
+}
+
 type AppPayload = {
   id?: unknown;
   developerId?: unknown;
