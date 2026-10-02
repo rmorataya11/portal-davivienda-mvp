@@ -61,11 +61,15 @@ const faqDefinitions: FaqDefinition[] = [
 const serviceNames = ["API Tesorería", "API OAuth", "Sandbox"] as const;
 
 const quickAccess = [
-  { id: "ayuda", href: "#preguntas-frecuentes", icon: BookIcon },
-  { id: "experto", href: "#soporte-prioritario", icon: ClockIcon },
-  { id: "caso", href: "#abrir-caso", icon: TicketIcon },
-  { id: "guias", href: "#guias-integracion", icon: IntegrationGuideIcon },
+  { id: "ayuda", href: "#preguntas-frecuentes", icon: "/soporte/icons_soporte/ayuda.svg" },
+  { id: "experto", href: "#soporte-prioritario", icon: "/soporte/icons_soporte/soporte.svg" },
+  { id: "caso", href: "#abrir-caso", icon: "/soporte/icons_soporte/caso.svg" },
+  { id: "guias", href: "#guias-integracion", icon: "/soporte/icons_soporte/guias.svg" },
 ] as const;
+
+function withoutTrailingArrow(value: string) {
+  return value.replace(/\s*→\s*$/, "");
+}
 
 function FaqGuideLink({ slug }: { slug: string }) {
   const t = useTranslations("Faq");
@@ -158,38 +162,36 @@ export function SupportPage() {
         </SectionContainer>
       </section>
 
-      <section className="pb-8">
+      <section className="bg-white py-8 sm:py-10">
         <SectionContainer>
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {quickAccess.map((item) => {
-              const Icon = item.icon;
-
               return (
                 <article
                   key={item.id}
-                  className="flex h-full flex-col rounded-[24px] border border-[#E7EAEE] bg-white p-5 transition-colors hover:border-[#E1251B]/40"
+                  className="flex h-[307px] flex-col rounded-[16px] border border-[#8E8E8E] bg-white px-4 pt-6 pb-10"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[#FFF1F0] text-[#E1251B]">
-                    <Icon />
-                  </div>
-                  <h2 className="mt-4 text-[18px] font-bold tracking-[0.2px] text-[#404040]">
+                  <img src={item.icon} alt="" className="h-[46px] w-[46px]" />
+                  <h2 className="mt-5 text-[20px] font-medium leading-[28px] tracking-[0.4px] text-[#404040]">
                     {t(`cards.${item.id}.title`)}
                   </h2>
-                  <p className="mt-2 text-[14px] leading-6 text-[#707070]">{t(`cards.${item.id}.description`)}</p>
+                  <p className="mt-6 text-[16px] font-normal leading-[24px] tracking-[0.32px] text-[#8E8E8E]">
+                    {t(`cards.${item.id}.description`)}
+                  </p>
                   {item.id === "caso" ? (
                     <button
                       type="button"
                       onClick={() => setCaseModalOpen(true)}
-                      className="mt-auto inline-flex pt-4 text-left text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
+                      className="mt-[38px] inline-flex h-10 w-fit shrink-0 items-center justify-center rounded-[20px] border border-black px-5 text-[14px] font-semibold whitespace-nowrap text-[#141F25] transition-colors hover:bg-[#141F25] hover:text-white self-start"
                     >
-                      {t(`cards.${item.id}.link`)}
+                      {withoutTrailingArrow(t(`cards.${item.id}.link`))}
                     </button>
                   ) : (
                     <Link
                       href={item.href}
-                      className="mt-auto inline-flex pt-4 text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
+                      className="mt-[38px] inline-flex h-10 w-fit shrink-0 items-center justify-center rounded-[20px] border border-black px-5 text-[14px] font-semibold whitespace-nowrap text-[#141F25] transition-colors hover:bg-[#141F25] hover:text-white self-start"
                     >
-                      {t(`cards.${item.id}.link`)}
+                      {withoutTrailingArrow(t(`cards.${item.id}.link`))}
                     </Link>
                   )}
                 </article>
@@ -351,52 +353,6 @@ function ClearIcon() {
   return (
     <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
       <path d="M4 4 12 12M12 4 4 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function BookIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-      <path
-        d="M6 5.5h9.5A2.5 2.5 0 0 1 18 8v11.5H8A2 2 0 0 1 6 17.5v-12Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-      />
-      <path d="M6 5.5A2 2 0 0 0 4 7.5V18" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      <path d="M9 9h6M9 12.5h6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function IntegrationGuideIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-      <path d="M5 4.5h10.5A2.5 2.5 0 0 1 18 7v12H7a2 2 0 0 1-2-2V4.5Z" stroke="currentColor" strokeWidth="1.7" />
-      <path d="M5 4.5A2 2 0 0 0 3 6.5V17" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      <path d="m9 11 2 2 4-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ClockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="7.5" stroke="currentColor" strokeWidth="1.7" />
-      <path d="M12 8.5V12l2.5 2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function TicketIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-      <path
-        d="M4.5 8.5A2.5 2.5 0 0 1 7 6h10a2.5 2.5 0 0 1 2.5 2.5v1.2a2.2 2.2 0 1 0 0 4.4v1.4A2.5 2.5 0 0 1 17 18H7a2.5 2.5 0 0 1-2.5-2.5v-1.4a2.2 2.2 0 1 0 0-4.4V8.5Z"
-        stroke="currentColor"
-        strokeWidth="1.7"
-      />
-      <path d="M12 8.5v7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeDasharray="1.8 2.2" />
     </svg>
   );
 }
