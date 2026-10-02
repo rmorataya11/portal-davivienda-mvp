@@ -45,8 +45,6 @@ export async function LoginPage() {
                 ))}
               </ul>
             </div>
-
-            <p className="relative text-[12px] tracking-[0.2px] text-[#8E8E8E]">{t("backedBy")}</p>
           </aside>
 
           <div className="flex items-start px-5 py-6 sm:px-7 sm:py-7 lg:px-8 lg:py-8 xl:px-10">
