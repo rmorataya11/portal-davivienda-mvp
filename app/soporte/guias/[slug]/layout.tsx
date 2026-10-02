@@ -9,7 +9,7 @@ export default async function GuideDetailLayout({ children }: { children: ReactN
   return (
     <ContentAccessGate
       eyebrow={t("eyebrow")}
-      fallbackPath="/faq#guias-integracion"
+      fallbackPath="/soporte#guias-integracion"
       description={t("description")}
     >
       {children}

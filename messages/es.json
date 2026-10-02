@@ -3,7 +3,7 @@
     "home": "Inicio",
     "apiCatalog": "Catálogo de APIs",
     "documentation": "Documentación",
-    "faq": "FAQ",
+    "faq": "Soporte",
     "myApps": "Mis apps",
     "createAccount": "Crear cuenta",
     "signIn": "Iniciar sesión",
@@ -628,8 +628,8 @@
       "title": "Eliminar cuenta",
       "description": "Esta acción no se puede deshacer desde el portal. Si necesita dar de baja la cuenta, inicie el proceso con soporte.",
       "delete": "Eliminar cuenta",
-      "modalDescription": "Por ahora no se puede borrar la cuenta desde el portal. Para solicitar la eliminación, contacte a <faq>FAQ</faq> (sección FAQ, opción Hable con un experto).",
-      "goToFaq": "Ir a FAQ",
+      "modalDescription": "Por ahora no se puede borrar la cuenta desde el portal. Para solicitar la eliminación, contacte a <faq>Soporte</faq> (sección Soporte, opción Hable con un experto).",
+      "goToFaq": "Ir a Soporte",
       "close": "Entendido",
       "closeAria": "Cerrar"
     },
@@ -713,13 +713,13 @@
   },
   "Faq": {
     "metadata": {
-      "title": "FAQ | Davivienda API Marketplace",
+      "title": "Soporte | Davivienda API Marketplace",
       "description": "Encuentre respuestas, hable con nuestro equipo o abra un caso. Soporte técnico y comercial para todo su ciclo de integración.",
       "guideNotFoundTitle": "Guía no encontrada | Davivienda API Marketplace",
       "guideTitle": "{title} | Guías de Integración | Davivienda API Marketplace"
     },
     "breadcrumb": {
-      "faq": "FAQ",
+      "faq": "Soporte",
       "guides": "Guías de Integración"
     },
     "gate": {
@@ -727,7 +727,7 @@
       "description": "Esta guía es privada: ahí está el detalle de la integración. Necesita una cuenta de desarrollador para entrar."
     },
     "hero": {
-      "title": "FAQ",
+      "title": "Soporte",
       "description": "Encuentre respuestas, hable con nuestro equipo o abra un caso."
     },
     "cards": {
@@ -1137,7 +1137,7 @@
     "integrationGuides": "Guías de Integración",
     "apiCatalog": "Catálogo de APIs",
     "documentation": "Documentación",
-    "faq": "FAQ",
+    "faq": "Soporte",
     "createAccount": "Crear una cuenta",
     "signIn": "Iniciar sesión",
     "sandbox": "Sandbox",

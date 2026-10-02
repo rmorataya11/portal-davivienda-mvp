@@ -92,13 +92,13 @@ function buildCrumbs(
       return;
     }
 
-    if (segment === "faq") {
+    if (segment === "soporte") {
       crumbs.push({ href, label: faqT("breadcrumb.faq") });
       return;
     }
 
-    if (segment === "guias" && previous === "faq") {
-      crumbs.push({ href: "/faq#guias-integracion", label: faqT("breadcrumb.guides") });
+    if (segment === "guias" && previous === "soporte") {
+      crumbs.push({ href: "/soporte#guias-integracion", label: faqT("breadcrumb.guides") });
       return;
     }
 

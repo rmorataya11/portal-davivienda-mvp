@@ -22,10 +22,10 @@ export type FooterLink = {
 
 export const platformLinks: FooterLink[] = [
   { key: "home", href: "/" },
-  { key: "integrationGuides", href: "/faq#guias-integracion" },
+  { key: "integrationGuides", href: "/soporte#guias-integracion" },
   { key: "apiCatalog", href: "/catalogo-apis" },
   { key: "documentation", href: "/documentacion" },
-  { key: "faq", href: "/faq" },
+  { key: "faq", href: "/soporte" },
 ];
 
 export const developerLinks: FooterLink[] = [
@@ -36,7 +36,7 @@ export const developerLinks: FooterLink[] = [
 ];
 
 export const supportLinks: FooterLink[] = [
-  { key: "helpCenter", href: "/faq#preguntas-frecuentes" },
-  { key: "contactExpert", href: "/faq#soporte-prioritario" },
-  { key: "frequentQuestions", href: "/faq#preguntas-frecuentes" },
+  { key: "helpCenter", href: "/soporte#preguntas-frecuentes" },
+  { key: "contactExpert", href: "/soporte#soporte-prioritario" },
+  { key: "frequentQuestions", href: "/soporte#preguntas-frecuentes" },
 ];

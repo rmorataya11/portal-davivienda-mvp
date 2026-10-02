@@ -3,7 +3,7 @@
     "home": "Home",
     "apiCatalog": "API Catalog",
     "documentation": "Documentation",
-    "faq": "FAQ",
+    "faq": "Support",
     "myApps": "My apps",
     "createAccount": "Create account",
     "signIn": "Sign in",
@@ -628,8 +628,8 @@
       "title": "Delete account",
       "description": "This action cannot be undone from the portal. If you need to close the account, start the process with support.",
       "delete": "Delete account",
-      "modalDescription": "Accounts cannot be deleted from the portal yet. To request deletion, contact <faq>FAQ</faq> (FAQ section, Talk to an expert).",
-      "goToFaq": "Go to FAQ",
+      "modalDescription": "Accounts cannot be deleted from the portal yet. To request deletion, contact <faq>Support</faq> (Support section, Talk to an expert).",
+      "goToFaq": "Go to Support",
       "close": "Got it",
       "closeAria": "Close"
     },
@@ -713,13 +713,13 @@
   },
   "Faq": {
     "metadata": {
-      "title": "FAQ | Davivienda API Marketplace",
+      "title": "Support | Davivienda API Marketplace",
       "description": "Find answers, talk to our team, or open a case. Technical and commercial support for your full integration cycle.",
       "guideNotFoundTitle": "Guide not found | Davivienda API Marketplace",
       "guideTitle": "{title} | Integration guides | Davivienda API Marketplace"
     },
     "breadcrumb": {
-      "faq": "FAQ",
+      "faq": "Support",
       "guides": "Integration guides"
     },
     "gate": {
@@ -727,7 +727,7 @@
       "description": "This guide is private: it holds the integration details. You need a developer account to enter."
     },
     "hero": {
-      "title": "FAQ",
+      "title": "Support",
       "description": "Find answers, talk to our team, or open a case."
     },
     "cards": {
@@ -1137,7 +1137,7 @@
     "integrationGuides": "Integration guides",
     "apiCatalog": "API Catalog",
     "documentation": "Documentation",
-    "faq": "FAQ",
+    "faq": "Support",
     "createAccount": "Create an account",
     "signIn": "Sign in",
     "sandbox": "Sandbox",

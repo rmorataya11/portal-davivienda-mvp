@@ -16,7 +16,7 @@ export function GuideList() {
       {localizedGuides.map((guide) => (
         <article key={guide.id} id={`guia-${guide.slug}`} className="scroll-anchor">
           <Link
-            href={`/faq/guias/${guide.slug}`}
+            href={`/soporte/guias/${guide.slug}`}
             className="group flex w-full items-center gap-4 px-5 py-5 transition-colors hover:bg-[#F8F9FB] sm:px-7"
           >
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-[#FFF1F0] text-[#E1251B]">

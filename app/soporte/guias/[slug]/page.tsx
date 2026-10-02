@@ -10,7 +10,7 @@ export function generateStaticParams() {
   return guides.map((guide) => ({ slug: guide.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps<"/faq/guias/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/soporte/guias/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const guide = getGuideBySlug(slug);
   const t = await getTranslations("Faq");
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/faq/guias/[slug]"
   };
 }
 
-export default async function GuideDetailRoute({ params }: PageProps<"/faq/guias/[slug]">) {
+export default async function GuideDetailRoute({ params }: PageProps<"/soporte/guias/[slug]">) {
   const { slug } = await params;
   const guide = getGuideBySlug(slug);
 

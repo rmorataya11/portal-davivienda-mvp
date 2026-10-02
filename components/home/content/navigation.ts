@@ -5,5 +5,5 @@ export const navItems: NavItem[] = [
   { key: "apiCatalog", href: "/catalogo-apis" },
   { key: "myApps", href: "/dashboard" },
   { key: "documentation", href: "/documentacion" },
-  { key: "faq", href: "/faq" },
+  { key: "faq", href: "/soporte" },
 ];

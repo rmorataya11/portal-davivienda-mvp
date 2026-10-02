@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useId } from "react";
 
-export const SUPPORT_HREF = "/faq";
+export const SUPPORT_HREF = "/soporte";
 
 export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const t = useTranslations("Profile.danger");

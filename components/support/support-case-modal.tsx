@@ -185,7 +185,7 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
             titleId={titleId}
             eyebrow={t("gateEyebrow")}
             description={t("gateDescription")}
-            fallbackPath="/faq"
+            fallbackPath="/soporte"
           >
             <h2 id={titleId} className="text-[24px] font-bold tracking-[0.3px] text-[#141F25]">
               {t("title")}

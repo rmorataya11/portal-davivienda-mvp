@@ -26,7 +26,7 @@ export function GuideDetailPage({ guide }: { guide: Guide }) {
     <div>
       <section className="pt-4 pb-6 sm:pt-6 sm:pb-8">
         <SectionContainer>
-          <Link href="/faq#guias-integracion" className="text-[14px] font-semibold text-[#E1251B] hover:text-[#C01F16]">
+          <Link href="/soporte#guias-integracion" className="text-[14px] font-semibold text-[#E1251B] hover:text-[#C01F16]">
             {t("guides.back")}
           </Link>
           <GuideHero guide={localizedGuide} />
@@ -313,7 +313,7 @@ function GuidePager({ previous, next }: { previous?: Guide; next?: Guide }) {
     <nav className="flex flex-col gap-3 border-t border-[#E7EAEE] py-8 sm:flex-row sm:justify-between">
       {previous ? (
         <Link
-          href={`/faq/guias/${previous.slug}`}
+          href={`/soporte/guias/${previous.slug}`}
           className="rounded-[16px] border border-[#E7EAEE] px-4 py-3 transition-colors hover:border-[#E1251B]/40"
         >
           <span className="block text-[12px] text-[#8E8E8E]">{t("previous")}</span>
@@ -324,7 +324,7 @@ function GuidePager({ previous, next }: { previous?: Guide; next?: Guide }) {
       )}
       {next ? (
         <Link
-          href={`/faq/guias/${next.slug}`}
+          href={`/soporte/guias/${next.slug}`}
           className="rounded-[16px] border border-[#E7EAEE] px-4 py-3 text-left transition-colors hover:border-[#E1251B]/40 sm:text-right"
         >
           <span className="block text-[12px] text-[#8E8E8E]">{t("next")}</span>
