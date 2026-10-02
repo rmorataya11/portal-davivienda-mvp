@@ -23,10 +23,6 @@ export async function LoginPage() {
           </div>
 
           <aside className="relative hidden overflow-hidden border-r border-[#E7EAEE] bg-white px-8 py-8 text-[#141F25] lg:flex lg:flex-col xl:px-10 xl:py-9">
-            <span className="absolute inset-y-0 left-0 w-1 bg-[#E1251B]" />
-            <div className="pointer-events-none absolute -left-20 top-[-70px] h-[280px] w-[280px] rounded-full bg-[radial-gradient(circle,rgba(225,37,27,0.18)_0%,rgba(135,4,18,0.08)_42%,transparent_70%)]" />
-            <div className="pointer-events-none absolute -right-12 bottom-[-70px] h-[180px] w-[180px] rounded-full border border-[#E7EAEE]" />
-
             <div className="relative">
               <Link href="/" className="inline-flex items-center">
                 <DaviviendaLogo variant="auth" />

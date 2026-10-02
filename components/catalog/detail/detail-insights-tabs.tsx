@@ -172,7 +172,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
                   ).map((step, index) => (
                     <div
                       key={step}
-                      className="flex gap-4 rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-5 py-5 shadow-[0_12px_30px_rgba(20,31,37,0.04)]"
+                      className="flex gap-4 rounded-[22px] border border-[#E3E7EC] bg-[#F7F8FA] px-5 py-5"
                     >
                       <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#E1251B] text-[14px] font-bold text-white">
                         {index + 1}

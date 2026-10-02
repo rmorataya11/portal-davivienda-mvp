@@ -8,7 +8,7 @@ export function ItemGrid({ items }: { items: string[] }) {
       {items.map((item, index) => (
         <div
           key={item}
-          className="group rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F8FA_100%)] px-6 py-5 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-[#E1251B]/24 hover:shadow-[0_18px_40px_rgba(20,31,37,0.08)]"
+          className="group rounded-[22px] border border-[#E3E7EC] bg-[#F7F8FA] px-6 py-5 transition-colors duration-300 ease-out hover:border-[#E1251B]/24"
         >
           <div className="flex items-start gap-4">
             <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#202A31] text-[13px] font-bold text-white transition-colors duration-300 group-hover:bg-[#E1251B]">
