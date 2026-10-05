@@ -753,7 +753,7 @@
       }
     },
     "questions": {
-      "title": "Preguntas frecuentes",
+      "title": "Preguntas frecuentes sobre APIs Davivienda",
       "searchLabel": "Buscar en preguntas frecuentes",
       "searchPlaceholder": "Buscar en preguntas y respuestas...",
       "clearSearch": "Limpiar búsqueda",
@@ -783,9 +783,9 @@
       }
     },
     "feedback": {
-      "prompt": "¿Le sirvió esta respuesta?",
-      "yes": "👍 Sí",
-      "no": "👎 No",
+      "prompt": "¿Le sirvió la respuesta?",
+      "yes": "Sí",
+      "no": "No",
       "thanks": "¡Gracias por su comentario!",
       "stillNeedHelp": "¿Sigue con dudas? Abra un caso"
     },

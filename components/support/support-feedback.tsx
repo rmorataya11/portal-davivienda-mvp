@@ -44,20 +44,20 @@ export function SupportFeedback({ questionId, onOpenCase }: { questionId: string
   }
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
       <p className="text-[14px] leading-6 text-[#5C656C]">{t("prompt")}</p>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-4">
         <button
           type="button"
           onClick={() => handleVote("yes")}
-          className="inline-flex h-11 min-w-20 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-4 text-[14px] font-semibold text-[#141F25] transition-colors hover:border-[#141F25]"
+          className="inline-flex h-8 min-w-[54px] items-center justify-center rounded-full border border-[#707070] bg-white px-4 text-[14px] font-normal text-[#141F25] transition-colors hover:border-[#141F25]"
         >
           {t("yes")}
         </button>
         <button
           type="button"
           onClick={() => handleVote("no")}
-          className="inline-flex h-11 min-w-20 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-4 text-[14px] font-semibold text-[#141F25] transition-colors hover:border-[#141F25]"
+          className="inline-flex h-8 min-w-[54px] items-center justify-center rounded-full border border-[#707070] bg-white px-4 text-[14px] font-normal text-[#141F25] transition-colors hover:border-[#141F25]"
         >
           {t("no")}
         </button>

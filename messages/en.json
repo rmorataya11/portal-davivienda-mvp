@@ -753,7 +753,7 @@
       }
     },
     "questions": {
-      "title": "Frequently asked questions",
+      "title": "Frequently asked questions about Davivienda APIs",
       "searchLabel": "Search frequently asked questions",
       "searchPlaceholder": "Search questions and answers...",
       "clearSearch": "Clear search",
@@ -784,8 +784,8 @@
     },
     "feedback": {
       "prompt": "Was this answer helpful?",
-      "yes": "👍 Yes",
-      "no": "👎 No",
+      "yes": "Yes",
+      "no": "No",
       "thanks": "Thank you for your feedback!",
       "stillNeedHelp": "Still have questions? Open a case"
     },

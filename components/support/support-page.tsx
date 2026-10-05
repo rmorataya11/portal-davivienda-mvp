@@ -12,10 +12,6 @@ import { GuideList } from "@/components/guides/guide-list";
 import { SectionContainer } from "@/components/ui/layout";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
 
-function normalizeSearch(value: string) {
-  return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
-}
-
 type QuestionDefinition = {
   id: string;
   guideSlug?: string;
@@ -106,8 +102,6 @@ export function SupportPage() {
     [t],
   );
   const [openQuestionId, setOpenQuestionId] = useState(questionDefinitions[0]?.id ?? "");
-  const [questionQuery, setQuestionQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [statusUpdatedLabel, setStatusUpdatedLabel] = useState("");
   const [caseModalOpen, setCaseModalOpen] = useState(false);
 
@@ -117,37 +111,6 @@ export function SupportPage() {
     const time = checkedAt.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
     setStatusUpdatedLabel(t("status.updated", { time }));
   }, [locale, t]);
-
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      setDebouncedQuery(questionQuery);
-    }, 180);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [questionQuery]);
-
-  const filteredQuestions = useMemo(() => {
-    const term = normalizeSearch(debouncedQuery);
-
-    if (!term) {
-      return questions;
-    }
-
-    return questions.filter((item) =>
-      normalizeSearch(`${item.question} ${item.answer} ${item.sourceQuestion} ${item.sourceAnswer}`).includes(term),
-    );
-  }, [debouncedQuery, questions]);
-
-  useEffect(() => {
-    if (filteredQuestions.length === 0) {
-      setOpenQuestionId("");
-      return;
-    }
-
-    if (openQuestionId && !filteredQuestions.some((item) => item.id === openQuestionId)) {
-      setOpenQuestionId(filteredQuestions[0]?.id ?? "");
-    }
-  }, [filteredQuestions, openQuestionId]);
 
   return (
     <>
@@ -201,55 +164,22 @@ export function SupportPage() {
         </SectionContainer>
       </section>
 
-      <section id="preguntas-frecuentes" className="scroll-anchor pb-8 pt-2">
+      <section id="preguntas-frecuentes" className="scroll-anchor pb-8 pt-12">
         <SectionContainer>
-          <h2 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("questions.title")}</h2>
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-start">
-            <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-7">
-              <label className="flex h-11 items-center rounded-[12px] border border-[#E7EAEE] bg-[#F8F9FB] px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9] focus-within:bg-white">
-                <SearchIcon />
-                <span className="sr-only">{t("questions.searchLabel")}</span>
-                <input
-                  type="search"
-                  value={questionQuery}
-                  onChange={(event) => setQuestionQuery(event.target.value)}
-                  placeholder={t("questions.searchPlaceholder")}
-                  className="ml-2 h-full w-full bg-transparent text-[14px] text-[#404040] outline-none placeholder:text-[#8E8E8E] [&::-webkit-search-cancel-button]:hidden"
-                />
-                {questionQuery ? (
-                  <button
-                    type="button"
-                    onClick={() => setQuestionQuery("")}
-                    className="ml-2 inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#8E8E8E] transition-colors hover:text-[#404040]"
-                    aria-label={t("questions.clearSearch")}
-                  >
-                    <ClearIcon />
-                  </button>
-                ) : null}
-              </label>
-
-              {filteredQuestions.length === 0 ? (
-                <p className="mt-6 text-[15px] leading-7 text-[#707070]">
-                  {t.rich("questions.empty", {
-                    query: debouncedQuery.trim(),
-                    case: (chunks) => (
-                      <button
-                        type="button"
-                        onClick={() => setCaseModalOpen(true)}
-                        className="font-semibold text-[#E1251B] hover:text-[#C01F16]"
-                      >
-                        {chunks}
-                      </button>
-                    ),
-                  })}
-                </p>
-              ) : (
-                <div className="mt-6 border-t border-[#E7EAEE]">
-                  {filteredQuestions.map((item) => {
+          <div className="mb-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_408px]">
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("questions.title")}</h2>
+              <ChevronIcon open={false} />
+            </div>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_408px]">
+            <div className="rounded-2xl border border-[#E7EAEE] bg-white px-6 py-4">
+                <div className="border-t border-[#D0D4D8]">
+                  {questions.map((item) => {
                     const isOpen = openQuestionId === item.id;
 
                     return (
-                      <div key={item.id} className="border-b border-[#E7EAEE]">
+                      <div key={item.id} className="border-b border-[#D0D4D8]">
                         <h3>
                           <button
                             type="button"
@@ -281,23 +211,22 @@ export function SupportPage() {
                     );
                   })}
                 </div>
-              )}
             </div>
 
-            <aside className="space-y-5">
-              <section className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
+            <aside className="grid gap-4 lg:h-full lg:grid-rows-[auto_1fr]">
+              <section className="rounded-2xl border border-[#E7EAEE] bg-white px-5 py-8 sm:px-6">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("status.title")}</h2>
                   {statusUpdatedLabel ? (
                     <p className="text-[12px] text-[#8E8E8E]">{statusUpdatedLabel}</p>
                   ) : null}
                 </div>
-                <ul className="mt-5 space-y-4">
+                <ul className="mt-6 space-y-4">
                   {serviceNames.map((name) => (
                     <li key={name} className="flex items-center justify-between gap-3 text-[14px]">
-                      <span className="min-w-0 text-[#404040]">{name}</span>
-                      <span className="inline-flex shrink-0 items-center justify-end gap-2 font-medium text-[#347659]">
-                        <span className="h-2 w-2 rounded-full bg-[#347659]" aria-hidden="true" />
+                      <span className="min-w-0 text-[#8E8E8E]">{name}</span>
+                      <span className="inline-flex h-7 shrink-0 items-center justify-center gap-2 rounded-full bg-[#EFFCF5] px-3 text-[12px] font-medium text-[#347659]">
+                        <span className="h-2 w-2 rounded-full bg-[#55B685]" aria-hidden="true" />
                         {t("status.operational")}
                       </span>
                     </li>
@@ -307,13 +236,14 @@ export function SupportPage() {
 
               <section
                 id="soporte-prioritario"
-                className="scroll-anchor rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6"
+                className="scroll-anchor relative overflow-hidden rounded-2xl border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6"
               >
-                <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("priority.title")}</h2>
-                <p className="mt-3 text-[15px] leading-7 text-[#707070]">{t("priority.description")}</p>
+                <div className="support-priority-wave" aria-hidden="true" />
+                <h2 className="relative z-10 text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("priority.title")}</h2>
+                <p className="relative z-10 mt-3 text-[15px] leading-7 text-[#707070]">{t("priority.description")}</p>
                 <Link
                   href="/solicitud-contratacion"
-                  className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
+                  className="relative z-10 mt-6 inline-flex h-12 w-full max-w-[231px] items-center justify-center rounded-[30px] bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
                 >
                   {t("priority.cta")}
                 </Link>
@@ -337,23 +267,6 @@ export function SupportPage() {
 
       <SupportCaseModal open={caseModalOpen} onClose={() => setCaseModalOpen(false)} />
     </>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="none" aria-hidden="true">
-      <circle cx="8.5" cy="8.5" r="5.2" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M12.4 12.4 16 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function ClearIcon() {
-  return (
-    <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
-      <path d="M4 4 12 12M12 4 4 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
   );
 }
 
