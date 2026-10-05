@@ -4,13 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { SectionContainer } from "@/components/ui/layout";
 import { parseCalendarDate } from "@/lib/format/date";
-import { changelogEntries, type ChangelogType } from "@/lib/support/changelog";
-
-const typeClass: Record<ChangelogType, string> = {
-  nuevo: "bg-[#EFFCF5] text-[#347659]",
-  cambio: "bg-[#FFF8EC] text-[#C47B17]",
-  deprecacion: "bg-[#FFE9E9] text-[#A11B1B]",
-};
+import { changelogEntries } from "@/lib/support/changelog";
 
 function formatDate(value: string, locale: string) {
   const parsed = parseCalendarDate(value);
@@ -33,33 +27,31 @@ export function SupportChangelog() {
   return (
     <section id="novedades" className="scroll-anchor pb-16 sm:pb-20">
       <SectionContainer>
-        <h2 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("title")}</h2>
-        <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-7">
-          <p className="text-[15px] leading-7 text-[#707070]">{t("description")}</p>
+        <div className="relative min-h-[310px] overflow-hidden rounded-2xl bg-white">
+          <div
+            className="pointer-events-none absolute right-0 bottom-0 hidden h-[82%] w-[40%] rounded-tl-[999px] bg-[#FFE8E7] sm:block"
+            aria-hidden="true"
+          />
 
-          <ol className="mt-6 divide-y divide-[#E7EAEE] border-t border-[#E7EAEE]">
-            {entries.map((entry) => (
-              <li key={entry.id} className="py-5">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                  <time dateTime={entry.date} className="font-mono text-[12px] text-[#8E8E8E]">
-                    {formatDate(entry.date, locale)}
-                  </time>
-                  <span
-                    className={`inline-flex rounded-full px-2.5 py-0.5 text-[12px] font-medium ${typeClass[entry.type]}`}
-                  >
-                    {t(`types.${entry.type}`)}
-                  </span>
-                  {entry.apiAffected ? (
-                    <span className="font-mono text-[12px] text-[#707070]">{entry.apiAffected}</span>
-                  ) : null}
-                </div>
-                <h3 className="mt-2 text-[16px] font-semibold tracking-[0.2px] text-[#404040]">
-                  {t(`entries.${entry.id}.title`)}
-                </h3>
-                <p className="mt-2 text-[15px] leading-7 text-[#707070]">{t(`entries.${entry.id}.description`)}</p>
-              </li>
-            ))}
-          </ol>
+          <div className="relative z-10 max-w-[590px] px-6 py-8 sm:px-8">
+            <h2 className="text-[30px] font-bold leading-9 tracking-[0.2px] text-[#404040]">{t("title")}</h2>
+            <p className="mt-4 text-[15px] leading-6 text-[#8E8E8E]">{t("description")}</p>
+
+            <ol className="mt-4 divide-y divide-[#D0D4D8] border-t border-[#D0D4D8]">
+              {entries.map((entry) => (
+                <li key={entry.id} className="pt-4">
+                  <div className="flex flex-wrap items-center gap-x-2 text-[13px] text-[#8E8E8E]">
+                    <time dateTime={entry.date}>{formatDate(entry.date, locale)}</time>
+                    {entry.apiAffected ? <span>{entry.apiAffected}</span> : null}
+                  </div>
+                  <h3 className="mt-3 text-[15px] font-semibold tracking-[0.2px] text-[#404040]">
+                    {t(`entries.${entry.id}.title`)}
+                  </h3>
+                  <p className="mt-2 text-[15px] leading-6 text-[#8E8E8E]">{t(`entries.${entry.id}.description`)}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </SectionContainer>
     </section>

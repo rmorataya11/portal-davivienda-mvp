@@ -253,7 +253,7 @@ export function SupportPage() {
         </SectionContainer>
       </section>
 
-      <section id="guias-integracion" className="scroll-anchor pb-12 pt-2 sm:pb-16">
+      <section id="guias-integracion" className="scroll-anchor pb-16 pt-[13px] sm:pb-[125px]">
         <SectionContainer>
           <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("guides.sectionTitle")}</h2>
           <p className="mt-3 mb-5 max-w-[720px] text-[15px] leading-7 text-[#707070]">
