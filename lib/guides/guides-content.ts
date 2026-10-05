@@ -1,6 +1,6 @@
 export type GuideLevel = "básico" | "intermedio" | "avanzado";
 
-export type GuideIconId = "shield" | "bank" | "bell" | "retry" | "rocket" | "alert";
+export type GuideIconId = "shield" | "bank" | "bell" | "retry" | "rocket" | "cloud" | "alert";
 
 export type GuideCodeSample = {
   label: string;
@@ -459,7 +459,7 @@ export const guides: Guide[] = [
     description:
       "La lista de chequeo final antes de salir en vivo: seguridad, acuerdos y monitoreo, sin sorpresas.",
     topics: ["completar la certificación de seguridad", "firmar el acuerdo de servicio", "homologar y monitorear"],
-    icon: "rocket",
+    icon: "cloud",
     article: null,
   },
   {

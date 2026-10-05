@@ -65,6 +65,27 @@ function RocketIcon({ className }: { className?: string }) {
   );
 }
 
+function CloudUploadIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path
+        d="M7.5 17a3.5 3.5 0 0 1-.6-6.95A4.5 4.5 0 0 1 15.3 8.1 3.75 3.75 0 0 1 17.5 15.2"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 11v7M9.3 13.7 12 11l2.7 2.7"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function AlertIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
@@ -81,6 +102,7 @@ const icons = {
   bell: BellIcon,
   retry: RetryIcon,
   rocket: RocketIcon,
+  cloud: CloudUploadIcon,
   alert: AlertIcon,
 } as const;
 
