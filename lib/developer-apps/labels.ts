@@ -5,7 +5,7 @@ import type { AppEnvironment } from "./types";
 export const appStatusStyles: Record<AppEnvironment, string> = {
   sandbox: "bg-[#FEF3C7] text-[#B45309]",
   contracting: "bg-[#FFF6E8] text-[#A15C12]",
-  production: "bg-[#EEF3FF] text-[#2F4EA1]",
+  production: "bg-[#EFFCF5] text-[#347659]",
 };
 
 export function isProductionApp(app: { environment: AppEnvironment }) {
