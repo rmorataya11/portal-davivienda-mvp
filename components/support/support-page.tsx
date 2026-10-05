@@ -213,7 +213,7 @@ export function SupportPage() {
                 </div>
             </div>
 
-            <aside className="grid gap-4 lg:h-full lg:grid-rows-[auto_1fr]">
+            <aside className="grid content-start gap-4">
               <section className="rounded-2xl border border-[#E7EAEE] bg-white px-5 py-8 sm:px-6">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("status.title")}</h2>
@@ -236,7 +236,7 @@ export function SupportPage() {
 
               <section
                 id="soporte-prioritario"
-                className="scroll-anchor relative overflow-hidden rounded-2xl border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6"
+                className="scroll-anchor relative overflow-hidden rounded-2xl border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6 lg:h-[240px]"
               >
                 <div className="support-priority-wave" aria-hidden="true" />
                 <h2 className="relative z-10 text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("priority.title")}</h2>
