@@ -1,5 +1,5 @@
 export type NavItem = {
-  key: "home" | "apiCatalog" | "myApps" | "documentation" | "faq";
+  key: "home" | "apiCatalog" | "myApps" | "documentation" | "support";
   href: string;
   active?: boolean;
 };

@@ -50,7 +50,7 @@ export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: 
         </h2>
         <p className="mt-4 text-[15px] leading-7 text-[#5B636A]">
           {t.rich("modalDescription", {
-            faq: (chunks) => (
+            support: (chunks) => (
               <Link href={SUPPORT_HREF} className="font-semibold text-[#E1251B] underline-offset-2 hover:underline">
                 {chunks}
               </Link>
@@ -62,7 +62,7 @@ export function DeleteAccountModal({ open, onClose }: { open: boolean; onClose: 
             href={SUPPORT_HREF}
             className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
           >
-            {t("goToFaq")}
+            {t("goToSupport")}
           </Link>
           <button
             type="button"

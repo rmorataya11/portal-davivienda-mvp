@@ -42,7 +42,7 @@ const daviviendaCodeTheme = {
 };
 
 function CopyButton({ content }: { content: string }) {
-  const t = useTranslations("Faq.guides");
+  const t = useTranslations("Support.guides");
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -146,7 +146,7 @@ export function GuideJsonBlock({
 }
 
 export function GuideMermaidBlock({ source }: { source: string }) {
-  const t = useTranslations("Faq.guides");
+  const t = useTranslations("Support.guides");
 
   return (
     <div className="overflow-hidden rounded-[16px] border border-[#E7EAEE] bg-[#F8F9FB]">

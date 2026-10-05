@@ -1,10 +1,10 @@
-export type FaqFeedbackVote = "yes" | "no";
+export type SupportFeedbackVote = "yes" | "no";
 
 function storageKey(questionId: string) {
-  return `faq-feedback:${questionId}`;
+  return `support-feedback:${questionId}`;
 }
 
-export function loadFaqFeedback(questionId: string): FaqFeedbackVote | null {
+export function loadSupportFeedback(questionId: string): SupportFeedbackVote | null {
   if (typeof window === "undefined") {
     return null;
   }
@@ -17,7 +17,7 @@ export function loadFaqFeedback(questionId: string): FaqFeedbackVote | null {
   }
 }
 
-export function saveFaqFeedback(questionId: string, vote: FaqFeedbackVote) {
+export function saveSupportFeedback(questionId: string, vote: SupportFeedbackVote) {
   if (typeof window === "undefined") {
     return;
   }

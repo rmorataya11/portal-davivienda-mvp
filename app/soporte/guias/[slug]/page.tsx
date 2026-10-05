@@ -13,7 +13,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/soporte/guias/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const guide = getGuideBySlug(slug);
-  const t = await getTranslations("Faq");
+  const t = await getTranslations("Support");
 
   if (!guide) {
     return {

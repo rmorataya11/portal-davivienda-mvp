@@ -3,18 +3,22 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-import { loadFaqFeedback, saveFaqFeedback, type FaqFeedbackVote } from "@/lib/support/faq-feedback";
+import {
+  loadSupportFeedback,
+  saveSupportFeedback,
+  type SupportFeedbackVote,
+} from "@/lib/support/support-feedback";
 
-export function FaqFeedback({ questionId, onOpenCase }: { questionId: string; onOpenCase: () => void }) {
-  const t = useTranslations("Faq.feedback");
-  const [vote, setVote] = useState<FaqFeedbackVote | null | undefined>(undefined);
+export function SupportFeedback({ questionId, onOpenCase }: { questionId: string; onOpenCase: () => void }) {
+  const t = useTranslations("Support.feedback");
+  const [vote, setVote] = useState<SupportFeedbackVote | null | undefined>(undefined);
 
   useEffect(() => {
-    setVote(loadFaqFeedback(questionId));
+    setVote(loadSupportFeedback(questionId));
   }, [questionId]);
 
-  function handleVote(next: FaqFeedbackVote) {
-    saveFaqFeedback(questionId, next);
+  function handleVote(next: SupportFeedbackVote) {
+    saveSupportFeedback(questionId, next);
     setVote(next);
   }
 

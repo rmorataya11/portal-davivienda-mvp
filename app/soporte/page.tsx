@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { SupportPage } from "@/components/support/support-page";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Faq.metadata");
+  const t = await getTranslations("Support.metadata");
 
   return {
     title: t("title"),
@@ -12,6 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function FaqRoute() {
+export default function SupportRoute() {
   return <SupportPage />;
 }

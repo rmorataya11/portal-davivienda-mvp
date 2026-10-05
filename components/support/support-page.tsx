@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 import { localizeGuide } from "@/components/guides/localize-guide";
-import { FaqFeedback } from "@/components/support/faq-feedback";
+import { SupportFeedback } from "@/components/support/support-feedback";
 import { SupportCaseModal } from "@/components/support/support-case-modal";
 import { SupportChangelog } from "@/components/support/support-changelog";
 import { GuideList } from "@/components/guides/guide-list";
@@ -16,14 +16,14 @@ function normalizeSearch(value: string) {
   return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
 }
 
-type FaqDefinition = {
+type QuestionDefinition = {
   id: string;
   guideSlug?: string;
   sourceQuestion: string;
   sourceAnswer: string;
 };
 
-const faqDefinitions: FaqDefinition[] = [
+const questionDefinitions: QuestionDefinition[] = [
   {
     id: "sandbox",
     sourceQuestion: "¿Cómo obtengo acceso al entorno Sandbox?",
@@ -71,8 +71,8 @@ function withoutTrailingArrow(value: string) {
   return value.replace(/\s*→\s*$/, "");
 }
 
-function FaqGuideLink({ slug }: { slug: string }) {
-  const t = useTranslations("Faq");
+function QuestionGuideLink({ slug }: { slug: string }) {
+  const t = useTranslations("Support");
   const guide = getGuideBySlug(slug);
 
   if (!guide) {
@@ -94,19 +94,19 @@ function FaqGuideLink({ slug }: { slug: string }) {
 }
 
 export function SupportPage() {
-  const t = useTranslations("Faq");
+  const t = useTranslations("Support");
   const locale = useLocale();
-  const faqs = useMemo(
+  const questions = useMemo(
     () =>
-      faqDefinitions.map((item) => ({
+      questionDefinitions.map((item) => ({
         ...item,
         question: t(`questions.items.${item.id}.question`),
         answer: t(`questions.items.${item.id}.answer`),
       })),
     [t],
   );
-  const [openFaqId, setOpenFaqId] = useState(faqDefinitions[0]?.id ?? "");
-  const [faqQuery, setFaqQuery] = useState("");
+  const [openQuestionId, setOpenQuestionId] = useState(questionDefinitions[0]?.id ?? "");
+  const [questionQuery, setQuestionQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [statusUpdatedLabel, setStatusUpdatedLabel] = useState("");
   const [caseModalOpen, setCaseModalOpen] = useState(false);
@@ -120,34 +120,34 @@ export function SupportPage() {
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      setDebouncedQuery(faqQuery);
+      setDebouncedQuery(questionQuery);
     }, 180);
 
     return () => window.clearTimeout(timeoutId);
-  }, [faqQuery]);
+  }, [questionQuery]);
 
-  const filteredFaqs = useMemo(() => {
+  const filteredQuestions = useMemo(() => {
     const term = normalizeSearch(debouncedQuery);
 
     if (!term) {
-      return faqs;
+      return questions;
     }
 
-    return faqs.filter((item) =>
+    return questions.filter((item) =>
       normalizeSearch(`${item.question} ${item.answer} ${item.sourceQuestion} ${item.sourceAnswer}`).includes(term),
     );
-  }, [debouncedQuery, faqs]);
+  }, [debouncedQuery, questions]);
 
   useEffect(() => {
-    if (filteredFaqs.length === 0) {
-      setOpenFaqId("");
+    if (filteredQuestions.length === 0) {
+      setOpenQuestionId("");
       return;
     }
 
-    if (openFaqId && !filteredFaqs.some((item) => item.id === openFaqId)) {
-      setOpenFaqId(filteredFaqs[0]?.id ?? "");
+    if (openQuestionId && !filteredQuestions.some((item) => item.id === openQuestionId)) {
+      setOpenQuestionId(filteredQuestions[0]?.id ?? "");
     }
-  }, [filteredFaqs, openFaqId]);
+  }, [filteredQuestions, openQuestionId]);
 
   return (
     <>
@@ -211,15 +211,15 @@ export function SupportPage() {
                 <span className="sr-only">{t("questions.searchLabel")}</span>
                 <input
                   type="search"
-                  value={faqQuery}
-                  onChange={(event) => setFaqQuery(event.target.value)}
+                  value={questionQuery}
+                  onChange={(event) => setQuestionQuery(event.target.value)}
                   placeholder={t("questions.searchPlaceholder")}
                   className="ml-2 h-full w-full bg-transparent text-[14px] text-[#404040] outline-none placeholder:text-[#8E8E8E] [&::-webkit-search-cancel-button]:hidden"
                 />
-                {faqQuery ? (
+                {questionQuery ? (
                   <button
                     type="button"
-                    onClick={() => setFaqQuery("")}
+                    onClick={() => setQuestionQuery("")}
                     className="ml-2 inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#8E8E8E] transition-colors hover:text-[#404040]"
                     aria-label={t("questions.clearSearch")}
                   >
@@ -228,7 +228,7 @@ export function SupportPage() {
                 ) : null}
               </label>
 
-              {filteredFaqs.length === 0 ? (
+              {filteredQuestions.length === 0 ? (
                 <p className="mt-6 text-[15px] leading-7 text-[#707070]">
                   {t.rich("questions.empty", {
                     query: debouncedQuery.trim(),
@@ -245,18 +245,18 @@ export function SupportPage() {
                 </p>
               ) : (
                 <div className="mt-6 border-t border-[#E7EAEE]">
-                  {filteredFaqs.map((item) => {
-                    const isOpen = openFaqId === item.id;
+                  {filteredQuestions.map((item) => {
+                    const isOpen = openQuestionId === item.id;
 
                     return (
                       <div key={item.id} className="border-b border-[#E7EAEE]">
                         <h3>
                           <button
                             type="button"
-                            id={`faq-button-${item.id}`}
+                            id={`support-button-${item.id}`}
                             aria-expanded={isOpen}
-                            aria-controls={`faq-panel-${item.id}`}
-                            onClick={() => setOpenFaqId(isOpen ? "" : item.id)}
+                            aria-controls={`support-panel-${item.id}`}
+                            onClick={() => setOpenQuestionId(isOpen ? "" : item.id)}
                             className="flex w-full items-center justify-between gap-4 py-5 text-left"
                           >
                             <span className="text-[16px] font-semibold tracking-[0.2px] text-[#404040]">
@@ -267,14 +267,14 @@ export function SupportPage() {
                         </h3>
                         {isOpen ? (
                           <div
-                            id={`faq-panel-${item.id}`}
+                            id={`support-panel-${item.id}`}
                             role="region"
-                            aria-labelledby={`faq-button-${item.id}`}
+                            aria-labelledby={`support-button-${item.id}`}
                             className="pb-5"
                           >
                             <p className="text-[15px] leading-7 text-[#707070]">{item.answer}</p>
-                            {item.guideSlug ? <FaqGuideLink slug={item.guideSlug} /> : null}
-                            <FaqFeedback questionId={item.id} onOpenCase={() => setCaseModalOpen(true)} />
+                            {item.guideSlug ? <QuestionGuideLink slug={item.guideSlug} /> : null}
+                            <SupportFeedback questionId={item.id} onOpenCase={() => setCaseModalOpen(true)} />
                           </div>
                         ) : null}
                       </div>

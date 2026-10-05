@@ -6,7 +6,7 @@ export type FooterMessageKey =
   | "integrationGuides"
   | "apiCatalog"
   | "documentation"
-  | "faq"
+  | "supportPage"
   | "createAccount"
   | "signIn"
   | "sandbox"
@@ -25,7 +25,7 @@ export const platformLinks: FooterLink[] = [
   { key: "integrationGuides", href: "/soporte#guias-integracion" },
   { key: "apiCatalog", href: "/catalogo-apis" },
   { key: "documentation", href: "/documentacion" },
-  { key: "faq", href: "/soporte" },
+  { key: "supportPage", href: "/soporte" },
 ];
 
 export const developerLinks: FooterLink[] = [

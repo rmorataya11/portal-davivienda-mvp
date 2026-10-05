@@ -16,7 +16,7 @@ const severityValues = ["bloqueante", "importante", "consulta"] as const;
 type FieldErrors = Record<string, string>;
 
 export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const t = useTranslations("Faq.case");
+  const t = useTranslations("Support.case");
   const products = useCatalogViews();
   const { user, developerId } = useAuth();
   const titleId = useId();

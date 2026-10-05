@@ -1,6 +1,6 @@
 import type { Guide, GuideArticle, GuideTopicSection } from "@/lib/guides/guides-content";
 
-export type FaqTranslate = (key: string) => string;
+export type SupportTranslate = (key: string) => string;
 
 const guideMessageKeys: Record<string, string> = {
   "autenticacion-mtls-oauth": "autenticacion",
@@ -13,11 +13,11 @@ function toSectionKey(sectionId: string) {
   return sectionId.replace(/-([a-z])/g, (_, letter: string) => letter.toUpperCase());
 }
 
-function readList(t: FaqTranslate, prefix: string, values: string[]) {
+function readList(t: SupportTranslate, prefix: string, values: string[]) {
   return values.map((_, index) => t(`${prefix}.${index}`));
 }
 
-function localizeSection(section: GuideTopicSection, guideKey: string, t: FaqTranslate): GuideTopicSection {
+function localizeSection(section: GuideTopicSection, guideKey: string, t: SupportTranslate): GuideTopicSection {
   const sectionKey = toSectionKey(section.id);
   const base = `guides.items.${guideKey}.sections.${sectionKey}`;
 
@@ -47,7 +47,7 @@ function localizeSection(section: GuideTopicSection, guideKey: string, t: FaqTra
   };
 }
 
-function localizeArticle(article: GuideArticle, guideKey: string, t: FaqTranslate): GuideArticle {
+function localizeArticle(article: GuideArticle, guideKey: string, t: SupportTranslate): GuideArticle {
   const base = `guides.items.${guideKey}`;
 
   return {
@@ -67,7 +67,7 @@ export function getGuideMessageKey(slug: string) {
   return guideMessageKeys[slug] ?? slug;
 }
 
-export function localizeGuide(guide: Guide, t: FaqTranslate): Guide {
+export function localizeGuide(guide: Guide, t: SupportTranslate): Guide {
   const guideKey = getGuideMessageKey(guide.slug);
   const base = `guides.items.${guideKey}`;
 
@@ -81,6 +81,6 @@ export function localizeGuide(guide: Guide, t: FaqTranslate): Guide {
   };
 }
 
-export function localizeGuides(guides: Guide[], t: FaqTranslate) {
+export function localizeGuides(guides: Guide[], t: SupportTranslate) {
   return guides.map((guide) => localizeGuide(guide, t));
 }

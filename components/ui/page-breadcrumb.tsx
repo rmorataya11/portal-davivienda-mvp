@@ -30,7 +30,7 @@ function buildCrumbs(
   dashboardT: (key: string) => string,
   profileT: (key: string) => string,
   docsT: (key: string) => string,
-  faqT: (key: string) => string,
+  supportT: (key: string) => string,
   contratacionT: (key: string) => string,
   navT: (key: string) => string,
   authT: (key: string) => string,
@@ -93,18 +93,18 @@ function buildCrumbs(
     }
 
     if (segment === "soporte") {
-      crumbs.push({ href, label: faqT("breadcrumb.faq") });
+      crumbs.push({ href, label: supportT("breadcrumb.support") });
       return;
     }
 
     if (segment === "guias" && previous === "soporte") {
-      crumbs.push({ href: "/soporte#guias-integracion", label: faqT("breadcrumb.guides") });
+      crumbs.push({ href: "/soporte#guias-integracion", label: supportT("breadcrumb.guides") });
       return;
     }
 
     if (previous === "guias") {
       const guide = getGuideBySlug(segment);
-      crumbs.push({ href, label: guide ? localizeGuide(guide, faqT).title : segment });
+      crumbs.push({ href, label: guide ? localizeGuide(guide, supportT).title : segment });
       return;
     }
 
@@ -150,7 +150,7 @@ export function PageBreadcrumb() {
   const dashboardT = useTranslations("Dashboard.breadcrumb");
   const profileT = useTranslations("Profile.breadcrumb");
   const docsT = useTranslations("Documentacion.breadcrumb");
-  const faqT = useTranslations("Faq");
+  const supportT = useTranslations("Support");
   const contratacionT = useTranslations("Contratacion");
   const navT = useTranslations("Navbar");
   const authT = useTranslations("Auth");
@@ -170,7 +170,7 @@ export function PageBreadcrumb() {
     dashboardT,
     profileT,
     docsT,
-    faqT,
+    supportT,
     contratacionT,
     navT,
     authT,

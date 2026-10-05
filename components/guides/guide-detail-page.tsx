@@ -14,7 +14,7 @@ import type { Guide } from "@/lib/guides/guides-content";
 import { guides } from "@/lib/guides/guides-content";
 
 export function GuideDetailPage({ guide }: { guide: Guide }) {
-  const t = useTranslations("Faq");
+  const t = useTranslations("Support");
   const localizedGuide = localizeGuide(guide, t);
   const localizedGuides = localizeGuides(guides, t);
   const article = localizedGuide.article;
@@ -43,7 +43,7 @@ export function GuideDetailPage({ guide }: { guide: Guide }) {
 }
 
 function GuideHero({ guide }: { guide: Guide }) {
-  const t = useTranslations("Faq");
+  const t = useTranslations("Support");
   const endpoint = guide.endpoint ? splitEndpoint(guide.endpoint) : null;
 
   return (
@@ -88,7 +88,7 @@ function GuideComingSoon({
   previous?: Guide;
   next?: Guide;
 }) {
-  const t = useTranslations("Faq.guides");
+  const t = useTranslations("Support.guides");
 
   return (
     <section className="pb-16 sm:pb-20">
@@ -132,7 +132,7 @@ function GuideArticleBody({
   previous?: Guide;
   next?: Guide;
 }) {
-  const t = useTranslations("Faq.guides");
+  const t = useTranslations("Support.guides");
   const article = guide.article;
 
   if (!article) {
@@ -307,7 +307,7 @@ function GuideArticleBody({
 }
 
 function GuidePager({ previous, next }: { previous?: Guide; next?: Guide }) {
-  const t = useTranslations("Faq.guides");
+  const t = useTranslations("Support.guides");
 
   return (
     <nav className="flex flex-col gap-3 border-t border-[#E7EAEE] py-8 sm:flex-row sm:justify-between">

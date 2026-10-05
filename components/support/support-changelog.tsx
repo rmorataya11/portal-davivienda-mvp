@@ -26,7 +26,7 @@ function formatDate(value: string, locale: string) {
 }
 
 export function SupportChangelog() {
-  const t = useTranslations("Faq.changelog");
+  const t = useTranslations("Support.changelog");
   const locale = useLocale();
   const entries = [...changelogEntries].sort((left, right) => right.date.localeCompare(left.date));
 

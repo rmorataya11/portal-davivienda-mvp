@@ -12,7 +12,7 @@ export function GuideToc({
   items: GuideTocItem[];
   variant: "mobile" | "desktop";
 }) {
-  const t = useTranslations("Faq.guides");
+  const t = useTranslations("Support.guides");
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
 
   useEffect(() => {

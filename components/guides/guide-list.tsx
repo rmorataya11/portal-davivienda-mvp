@@ -8,7 +8,7 @@ import { GuideIcon } from "@/components/guides/guide-icons";
 import { guides } from "@/lib/guides/guides-content";
 
 export function GuideList() {
-  const t = useTranslations("Faq");
+  const t = useTranslations("Support");
   const localizedGuides = localizeGuides(guides, t);
 
   return (

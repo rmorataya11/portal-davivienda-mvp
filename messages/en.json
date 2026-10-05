@@ -3,7 +3,7 @@
     "home": "Home",
     "apiCatalog": "API Catalog",
     "documentation": "Documentation",
-    "faq": "Support",
+    "support": "Support",
     "myApps": "My apps",
     "createAccount": "Create account",
     "signIn": "Sign in",
@@ -628,8 +628,8 @@
       "title": "Delete account",
       "description": "This action cannot be undone from the portal. If you need to close the account, start the process with support.",
       "delete": "Delete account",
-      "modalDescription": "Accounts cannot be deleted from the portal yet. To request deletion, contact <faq>Support</faq> (Support section, Talk to an expert).",
-      "goToFaq": "Go to Support",
+      "modalDescription": "Accounts cannot be deleted from the portal yet. To request deletion, contact <support>Support</support> (Support section, Talk to an expert).",
+      "goToSupport": "Go to Support",
       "close": "Got it",
       "closeAria": "Close"
     },
@@ -711,7 +711,7 @@
       }
     }
   },
-  "Faq": {
+  "Support": {
     "metadata": {
       "title": "Support | Davivienda API Marketplace",
       "description": "Find answers, talk to our team, or open a case. Technical and commercial support for your full integration cycle.",
@@ -719,7 +719,7 @@
       "guideTitle": "{title} | Integration guides | Davivienda API Marketplace"
     },
     "breadcrumb": {
-      "faq": "Support",
+      "support": "Support",
       "guides": "Integration guides"
     },
     "gate": {
@@ -1137,7 +1137,7 @@
     "integrationGuides": "Integration guides",
     "apiCatalog": "API Catalog",
     "documentation": "Documentation",
-    "faq": "Support",
+    "supportPage": "Support",
     "createAccount": "Create an account",
     "signIn": "Sign in",
     "sandbox": "Sandbox",
