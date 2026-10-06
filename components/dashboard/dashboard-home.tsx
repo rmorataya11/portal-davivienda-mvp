@@ -1,6 +1,6 @@
 "use client";
 
-import { AppWindow, Rocket } from "lucide-react";
+import { Rocket } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
@@ -69,9 +69,9 @@ export function DashboardHome() {
         </div>
       </div>
 
-      <div className="mt-8">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-[22px] font-bold text-[#141F25]">{t("yourApps")}</h2>
+      <div className="mt-[80px]">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-[40px] font-bold leading-[44px] tracking-[0.8px] text-[#404040]">{t("yourApps")}</h2>
           {apps.length > 0 ? (
             <Link href="/dashboard/apps/nueva" className={createAppButtonClassName}>
               {t("createApp")}
@@ -79,13 +79,18 @@ export function DashboardHome() {
           ) : null}
         </div>
         {apps.length === 0 ? (
-          <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[16px] border border-[#E7EAEE] bg-white px-8 py-16 text-center sm:min-h-[360px] sm:px-12 sm:py-20">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#F5F6F8]">
-              <AppWindow className="h-10 w-10 text-[#8E8E8E]" strokeWidth={1.5} aria-hidden="true" />
-            </div>
-            <h3 className="mt-6 text-[22px] font-bold tracking-[0.2px] text-[#141F25] sm:text-[24px]">{t("emptyTitle")}</h3>
-            <p className="mt-3 max-w-[440px] text-[15px] leading-7 text-[#6A7178]">{t("emptyDescription")}</p>
-            <Link href="/dashboard/apps/nueva" className={`mt-8 ${createAppButtonClassName}`}>
+          <div className="flex h-[545px] w-full flex-col items-center rounded-2xl bg-white px-8 pt-20 pb-5">
+            <img src="/miss_apps/mis_apps.svg" alt="" className="h-[178px] w-[160px]" />
+            <h3 className="mt-2 text-center text-[24px] font-bold leading-7 tracking-[0.48px] text-[#404040]">
+              {t("emptyTitle")}
+            </h3>
+            <p className="mt-3 w-full max-w-[620px] text-left text-[16px] font-normal leading-6 tracking-[0.32px] text-[#8E8E8E]">
+              {t("emptyDescription")}
+            </p>
+            <Link
+              href="/dashboard/apps/nueva"
+              className="mt-8 inline-flex h-[46px] w-[233px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
+            >
               {t("createApp")}
             </Link>
           </div>
