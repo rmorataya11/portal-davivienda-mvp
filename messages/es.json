@@ -208,12 +208,10 @@
         "2": "Integre trazabilidad, monitoreo y paso controlado a Producción."
       },
       "nextStepEyebrow": "Siguiente paso",
-      "nextStepTitle": "Revise el detalle técnico de esta API",
-      "nextStepDescription": "Acceda a la consola visual, explore endpoints, request/response y prepare una validación técnica más completa para {name}.",
+      "nextStepTitle": "Detalle técnico",
+      "nextStepDescription": "Consulte endpoints, cabeceras y una prueba de {name}.",
       "technicalEyebrow": "Detalle técnico",
-      "technicalCardDescription": "Abra una vista más enfocada en integración, pruebas visuales y referencia operativa.",
-      "viewTechnicalDetail": "Ver detalle técnico",
-      "requestContracting": "Solicitar contratación"
+      "viewTechnicalDetail": "Ver detalle técnico"
     },
     "apps": {
       "title": "Sus aplicaciones",

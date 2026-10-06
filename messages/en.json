@@ -208,12 +208,10 @@
         "2": "Add tracing, monitoring, and a controlled cutover to Production."
       },
       "nextStepEyebrow": "Next step",
-      "nextStepTitle": "Review the technical details of this API",
-      "nextStepDescription": "Open the visual console, explore endpoints and request/response samples, and prepare a more complete technical validation for {name}.",
+      "nextStepTitle": "Technical details",
+      "nextStepDescription": "Review endpoints, headers, and a test call for {name}.",
       "technicalEyebrow": "Technical details",
-      "technicalCardDescription": "Open a view focused on integration, visual testing, and operational reference.",
-      "viewTechnicalDetail": "View technical details",
-      "requestContracting": "Request contracting"
+      "viewTechnicalDetail": "View technical details"
     },
     "apps": {
       "title": "Your applications",
