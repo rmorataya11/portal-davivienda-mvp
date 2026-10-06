@@ -10,6 +10,7 @@ import { SupportCaseModal } from "@/components/support/support-case-modal";
 import { SupportChangelog } from "@/components/support/support-changelog";
 import { GuideList } from "@/components/guides/guide-list";
 import { SectionContainer } from "@/components/ui/layout";
+import { Reveal } from "@/components/ui/reveal";
 import { getGuideBySlug } from "@/lib/guides/guides-content";
 
 type QuestionDefinition = {
@@ -128,36 +129,35 @@ export function SupportPage() {
       <section className="bg-white py-8 sm:py-10">
         <SectionContainer>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {quickAccess.map((item) => {
+            {quickAccess.map((item, index) => {
               return (
-                <article
-                  key={item.id}
-                  className="flex h-[307px] flex-col rounded-[16px] border border-[#8E8E8E] bg-white px-4 pt-6 pb-10"
-                >
-                  <img src={item.icon} alt="" className="h-[46px] w-[46px]" />
-                  <h2 className="mt-5 text-[20px] font-medium leading-[28px] tracking-[0.4px] text-[#404040]">
-                    {t(`cards.${item.id}.title`)}
-                  </h2>
-                  <p className="mt-6 text-[16px] font-normal leading-[24px] tracking-[0.32px] text-[#8E8E8E]">
-                    {t(`cards.${item.id}.description`)}
-                  </p>
-                  {item.id === "caso" ? (
-                    <button
-                      type="button"
-                      onClick={() => setCaseModalOpen(true)}
-                      className="mt-[38px] inline-flex h-10 w-fit shrink-0 items-center justify-center rounded-[20px] border border-black px-5 text-[14px] font-semibold whitespace-nowrap text-[#141F25] transition-colors hover:bg-[#141F25] hover:text-white self-start"
-                    >
-                      {withoutTrailingArrow(t(`cards.${item.id}.link`))}
-                    </button>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="mt-[38px] inline-flex h-10 w-fit shrink-0 items-center justify-center rounded-[20px] border border-black px-5 text-[14px] font-semibold whitespace-nowrap text-[#141F25] transition-colors hover:bg-[#141F25] hover:text-white self-start"
-                    >
-                      {withoutTrailingArrow(t(`cards.${item.id}.link`))}
-                    </Link>
-                  )}
-                </article>
+                <Reveal key={item.id} delay={index * 80}>
+                  <article className="flex h-[307px] flex-col rounded-[16px] border border-[#8E8E8E] bg-white px-4 pt-6 pb-10">
+                    <img src={item.icon} alt="" className="h-[46px] w-[46px]" />
+                    <h2 className="mt-5 text-[20px] font-medium leading-[28px] tracking-[0.4px] text-[#404040]">
+                      {t(`cards.${item.id}.title`)}
+                    </h2>
+                    <p className="mt-6 text-[16px] font-normal leading-[24px] tracking-[0.32px] text-[#8E8E8E]">
+                      {t(`cards.${item.id}.description`)}
+                    </p>
+                    {item.id === "caso" ? (
+                      <button
+                        type="button"
+                        onClick={() => setCaseModalOpen(true)}
+                        className="mt-[38px] inline-flex h-10 w-fit shrink-0 items-center justify-center rounded-[20px] border border-black px-5 text-[14px] font-semibold whitespace-nowrap text-[#141F25] transition-colors hover:bg-[#141F25] hover:text-white self-start"
+                      >
+                        {withoutTrailingArrow(t(`cards.${item.id}.link`))}
+                      </button>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className="mt-[38px] inline-flex h-10 w-fit shrink-0 items-center justify-center rounded-[20px] border border-black px-5 text-[14px] font-semibold whitespace-nowrap text-[#141F25] transition-colors hover:bg-[#141F25] hover:text-white self-start"
+                      >
+                        {withoutTrailingArrow(t(`cards.${item.id}.link`))}
+                      </Link>
+                    )}
+                  </article>
+                </Reveal>
               );
             })}
           </div>
