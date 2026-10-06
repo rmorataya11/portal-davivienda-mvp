@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { useAuth } from "@/components/auth/auth-provider";
 import { hasProductionApps, isProductionApp, isSandboxGroupApp } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -17,7 +16,6 @@ const createAppButtonClassName =
   "inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]";
 
 export function DashboardHome() {
-  const { user } = useAuth();
   const { apps, ready, loadError } = useDeveloperApps();
   const t = useTranslations("Dashboard.home");
   const errorsT = useTranslations("Dashboard.errors");
@@ -28,7 +26,6 @@ export function DashboardHome() {
     return <div className="h-64 animate-pulse rounded-[24px] bg-white" />;
   }
 
-  const greetingName = displayNameFromEmail(user?.email);
   const productionApps = apps.filter(isProductionApp);
   const sandboxGroupApps = apps.filter(isSandboxGroupApp);
   const showBillingSummary = hasProductionApps(apps);
@@ -38,13 +35,12 @@ export function DashboardHome() {
   return (
     <div>
       <div>
-        <p className="text-[15px] text-[#6A7178]">
-          {greetingName ? t("greetingNamed", { name: greetingName }) : t("greeting")}
-        </p>
-        <h1 className="mt-1 text-[28px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]">
+        <h1 className="text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-[#404040] sm:text-[40px] sm:leading-[44px]">
           {t("title")}
         </h1>
-        <p className="mt-3 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">{t("description")}</p>
+        <p className="mt-6 text-[17px] leading-7 tracking-[0.02em] text-[#404040] sm:mt-[32px] sm:text-[20px] sm:leading-6">
+          {t("description")}
+        </p>
       </div>
 
       <section className="mt-8 overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.06)]">
@@ -179,18 +175,4 @@ function AppGrid({ apps }: { apps: DeveloperApp[] }) {
       ))}
     </div>
   );
-}
-
-function displayNameFromEmail(email: string | null | undefined) {
-  if (!email) {
-    return "";
-  }
-
-  const local = email.split("@")[0] ?? "";
-  const first = local.split(/[._-]/)[0] ?? "";
-  if (!first) {
-    return "";
-  }
-
-  return first.charAt(0).toUpperCase() + first.slice(1);
 }
