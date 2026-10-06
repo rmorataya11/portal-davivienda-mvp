@@ -8,7 +8,6 @@ import { useEffect, useId, useRef, useState } from "react";
 
 import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { catalogCategoryLabel } from "@/components/catalog/content/localize-api";
-import { BreakablePath } from "@/components/ui/breakable-path";
 import { CredentialField } from "@/components/ui/credential-field";
 import { AppsRequestError } from "@/lib/developer-apps/api";
 import { formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
@@ -291,56 +290,37 @@ export function AppDetailPage({ appId }: { appId: string }) {
           </dl>
         </div>
 
-        <div className="rounded-[24px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
-          <h2 className="text-[22px] font-bold text-[#404040]">{t("detail.linkedApi")}</h2>
-          <div className="mt-4">
-            {product ? (
-              <div className="rounded-[16px] border border-[#E7EAEE] bg-white px-4 py-4">
-                <p className="text-[18px] font-semibold text-[#404040]">{product.name}</p>
-                <p className="mt-1 text-[13px] text-[#707070]">{catalogCategoryLabel(product.category, catalogT)}</p>
-                {product.endpoints[0] ? (
-                  <div className="mt-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={`inline-flex min-w-14 items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
-                          product.endpoints[0].method === "POST" ? "bg-[#E1251B] text-white" : "bg-[#EFFCF5] text-[#347659]"
-                        }`}
-                      >
-                        {product.endpoints[0].method}
-                      </span>
-                      <code className="min-w-0 text-[13px] text-[#404040]">
-                        <BreakablePath value={product.endpoints[0].path} />
-                      </code>
-                    </div>
-                    <p className="mt-2 text-[13px] leading-5 text-[#707070]">{product.endpoints[0].description}</p>
-                  </div>
-                ) : null}
-                <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-                  <Link
-                    href={`/catalogo-apis/${product.slug}`}
-                    className="inline-flex h-10 items-center justify-center rounded-[20px] border border-[#D5DAE0] px-4 text-[13px] font-medium text-[#404040] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
-                  >
-                    {t("detail.viewCard")}
-                  </Link>
-                  <Link
-                    href={`/catalogo-apis/${product.slug}/detalle-tecnico`}
-                    className="inline-flex h-10 items-center justify-center rounded-[20px] bg-[#E1251B] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
-                  >
-                    {t("detail.technicalConsole")}
-                  </Link>
-                </div>
+        <div className="rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-8">
+          <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("detail.linkedApi")}</h2>
+          {product ? (
+            <>
+              <p className="mt-6 text-[18px] font-semibold text-[#404040]">{product.name}</p>
+              <p className="mt-1 text-[14px] text-[#8E8E8E]">{catalogCategoryLabel(product.category, catalogT)}</p>
+              <nav className="mt-5 divide-y divide-[#E7EAEE] border-y border-[#E7EAEE]">
+                <Link
+                  href={`/catalogo-apis/${product.slug}`}
+                  className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
+                >
+                  {t("detail.viewCard")}
+                </Link>
+                <Link
+                  href={`/catalogo-apis/${product.slug}/detalle-tecnico`}
+                  className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
+                >
+                  {t("detail.technicalConsole")}
+                </Link>
                 <Link
                   href={`/documentacion?api=${product.slug}`}
-                  className="mt-4 inline-flex text-[13px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16]"
+                  className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
                 >
                   {t("detail.viewDocs")}
                 </Link>
-              </div>
-            ) : (
-              <p className="text-[14px] leading-6 text-[#707070]">{detail.apiProduct}</p>
-            )}
-          </div>
-          <p className="mt-5 text-[13px] text-[#707070]">{t("detail.created", { date: created })}</p>
+              </nav>
+            </>
+          ) : (
+            <p className="mt-6 text-[14px] leading-6 text-[#707070]">{detail.apiProduct}</p>
+          )}
+          <p className="mt-5 text-[13px] text-[#8E8E8E]">{t("detail.created", { date: created })}</p>
         </div>
       </div>
     </div>
