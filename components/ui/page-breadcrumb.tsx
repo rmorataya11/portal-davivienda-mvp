@@ -186,9 +186,9 @@ export function PageBreadcrumb() {
           <span key={`${crumb.href}-${crumb.label}`}>
             {index > 0 ? <span className="px-2">›</span> : null}
             {isLast ? (
-              <span>{crumb.label}</span>
+              <span className="font-bold text-[#404040]">{crumb.label}</span>
             ) : (
-              <Link href={crumb.href} className="transition-colors duration-300 hover:text-[#E1251B]">
+              <Link href={crumb.href} className="font-normal transition-colors duration-300 hover:text-[#E1251B]">
                 {crumb.label}
               </Link>
             )}

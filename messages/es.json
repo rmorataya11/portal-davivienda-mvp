@@ -1146,6 +1146,6 @@
     "contactExpert": "Contactar con un experto",
     "frequentQuestions": "Preguntas frecuentes",
     "terms": "Términos y condiciones",
-    "copyright": "Banco Davivienda S.A. todos los derechos reservados"
+    "copyright": "Banco Davivienda S.A. todos los derechos reservados {year}"
   }
 }

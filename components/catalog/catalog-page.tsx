@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
-import { FullBleedContainer, PageContainer } from "@/components/ui/layout";
+import { SectionContainer } from "@/components/ui/layout";
 
 import { CatalogBrowser } from "./catalog-browser";
 import { CatalogSignupCta } from "./catalog-signup-cta";
@@ -15,22 +15,22 @@ export function CatalogPage() {
       <MarketplaceHeader activeHref="/catalogo-apis" />
 
       <section className="pt-4 pb-10">
-        <PageContainer className="pb-10 lg:px-[58px] lg:pb-[52px]">
-          <h1 className="max-w-[1254px] text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-[#404040] sm:text-[40px] sm:leading-[44px]">
+        <SectionContainer>
+          <h1 className="text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-[#404040] sm:text-[40px] sm:leading-[44px]">
             {t("title")}
           </h1>
-          <p className="mt-6 max-w-[1254px] text-[17px] leading-7 tracking-[0.02em] text-[#404040] sm:mt-[32px] sm:text-[20px] sm:leading-6">
+          <p className="mt-6 text-[17px] leading-7 tracking-[0.02em] text-[#404040] sm:mt-[32px] sm:text-[20px] sm:leading-6">
             {t("description")}
           </p>
-        </PageContainer>
+        </SectionContainer>
       </section>
 
       <section className="pb-16">
-        <FullBleedContainer className="bg-white">
-          <div className="px-4 py-4 sm:px-6 lg:px-[56px] 2xl:px-[4vw]">
+        <div className="bg-white py-8 sm:py-10">
+          <SectionContainer>
             <CatalogBrowser />
-          </div>
-        </FullBleedContainer>
+          </SectionContainer>
+        </div>
       </section>
 
       <CatalogSignupCta />

@@ -1,21 +1,12 @@
-"use client";
-
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
-import { useAuth } from "@/components/auth/auth-provider";
-
 export function CatalogSignupCta() {
-  const { user, loading } = useAuth();
   const t = useTranslations("Catalog.signupCta");
-
-  if (loading || user) {
-    return null;
-  }
 
   return (
     <section className="pb-16">
-      <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-8 bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)] px-4 py-10 sm:px-6 xl:min-h-[287px] xl:flex-row xl:items-center xl:justify-between xl:gap-24 xl:py-8 xl:px-[56px] 2xl:px-[4vw]">
+      <div className="flex min-h-[287px] w-full flex-col gap-8 bg-[linear-gradient(89deg,#404040_0%,#0D0D0D_100%)] px-4 py-10 sm:px-6 xl:flex-row xl:items-center xl:justify-between xl:gap-24 xl:px-[56px] xl:py-8 2xl:px-[4vw]">
         <div className="min-w-0 max-w-[691px]">
           <h2 className="text-[24px] font-bold leading-[1.2] tracking-[0.8px] text-white sm:text-[32px] xl:max-w-[596px] xl:text-[40px] xl:leading-[48px]">
             {t("title")}
