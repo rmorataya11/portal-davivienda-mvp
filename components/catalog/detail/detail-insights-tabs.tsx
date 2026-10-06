@@ -24,16 +24,11 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
   return (
     <section id="value" className="scroll-anchor pt-10 pb-16">
       <SectionContainer>
-        <DetailSectionCard eyebrow={t("insightsEyebrow")} title={t("insightsTitle")}>
+        <DetailSectionCard title={t("insightsTitle")}>
           <div className="rounded-[24px] bg-[linear-gradient(180deg,#F8F9FB_0%,#F3F5F7_100%)] p-4">
-            <div>
-              <div>
-                <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("businessView")}</p>
-                <p className="mt-2 max-w-[720px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
-                  {t("insightsDescription")}
-                </p>
-              </div>
-            </div>
+            <p className="max-w-[720px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
+              {t("insightsDescription")}
+            </p>
           </div>
 
           <div className="mt-6 flex flex-wrap gap-2">
@@ -61,8 +56,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
             {activeTab === "value" ? (
               <div className="grid gap-5 lg:grid-cols-[0.28fr_0.72fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-                  <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("valueEyebrow")}</p>
-                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">{t("valueTitle")}</h3>
+                  <h3 className="text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">{t("valueTitle")}</h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />
                   <p className="mt-5 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                     {t("valueDescription")}
@@ -75,8 +69,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
             {activeTab === "use-cases" ? (
               <div className="grid gap-5 lg:grid-cols-[0.28fr_0.72fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-                  <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("useCasesEyebrow")}</p>
-                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">{t("useCasesTitle")}</h3>
+                  <h3 className="text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">{t("useCasesTitle")}</h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />
                   <p className="mt-5 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                     {t("useCasesDescription")}
@@ -89,8 +82,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
             {activeTab === "integration" ? (
               <div className="grid gap-5 lg:grid-cols-[0.32fr_0.68fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-                  <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("integrationEyebrow")}</p>
-                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">{t("integrationTitle")}</h3>
+                  <h3 className="text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">{t("integrationTitle")}</h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />
                   <p className="mt-5 text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
                     {t("integrationDescription")}
@@ -98,7 +90,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
                 </div>
                 <div className="grid gap-4">
                   <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5">
-                    <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("authenticationEyebrow")}</p>
+                    <h4 className="text-[16px] font-semibold tracking-[0.2px] text-[#404040]">{t("authenticationEyebrow")}</h4>
                     <p className="mt-3 text-[18px] font-medium tracking-[0.24px] text-[#30383F]">
                       {api.authentication.title}
                     </p>
@@ -107,7 +99,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
                     </p>
                     {api.authentication.headers.length ? (
                       <div className="mt-4">
-                        <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">
+                        <p className="text-[14px] font-semibold tracking-[0.2px] text-[#404040]">
                           {t("headersEyebrow")}
                         </p>
                         <div className="mt-3 flex flex-wrap gap-2">
@@ -124,7 +116,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
                     ) : null}
                   </div>
                   <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5">
-                    <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("environmentsEyebrow")}</p>
+                    <h4 className="text-[16px] font-semibold tracking-[0.2px] text-[#404040]">{t("environmentsEyebrow")}</h4>
                     <div className="mt-4 flex flex-wrap gap-3">
                       {api.environments.map((environment) => (
                         <span
@@ -137,7 +129,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
                     </div>
                   </div>
                   <div className="rounded-[22px] border border-[#E3E7EC] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8F9FB_100%)] px-6 py-5">
-                    <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("requirementsEyebrow")}</p>
+                    <h4 className="text-[16px] font-semibold tracking-[0.2px] text-[#404040]">{t("requirementsEyebrow")}</h4>
                     <ol className="mt-4 space-y-3">
                       {api.requirements.map((requirement, index) => (
                         <li key={requirement} className="flex items-start gap-3">
@@ -156,8 +148,7 @@ export function DetailInsightsTabs({ api }: { api: CatalogView }) {
             {activeTab === "journey" ? (
               <div className="grid gap-5 lg:grid-cols-[0.32fr_0.68fr]">
                 <div className="rounded-[22px] bg-[linear-gradient(180deg,#FCFCFD_0%,#F6F8FA_100%)] p-6">
-                  <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("journeyEyebrow")}</p>
-                  <h3 className="mt-2 text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">
+                  <h3 className="text-[24px] font-bold tracking-[0.4px] text-[#30383F] sm:text-[30px]">
                     {t("journeyTitle")}
                   </h3>
                   <div className="mt-4 h-1.5 w-10 rounded-full bg-[#E1251B]" />

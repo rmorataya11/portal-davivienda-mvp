@@ -99,8 +99,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
       <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-5 sm:px-8 sm:py-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#707070]">{t("detail.eyebrow")}</p>
-            <div className="mt-2 flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-[26px] font-bold tracking-[0.3px] text-[#404040] sm:text-[32px]">{app.name}</h1>
               <AppStatusBadge environment={app.environment} />
             </div>

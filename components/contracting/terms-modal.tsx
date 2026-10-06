@@ -51,8 +51,7 @@ export function TermsModal({ open, onClose }: TermsModalProps) {
         aria-labelledby={titleId}
         className="relative z-10 max-h-[80vh] w-full max-w-[640px] overflow-y-auto rounded-[24px] bg-white px-6 py-6 shadow-[0_24px_70px_rgba(20,31,37,0.18)] sm:px-8 sm:py-8"
       >
-        <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{t("eyebrow")}</p>
-        <h2 id={titleId} className="mt-2 text-[26px] font-bold tracking-[0.3px] text-[#141F25]">
+        <h2 id={titleId} className="text-[26px] font-bold tracking-[0.3px] text-[#141F25]">
           {t("title")}
         </h2>
         <div className="mt-5 space-y-4 text-[14px] leading-6 text-[#5B636A]">

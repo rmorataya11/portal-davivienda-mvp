@@ -14,8 +14,7 @@ export function DetailFinalCta({ api }: { api: CatalogView }) {
         <div className="overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white px-5 py-6 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-8">
           <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-center">
             <div>
-              <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{t("nextStepEyebrow")}</p>
-              <h2 className="mt-4 max-w-[720px] text-[26px] font-bold leading-[1.12] tracking-[0.3px] text-[#141F25] sm:text-[34px] lg:text-[40px]">
+              <h2 className="max-w-[720px] text-[26px] font-bold leading-[1.12] tracking-[0.3px] text-[#141F25] sm:text-[34px] lg:text-[40px]">
                 {t("nextStepTitle")}
               </h2>
               <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
@@ -26,7 +25,6 @@ export function DetailFinalCta({ api }: { api: CatalogView }) {
 
             <div className="rounded-[26px] border border-[#E7EAEE] bg-[#F8F9FB] p-5">
               <div className="flex flex-col gap-3">
-                <p className="text-[12px] font-medium uppercase tracking-[0.22em] text-[#8E8E8E]">{t("technicalEyebrow")}</p>
                 <p className="text-[15px] leading-7 text-[#6A7178]">
                   {t("technicalCardDescription")}
                 </p>

@@ -22,8 +22,7 @@ export function ApiTechnicalPage({ api }: { api: CatalogView }) {
           <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-5 sm:px-8 sm:py-6">
             <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
               <div className="min-w-0">
-                <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{t("technical.eyebrow")}</p>
-                <h1 className="mt-3 text-[24px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[32px]">
+                <h1 className="text-[24px] font-bold tracking-[0.36px] text-[#141F25] sm:text-[32px]">
                   {t("technical.title", { name: api.name })}
                 </h1>
                 <p className="mt-3 max-w-[720px] text-[15px] leading-7 tracking-[0.24px] text-[#6A7178]">

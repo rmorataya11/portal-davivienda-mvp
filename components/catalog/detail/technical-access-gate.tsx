@@ -16,7 +16,7 @@ export function TechnicalAccessGate({ api, children }: { api: CatalogView; child
 
   if (loading) {
     return (
-      <DetailSectionCard eyebrow={t("gateLoadingEyebrow")} title={t("gateLoadingTitle")}>
+      <DetailSectionCard title={t("gateLoadingTitle")}>
         <div className="h-48 animate-pulse rounded-[18px] bg-[#F2F3F5]" />
       </DetailSectionCard>
     );
@@ -26,7 +26,7 @@ export function TechnicalAccessGate({ api, children }: { api: CatalogView; child
     const nextPath = `/catalogo-apis/${api.slug}/detalle-tecnico`;
 
     return (
-      <DetailSectionCard eyebrow={t("gateEyebrow")} title={t("gateTitle")}>
+      <DetailSectionCard title={t("gateTitle")}>
         <p className="max-w-[640px] text-[16px] leading-7 tracking-[0.24px] text-[#6A7178]">
           {t("gateDescription", { name: api.name })}
         </p>

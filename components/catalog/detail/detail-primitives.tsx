@@ -24,17 +24,14 @@ export function ItemGrid({ items }: { items: string[] }) {
 
 export function DetailSectionCard({
   title,
-  eyebrow,
   children,
 }: Readonly<{
   title: string;
-  eyebrow?: string;
   children: ReactNode;
 }>) {
   return (
     <SurfaceCard className="px-6 py-6 sm:px-8 sm:py-8">
-      {eyebrow ? <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{eyebrow}</p> : null}
-      <h2 className="mt-2 text-[28px] font-bold tracking-[0.4px] text-[#30383F]">{title}</h2>
+      <h2 className="text-[28px] font-bold tracking-[0.4px] text-[#30383F]">{title}</h2>
       <div className="mt-4 h-1.5 w-14 rounded-full bg-[#E1251B]" />
       <div className="mt-7">{children}</div>
     </SurfaceCard>

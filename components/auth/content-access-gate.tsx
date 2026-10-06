@@ -11,7 +11,6 @@ import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
 
 type ContentAccessGateProps = {
   children: ReactNode;
-  eyebrow: string;
   description: string;
   fallbackPath: string;
   embedded?: boolean;
@@ -20,7 +19,6 @@ type ContentAccessGateProps = {
 
 export function ContentAccessGate({
   children,
-  eyebrow,
   description,
   fallbackPath,
   embedded = false,
@@ -54,10 +52,9 @@ export function ContentAccessGate({
             : "rounded-[32px] border border-[#E7EAEE] bg-white px-6 py-8 shadow-[0_18px_50px_rgba(20,31,37,0.06)] sm:px-8 sm:py-10"
         }
       >
-        <p className="text-[12px] font-medium uppercase tracking-[0.24em] text-[#8E8E8E]">{eyebrow}</p>
         <h1
           id={titleId}
-          className="mt-4 text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]"
+          className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#141F25] sm:text-[36px] lg:text-[40px]"
         >
           {t("title")}
         </h1>

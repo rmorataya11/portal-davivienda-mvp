@@ -139,8 +139,7 @@ export function ResetPasswordPage() {
 
             {status === "invalid" ? (
               <div>
-                <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">{t("reset.invalidEyebrow")}</p>
-                <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
+                <h1 className="text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
                   {t("reset.invalidTitle")}
                 </h1>
                 <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">{t("reset.invalidDescription")}</p>
@@ -155,8 +154,7 @@ export function ResetPasswordPage() {
 
             {status === "success" ? (
               <div>
-                <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#E1251B]">{t("reset.successEyebrow")}</p>
-                <h1 className="mt-3 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
+                <h1 className="text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px] lg:text-[36px]">
                   {t("reset.successTitle")}
                 </h1>
                 <p className="mt-4 text-[16px] leading-7 text-[#6A7178]">{t("reset.successDescription")}</p>

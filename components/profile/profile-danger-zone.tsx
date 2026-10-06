@@ -11,8 +11,7 @@ export function ProfileDangerZone() {
 
   return (
     <section className="flex h-full flex-col rounded-[24px] border border-[#E7B8B5] bg-[#FFF8F8] px-5 py-6 sm:px-6">
-      <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#E1251B]">{t("eyebrow")}</p>
-      <h2 className="mt-2 text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("title")}</h2>
+      <h2 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("title")}</h2>
       <p className="mt-2 text-[15px] leading-7 text-[#707070]">{t("description")}</p>
       <div className="mt-auto pt-5">
         <button

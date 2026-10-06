@@ -183,7 +183,6 @@ export function SupportCaseModal({ open, onClose }: { open: boolean; onClose: ()
           <ContentAccessGate
             embedded
             titleId={titleId}
-            eyebrow={t("gateEyebrow")}
             description={t("gateDescription")}
             fallbackPath="/soporte"
           >

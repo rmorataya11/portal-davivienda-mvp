@@ -117,9 +117,8 @@ export function DetailHero({ api }: { api: CatalogView }) {
 
       <aside className="rounded-2xl border border-[#E7EAEE] bg-white px-5 py-6 sm:px-8 sm:py-8">
         <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <p className="text-[13px] font-medium text-[#E1251B]">{t("summaryEyebrow")}</p>
-            <h2 className="mt-2 text-[22px] font-bold tracking-[0.3px] text-[#404040] sm:text-[26px]">
+            <div className="min-w-0">
+            <h2 className="text-[22px] font-bold tracking-[0.3px] text-[#404040] sm:text-[26px]">
               {t("summaryTitle")}
             </h2>
             <p className="mt-2 max-w-[640px] text-[14px] font-normal leading-6 text-[#8E8E8E] sm:text-[15px]">
