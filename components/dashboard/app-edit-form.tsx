@@ -1,8 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useId, useState, type FormEvent } from "react";
 
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { useCatalogView } from "@/components/catalog/catalog-provider";
@@ -63,7 +62,7 @@ export function AppEditForm({
   }
 
   return (
-    <form className="mt-6 space-y-6" noValidate onSubmit={handleSubmit}>
+    <form className="space-y-6" noValidate onSubmit={handleSubmit}>
       <TextField
         id="editAppName"
         name="editAppName"
@@ -122,68 +121,92 @@ export function AppEditForm({
   );
 }
 
-export function AppDeleteControl({ appId, appName }: { appId: string; appName: string }) {
-  const router = useRouter();
-  const { deleteApp } = useDeveloperApps();
+export function AppActionDialog({
+  open,
+  title,
+  description,
+  confirmLabel,
+  loadingLabel,
+  loading,
+  error,
+  onConfirm,
+  onClose,
+}: {
+  open: boolean;
+  title: string;
+  description: string;
+  confirmLabel: string;
+  loadingLabel: string;
+  loading?: boolean;
+  error?: string;
+  onConfirm: () => void;
+  onClose: () => void;
+}) {
   const t = useTranslations("Dashboard.edit");
-  const errorsT = useTranslations("Dashboard.errors");
-  const [confirming, setConfirming] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [formError, setFormError] = useState("");
+  const titleId = useId();
 
-  if (!confirming) {
-    return (
-      <button
-        type="button"
-        onClick={() => setConfirming(true)}
-        className="inline-flex h-11 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-5 text-[14px] font-medium text-[#6A7178] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
-      >
-        {t("delete")}
-      </button>
-    );
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handleKey(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    document.addEventListener("keydown", handleKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose, open]);
+
+  if (!open) {
+    return null;
   }
 
   return (
-    <div className="flex max-w-[420px] flex-col gap-3 rounded-[16px] border border-[#F3D0CD] bg-[#FFF8F8] px-4 py-4">
-      <p className="text-[14px] leading-6 text-[#404040]">
-        {t.rich("deleteConfirm", {
-          name: () => <span className="font-semibold">{appName}</span>,
-        })}
-      </p>
-      {formError ? <p className="text-[13px] leading-5 text-[#E1251B]">{formError}</p> : null}
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          disabled={isDeleting}
-          onClick={() => {
-            setIsDeleting(true);
-            setFormError("");
-            deleteApp(appId)
-              .then(() => {
-                router.replace("/dashboard");
-              })
-              .catch((error: unknown) => {
-                setFormError(messageForStatus(error, errorsT));
-                setIsDeleting(false);
-              });
-          }}
-          className="inline-flex h-10 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[13px] font-semibold text-white disabled:bg-[#C9CED4]"
-        >
-          {isDeleting ? t("deleting") : t("deleteYes")}
-        </button>
-        <button
-          type="button"
-          onClick={() => setConfirming(false)}
-          className="inline-flex h-10 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-5 text-[13px] font-medium text-[#404040]"
-        >
-          {t("cancel")}
-        </button>
+    <div className="fixed inset-0 z-[80] flex items-center justify-center px-4 py-8">
+      <button type="button" className="absolute inset-0 bg-[#141F25]/45" aria-label={t("cancel")} onClick={onClose} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="relative z-10 w-full max-w-[480px] rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-7"
+      >
+        <h2 id={titleId} className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">
+          {title}
+        </h2>
+        <p className="mt-3 text-[15px] leading-7 text-[#5A5A5A]">{description}</p>
+        {error ? <p className="mt-3 text-[13px] leading-5 text-[#E1251B]">{error}</p> : null}
+        <div className="mt-6 flex flex-wrap gap-3">
+          <button
+            type="button"
+            disabled={loading}
+            onClick={onConfirm}
+            className="inline-flex h-11 items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
+          >
+            {loading ? loadingLabel : confirmLabel}
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex h-11 items-center justify-center rounded-[30px] border border-[#D5DAE0] bg-white px-6 text-[14px] font-medium text-[#404040] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
+          >
+            {t("cancel")}
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-function messageForStatus(error: unknown, t: (key: "unauthorized" | "forbidden" | "notFound" | "invalid" | "generic") => string) {
+export function messageForStatus(error: unknown, t: (key: "unauthorized" | "forbidden" | "notFound" | "invalid" | "generic") => string) {
   if (!(error instanceof AppsRequestError)) {
     return t("generic");
   }

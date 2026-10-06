@@ -487,7 +487,13 @@
       "back": "Back to the dashboard",
       "eyebrow": "Application",
       "requestProduction": "Request production",
+      "moreAria": "More options",
       "edit": "Edit",
+      "editAria": "Edit application",
+      "deleteAria": "Delete application",
+      "editConfirmTitle": "Edit application",
+      "editConfirm": "Do you want to edit {name}?",
+      "editYes": "Yes, edit",
       "noDescription": "This application does not have a description yet.",
       "contractingNote": "A contracting request for this app is under review.",
       "productionNote": "This application already has production access.",
@@ -519,7 +525,8 @@
       "delete": "Delete",
       "deleting": "Deleting...",
       "productLocked": "The product cannot be changed after the application is created.",
-      "deleteConfirm": "Delete <name></name>? This action cannot be undone.",
+      "deleteConfirmTitle": "Delete application",
+      "deleteConfirm": "Are you sure you want to delete {name}?",
       "deleteYes": "Yes, delete"
     },
     "dates": {

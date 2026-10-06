@@ -1,8 +1,10 @@
 "use client";
 
+import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { catalogCategoryLabel } from "@/components/catalog/content/localize-api";
@@ -12,20 +14,27 @@ import { AppsRequestError } from "@/lib/developer-apps/api";
 import { formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
-import { AppDeleteControl, AppEditForm } from "./app-edit-form";
+import { AppActionDialog, AppEditForm, messageForStatus } from "./app-edit-form";
 import { AppStatusBadge } from "./app-status-badge";
 import { useDeveloperApps } from "./apps-provider";
 
 export function AppDetailPage({ appId }: { appId: string }) {
-  const { getApp, ready } = useDeveloperApps();
+  const { getApp, deleteApp, ready } = useDeveloperApps();
+  const router = useRouter();
   const [app, setApp] = useState<DeveloperApp | null>(null);
   const [phase, setPhase] = useState<"loading" | "ready" | "missing" | "denied" | "error">("loading");
   const [isEditing, setIsEditing] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<"edit" | "delete" | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const t = useTranslations("Dashboard");
   const errorsT = useTranslations("Dashboard.errors");
   const catalogT = useTranslations("Catalog");
   const locale = useLocale();
   const product = useCatalogView(app?.apiProduct ?? "");
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
 
   useEffect(() => {
     if (!ready) {
@@ -68,6 +77,31 @@ export function AppDetailPage({ appId }: { appId: string }) {
     };
   }, [appId, getApp, ready]);
 
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    }
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
+
   if (!ready || phase === "loading") {
     return <div className="h-64 animate-pulse rounded-[24px] bg-white" />;
   }
@@ -94,60 +128,147 @@ export function AppDetailPage({ appId }: { appId: string }) {
   const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
   const expires = formatAppDateTime(app.expiresAt, locale);
 
+  function closeConfirm() {
+    if (isDeleting) {
+      return;
+    }
+
+    setConfirmAction(null);
+    setDeleteError("");
+  }
+
+  function confirmEdit() {
+    setConfirmAction(null);
+    setIsEditing(true);
+  }
+
+  function confirmDelete() {
+    setIsDeleting(true);
+    setDeleteError("");
+    deleteApp(app.id)
+      .then(() => {
+        router.replace("/dashboard");
+      })
+      .catch((error: unknown) => {
+        setDeleteError(messageForStatus(error, errorsT));
+        setIsDeleting(false);
+      });
+  }
+
   return (
     <div>
-      <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-5 sm:px-8 sm:py-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="relative rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-8">
+        {!isEditing ? (
+          <div ref={menuRef} className="absolute top-5 right-5 z-10 sm:top-6 sm:right-6">
+            <button
+              type="button"
+              aria-label={t("detail.moreAria")}
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              onClick={() => setMenuOpen((current) => !current)}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#8E8E8E] transition-colors hover:bg-[#F2F3F5] hover:text-[#404040]"
+            >
+              <EllipsisVertical className="h-4 w-4" strokeWidth={1.8} />
+            </button>
+            {menuOpen ? (
+              <div
+                id={menuId}
+                role="menu"
+                className="absolute right-0 z-20 mt-1 min-w-[168px] overflow-hidden rounded-[12px] border border-[#E7EAEE] bg-white py-1"
+              >
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setConfirmAction("edit");
+                  }}
+                  className="flex w-full px-3 py-2.5 text-left text-[14px] font-medium text-[#404040] transition-colors hover:bg-[#F8F9FB] hover:text-[#E1251B]"
+                >
+                  {t("detail.edit")}
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setConfirmAction("delete");
+                  }}
+                  className="flex w-full px-3 py-2.5 text-left text-[14px] font-medium text-[#404040] transition-colors hover:bg-[#F8F9FB] hover:text-[#E1251B]"
+                >
+                  {t("edit.delete")}
+                </button>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className={`flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16 ${!isEditing ? "pr-14" : ""}`}>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-[26px] font-bold tracking-[0.3px] text-[#404040] sm:text-[32px]">{app.name}</h1>
+              <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">{app.name}</h1>
               <AppStatusBadge environment={app.environment} />
             </div>
+            {!isEditing ? (
+              <p className="mt-3 max-w-[720px] text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">
+                {app.description || t("detail.noDescription")}
+              </p>
+            ) : null}
+            {app.environment === "contracting" ? (
+              <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.contractingNote")}</p>
+            ) : null}
+            {app.environment === "production" ? (
+              <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.productionNote")}</p>
+            ) : null}
           </div>
-          {!isEditing ? (
-            <div className="flex flex-wrap items-center gap-2">
-              {app.environment === "sandbox" && app.status === "active" ? (
-                <Link
-                  href={productionHref}
-                  className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
-                >
-                  {t("detail.requestProduction")}
-                </Link>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => setIsEditing(true)}
-                className="inline-flex h-11 items-center justify-center rounded-full border border-[#D5DAE0] bg-white px-5 text-[14px] font-medium text-[#404040] transition-colors hover:border-[#E1251B] hover:text-[#E1251B]"
-              >
-                {t("detail.edit")}
-              </button>
-              <AppDeleteControl appId={app.id} appName={app.name} />
-            </div>
+
+          {!isEditing && app.environment === "sandbox" && app.status === "active" ? (
+            <Link
+              href={productionHref}
+              className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[246px]"
+            >
+              {t("detail.requestProduction")}
+            </Link>
           ) : null}
         </div>
+
         {isEditing ? (
-          <AppEditForm
-            app={app}
-            onCancel={() => setIsEditing(false)}
-            onSaved={(updated) => {
-              setApp(updated);
-              setIsEditing(false);
-            }}
-          />
-        ) : (
-          <p className="mt-3 max-w-[720px] text-[15px] leading-6 text-[#707070]">
-            {app.description || t("detail.noDescription")}
-          </p>
-        )}
-        {app.environment === "contracting" ? (
-          <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.contractingNote")}</p>
-        ) : null}
-        {app.environment === "production" ? (
-          <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.productionNote")}</p>
+          <div className="mt-6">
+            <AppEditForm
+              app={app}
+              onCancel={() => setIsEditing(false)}
+              onSaved={(updated) => {
+                setApp(updated);
+                setIsEditing(false);
+              }}
+            />
+          </div>
         ) : null}
       </div>
 
-      <div className="mt-5 grid items-start gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+      <AppActionDialog
+        open={confirmAction === "edit"}
+        title={t("detail.editConfirmTitle")}
+        description={t("detail.editConfirm", { name: app.name })}
+        confirmLabel={t("detail.editYes")}
+        loadingLabel={t("detail.editYes")}
+        onConfirm={confirmEdit}
+        onClose={closeConfirm}
+      />
+      <AppActionDialog
+        open={confirmAction === "delete"}
+        title={t("edit.deleteConfirmTitle")}
+        description={t("edit.deleteConfirm", { name: app.name })}
+        confirmLabel={t("edit.deleteYes")}
+        loadingLabel={t("edit.deleting")}
+        loading={isDeleting}
+        error={deleteError}
+        onConfirm={confirmDelete}
+        onClose={closeConfirm}
+      />
+
+      <div className="mt-8 grid items-start gap-5 xl:grid-cols-[1.15fr_0.85fr]">
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
           <h2 className="text-[22px] font-bold text-[#404040]">{t("detail.credentialsTitle")}</h2>
           <p className="mt-2 text-[14px] leading-6 text-[#707070]">
