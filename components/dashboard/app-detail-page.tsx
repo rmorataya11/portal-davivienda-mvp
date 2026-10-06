@@ -124,9 +124,10 @@ export function AppDetailPage({ appId }: { appId: string }) {
     );
   }
 
-  const productionHref = `/solicitud-contratacion?app=${app.id}&producto=${app.apiProduct}`;
-  const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
-  const expires = formatAppDateTime(app.expiresAt, locale);
+  const detail = app;
+  const productionHref = `/solicitud-contratacion?app=${detail.id}&producto=${detail.apiProduct}`;
+  const created = formatAppDate(detail.createdAt, locale) || t("dates.noActivity");
+  const expires = formatAppDateTime(detail.expiresAt, locale);
 
   function closeConfirm() {
     if (isDeleting) {
@@ -145,7 +146,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
   function confirmDelete() {
     setIsDeleting(true);
     setDeleteError("");
-    deleteApp(app.id)
+    deleteApp(detail.id)
       .then(() => {
         router.replace("/dashboard");
       })
@@ -207,23 +208,23 @@ export function AppDetailPage({ appId }: { appId: string }) {
         <div className={`flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16 ${!isEditing ? "pr-14" : ""}`}>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">{app.name}</h1>
-              <AppStatusBadge environment={app.environment} />
+              <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">{detail.name}</h1>
+              <AppStatusBadge environment={detail.environment} />
             </div>
             {!isEditing ? (
               <p className="mt-3 max-w-[720px] text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">
-                {app.description || t("detail.noDescription")}
+                {detail.description || t("detail.noDescription")}
               </p>
             ) : null}
-            {app.environment === "contracting" ? (
+            {detail.environment === "contracting" ? (
               <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.contractingNote")}</p>
             ) : null}
-            {app.environment === "production" ? (
+            {detail.environment === "production" ? (
               <p className="mt-3 text-[14px] leading-6 text-[#707070]">{t("detail.productionNote")}</p>
             ) : null}
           </div>
 
-          {!isEditing && app.environment === "sandbox" && app.status === "active" ? (
+          {!isEditing && detail.environment === "sandbox" && detail.status === "active" ? (
             <Link
               href={productionHref}
               className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[246px]"
@@ -236,7 +237,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
         {isEditing ? (
           <div className="mt-6">
             <AppEditForm
-              app={app}
+              app={detail}
               onCancel={() => setIsEditing(false)}
               onSaved={(updated) => {
                 setApp(updated);
@@ -250,7 +251,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
       <AppActionDialog
         open={confirmAction === "edit"}
         title={t("detail.editConfirmTitle")}
-        description={t("detail.editConfirm", { name: app.name })}
+        description={t("detail.editConfirm", { name: detail.name })}
         confirmLabel={t("detail.editYes")}
         loadingLabel={t("detail.editYes")}
         onConfirm={confirmEdit}
@@ -259,7 +260,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
       <AppActionDialog
         open={confirmAction === "delete"}
         title={t("edit.deleteConfirmTitle")}
-        description={t("edit.deleteConfirm", { name: app.name })}
+        description={t("edit.deleteConfirm", { name: detail.name })}
         confirmLabel={t("edit.deleteYes")}
         loadingLabel={t("edit.deleting")}
         loading={isDeleting}
@@ -269,26 +270,25 @@ export function AppDetailPage({ appId }: { appId: string }) {
       />
 
       <div className="mt-8 grid items-start gap-5 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="rounded-[24px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
-          <h2 className="text-[22px] font-bold text-[#404040]">{t("detail.credentialsTitle")}</h2>
-          <p className="mt-2 text-[14px] leading-6 text-[#707070]">
+        <div className="rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-8">
+          <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("detail.credentialsTitle")}</h2>
+          <p className="mt-2 text-[15px] leading-6 text-[#8E8E8E]">
             {t.rich("detail.credentialsDescription", {
               header: (chunks) => <span className="font-mono text-[#404040]">{chunks}</span>,
             })}
           </p>
-          <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-            <DetailFact label={t("detail.product")} value={product?.name ?? app.apiProduct} />
-            <DetailFact label={t("detail.environment")} value={t(`status.${app.environment}`)} />
-            <DetailFact label={t("detail.status")} value={t(`recordStatus.${app.status}`)} />
-            <DetailFact label={t("detail.expires")} value={expires || t("dates.noActivity")} />
-          </dl>
-          <div className="mt-5">
-            {app.consumerKey ? (
-              <CredentialField label={t("detail.consumerKey")} value={app.consumerKey} secret />
+          <div className="mt-6">
+            {detail.consumerKey ? (
+              <CredentialField label={t("detail.consumerKey")} value={detail.consumerKey} secret variant="well" />
             ) : (
               <p className="text-[14px] leading-6 text-[#707070]">{t("detail.noKey")}</p>
             )}
           </div>
+          <dl className="mt-6 grid gap-4 border-t border-[#E7EAEE] pt-5 sm:grid-cols-3">
+            <DetailFact label={t("detail.product")} value={product?.name ?? detail.apiProduct} />
+            <DetailFact label={t("detail.environment")} value={t(`status.${detail.environment}`)} />
+            <DetailFact label={t("detail.expires")} value={expires || t("dates.noActivity")} />
+          </dl>
         </div>
 
         <div className="rounded-[24px] border border-[#E7EAEE] bg-white p-6 sm:p-7">
@@ -337,7 +337,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
                 </Link>
               </div>
             ) : (
-              <p className="text-[14px] leading-6 text-[#707070]">{app.apiProduct}</p>
+              <p className="text-[14px] leading-6 text-[#707070]">{detail.apiProduct}</p>
             )}
           </div>
           <p className="mt-5 text-[13px] text-[#707070]">{t("detail.created", { date: created })}</p>
@@ -350,7 +350,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
 function DetailFact({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-[12px] font-medium uppercase tracking-[0.18em] text-[#8E8E8E]">{label}</dt>
+      <dt className="text-[14px] text-[#8E8E8E]">{label}</dt>
       <dd className="mt-1 text-[15px] font-medium text-[#404040]">{value}</dd>
     </div>
   );
