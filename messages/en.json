@@ -541,7 +541,7 @@
     "created": {
       "eyebrow": "Application created",
       "title": "{name} is now in sandbox",
-      "description": "These credentials belong to {product}. You can look up the consumer key later. The secret appears only on this screen.",
+      "description": "Sandbox credentials for {product}.",
       "consumerKey": "Consumer key / API key",
       "consumerSecret": "Consumer secret",
       "secretWarning": "This secret will not be shown again. Copy it and store it in a safe place.",

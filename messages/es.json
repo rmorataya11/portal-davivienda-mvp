@@ -541,7 +541,7 @@
     "created": {
       "eyebrow": "Aplicación creada",
       "title": "{name} ya está en sandbox",
-      "description": "Estas credenciales corresponden a {product}. El consumer key se puede consultar después. El secret solo aparece en esta pantalla.",
+      "description": "Credenciales de sandbox para {product}.",
       "consumerKey": "Consumer key / API key",
       "consumerSecret": "Consumer secret",
       "secretWarning": "Este secreto no se volverá a mostrar. Cópielo y guárdelo en un lugar seguro.",
