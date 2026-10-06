@@ -177,18 +177,18 @@
         "environmentsDetail": "Del descubrimiento funcional al consumo automatizado."
       },
       "insightsEyebrow": "Insights",
-      "insightsTitle": "Explore cómo aprovechar esta API",
+      "insightsTitle": "Uso de esta API",
       "businessView": "Vista de negocio",
-      "insightsDescription": "Cambie entre valor, aplicación, preparación técnica y journey recomendado desde un mismo bloque.",
+      "insightsDescription": "Funcionalidades, casos de uso e integración de esta API.",
       "tabs": {
-        "value": "Valor",
+        "value": "Funcionalidades",
         "useCases": "Casos de uso",
         "integration": "Integración",
         "journey": "Journey"
       },
       "valueEyebrow": "Valor",
-      "valueTitle": "Qué puede lograr",
-      "valueDescription": "Beneficios directos para equipos que priorizan visibilidad, conciliación y agilidad operativa.",
+      "valueTitle": "Qué puede hacer",
+      "valueDescription": "Las funcionalidades principales de esta API.",
       "useCasesEyebrow": "Aplicación",
       "useCasesTitle": "Casos de uso",
       "useCasesDescription": "Escenarios concretos donde esta API agrega valor en backoffice, reporting y operación diaria.",
@@ -200,10 +200,10 @@
       "requirementsEyebrow": "Requisitos",
       "headersEyebrow": "Cabeceras",
       "journeyEyebrow": "Journey",
-      "journeyTitle": "Ruta de integración sugerida",
-      "journeyDescription": "Una secuencia simple para validar la API, probar su flujo y dejar lista la salida a producción.",
+      "journeyTitle": "Pasos",
+      "journeyDescription": "Una secuencia para validar la API, probar el flujo y pasar a producción.",
       "journeySteps": {
-        "0": "Solicite acceso y configure las credenciales del ambiente inicial. El detalle de autenticación y requisitos está en la pestaña Integración.",
+        "0": "Solicite acceso y configure las credenciales del ambiente inicial.",
         "1": "Valide la consulta de movimientos en Sandbox con POST /conciliacion/bancaempresa/movimientos/.",
         "2": "Integre trazabilidad, monitoreo y paso controlado a Producción."
       },

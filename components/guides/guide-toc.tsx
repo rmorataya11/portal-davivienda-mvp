@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+import { SlidingIndicator, useSlidingIndicator } from "@/components/ui/sliding-indicator";
 import type { GuideTocItem } from "@/lib/guides/guide-toc";
 
 export function GuideToc({
@@ -44,12 +45,32 @@ export function GuideToc({
   const active = items.find((item) => item.id === activeId) ?? items[0];
 
   if (variant === "mobile") {
-    return (
-      <nav
-        aria-label={t("stepsAria")}
-        className="sticky top-[92px] z-30 border-b border-[#E7EAEE] bg-[#F2F3F5]/95 px-5 backdrop-blur-sm sm:top-[100px] sm:px-8 lg:hidden"
-      >
-        <div className="flex items-end gap-1 overflow-x-auto pt-2">
+    return <GuideTocMobile items={items} active={active} label={t("stepsAria")} />;
+  }
+
+  return <GuideTocDesktop items={items} active={active} inThisGuide={t("inThisGuide")} label={t("stepsAria")} />;
+}
+
+function GuideTocMobile({
+  items,
+  active,
+  label,
+}: {
+  items: GuideTocItem[];
+  active?: GuideTocItem;
+  label: string;
+}) {
+  const { listRef, rect, ready } = useSlidingIndicator<HTMLDivElement>(active?.id, {
+    deps: [items.map((item) => item.id).join()],
+  });
+
+  return (
+    <nav
+      aria-label={label}
+      className="sticky top-[92px] z-30 border-b border-[#E7EAEE] bg-[#F2F3F5]/95 px-5 backdrop-blur-sm sm:top-[100px] sm:px-8 lg:hidden"
+    >
+      <div className="overflow-x-auto pt-2">
+        <div ref={listRef} className="relative flex w-max items-end gap-1">
           {items.map((item) => {
             const isActive = item.id === active?.id;
 
@@ -57,24 +78,48 @@ export function GuideToc({
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className={`min-w-11 shrink-0 border-b-2 px-2 pb-2 text-center font-mono text-[12px] ${
-                  isActive ? "border-[#E1251B] text-[#404040]" : "border-transparent text-[#8E8E8E]"
+                data-tab={item.id}
+                className={`min-w-11 shrink-0 px-2 pb-2 text-center font-mono text-[12px] transition-colors duration-200 ${
+                  isActive ? "text-[#404040]" : "text-[#8E8E8E]"
                 }`}
               >
                 {item.number}
               </a>
             );
           })}
+          <SlidingIndicator rect={rect} ready={ready} className="bg-[#E1251B]" />
         </div>
-        {active ? <p className="truncate py-2 text-[13px] text-[#707070]">{active.label}</p> : null}
-      </nav>
-    );
-  }
+      </div>
+      {active ? (
+        <p key={active.id} className="tab-panel-in truncate py-2 text-[13px] text-[#707070]">
+          {active.label}
+        </p>
+      ) : null}
+    </nav>
+  );
+}
+
+function GuideTocDesktop({
+  items,
+  active,
+  inThisGuide,
+  label,
+}: {
+  items: GuideTocItem[];
+  active?: GuideTocItem;
+  inThisGuide: string;
+  label: string;
+}) {
+  const { listRef, rect, ready } = useSlidingIndicator<HTMLOListElement>(active?.id, {
+    orientation: "vertical",
+    thickness: 2,
+    deps: [items.map((item) => item.id).join()],
+  });
 
   return (
-    <nav aria-label={t("stepsAria")}>
-      <p className="text-[13px] text-[#8E8E8E]">{t("inThisGuide")}</p>
-      <ol className="mt-4 border-l border-[#E7EAEE]">
+    <nav aria-label={label}>
+      <p className="text-[13px] text-[#8E8E8E]">{inThisGuide}</p>
+      <ol ref={listRef} className="relative mt-4 border-l border-[#E7EAEE]">
         {items.map((item) => {
           const isActive = item.id === active?.id;
 
@@ -82,10 +127,9 @@ export function GuideToc({
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                className={`-ml-px flex gap-3 border-l-2 py-2 pl-3 text-[13px] leading-5 ${
-                  isActive
-                    ? "border-[#E1251B] text-[#404040]"
-                    : "border-transparent text-[#707070] hover:text-[#404040]"
+                data-tab={item.id}
+                className={`flex gap-3 py-2 pl-3 text-[13px] leading-5 transition-colors duration-200 ${
+                  isActive ? "text-[#404040]" : "text-[#707070] hover:text-[#404040]"
                 }`}
               >
                 <span className="w-6 shrink-0 font-mono text-[12px] text-[#8E8E8E]">{item.number}</span>
@@ -94,6 +138,7 @@ export function GuideToc({
             </li>
           );
         })}
+        <SlidingIndicator rect={rect} ready={ready} className="bg-[#E1251B]" />
       </ol>
     </nav>
   );

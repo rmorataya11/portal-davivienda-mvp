@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { SlidingIndicator, useSlidingIndicator } from "@/components/ui/sliding-indicator";
 import { hasProductionApps } from "@/lib/developer-apps/labels";
 
 import { ProfileBilling } from "./profile-billing";
@@ -15,42 +16,47 @@ type TabId = "datos" | "solicitudes" | "facturacion";
 
 export function ProfilePage() {
   const t = useTranslations("Profile");
-  const { apps, ready } = useDeveloperApps();
+  const { apps, ready: appsReady } = useDeveloperApps();
   const [activeTab, setActiveTab] = useState<TabId>("datos");
-  const showBillingTab = ready && hasProductionApps(apps);
+  const showBillingTab = appsReady && hasProductionApps(apps);
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "datos", label: t("tabs.data") },
     { id: "solicitudes", label: t("tabs.requests") },
     ...(showBillingTab ? [{ id: "facturacion" as const, label: t("tabs.billing") }] : []),
   ];
   const resolvedTab = tabs.some((tab) => tab.id === activeTab) ? activeTab : "datos";
+  const { listRef, rect, ready } = useSlidingIndicator<HTMLDivElement>(resolvedTab, {
+    deps: [tabs.map((tab) => tab.label).join()],
+  });
 
   return (
     <div>
       <h1 className="text-[28px] font-bold tracking-[0.3px] text-[#404040] sm:text-[36px]">{t("title")}</h1>
 
-      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-[#E7EAEE]">
-        {tabs.map((tab) => {
-          const isActive = tab.id === resolvedTab;
+      <div className="mt-6 overflow-x-auto">
+        <div ref={listRef} className="relative flex w-max min-w-full gap-1 border-b border-[#E7EAEE]">
+          {tabs.map((tab) => {
+            const isActive = tab.id === resolvedTab;
 
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id)}
-              className={`h-11 shrink-0 border-b-2 px-4 text-[14px] font-medium transition-colors ${
-                isActive
-                  ? "border-[#E1251B] text-[#404040]"
-                  : "border-transparent text-[#8E8E8E] hover:text-[#404040]"
-              }`}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                data-tab={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`h-11 shrink-0 px-4 text-[14px] font-medium transition-colors duration-200 ${
+                  isActive ? "text-[#404040]" : "text-[#8E8E8E] hover:text-[#404040]"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+          <SlidingIndicator rect={rect} ready={ready} className="bg-[#E1251B]" />
+        </div>
       </div>
 
-      <div className="mt-6">
+      <div key={resolvedTab} className="tab-panel-in mt-6">
         {resolvedTab === "datos" ? (
           <div className="space-y-5">
             <ProfileDataForm />

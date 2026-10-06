@@ -177,18 +177,18 @@
         "environmentsDetail": "From functional discovery to automated consumption."
       },
       "insightsEyebrow": "Insights",
-      "insightsTitle": "Explore how to get the most from this API",
+      "insightsTitle": "Using this API",
       "businessView": "Business view",
-      "insightsDescription": "Switch between value, use cases, technical readiness, and the recommended journey in a single block.",
+      "insightsDescription": "Features, use cases, and integration for this API.",
       "tabs": {
-        "value": "Value",
+        "value": "Features",
         "useCases": "Use cases",
         "integration": "Integration",
         "journey": "Journey"
       },
       "valueEyebrow": "Value",
-      "valueTitle": "What you can achieve",
-      "valueDescription": "Direct benefits for teams that prioritize visibility, reconciliation, and operational agility.",
+      "valueTitle": "What it can do",
+      "valueDescription": "The main features of this API.",
       "useCasesEyebrow": "Application",
       "useCasesTitle": "Use cases",
       "useCasesDescription": "Concrete scenarios where this API adds value in back office, reporting, and daily operations.",
@@ -200,10 +200,10 @@
       "requirementsEyebrow": "Requirements",
       "headersEyebrow": "Headers",
       "journeyEyebrow": "Journey",
-      "journeyTitle": "Suggested integration path",
-      "journeyDescription": "A simple sequence to validate the API, test the flow, and prepare a controlled move to production.",
+      "journeyTitle": "Steps",
+      "journeyDescription": "A sequence to validate the API, test the flow, and move to production.",
       "journeySteps": {
-        "0": "Request access and set up credentials for the initial environment. Authentication and requirements details are in the Integration tab.",
+        "0": "Request access and set up credentials for the initial environment.",
         "1": "Validate the transaction inquiry in Sandbox with POST /conciliacion/bancaempresa/movimientos/.",
         "2": "Add tracing, monitoring, and a controlled cutover to Production."
       },
