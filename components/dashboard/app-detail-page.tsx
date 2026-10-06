@@ -268,60 +268,75 @@ export function AppDetailPage({ appId }: { appId: string }) {
         onClose={closeConfirm}
       />
 
-      <div className="mt-8 grid items-start gap-5 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-8">
+      <div className="mt-8 grid items-stretch gap-5 xl:grid-cols-2">
+        <section className="flex h-full min-h-0 flex-col">
           <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("detail.credentialsTitle")}</h2>
-          <p className="mt-2 text-[15px] leading-6 text-[#8E8E8E]">
-            {t.rich("detail.credentialsDescription", {
-              header: (chunks) => <span className="font-mono text-[#404040]">{chunks}</span>,
-            })}
-          </p>
-          <div className="mt-6">
-            {detail.consumerKey ? (
-              <CredentialField label={t("detail.consumerKey")} value={detail.consumerKey} secret variant="well" />
-            ) : (
-              <p className="text-[14px] leading-6 text-[#707070]">{t("detail.noKey")}</p>
-            )}
+          <div className="mt-4 flex min-h-0 flex-1 flex-col rounded-2xl border border-[#E7EAEE] bg-white px-6 py-6 sm:px-8 sm:py-8">
+            <p className="text-[15px] leading-6 text-[#8E8E8E]">
+              {t.rich("detail.credentialsDescription", {
+                header: (chunks) => <span className="font-mono text-[#404040]">{chunks}</span>,
+              })}
+            </p>
+            <div className="mt-5">
+              {detail.consumerKey ? (
+                <CredentialField label={t("detail.consumerKey")} value={detail.consumerKey} secret variant="well" />
+              ) : (
+                <p className="text-[14px] leading-6 text-[#707070]">{t("detail.noKey")}</p>
+              )}
+            </div>
+            <dl className="mt-auto grid gap-4 border-t border-[#E7EAEE] pt-5 sm:grid-cols-3">
+              <DetailFact label={t("detail.product")} value={product?.name ?? detail.apiProduct} />
+              <DetailFact label={t("detail.environment")} value={t(`status.${detail.environment}`)} />
+              <DetailFact label={t("detail.expires")} value={expires || t("dates.noActivity")} />
+            </dl>
           </div>
-          <dl className="mt-6 grid gap-4 border-t border-[#E7EAEE] pt-5 sm:grid-cols-3">
-            <DetailFact label={t("detail.product")} value={product?.name ?? detail.apiProduct} />
-            <DetailFact label={t("detail.environment")} value={t(`status.${detail.environment}`)} />
-            <DetailFact label={t("detail.expires")} value={expires || t("dates.noActivity")} />
-          </dl>
-        </div>
+        </section>
 
-        <div className="rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-8">
+        <section className="flex h-full min-h-0 flex-col">
           <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("detail.linkedApi")}</h2>
-          {product ? (
-            <>
-              <p className="mt-6 text-[18px] font-semibold text-[#404040]">{product.name}</p>
-              <p className="mt-1 text-[14px] text-[#8E8E8E]">{catalogCategoryLabel(product.category, catalogT)}</p>
-              <nav className="mt-5 divide-y divide-[#E7EAEE] border-y border-[#E7EAEE]">
-                <Link
-                  href={`/catalogo-apis/${product.slug}`}
-                  className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
-                >
-                  {t("detail.viewCard")}
-                </Link>
-                <Link
-                  href={`/catalogo-apis/${product.slug}/detalle-tecnico`}
-                  className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
-                >
-                  {t("detail.technicalConsole")}
-                </Link>
-                <Link
-                  href={`/documentacion?api=${product.slug}`}
-                  className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
-                >
-                  {t("detail.viewDocs")}
-                </Link>
-              </nav>
-            </>
-          ) : (
-            <p className="mt-6 text-[14px] leading-6 text-[#707070]">{detail.apiProduct}</p>
-          )}
-          <p className="mt-5 text-[13px] text-[#8E8E8E]">{t("detail.created", { date: created })}</p>
-        </div>
+          <div className="mt-4 flex min-h-0 flex-1 flex-col rounded-2xl border border-[#E7EAEE] bg-white px-6 py-6 sm:px-8 sm:py-8">
+            {product ? (
+              <>
+                <div className="flex items-start gap-4">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[16px] bg-[#F2F3F5]">
+                    {product.icon ? (
+                      <img src={product.icon} alt="" className="h-8 w-8 object-contain" />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0 pt-0.5">
+                    <p className="text-[18px] font-semibold text-[#404040]">{product.name}</p>
+                    <p className="mt-2 inline-flex w-fit rounded-full bg-[#FFF1F0] px-3 py-1 text-[13px] font-medium text-[#E1251B]">
+                      {catalogCategoryLabel(product.category, catalogT)}
+                    </p>
+                  </div>
+                </div>
+                <nav className="mt-5 divide-y divide-[#E7EAEE] border-y border-[#E7EAEE]">
+                  <Link
+                    href={`/catalogo-apis/${product.slug}`}
+                    className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
+                  >
+                    {t("detail.viewCard")}
+                  </Link>
+                  <Link
+                    href={`/catalogo-apis/${product.slug}/detalle-tecnico`}
+                    className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
+                  >
+                    {t("detail.technicalConsole")}
+                  </Link>
+                  <Link
+                    href={`/documentacion?api=${product.slug}`}
+                    className="flex py-3 text-[15px] font-medium text-[#404040] transition-colors hover:text-[#E1251B]"
+                  >
+                    {t("detail.viewDocs")}
+                  </Link>
+                </nav>
+              </>
+            ) : (
+              <p className="text-[14px] leading-6 text-[#707070]">{detail.apiProduct}</p>
+            )}
+            <p className="mt-auto pt-5 text-[13px] text-[#8E8E8E]">{t("detail.created", { date: created })}</p>
+          </div>
+        </section>
       </div>
     </div>
   );
