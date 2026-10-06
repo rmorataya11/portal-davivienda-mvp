@@ -100,11 +100,7 @@ export function LoginForm() {
 
   return (
     <div className="w-full">
-      <Link href="/" className="text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
-        {t("login.backHome")}
-      </Link>
-      <div className="mt-4 h-1 w-12 rounded-full bg-[#E1251B] sm:mt-5" />
-      <h1 className="mt-3 text-[26px] font-bold leading-[1.15] tracking-[0.2px] text-[#141F25] sm:mt-4 sm:text-[30px]">
+      <h1 className="text-[26px] font-bold leading-[1.15] tracking-[0.2px] text-[#141F25] sm:text-[30px]">
         {t("login.title")}
       </h1>
       <p className="mt-2 text-[14px] leading-6 text-[#6A7178] sm:text-[15px]">{t("login.description")}</p>

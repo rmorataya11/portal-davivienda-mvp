@@ -15,6 +15,9 @@ export async function LoginPage() {
       <section className="flex min-h-screen items-center justify-center px-4 py-6 sm:px-6 sm:py-8">
         <div className="mx-auto w-full max-w-[420px] overflow-hidden rounded-[24px] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.08)] lg:grid lg:max-w-[920px] lg:grid-cols-[0.9fr_1.1fr] lg:rounded-[28px]">
           <div className="border-b border-[#E7EAEE] bg-white px-5 py-5 text-[#141F25] sm:px-6 sm:py-5 lg:hidden">
+            <Link href="/" className="mb-4 block text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
+              {t("backHome")}
+            </Link>
             <Link href="/" className="inline-flex items-center">
               <DaviviendaLogo variant="auth" />
             </Link>
@@ -24,6 +27,9 @@ export async function LoginPage() {
 
           <aside className="relative hidden overflow-hidden border-r border-[#E7EAEE] bg-white px-8 py-8 text-[#141F25] lg:flex lg:flex-col xl:px-10 xl:py-9">
             <div className="relative">
+              <Link href="/" className="mb-5 block text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B]">
+                {t("backHome")}
+              </Link>
               <Link href="/" className="inline-flex items-center">
                 <DaviviendaLogo variant="auth" />
               </Link>
