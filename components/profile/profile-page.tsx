@@ -7,7 +7,6 @@ import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { hasProductionApps } from "@/lib/developer-apps/labels";
 
 import { ProfileBilling } from "./profile-billing";
-import { ProfileDangerZone } from "./profile-danger-zone";
 import { ProfileDataForm } from "./profile-data-form";
 import { ProfilePasswordCard } from "./profile-password-card";
 import { ProfileRequests } from "./profile-requests";
@@ -57,7 +56,6 @@ export function ProfilePage() {
             <ProfileDataForm />
             <div className="grid gap-5 lg:grid-cols-2">
               <ProfilePasswordCard />
-              <ProfileDangerZone />
             </div>
           </div>
         ) : null}

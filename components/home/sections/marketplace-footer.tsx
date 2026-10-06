@@ -24,7 +24,8 @@ export function MarketplaceFooter() {
           <FooterColumn titleKey="support" links={supportLinks} />
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-black/8 pt-6 text-sm text-[#404040] sm:flex-row sm:justify-end sm:gap-10">
+        <div className="mt-14 flex flex-col gap-4 border-t border-black/8 pt-6 text-sm text-[#404040] sm:flex-row sm:items-center sm:justify-between sm:gap-10">
+          <p>{t("copyright")}</p>
           <Link href="#terminos" className="transition-colors duration-300 hover:text-[#E1251B]">
             {t("terms")}
           </Link>
