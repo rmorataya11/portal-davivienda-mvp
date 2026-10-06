@@ -23,7 +23,7 @@ export function DashboardHome() {
   const numberLocale = locale === "en" ? "en-US" : "es";
 
   if (!ready) {
-    return <div className="h-64 animate-pulse rounded-[24px] bg-white" />;
+    return <div className="h-[370px] animate-pulse rounded-2xl bg-white" />;
   }
 
   const productionApps = apps.filter(isProductionApp);
@@ -35,41 +35,38 @@ export function DashboardHome() {
   return (
     <div>
       <div>
-        <h1 className="text-[30px] font-bold leading-[1.1] tracking-[0.8px] text-[#404040] sm:text-[40px] sm:leading-[44px]">
+        <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">
           {t("title")}
         </h1>
-        <p className="mt-6 text-[17px] leading-7 tracking-[0.02em] text-[#404040] sm:mt-[32px] sm:text-[20px] sm:leading-6">
+        <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">
           {t("description")}
         </p>
       </div>
 
-      <section className="mt-8 overflow-hidden rounded-[32px] border border-[#E7EAEE] bg-white shadow-[0_18px_50px_rgba(20,31,37,0.06)]">
-        <div className={showBillingSummary ? "grid xl:grid-cols-[1.15fr_0.85fr]" : undefined}>
-          {showBillingSummary ? (
-            <div className="px-6 py-7 sm:px-8 sm:py-8">
-              <p className="text-[13px] font-medium text-[#8E8E8E]">{t("consumption30")}</p>
-              <p className="mt-3 max-w-[420px] text-[16px] leading-7 text-[#6A7178]">{t("emptyConsumption")}</p>
-            </div>
-          ) : null}
-
-          <div
-            className={
-              showBillingSummary
-                ? "border-t border-[#E7EAEE] bg-[#F8F9FB] px-6 py-7 sm:px-8 xl:border-t-0 xl:border-l"
-                : "bg-[#F8F9FB] px-6 py-7 sm:px-8"
-            }
-          >
-            <WeekActivityChart values={weekActivity} />
+      <section
+        className={`mt-9 flex flex-col rounded-2xl bg-white px-6 py-6 sm:px-8 ${
+          showBillingSummary ? "min-h-[370px]" : "h-[370px]"
+        }`}
+      >
+        {showBillingSummary ? (
+          <div className="mb-5">
+            <p className="text-[13px] font-medium text-[#8E8E8E]">{t("consumption30")}</p>
+            <p className="mt-2 max-w-[420px] text-[15px] leading-6 text-[#707070]">{t("emptyConsumption")}</p>
           </div>
+        ) : null}
+        <div className="min-h-0 flex-1">
+          <WeekActivityChart values={weekActivity} />
         </div>
       </section>
 
       {loadError ? <p className="mt-5 text-[14px] leading-6 text-[#E1251B]">{errorsT("loadFailed")}</p> : null}
 
-      <div className="mt-5 grid gap-3 md:grid-cols-3">
-        <MiniStat label={t("applications")} value={String(apps.length)} />
-        <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
-        <MiniStat label={t("calls30")} value={(0).toLocaleString(numberLocale)} />
+      <div className="relative mt-[84px] py-8 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
+        <div className="relative grid h-full grid-cols-1 items-center gap-4 md:grid-cols-3">
+          <MiniStat label={t("applications")} value={String(apps.length)} />
+          <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
+          <MiniStat label={t("calls30")} value={(0).toLocaleString(numberLocale)} />
+        </div>
       </div>
 
       <div className="mt-8">
@@ -140,9 +137,9 @@ export function DashboardHome() {
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[20px] border border-[#E7EAEE] bg-white px-5 py-4">
-      <p className="text-[13px] text-[#8E8E8E]">{label}</p>
-      <p className="mt-1 text-[22px] font-bold text-[#141F25]">{value}</p>
+    <div className="flex h-[137px] flex-col rounded-2xl bg-[#5A5A5A] pt-8 pr-6 pb-[47px] pl-8">
+      <p className="text-[14px] leading-none text-white">{label}</p>
+      <p className="mt-1 text-[28px] font-bold leading-none text-white">{value}</p>
     </div>
   );
 }
