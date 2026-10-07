@@ -7,7 +7,7 @@ import { SectionContainer } from "@/components/ui/layout";
 
 export default function ProfileLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="min-h-screen bg-[#F2F3F5]">
+    <main className="min-h-screen overflow-x-clip bg-[#F2F3F5]">
       <MarketplaceHeader activeHref="/perfil" />
       <section className="pt-4 pb-16">
         <SectionContainer>

@@ -36,7 +36,7 @@ export function SupportChangelog() {
             />
 
             <div className="relative z-10 max-w-[590px] px-6 py-8 sm:px-8">
-              <h2 className="text-[30px] font-bold leading-9 tracking-[0.2px] text-[#404040]">{t("title")}</h2>
+              <h2 className="text-[24px] font-bold leading-8 tracking-[0.2px] text-[#404040] sm:text-[30px] sm:leading-9">{t("title")}</h2>
               <p className="mt-4 text-[15px] leading-6 text-[#8E8E8E]">{t("description")}</p>
 
               <ol className="mt-4 divide-y divide-[#D0D4D8] border-t border-[#D0D4D8]">

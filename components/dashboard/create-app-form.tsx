@@ -14,7 +14,7 @@ import type { CreatedAppResult } from "@/lib/developer-apps/types";
 import { useDeveloperApps } from "./apps-provider";
 
 const submitClassName =
-  "inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none";
+  "inline-flex h-[46px] w-full items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] disabled:translate-y-0 disabled:bg-[#C9CED4] disabled:shadow-none sm:w-auto";
 
 export function CreateAppForm() {
   const searchParams = useSearchParams();

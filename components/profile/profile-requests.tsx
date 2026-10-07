@@ -140,37 +140,64 @@ export function ProfileRequests() {
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl bg-white">
-      <table className="min-w-full text-left text-[14px]">
-        <thead className="text-[13px] font-medium text-[#8E8E8E]">
-          <tr>
-            <th className="px-5 py-3 font-medium">{t("folio")}</th>
-            <th className="px-5 py-3 font-medium">{fieldT("useCase")}</th>
-            <th className="px-5 py-3 font-medium">{t("date")}</th>
-            <th className="px-5 py-3 font-medium">{fieldT("environment")}</th>
-            <th className="px-5 py-3 font-medium">{t("status")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => {
-            const status = statusCopy(row.status);
+    <div className="rounded-2xl bg-white">
+      <div className="divide-y divide-[#E7EAEE] md:hidden">
+        {rows.map((row) => {
+          const status = statusCopy(row.status);
 
-            return (
-              <tr key={row.id} className="border-t border-[#E7EAEE]">
-                <td className="px-5 py-3.5 font-mono text-[13px] font-semibold text-[#404040]">{row.folio}</td>
-                <td className="px-5 py-3.5 text-[#404040]">{row.useCase}</td>
-                <td className="px-5 py-3.5 whitespace-nowrap text-[#707070]">{formatDate(row.submittedAt, locale)}</td>
-                <td className="px-5 py-3.5 text-[#707070]">{environmentLabel(row.environment)}</td>
-                <td className="px-5 py-3.5">
-                  <span className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>
-                    {status.label}
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          return (
+            <article key={row.id} className="px-5 py-4">
+              <div className="flex items-start justify-between gap-3">
+                <p className="font-mono text-[13px] font-semibold text-[#404040]">{row.folio}</p>
+                <span className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>
+                  {status.label}
+                </span>
+              </div>
+              <dl className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1.5 text-[13px]">
+                <dt className="text-[#8E8E8E]">{fieldT("useCase")}</dt>
+                <dd className="min-w-0 text-[#404040] [overflow-wrap:anywhere]">{row.useCase}</dd>
+                <dt className="text-[#8E8E8E]">{t("date")}</dt>
+                <dd className="text-[#707070]">{formatDate(row.submittedAt, locale)}</dd>
+                <dt className="text-[#8E8E8E]">{fieldT("environment")}</dt>
+                <dd className="text-[#707070]">{environmentLabel(row.environment)}</dd>
+              </dl>
+            </article>
+          );
+        })}
+      </div>
+
+      <div className="hidden overflow-x-auto md:block">
+        <table className="min-w-full text-left text-[14px]">
+          <thead className="text-[13px] font-medium text-[#8E8E8E]">
+            <tr>
+              <th className="px-5 py-3 font-medium">{t("folio")}</th>
+              <th className="px-5 py-3 font-medium">{fieldT("useCase")}</th>
+              <th className="px-5 py-3 font-medium">{t("date")}</th>
+              <th className="px-5 py-3 font-medium">{fieldT("environment")}</th>
+              <th className="px-5 py-3 font-medium">{t("status")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => {
+              const status = statusCopy(row.status);
+
+              return (
+                <tr key={row.id} className="border-t border-[#E7EAEE]">
+                  <td className="px-5 py-3.5 font-mono text-[13px] font-semibold text-[#404040]">{row.folio}</td>
+                  <td className="px-5 py-3.5 text-[#404040]">{row.useCase}</td>
+                  <td className="px-5 py-3.5 whitespace-nowrap text-[#707070]">{formatDate(row.submittedAt, locale)}</td>
+                  <td className="px-5 py-3.5 text-[#707070]">{environmentLabel(row.environment)}</td>
+                  <td className="px-5 py-3.5">
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>
+                      {status.label}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

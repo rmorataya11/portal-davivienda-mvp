@@ -33,7 +33,7 @@ export function DashboardHome() {
   }, []);
 
   if (!ready) {
-    return <div className="h-[370px] animate-pulse rounded-2xl bg-white" />;
+    return <div className="h-[320px] animate-pulse rounded-2xl bg-white md:h-[370px]" />;
   }
 
   const productionApps = apps.filter(isProductionApp);
@@ -56,8 +56,8 @@ export function DashboardHome() {
       </div>
 
       <section
-        className={`mt-9 flex flex-col rounded-2xl bg-white px-6 py-6 sm:px-8 ${
-          showBillingSummary ? "min-h-[370px]" : "h-[370px]"
+        className={`mt-9 flex flex-col rounded-2xl bg-white px-4 py-5 sm:px-8 sm:py-6 ${
+          showBillingSummary ? "min-h-[320px] md:min-h-[370px]" : "min-h-[320px] md:h-[370px]"
         }`}
       >
         {showBillingSummary ? (
@@ -80,7 +80,7 @@ export function DashboardHome() {
                     id="dashboard-app-filter"
                     value={appFilter}
                     onChange={(event) => setAppFilter(event.target.value)}
-                    className="h-10 max-w-[240px] truncate rounded-full border border-[#D5DAE0] bg-white px-4 text-[13px] font-medium text-[#404040]"
+                    className="h-10 w-full max-w-full truncate rounded-full border border-[#D5DAE0] bg-white px-4 text-[13px] font-medium text-[#404040] sm:w-auto sm:max-w-[240px]"
                   >
                     <option value="all">{chartT("filterAll")}</option>
                     {apps.map((app) => (
@@ -98,7 +98,7 @@ export function DashboardHome() {
 
       {loadError ? <p className="mt-5 text-[14px] leading-6 text-[#E1251B]">{errorsT("loadFailed")}</p> : null}
 
-      <div className="relative mt-[84px] flex items-center py-8 before:pointer-events-none before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
+      <div className="relative mt-12 flex items-center py-6 before:pointer-events-none before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-[#404040] md:mt-[84px] md:h-[201px] md:py-0">
         <div className="relative grid w-full grid-cols-1 items-center gap-4 md:grid-cols-3">
           <Reveal delay={0}>
             <MiniStat label={t("applications")} value={String(apps.length)} />
@@ -112,27 +112,29 @@ export function DashboardHome() {
         </div>
       </div>
 
-      <div className="mt-[80px]">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-[40px] font-bold leading-[44px] tracking-[0.8px] text-[#404040]">{t("yourApps")}</h2>
+      <div className="mt-12 md:mt-[80px]">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <h2 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px] lg:text-[40px] lg:leading-[44px] lg:tracking-[0.8px]">
+            {t("yourApps")}
+          </h2>
           {apps.length > 0 ? (
-            <Link href="/dashboard/apps/nueva" className={createAppButtonClassName}>
+            <Link href="/dashboard/apps/nueva" className={`${createAppButtonClassName} w-full sm:w-auto`}>
               {t("createApp")}
             </Link>
           ) : null}
         </div>
         {apps.length === 0 ? (
-          <div className="flex h-[545px] w-full flex-col items-center rounded-2xl bg-white px-8 pt-20 pb-5">
+          <div className="flex w-full flex-col items-center rounded-2xl bg-white px-5 py-16 sm:px-8 sm:pt-20 sm:pb-5 md:min-h-[545px]">
             <img src="/miss_apps/mis_apps.svg" alt="" className="h-[178px] w-[160px]" />
-            <h3 className="mt-2 text-center text-[24px] font-bold leading-7 tracking-[0.48px] text-[#404040]">
+            <h3 className="mt-2 text-center text-[22px] font-bold leading-7 tracking-[0.48px] text-[#404040] sm:text-[24px]">
               {t("emptyTitle")}
             </h3>
-            <p className="mt-3 w-full max-w-[620px] text-left text-[16px] font-normal leading-6 tracking-[0.32px] text-[#8E8E8E]">
+            <p className="mt-3 w-full max-w-[620px] text-center text-[15px] font-normal leading-6 tracking-[0.32px] text-[#8E8E8E] sm:text-left sm:text-[16px]">
               {t("emptyDescription")}
             </p>
             <Link
               href="/dashboard/apps/nueva"
-              className="mt-8 inline-flex h-[46px] w-[233px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
+              className="mt-8 inline-flex h-[46px] w-full max-w-[233px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
             >
               {t("createApp")}
             </Link>
@@ -183,7 +185,7 @@ export function DashboardHome() {
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex h-[137px] flex-col rounded-2xl bg-[#5A5A5A] pt-8 pr-6 pb-[47px] pl-8">
+    <div className="flex min-h-[100px] flex-col rounded-2xl bg-[#5A5A5A] px-6 py-6 md:h-[137px] md:pt-8 md:pr-6 md:pb-[47px] md:pl-8">
       <p className="text-[14px] leading-none text-white">{label}</p>
       <p className="mt-1 text-[28px] font-bold leading-none text-white">{value}</p>
     </div>

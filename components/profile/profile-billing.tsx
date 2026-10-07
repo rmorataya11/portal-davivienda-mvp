@@ -74,7 +74,35 @@ export function ProfileBilling() {
         <div className="px-5 py-4 sm:px-6">
           <h3 className="text-[18px] font-bold text-[#141F25]">{t("invoiceHistory")}</h3>
         </div>
-        <div className="overflow-x-auto">
+        <div className="divide-y divide-[#E7EAEE] md:hidden">
+          {mockInvoices.map((invoice) => {
+            const status = invoiceStatusCopy(invoice.status);
+
+            return (
+              <article key={invoice.id} className="px-5 py-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[#141F25]">{invoice.id}</p>
+                    <p className="mt-1 text-[13px] text-[#6A7178]">{formatCalendarDate(invoice.date, locale)}</p>
+                  </div>
+                  <span className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>
+                    {status.label}
+                  </span>
+                </div>
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <p className="text-[14px] text-[#404040]">{formatMoney(invoice.amountUsd)}</p>
+                  <button
+                    type="button"
+                    className="text-[13px] font-medium text-[#E1251B] transition-colors hover:text-[#E1111C]"
+                  >
+                    {t("download")}
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <div className="hidden overflow-x-auto md:block">
           <table className="min-w-full text-left text-[14px]">
             <thead className="bg-[#F8F9FB] text-[12px] font-medium uppercase tracking-[0.16em] text-[#8E8E8E]">
               <tr>

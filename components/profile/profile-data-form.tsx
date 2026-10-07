@@ -291,7 +291,7 @@ export function ProfileDataForm() {
       <div className="flex items-center gap-4">
         <AccountAvatar name={avatarInitials} size="lg" />
         <div className="min-w-0">
-          <p className="truncate text-[22px] font-bold tracking-[0.2px] text-[#404040]">{headerName}</p>
+          <p className="truncate text-[18px] font-bold tracking-[0.2px] text-[#404040] sm:text-[22px]">{headerName}</p>
           {user?.email ? <p className="mt-1 truncate text-[14px] text-[#8E8E8E]">{user.email}</p> : null}
         </div>
       </div>
@@ -397,8 +397,8 @@ export function ProfileDataForm() {
         />
 
         <div className="border-t border-[#E7EAEE] py-4">
-          <div className="flex items-center justify-between gap-4">
-            <p id="notify-expiration-label" className="text-[14px] leading-6 text-[#404040]">
+          <div className="flex items-start justify-between gap-4">
+            <p id="notify-expiration-label" className="min-w-0 text-[14px] leading-6 text-[#404040]">
               {t("notifyExpiration")}
             </p>
             <button

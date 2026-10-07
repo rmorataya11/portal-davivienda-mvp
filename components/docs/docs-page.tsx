@@ -184,7 +184,7 @@ function DocsExplorer({ endpoint }: { endpoint: CatalogEndpoint | null }) {
           </h1>
           <div
             data-theme={theme}
-            className="docs-ide flex min-h-[640px] overflow-hidden rounded-[24px] border border-[var(--docs-border)] bg-[var(--docs-shell)] transition-colors duration-300 lg:h-[calc(100dvh-168px)] lg:min-h-[680px]"
+            className="docs-ide flex min-h-[520px] overflow-hidden rounded-[24px] border border-[var(--docs-border)] bg-[var(--docs-shell)] transition-colors duration-300 sm:min-h-[640px] lg:h-[calc(100dvh-168px)] lg:min-h-[680px]"
           >
             <aside
               className={`hidden shrink-0 overflow-hidden border-[var(--docs-border)] bg-[var(--docs-sidebar)] transition-[width,background-color,border-color] duration-300 lg:flex ${
@@ -426,11 +426,11 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         {endpoint.name.replace(/\.(get|post|put|delete)$/i, "")}
       </p>
 
-      <div className="mt-4 flex items-center gap-3">
-        <span className={`inline-flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-[13px] font-bold ${methodBadgeClass(endpoint.method)}`}>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <span className={`inline-flex h-9 w-fit shrink-0 items-center justify-center rounded-full px-4 text-[13px] font-bold ${methodBadgeClass(endpoint.method)}`}>
           {endpoint.method}
         </span>
-        <code className="min-w-0 text-[15px] font-medium leading-6 tracking-[0.1px] text-[var(--docs-text)] sm:text-[18px]">
+        <code className="min-w-0 text-[14px] font-medium leading-6 tracking-[0.1px] text-[var(--docs-text)] sm:text-[18px]">
           <BreakablePath value={endpoint.httpUrl} />
         </code>
       </div>
@@ -439,7 +439,31 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
 
       <div className="mt-10">
         <h2 className="text-[18px] font-medium text-[var(--docs-title)] sm:text-[20px]">{t("parameters")}</h2>
-        <div className="mt-3 overflow-x-auto rounded-[18px] border border-[var(--docs-border)]">
+        <ul className="mt-3 divide-y divide-[var(--docs-border-soft)] overflow-hidden rounded-[18px] border border-[var(--docs-border)] md:hidden">
+          {endpoint.parameters.map((parameter, index) => (
+            <li key={`${parameter.name}-${index}`} className="px-4 py-3.5">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="min-w-0 font-mono text-[13px] font-semibold text-[var(--docs-text)]">
+                  <BreakablePath value={parameter.name} />
+                </p>
+                <span
+                  className={`inline-flex min-h-7 items-center rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.08em] ${
+                    parameter.required
+                      ? "bg-[var(--docs-required)] text-[var(--docs-required-text)]"
+                      : "bg-[var(--docs-chip)] text-[var(--docs-chip-text)]"
+                  }`}
+                >
+                  {parameter.required ? t("required") : t("optional")}
+                </span>
+              </div>
+              <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--docs-chip-text)]">
+                {parameter.type}
+              </p>
+              <p className="mt-2 text-[13px] leading-6 text-[var(--docs-muted)]">{parameter.description}</p>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-3 hidden overflow-x-auto rounded-[18px] border border-[var(--docs-border)] md:block">
           <table className="w-full table-fixed border-collapse text-left">
             <colgroup>
               <col className="w-[22%]" />
