@@ -26,7 +26,7 @@ export function StepsSection() {
           </div>
           <Link
             href="/catalogo-apis"
-            className="inline-flex h-12 w-full max-w-[255px] shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C]"
+            className="inline-flex h-12 w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E1111C] sm:w-auto sm:min-w-[255px] sm:px-6"
           >
             {t("exploreProducts")}
           </Link>

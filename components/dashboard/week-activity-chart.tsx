@@ -48,7 +48,7 @@ export function WeekActivityChart({
           </p>
         </div>
         <div className="flex min-w-0 flex-col gap-2 sm:items-end">
-          {filter ? <div className="w-full min-w-0 sm:w-auto">{filter}</div> : null}
+          {filter ? <div className="relative z-10 w-full min-w-0 sm:w-auto">{filter}</div> : null}
           <p className="text-[12px] leading-5 text-[#8E8E8E] sm:max-w-[220px] sm:text-right">
             {total === 0 ? t("noTraffic") : t("peak", { day: t(`days.${WEEK_DAY_KEYS[peakIndex]}`) })}
           </p>

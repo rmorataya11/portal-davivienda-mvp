@@ -439,7 +439,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
 
       <div className="mt-10">
         <h2 className="text-[18px] font-medium text-[var(--docs-title)] sm:text-[20px]">{t("parameters")}</h2>
-        <ul className="mt-3 divide-y divide-[var(--docs-border-soft)] overflow-hidden rounded-[18px] border border-[var(--docs-border)] md:hidden">
+        <ul className="mt-3 divide-y divide-[var(--docs-border-soft)] overflow-hidden rounded-[18px] border border-[var(--docs-border)] xl:hidden">
           {endpoint.parameters.map((parameter, index) => (
             <li key={`${parameter.name}-${index}`} className="px-4 py-3.5">
               <div className="flex flex-wrap items-center gap-2">
@@ -447,7 +447,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
                   <BreakablePath value={parameter.name} />
                 </p>
                 <span
-                  className={`inline-flex min-h-7 items-center rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.08em] ${
+                  className={`inline-flex min-h-7 items-center whitespace-nowrap rounded-full px-2.5 py-1 text-[12px] font-medium ${
                     parameter.required
                       ? "bg-[var(--docs-required)] text-[var(--docs-required-text)]"
                       : "bg-[var(--docs-chip)] text-[var(--docs-chip-text)]"
@@ -456,23 +456,17 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
                   {parameter.required ? t("required") : t("optional")}
                 </span>
               </div>
-              <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--docs-chip-text)]">
+              <p className="mt-2 text-[12px] font-medium text-[var(--docs-chip-text)]">
                 {parameter.type}
               </p>
               <p className="mt-2 text-[13px] leading-6 text-[var(--docs-muted)]">{parameter.description}</p>
             </li>
           ))}
         </ul>
-        <div className="mt-3 hidden overflow-x-auto rounded-[18px] border border-[var(--docs-border)] md:block">
-          <table className="w-full table-fixed border-collapse text-left">
-            <colgroup>
-              <col className="w-[22%]" />
-              <col className="w-[26%]" />
-              <col className="w-[16%]" />
-              <col className="w-[36%]" />
-            </colgroup>
+        <div className="mt-3 hidden overflow-x-auto rounded-[18px] border border-[var(--docs-border)] xl:block">
+          <table className="w-full border-collapse text-left">
             <thead>
-              <tr className="bg-[var(--docs-tabbar)] text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--docs-soft)]">
+              <tr className="bg-[var(--docs-tabbar)] text-[13px] font-medium text-[var(--docs-soft)]">
                 <th className="px-4 py-3 font-medium">{t("name")}</th>
                 <th className="px-4 py-3 font-medium">{t("type")}</th>
                 <th className="px-4 py-3 font-medium">{t("usage")}</th>
@@ -482,17 +476,17 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
             <tbody>
               {endpoint.parameters.map((parameter, index) => (
                 <tr key={`${parameter.name}-${index}`} className="border-t border-[var(--docs-border-soft)]">
-                  <td className="min-w-0 px-4 py-3.5 align-middle font-mono text-[13px] font-semibold text-[var(--docs-text)]">
+                  <td className="px-4 py-3.5 align-middle font-mono text-[13px] font-semibold whitespace-nowrap text-[var(--docs-text)]">
                     <BreakablePath value={parameter.name} />
                   </td>
-                  <td className="min-w-0 px-4 py-3.5 align-middle">
-                    <span className="inline-flex min-h-7 max-w-full items-center whitespace-normal rounded-full bg-[var(--docs-chip)] px-2.5 py-1 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--docs-chip-text)]">
+                  <td className="px-4 py-3.5 align-middle">
+                    <span className="inline-flex min-h-7 items-center whitespace-nowrap rounded-full bg-[var(--docs-chip)] px-2.5 py-1 text-[12px] font-medium text-[var(--docs-chip-text)]">
                       {parameter.type}
                     </span>
                   </td>
-                  <td className="min-w-0 px-4 py-3.5 align-middle">
+                  <td className="px-4 py-3.5 align-middle">
                     <span
-                      className={`inline-flex min-h-7 max-w-full items-center rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.08em] ${
+                      className={`inline-flex min-h-7 items-center whitespace-nowrap rounded-full px-2.5 py-1 text-[12px] font-medium ${
                         parameter.required
                           ? "bg-[var(--docs-required)] text-[var(--docs-required-text)]"
                           : "bg-[var(--docs-chip)] text-[var(--docs-chip-text)]"
@@ -501,7 +495,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
                       {parameter.required ? t("required") : t("optional")}
                     </span>
                   </td>
-                  <td className="min-w-0 px-4 py-3.5 align-middle text-[13px] leading-6 [overflow-wrap:normal] [word-break:normal] text-[var(--docs-muted)]">
+                  <td className="min-w-0 px-4 py-3.5 align-middle text-[13px] leading-6 text-[var(--docs-muted)]">
                     {parameter.description}
                   </td>
                 </tr>

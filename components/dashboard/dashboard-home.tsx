@@ -1,8 +1,9 @@
 "use client";
 
+import { Check, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 import { mockCalls30, mockWeekActivity } from "@/components/mock/mockAppActivity";
 import { Reveal } from "@/components/ui/reveal";
@@ -19,8 +20,6 @@ const createAppButtonClassName =
 export function DashboardHome() {
   const { apps, ready, loadError } = useDeveloperApps();
   const t = useTranslations("Dashboard.home");
-  const chartT = useTranslations("Dashboard.chart");
-  const statusT = useTranslations("Dashboard.status");
   const errorsT = useTranslations("Dashboard.errors");
   const locale = useLocale();
   const numberLocale = locale === "en" ? "en-US" : "es";
@@ -56,7 +55,7 @@ export function DashboardHome() {
       </div>
 
       <section
-        className={`mt-9 flex flex-col rounded-2xl bg-white px-4 py-5 sm:px-8 sm:py-6 ${
+        className={`relative mt-9 flex flex-col overflow-visible rounded-2xl bg-white px-4 py-5 sm:px-8 sm:py-6 ${
           showBillingSummary ? "min-h-[320px] md:min-h-[370px]" : "min-h-[320px] md:h-[370px]"
         }`}
       >
@@ -72,24 +71,7 @@ export function DashboardHome() {
             filterKey={appFilter}
             filter={
               apps.length > 0 ? (
-                <>
-                  <label className="sr-only" htmlFor="dashboard-app-filter">
-                    {chartT("filterLabel")}
-                  </label>
-                  <select
-                    id="dashboard-app-filter"
-                    value={appFilter}
-                    onChange={(event) => setAppFilter(event.target.value)}
-                    className="h-10 w-full max-w-full truncate rounded-full border border-[#D5DAE0] bg-white px-4 text-[13px] font-medium text-[#404040] sm:w-auto sm:max-w-[240px]"
-                  >
-                    <option value="all">{chartT("filterAll")}</option>
-                    {apps.map((app) => (
-                      <option key={app.id} value={app.id}>
-                        {app.name} · {statusT(app.environment)}
-                      </option>
-                    ))}
-                  </select>
-                </>
+                <ChartAppFilter apps={apps} value={appFilter} onChange={setAppFilter} />
               ) : null
             }
           />
@@ -179,6 +161,113 @@ export function DashboardHome() {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function ChartAppFilter({
+  apps,
+  value,
+  onChange,
+}: {
+  apps: DeveloperApp[];
+  value: string;
+  onChange: (next: string) => void;
+}) {
+  const chartT = useTranslations("Dashboard.chart");
+  const statusT = useTranslations("Dashboard.status");
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+  const options = [
+    { id: "all", label: chartT("filterAll"), detail: "" },
+    ...apps.map((app) => ({
+      id: app.id,
+      label: app.name,
+      detail: statusT(app.environment),
+    })),
+  ];
+  const current = options.find((option) => option.id === value) ?? options[0];
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative w-full sm:w-auto">
+      <button
+        type="button"
+        aria-label={chartT("filterLabel")}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={menuId}
+        onClick={() => setOpen((currentOpen) => !currentOpen)}
+        className="flex h-10 w-full items-center justify-between gap-2 rounded-full border border-[#D5DAE0] bg-white px-4 text-left text-[13px] font-medium text-[#404040] sm:w-[240px]"
+      >
+        <span className="min-w-0 truncate">{current.label}</span>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-[#8E8E8E] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
+      </button>
+      {open ? (
+        <div
+          id={menuId}
+          role="listbox"
+          className="absolute top-full right-0 left-0 z-30 mt-2 overflow-hidden rounded-[12px] border border-[#E7EAEE] bg-white py-1 shadow-[0_16px_40px_rgba(20,31,37,0.16)] sm:left-auto sm:w-[260px]"
+        >
+          {options.map((option) => {
+            const selected = option.id === value;
+
+            return (
+              <button
+                key={option.id}
+                type="button"
+                role="option"
+                aria-selected={selected}
+                onClick={() => {
+                  onChange(option.id);
+                  setOpen(false);
+                }}
+                className={`flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors ${
+                  selected ? "bg-[#FFF1F0] text-[#E1251B]" : "text-[#404040] hover:bg-[#F8F9FB]"
+                }`}
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-[13px] font-medium">{option.label}</span>
+                  {option.detail ? (
+                    <span className={`mt-0.5 block truncate text-[12px] ${selected ? "text-[#E1251B]/70" : "text-[#8E8E8E]"}`}>
+                      {option.detail}
+                    </span>
+                  ) : null}
+                </span>
+                {selected ? <Check className="h-4 w-4 shrink-0" aria-hidden="true" /> : null}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }
