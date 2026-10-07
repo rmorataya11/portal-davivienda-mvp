@@ -14,6 +14,7 @@ export type CreateContractingRequestInput = {
   contactoTecnicoEmail: string;
   contactoTecnicoTelefono: string;
   aceptaTerminos: boolean;
+  apiProduct: string;
   appId?: string | null;
 };
 
@@ -32,6 +33,7 @@ export type ContractingRequest = {
   contactoTecnicoTelefono: string | null;
   aceptaTerminos: boolean;
   confirmaVeracidad: boolean;
+  apiProduct: string | null;
   appId: string | null;
   status: string;
   createdAt: string;
@@ -53,6 +55,7 @@ type ContractingRequestRow = {
   contacto_tecnico_telefono: string | null;
   acepta_terminos: boolean;
   confirma_veracidad: boolean;
+  api_product: string | null;
   app_id: string | null;
   status: string;
   created_at: Date | string;
@@ -79,6 +82,7 @@ function mapContractingRequest(row: ContractingRequestRow): ContractingRequest {
     contactoTecnicoTelefono: row.contacto_tecnico_telefono,
     aceptaTerminos: row.acepta_terminos,
     confirmaVeracidad: row.confirma_veracidad,
+    apiProduct: row.api_product,
     appId: row.app_id,
     status: row.status,
     createdAt: toIso(row.created_at),
@@ -114,9 +118,10 @@ export async function createContractingRequest(
        contacto_tecnico_email,
        contacto_tecnico_telefono,
        acepta_terminos,
+       api_product,
        app_id
      )
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
      RETURNING
        id,
        developer_id,
@@ -132,6 +137,7 @@ export async function createContractingRequest(
        contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad,
+       api_product,
        app_id,
        status,
        created_at,
@@ -149,6 +155,7 @@ export async function createContractingRequest(
       data.contactoTecnicoEmail,
       data.contactoTecnicoTelefono.trim() || null,
       data.aceptaTerminos,
+      data.apiProduct.trim(),
       data.appId?.trim() || null,
     ],
   );
@@ -181,6 +188,7 @@ export async function getContractingRequestsByDeveloper(
        contacto_tecnico_telefono,
        acepta_terminos,
        confirma_veracidad,
+       api_product,
        app_id,
        status,
        created_at,

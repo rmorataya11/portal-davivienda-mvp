@@ -240,6 +240,7 @@ export function MenuSelectField({
   value,
   onChange,
   options,
+  disabled = false,
   className = "",
 }: {
   id: string;
@@ -252,6 +253,7 @@ export function MenuSelectField({
   value: string;
   onChange: (value: string) => void;
   options: Array<{ value: string; label: string }>;
+  disabled?: boolean;
   className?: string;
 }) {
   const t = useTranslations("Auth.common");
@@ -303,12 +305,17 @@ export function MenuSelectField({
           <button
             type="button"
             id={id}
+            disabled={disabled}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? errorId : undefined}
             aria-haspopup="listbox"
             aria-expanded={open}
             aria-controls={menuId}
-            onClick={() => setOpen((currentOpen) => !currentOpen)}
+            onClick={() => {
+              if (!disabled) {
+                setOpen((currentOpen) => !currentOpen);
+              }
+            }}
             className={`${controlClassName} flex items-center justify-between gap-3 pr-4 text-left ${fieldBorder(error)} ${
               current ? "" : "text-[#A8AEB5]"
             }`}

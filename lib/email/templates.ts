@@ -199,6 +199,7 @@ export function renderContractingRequestEmail(input: {
   volumenEstimado: string;
   ambienteDestino: string;
   ipWhitelist: string | null;
+  apiProduct: string;
   contactoTecnicoNombre: string;
   contactoTecnicoEmail: string;
   contactoTecnicoTelefono: string | null;
@@ -211,6 +212,7 @@ export function renderContractingRequestEmail(input: {
     intro: "Se recibió una nueva solicitud de contratación.",
     fields: [
       { label: "ID de la solicitud", value: input.id },
+      { label: "API", value: input.apiProduct },
       { label: "Razón social", value: input.razonSocial },
       { label: "NIT", value: input.nit },
       { label: "Industria", value: labelFor(input.industria, INDUSTRY_LABELS) },

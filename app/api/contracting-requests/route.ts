@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { catalogApiSlugExists, getCatalogApiBySlug } from '@/lib/catalog/queries';
 import {
   createContractingRequest,
   getContractingRequestsByDeveloper,
@@ -38,6 +39,7 @@ type ContractingRequestBody = {
   contactoTecnicoEmail?: unknown;
   contactoTecnicoTelefono?: unknown;
   aceptaTerminos?: unknown;
+  apiProduct?: unknown;
   app_id?: unknown;
 };
 
@@ -75,6 +77,7 @@ export async function POST(request: Request) {
     const contactoTecnicoTelefono = readTrimmedString(body.contactoTecnicoTelefono);
     const ipWhitelist = readTrimmedString(body.ipWhitelist);
     const aceptaTerminos = isExplicitTrue(body.aceptaTerminos);
+    const apiProduct = readTrimmedString(body.apiProduct);
     const appId = readOptionalUuid(body.app_id);
 
     if (body.app_id != null && body.app_id !== '' && !appId) {
@@ -91,7 +94,8 @@ export async function POST(request: Request) {
       !ambienteDestino ||
       !contactoTecnicoNombre ||
       !contactoTecnicoEmail ||
-      !contactoTecnicoTelefono
+      !contactoTecnicoTelefono ||
+      !apiProduct
     ) {
       return NextResponse.json(
         { message: 'Faltan campos obligatorios para crear la solicitud.' },
@@ -114,6 +118,11 @@ export async function POST(request: Request) {
       );
     }
 
+    const knownApi = await catalogApiSlugExists(apiProduct);
+    if (!knownApi) {
+      return NextResponse.json({ message: 'Seleccione una API válida del catálogo.' }, { status: 400 });
+    }
+
     const created = await createContractingRequest({
       developerId,
       razonSocial,
@@ -127,8 +136,19 @@ export async function POST(request: Request) {
       contactoTecnicoEmail,
       contactoTecnicoTelefono,
       aceptaTerminos,
+      apiProduct,
       appId,
     });
+
+    let apiTitle = apiProduct;
+    try {
+      const catalogApi = await getCatalogApiBySlug(apiProduct);
+      if (catalogApi?.contentEs.title) {
+        apiTitle = catalogApi.contentEs.title;
+      }
+    } catch {
+      apiTitle = apiProduct;
+    }
 
     await sendNotificationEmail(
       `[CONTRATACIÓN] Nueva solicitud de contratación: ${razonSocial}`,
@@ -141,6 +161,7 @@ export async function POST(request: Request) {
         volumenEstimado: created.volumenEstimado,
         ambienteDestino: created.ambienteDestino,
         ipWhitelist: created.ipWhitelist,
+        apiProduct: apiTitle,
         contactoTecnicoNombre: created.contactoTecnicoNombre,
         contactoTecnicoEmail: created.contactoTecnicoEmail,
         contactoTecnicoTelefono: created.contactoTecnicoTelefono,

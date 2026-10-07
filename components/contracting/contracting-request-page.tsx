@@ -35,7 +35,7 @@ export function ContractingRequestPage({
           <SurfaceCard className="px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10">
             <ContractingAccessGate returnTo={returnTo}>
               <Suspense fallback={<div className="h-64 animate-pulse rounded-[18px] bg-[#F2F3F5]" />}>
-                <ContractingRequestForm productName={productName} />
+                <ContractingRequestForm productName={productName} productSlug={productSlug} />
               </Suspense>
             </ContractingAccessGate>
           </SurfaceCard>

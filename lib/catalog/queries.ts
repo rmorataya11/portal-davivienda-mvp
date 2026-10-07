@@ -230,6 +230,11 @@ export const getCatalogApis = cache(async function getCatalogApis(): Promise<Cat
   return result.rows.map((row) => mapCatalogApi(row as CatalogApiRow));
 });
 
+export async function catalogApiSlugExists(slug: string): Promise<boolean> {
+  const result = await query(`SELECT 1 FROM catalog_apis WHERE slug = $1 LIMIT 1`, [slug]);
+  return result.rows.length > 0;
+}
+
 export const getCatalogApiBySlug = cache(async function getCatalogApiBySlug(slug: string): Promise<CatalogApi | null> {
   const result = await query(
     `SELECT ${CATALOG_COLUMNS}

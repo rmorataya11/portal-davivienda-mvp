@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
+import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { formatCalendarDate } from "@/lib/format/date";
 
 type RequestRow = {
   id: string;
   folio: string;
+  apiProduct: string;
   useCase: string;
   environment: string;
   submittedAt: string;
@@ -19,6 +21,7 @@ type ContractingRequestResponse = {
   id: string;
   casoUso?: string;
   industria?: string;
+  apiProduct?: string | null;
   ambienteDestino?: string;
   createdAt?: string;
   status?: string;
@@ -42,6 +45,7 @@ export function ProfileRequests() {
   const fieldT = useTranslations("Contratacion.fields");
   const environmentT = useTranslations("Contratacion.environments");
   const locale = useLocale();
+  const products = useCatalogViews();
   const [rows, setRows] = useState<RequestRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -72,6 +76,14 @@ export function ProfileRequests() {
     return value || "—";
   }
 
+  function apiLabel(slug: string) {
+    if (!slug) {
+      return "—";
+    }
+
+    return products.find((product) => product.slug === slug)?.name ?? slug;
+  }
+
   useEffect(() => {
     const lookupId = developerId ?? user?.uid;
 
@@ -98,6 +110,7 @@ export function ProfileRequests() {
         const next = requests.map((item) => ({
           id: item.id,
           folio: folioFromId(item.id),
+          apiProduct: item.apiProduct?.trim() || "",
           useCase: item.casoUso?.trim() || item.industria?.trim() || "—",
           environment: item.ambienteDestino?.trim() || "",
           submittedAt: item.createdAt ?? "",
@@ -154,6 +167,8 @@ export function ProfileRequests() {
                 </span>
               </div>
               <dl className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1.5 text-[13px]">
+                <dt className="text-[#8E8E8E]">{t("api")}</dt>
+                <dd className="min-w-0 text-[#404040] [overflow-wrap:anywhere]">{apiLabel(row.apiProduct)}</dd>
                 <dt className="text-[#8E8E8E]">{fieldT("useCase")}</dt>
                 <dd className="min-w-0 text-[#404040] [overflow-wrap:anywhere]">{row.useCase}</dd>
                 <dt className="text-[#8E8E8E]">{t("date")}</dt>
@@ -171,6 +186,7 @@ export function ProfileRequests() {
           <thead className="text-[13px] font-medium text-[#8E8E8E]">
             <tr>
               <th className="px-5 py-3 font-medium">{t("folio")}</th>
+              <th className="px-5 py-3 font-medium">{t("api")}</th>
               <th className="px-5 py-3 font-medium">{fieldT("useCase")}</th>
               <th className="px-5 py-3 font-medium">{t("date")}</th>
               <th className="px-5 py-3 font-medium">{fieldT("environment")}</th>
@@ -184,6 +200,7 @@ export function ProfileRequests() {
               return (
                 <tr key={row.id} className="border-t border-[#E7EAEE]">
                   <td className="px-5 py-3.5 font-mono text-[13px] font-semibold text-[#404040]">{row.folio}</td>
+                  <td className="px-5 py-3.5 text-[#404040]">{apiLabel(row.apiProduct)}</td>
                   <td className="px-5 py-3.5 text-[#404040]">{row.useCase}</td>
                   <td className="px-5 py-3.5 whitespace-nowrap text-[#707070]">{formatDate(row.submittedAt, locale)}</td>
                   <td className="px-5 py-3.5 text-[#707070]">{environmentLabel(row.environment)}</td>

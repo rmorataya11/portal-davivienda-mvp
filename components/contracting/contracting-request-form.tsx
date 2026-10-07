@@ -8,7 +8,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { MenuSelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
-import { useCatalogView } from "@/components/catalog/catalog-provider";
+import { useCatalogView, useCatalogViews } from "@/components/catalog/catalog-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
@@ -29,13 +29,21 @@ const IP_PLACEHOLDER = "203.0.113.0/24\n198.51.100.15";
 
 type FieldErrors = Record<string, string>;
 
-export function ContractingRequestForm({ productName = "" }: { productName?: string }) {
+export function ContractingRequestForm({
+  productName = "",
+  productSlug = "",
+}: {
+  productName?: string;
+  productSlug?: string;
+}) {
   const t = useTranslations("Contratacion");
   const searchParams = useSearchParams();
   const { user, developerId } = useAuth();
   const { getApp, markContracting, ready } = useDeveloperApps();
+  const products = useCatalogViews();
   const appId = searchParams.get("app") ?? "";
   const [linkedApp, setLinkedApp] = useState<DeveloperApp | null>(null);
+  const [apiProduct, setApiProduct] = useState(productSlug);
 
   useEffect(() => {
     if (!ready || !appId) {
@@ -62,8 +70,15 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
     };
   }, [appId, getApp, ready]);
 
+  useEffect(() => {
+    if (linkedApp?.apiProduct) {
+      setApiProduct(linkedApp.apiProduct);
+    }
+  }, [linkedApp]);
+
   const linkedProduct = useCatalogView(linkedApp?.apiProduct ?? "");
   const displayProduct = linkedProduct?.name ?? productName;
+  const apiLocked = Boolean(linkedApp);
   const [companyName, setCompanyName] = useState("");
   const [industry, setIndustry] = useState("");
   const [volume, setVolume] = useState("");
@@ -138,6 +153,10 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
 
     if (!form.get("industry")) {
       nextErrors.industry = t("validation.industry");
+    }
+
+    if (!String(form.get("apiProduct") ?? "").trim()) {
+      nextErrors.apiProduct = t("validation.apiProduct");
     }
 
     if (!String(form.get("useCase") ?? "").trim()) {
@@ -224,6 +243,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           contactoTecnicoEmail: String(formData.get("technicalEmail") ?? "").trim(),
           contactoTecnicoTelefono: String(formData.get("technicalPhone") ?? "").trim(),
           aceptaTerminos: formData.get("terms") === "on",
+          apiProduct: String(formData.get("apiProduct") ?? "").trim(),
           app_id: linkedApp?.id ?? null,
         }),
       });
@@ -288,14 +308,10 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
           {t("form.title")}
         </h1>
         <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">{t("form.description")}</p>
-        {linkedApp || displayProduct ? (
+        {linkedApp ? (
           <div className="mt-5 flex flex-wrap items-center gap-2">
-            {linkedApp ? (
-              <>
-                <p className="text-[15px] font-semibold text-[#404040]">{linkedApp.name}</p>
-                <AppStatusBadge environment={linkedApp.environment} />
-              </>
-            ) : null}
+            <p className="text-[15px] font-semibold text-[#404040]">{linkedApp.name}</p>
+            <AppStatusBadge environment={linkedApp.environment} />
             {displayProduct ? (
               <span className="inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-full border border-[#E7EAEE] bg-[#F8F9FB] px-2.5 py-1 text-[12px] font-medium text-[#404040]">
                 {linkedProduct?.icon ? (
@@ -309,7 +325,6 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
       </div>
 
       <form className="mt-8" noValidate onSubmit={handleSubmit}>
-        <input type="hidden" name="product" value={displayProduct} />
         {linkedApp ? <input type="hidden" name="appId" value={linkedApp.id} /> : null}
         <input type="hidden" name="accountEmail" value={user?.email ?? ""} />
         <input type="hidden" name="requestId" defaultValue="" />
@@ -361,6 +376,26 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
         </FormSection>
 
         <FormSection title={t("sections.request")}>
+          <MenuSelectField
+            id="apiProduct"
+            name="apiProduct"
+            orientation="row"
+            label={t("fields.apiProduct")}
+            required
+            value={apiProduct}
+            error={errors.apiProduct}
+            placeholder={t("fields.apiProductPlaceholder")}
+            disabled={apiLocked}
+            options={products.map((product) => ({
+              value: product.slug,
+              label: product.name,
+            }))}
+            className="py-4"
+            onChange={(value) => {
+              setApiProduct(value);
+              clearError("apiProduct");
+            }}
+          />
           <TextAreaField
             id="useCase"
             name="useCase"
@@ -371,7 +406,7 @@ export function ContractingRequestForm({ productName = "" }: { productName?: str
             hint={t("fields.useCaseHint")}
             placeholder={t("fields.useCasePlaceholder")}
             error={errors.useCase}
-            className="py-4"
+            className="border-t border-[#E7EAEE] py-4"
             onChange={() => clearError("useCase")}
           />
           <MenuSelectField
