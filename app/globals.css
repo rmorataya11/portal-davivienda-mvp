@@ -1092,11 +1092,12 @@ a {
   white-space: pre-line;
 }
 
-.inspire-card-rule {
+.inspire-card-title::after {
+  content: "";
   display: block;
   width: 48px;
   height: 4px;
-  margin-top: 6.5px;
+  margin-top: 2px;
   border-radius: 9999px;
   background: #e1251b;
 }
@@ -1249,10 +1250,10 @@ a {
     white-space: pre-line;
   }
 
-  .inspire-card-rule {
+  .inspire-card-title::after {
     width: calc(48 / 1366 * 100cqi);
     height: calc(4 / 1366 * 100cqi);
-    margin-top: calc(10 / 1366 * 100cqi);
+    margin-top: calc(2 / 1366 * 100cqi);
   }
 
   .inspire-card-desc {

@@ -26,7 +26,6 @@ export function UseCaseCard({ card }: { card: UseCaseCardData }) {
         <div className="inspire-card-media" />
       )}
       <h3 className="inspire-card-title">{card.title}</h3>
-      <span className="inspire-card-rule" aria-hidden="true" />
       <p className="inspire-card-desc">{card.description}</p>
       <Link href="/catalogo-apis" className="inspire-card-cta">
         {t("viewHowItWorks")}
