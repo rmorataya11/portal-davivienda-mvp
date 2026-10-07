@@ -19,6 +19,16 @@ export function isValidDocumentId(value: string): boolean {
   return value.length > 0;
 }
 
+/** NIT de El Salvador: exactamente 14 dígitos (se ignoran guiones y espacios). */
+export function isValidNit(value: string): boolean {
+  return /^\d{14}$/.test(value.replace(/\D/g, ""));
+}
+
+/** DUI de El Salvador: exactamente 9 dígitos (se ignoran guiones y espacios). */
+export function isValidDui(value: string): boolean {
+  return /^\d{9}$/.test(value.replace(/\D/g, ""));
+}
+
 export function isValidDocumentType(value: string): boolean {
   return DOCUMENT_TYPES.has(value);
 }

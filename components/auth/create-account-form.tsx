@@ -8,9 +8,10 @@ import { useState, type FormEvent } from "react";
 import { signUp } from "@/lib/auth/session";
 import { getAuthErrorKey } from "@/lib/firebase/errors";
 import { getLoginHref, rememberReturnPath, resolveAuthReturnPath } from "@/lib/navigation/safe-path";
+import { isValidNit } from "@/lib/validation/fields";
 
 import { PasswordField, SelectField, TextField } from "./auth-form-fields";
-import { caseReasons, identificationTypes } from "./content/create-account";
+import { caseReasons } from "./content/create-account";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,7 +40,7 @@ export function CreateAccountForm() {
   function validate(form: FormData) {
     const nextErrors: FieldErrors = {};
     const email = String(form.get("email") ?? "").trim();
-    const idNumber = String(form.get("idNumber") ?? "").trim();
+    const nit = String(form.get("nit") ?? "").trim();
     const password = String(form.get("password") ?? "");
     const confirmPassword = String(form.get("confirmPassword") ?? "");
 
@@ -49,12 +50,10 @@ export function CreateAccountForm() {
       nextErrors.email = t("errors.emailInvalid");
     }
 
-    if (!form.get("idType")) {
-      nextErrors.idType = t("errors.idTypeRequired");
-    }
-
-    if (!idNumber) {
-      nextErrors.idNumber = t("errors.idNumberRequired");
+    if (!nit) {
+      nextErrors.nit = t("errors.nitRequired");
+    } else if (!isValidNit(nit)) {
+      nextErrors.nit = t("errors.nitInvalid");
     }
 
     if (!password) {
@@ -113,8 +112,7 @@ export function CreateAccountForm() {
           email: user.email,
           fullName: companyName,
           companyName,
-          documentType: String(formData.get("idType") ?? "").trim(),
-          documentId: String(formData.get("idNumber") ?? "").trim(),
+          documentId: String(formData.get("nit") ?? "").trim(),
           reason: String(formData.get("reason") ?? "").trim(),
           terms: formData.get("terms") === "on",
         }),
@@ -180,33 +178,6 @@ export function CreateAccountForm() {
           />
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <SelectField
-            id="idType"
-            name="idType"
-            label={t("signup.idType")}
-            required
-            error={errors.idType}
-            onChange={() => clearError("idType")}
-          >
-            {identificationTypes.map((option) => (
-              <option key={option.value} value={option.value}>
-                {t(`signup.idTypes.${option.value}`)}
-              </option>
-            ))}
-          </SelectField>
-          <TextField
-            id="idNumber"
-            name="idNumber"
-            label={t("signup.idNumber")}
-            required
-            inputMode="numeric"
-            placeholder={t("signup.idNumberPlaceholder")}
-            error={errors.idNumber}
-            onChange={() => clearError("idNumber")}
-          />
-        </div>
-
         <TextField
           id="companyName"
           name="companyName"
@@ -216,6 +187,17 @@ export function CreateAccountForm() {
           placeholder={t("signup.companyNamePlaceholder")}
           error={errors.companyName}
           onChange={() => clearError("companyName")}
+        />
+
+        <TextField
+          id="nit"
+          name="nit"
+          label={t("signup.nit")}
+          required
+          inputMode="numeric"
+          placeholder={t("signup.nitPlaceholder")}
+          error={errors.nit}
+          onChange={() => clearError("nit")}
         />
 
         <SelectField

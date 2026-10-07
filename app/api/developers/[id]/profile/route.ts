@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { getDeveloperProfile, updateDeveloperProfile } from '@/lib/db/developers';
-import {
-  isValidDocumentId,
-  isValidDocumentType,
-  isValidPhone,
-  readTrimmedString,
-} from '@/lib/validation/fields';
+import { isValidDui, isValidPhone, readTrimmedString } from '@/lib/validation/fields';
 
 export const runtime = 'nodejs';
 
@@ -17,8 +12,7 @@ type RouteContext = {
 type ProfilePatchBody = {
   fullName?: unknown;
   companyName?: unknown;
-  documentType?: unknown;
-  documentId?: unknown;
+  dui?: unknown;
   phone?: unknown;
   notifyBeforeExpiration?: unknown;
 };
@@ -53,8 +47,7 @@ export async function PATCH(request: Request, context: RouteContext) {
 
     const fullName = hasOwn(body, 'fullName') ? readTrimmedString(body.fullName) : undefined;
     const companyName = hasOwn(body, 'companyName') ? readTrimmedString(body.companyName) : undefined;
-    const documentType = hasOwn(body, 'documentType') ? readTrimmedString(body.documentType) : undefined;
-    const documentId = hasOwn(body, 'documentId') ? readTrimmedString(body.documentId) : undefined;
+    const dui = hasOwn(body, 'dui') ? readTrimmedString(body.dui) : undefined;
     const phone = hasOwn(body, 'phone') ? readTrimmedString(body.phone) : undefined;
 
     if (fullName !== undefined && !fullName) {
@@ -65,12 +58,8 @@ export async function PATCH(request: Request, context: RouteContext) {
       return NextResponse.json({ message: 'Ingrese el nombre o razón social.' }, { status: 400 });
     }
 
-    if (documentType !== undefined && !isValidDocumentType(documentType)) {
-      return NextResponse.json({ message: 'Seleccione un tipo de identificación válido.' }, { status: 400 });
-    }
-
-    if (documentId !== undefined && !isValidDocumentId(documentId)) {
-      return NextResponse.json({ message: 'Ingrese el número de identificación.' }, { status: 400 });
+    if (dui !== undefined && dui && !isValidDui(dui)) {
+      return NextResponse.json({ message: 'El DUI debe tener 9 dígitos.' }, { status: 400 });
     }
 
     if (phone !== undefined && phone && !isValidPhone(phone)) {
@@ -80,8 +69,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     const updated = await updateDeveloperProfile(id, {
       fullName,
       companyName,
-      documentType,
-      documentId,
+      dui,
       phone,
       notifyBeforeExpiration:
         typeof body.notifyBeforeExpiration === 'boolean' ? body.notifyBeforeExpiration : undefined,

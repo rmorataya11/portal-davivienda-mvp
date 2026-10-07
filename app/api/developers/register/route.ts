@@ -3,9 +3,8 @@ import { NextResponse } from 'next/server';
 import { createDeveloper, DeveloperConflictError } from '@/lib/db/developers';
 import {
   isExplicitTrue,
-  isValidDocumentId,
-  isValidDocumentType,
   isValidEmail,
+  isValidNit,
   isValidPhone,
   readTrimmedString,
 } from '@/lib/validation/fields';
@@ -35,7 +34,6 @@ export async function POST(request: Request) {
     const email = readTrimmedString(body.email);
     const fullName = readTrimmedString(body.fullName);
     const companyName = readTrimmedString(body.companyName);
-    const documentType = readTrimmedString(body.documentType);
     const documentId = readTrimmedString(body.documentId);
     const phone = readTrimmedString(body.phone);
     const reason = readTrimmedString(body.reason);
@@ -44,7 +42,7 @@ export async function POST(request: Request) {
     const subject = readTrimmedString(body.subject);
     const description = readTrimmedString(body.description);
 
-    if (!identityUid || !email || !fullName || !companyName || !documentType || !documentId || !reason) {
+    if (!identityUid || !email || !fullName || !companyName || !documentId || !reason) {
       return NextResponse.json(
         { message: 'Faltan campos obligatorios para completar el registro.' },
         { status: 400 },
@@ -55,12 +53,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Ingrese un correo válido.' }, { status: 400 });
     }
 
-    if (!isValidDocumentType(documentType)) {
-      return NextResponse.json({ message: 'Seleccione un tipo de identificación válido.' }, { status: 400 });
-    }
-
-    if (!isValidDocumentId(documentId)) {
-      return NextResponse.json({ message: 'Ingrese el número de identificación.' }, { status: 400 });
+    if (!isValidNit(documentId)) {
+      return NextResponse.json(
+        { message: 'El NIT debe tener 14 dígitos.' },
+        { status: 400 },
+      );
     }
 
     if (phone && !isValidPhone(phone)) {
@@ -79,7 +76,7 @@ export async function POST(request: Request) {
       email,
       fullName,
       companyName,
-      documentType,
+      documentType: 'nit',
       documentId,
       phone: phone || undefined,
       reason,

@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 
-import { SelectField, TextField } from "@/components/auth/auth-form-fields";
-import { identificationTypes } from "@/components/auth/content/create-account";
+import { TextField } from "@/components/auth/auth-form-fields";
 import { useAuth } from "@/components/auth/auth-provider";
 import { accountInitials } from "@/lib/account/display";
+import { isValidDui } from "@/lib/validation/fields";
 
 import { AccountAvatar } from "./account-avatar";
 import { ProfilePasswordCard } from "./profile-password-card";
@@ -18,31 +18,18 @@ type FieldErrors = Record<string, string>;
 type ProfileSnapshot = {
   accountName: string;
   companyName: string;
-  idType: string;
-  idNumber: string;
+  nit: string;
+  dui: string;
   phone: string;
 };
 
-function identificationNumberCopy(idType: string, t: (key: string) => string) {
-  if (idType === "nit") {
-    return { label: t("nitNumber"), placeholder: "0614-290191-101-3" };
-  }
-
-  if (idType === "dui") {
-    return { label: t("duiNumber"), placeholder: "00000000-0" };
-  }
-
-  return { label: t("idNumber"), placeholder: "00000000-0" };
-}
-
 export function ProfileDataForm() {
   const t = useTranslations("Profile.data");
-  const authT = useTranslations("Auth");
   const { user, developerId, setDisplayName, setCompanyName: setAccountCompanyName } = useAuth();
   const [accountName, setAccountName] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [idType, setIdType] = useState("");
-  const [idNumber, setIdNumber] = useState("");
+  const [nit, setNit] = useState("");
+  const [dui, setDui] = useState("");
   const [phone, setPhone] = useState("");
   const [initial, setInitial] = useState<ProfileSnapshot | null>(null);
   const [notifyBeforeExpiration, setNotifyBeforeExpiration] = useState(false);
@@ -54,7 +41,6 @@ export function ProfileDataForm() {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const idNumberCopy = identificationNumberCopy(idType, t);
   const avatarInitials = accountInitials(companyName, accountName, user?.email);
   const headerName = companyName.trim() || accountName.trim() || user?.email || "—";
   const isDirty = useMemo(() => {
@@ -65,11 +51,10 @@ export function ProfileDataForm() {
     return (
       accountName !== initial.accountName ||
       companyName !== initial.companyName ||
-      idType !== initial.idType ||
-      idNumber !== initial.idNumber ||
+      dui !== initial.dui ||
       phone !== initial.phone
     );
-  }, [accountName, companyName, idNumber, idType, initial, phone]);
+  }, [accountName, companyName, dui, initial, phone]);
 
   useEffect(() => {
     if (!saved || isDirty) {
@@ -99,8 +84,8 @@ export function ProfileDataForm() {
         return (await response.json()) as {
           fullName?: string;
           companyName?: string;
-          documentType?: string;
           documentId?: string;
+          dui?: string;
           phone?: string;
           notifyBeforeExpiration?: boolean;
         };
@@ -113,22 +98,22 @@ export function ProfileDataForm() {
         const snapshot: ProfileSnapshot = {
           accountName: profile.fullName ?? "",
           companyName: profile.companyName ?? "",
-          idType: profile.documentType ?? "",
-          idNumber: profile.documentId ?? "",
+          nit: profile.documentId ?? "",
+          dui: profile.dui ?? "",
           phone: profile.phone ?? "",
         };
 
         setAccountName(snapshot.accountName);
         setCompanyName(snapshot.companyName);
-        setIdType(snapshot.idType);
-        setIdNumber(snapshot.idNumber);
+        setNit(snapshot.nit);
+        setDui(snapshot.dui);
         setPhone(snapshot.phone);
         setNotifyBeforeExpiration(profile.notifyBeforeExpiration !== false);
         setInitial(snapshot);
       })
       .catch(() => {
         if (!cancelled) {
-          setInitial({ accountName: "", companyName: "", idType: "", idNumber: "", phone: "" });
+          setInitial({ accountName: "", companyName: "", nit: "", dui: "", phone: "" });
         }
       })
       .finally(() => {
@@ -161,8 +146,7 @@ export function ProfileDataForm() {
 
     setAccountName(initial.accountName);
     setCompanyName(initial.companyName);
-    setIdType(initial.idType);
-    setIdNumber(initial.idNumber);
+    setDui(initial.dui);
     setPhone(initial.phone);
     setErrors({});
     setFormError("");
@@ -180,12 +164,8 @@ export function ProfileDataForm() {
       nextErrors.companyName = t("companyNameRequired");
     }
 
-    if (!idType) {
-      nextErrors.idType = t("idTypeRequired");
-    }
-
-    if (!idNumber.trim()) {
-      nextErrors.idNumber = t("idNumberRequired", { field: idNumberCopy.label.toLowerCase() });
+    if (dui.trim() && !isValidDui(dui.trim())) {
+      nextErrors.dui = t("duiInvalid");
     }
 
     if (phone.trim() && !PHONE_PATTERN.test(phone.trim())) {
@@ -218,8 +198,8 @@ export function ProfileDataForm() {
       const snapshot: ProfileSnapshot = {
         accountName: accountName.trim(),
         companyName: companyName.trim(),
-        idType,
-        idNumber: idNumber.trim(),
+        nit,
+        dui: dui.trim(),
         phone: phone.trim(),
       };
 
@@ -229,8 +209,7 @@ export function ProfileDataForm() {
         body: JSON.stringify({
           fullName: snapshot.accountName,
           companyName: snapshot.companyName,
-          documentType: snapshot.idType,
-          documentId: snapshot.idNumber,
+          dui: snapshot.dui,
           phone: snapshot.phone,
         }),
       });
@@ -240,7 +219,7 @@ export function ProfileDataForm() {
       }
       setAccountName(snapshot.accountName);
       setCompanyName(snapshot.companyName);
-      setIdNumber(snapshot.idNumber);
+      setDui(snapshot.dui);
       setPhone(snapshot.phone);
       setInitial(snapshot);
       setDisplayName(snapshot.accountName);
@@ -332,41 +311,27 @@ export function ProfileDataForm() {
             setSaved(false);
           }}
         />
-        <SelectField
-          id="idType"
-          name="idType"
-          orientation="row"
-          label={t("idType")}
-          required
-          value={idType}
-          error={errors.idType}
-          className="border-b border-[#E7EAEE] py-4"
-          onChange={(event) => {
-            setIdType(event.currentTarget.value);
-            clearError("idType");
-            setSaved(false);
-          }}
-        >
-          {identificationTypes.map((option) => (
-            <option key={option.value} value={option.value}>
-              {authT(`signup.idTypes.${option.value}`)}
-            </option>
-          ))}
-        </SelectField>
+        <div className="grid gap-2 border-b border-[#E7EAEE] py-4 sm:grid-cols-[220px_minmax(0,1fr)] sm:items-start sm:gap-8">
+          <p className="text-[14px] font-medium text-[#8E8E8E] sm:pt-0.5">{t("nitNumber")}</p>
+          <div>
+            <p className="font-mono text-[15px] leading-6 text-[#404040]">{nit || "—"}</p>
+            <p className="mt-1 text-[13px] leading-5 text-[#8E8E8E]">{t("nitLocked")}</p>
+          </div>
+        </div>
         <TextField
-          id="idNumber"
-          name="idNumber"
+          id="dui"
+          name="dui"
           orientation="row"
-          label={idNumberCopy.label}
-          required
+          label={t("duiNumber")}
           inputMode="numeric"
-          placeholder={idNumberCopy.placeholder}
-          value={idNumber}
-          error={errors.idNumber}
+          placeholder={t("duiPlaceholder")}
+          hint={t("duiHint")}
+          value={dui}
+          error={errors.dui}
           className="border-b border-[#E7EAEE] py-4"
           onChange={(event) => {
-            setIdNumber(event.currentTarget.value);
-            clearError("idNumber");
+            setDui(event.currentTarget.value);
+            clearError("dui");
             setSaved(false);
           }}
         />
