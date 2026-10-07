@@ -98,15 +98,15 @@ export function DashboardHome() {
 
       {loadError ? <p className="mt-5 text-[14px] leading-6 text-[#E1251B]">{errorsT("loadFailed")}</p> : null}
 
-      <div className="relative mt-[84px] py-8 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:max-w-[100vw] before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
-        <div className="relative grid h-full grid-cols-1 items-center gap-4 md:grid-cols-3">
-          <Reveal delay={0} className="h-full">
+      <div className="relative mt-[84px] flex items-center py-8 before:pointer-events-none before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
+        <div className="relative grid w-full grid-cols-1 items-center gap-4 md:grid-cols-3">
+          <Reveal delay={0}>
             <MiniStat label={t("applications")} value={String(apps.length)} />
           </Reveal>
-          <Reveal delay={80} className="h-full">
+          <Reveal delay={80}>
             <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
           </Reveal>
-          <Reveal delay={160} className="h-full">
+          <Reveal delay={160}>
             <MiniStat label={t("calls30")} value={calls30.toLocaleString(numberLocale)} />
           </Reveal>
         </div>
