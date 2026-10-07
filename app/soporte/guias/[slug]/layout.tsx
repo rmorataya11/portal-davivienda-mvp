@@ -10,6 +10,7 @@ export default async function GuideDetailLayout({ children }: { children: ReactN
     <ContentAccessGate
       fallbackPath="/soporte#guias-integracion"
       description={t("description")}
+      preview="guide"
     >
       {children}
     </ContentAccessGate>

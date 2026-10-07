@@ -7,7 +7,7 @@
     "myApps": "My apps",
     "createAccount": "Create account",
     "signIn": "Sign in",
-    "myAccount": "My account",
+    "myAccount": "My profile",
     "requestContracting": "Request contracting",
     "signOut": "Sign out",
     "openMenu": "Open menu",
@@ -387,6 +387,7 @@
     },
     "gate": {
       "title": "Sign in or create an account to view this content",
+      "lockedTitle": "Sign in",
       "createAccount": "Create account",
       "signIn": "Sign in"
     }

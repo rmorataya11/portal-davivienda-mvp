@@ -7,7 +7,7 @@
     "myApps": "Mis apps",
     "createAccount": "Crear cuenta",
     "signIn": "Iniciar sesión",
-    "myAccount": "Mi cuenta",
+    "myAccount": "Mi perfil",
     "requestContracting": "Solicitar contratación",
     "signOut": "Cerrar sesión",
     "openMenu": "Abrir menú",
@@ -387,6 +387,7 @@
     },
     "gate": {
       "title": "Inicie sesión o cree una cuenta para ver este contenido",
+      "lockedTitle": "Inicie sesión",
       "createAccount": "Crear cuenta",
       "signIn": "Iniciar sesión"
     }

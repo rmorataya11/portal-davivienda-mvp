@@ -19,7 +19,7 @@ export function GuideList() {
   const localizedGuides = localizeGuides(guides, t);
 
   return (
-    <div className="relative py-7 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-white">
+    <div className="relative overflow-x-clip py-7 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:max-w-[100vw] before:-translate-x-1/2 before:bg-white">
       <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2">
         {localizedGuides.map((guide, index) => (
           <Reveal key={guide.id} delay={(index % 2) * 80}>
