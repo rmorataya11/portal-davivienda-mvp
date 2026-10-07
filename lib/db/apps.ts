@@ -275,6 +275,11 @@ export async function updateDeveloperApp(
   input: { name?: string; description?: string | null },
 ): Promise<DeveloperAppRecord> {
   const current = await getDeveloperApp(developerId, appId);
+
+  if (current.environment === 'production') {
+    throw new AppStateError('Una app en producción no se puede editar.');
+  }
+
   const name = input.name ?? current.name;
   const description = input.description === undefined ? current.description : input.description;
 
@@ -297,6 +302,10 @@ export async function updateDeveloperApp(
 
 export async function revokeDeveloperApp(developerId: string, appId: string): Promise<DeveloperAppRecord> {
   const current = await getDeveloperApp(developerId, appId);
+
+  if (current.environment === 'production') {
+    throw new AppStateError('Una app en producción no se puede eliminar.');
+  }
 
   if (current.status === 'revoked') {
     return current;

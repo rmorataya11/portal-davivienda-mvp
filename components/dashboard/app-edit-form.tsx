@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useState, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { useCatalogView } from "@/components/catalog/catalog-provider";
@@ -166,11 +167,11 @@ export function AppActionDialog({
     };
   }, [onClose, open]);
 
-  if (!open) {
+  if (!open || typeof document === "undefined") {
     return null;
   }
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[80] flex items-center justify-center px-4 py-8">
       <button type="button" className="absolute inset-0 bg-[#141F25]/45" aria-label={t("cancel")} onClick={onClose} />
       <div
@@ -202,7 +203,8 @@ export function AppActionDialog({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

@@ -34,6 +34,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
   const product = useCatalogView(app?.apiProduct ?? "");
   const menuRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
+  const showProductionCta = app?.environment === "sandbox" && app?.status === "active";
 
   useEffect(() => {
     if (!ready) {
@@ -158,7 +159,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
   return (
     <div>
       <div className="relative rounded-2xl bg-white px-6 py-6 sm:px-8 sm:py-8">
-        {!isEditing ? (
+        {!isEditing && detail.environment !== "production" ? (
           <div ref={menuRef} className="absolute top-5 right-5 z-10 sm:top-6 sm:right-6">
             <button
               type="button"
@@ -175,7 +176,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
               <div
                 id={menuId}
                 role="menu"
-                className="absolute right-0 z-20 mt-1 min-w-[168px] overflow-hidden rounded-[12px] border border-[#E7EAEE] bg-white py-1"
+                className="absolute right-0 z-20 mt-1 min-w-[168px] overflow-hidden rounded-[12px] border border-[#E7EAEE] bg-white py-1 shadow-[0_12px_32px_rgba(20,31,37,0.12)]"
               >
                 <button
                   type="button"
@@ -204,7 +205,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
           </div>
         ) : null}
 
-        <div className={`flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16 ${!isEditing ? "pr-14" : ""}`}>
+        <div className={`flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16 ${!isEditing && detail.environment !== "production" ? "pr-14" : ""}`}>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">{detail.name}</h1>
@@ -223,7 +224,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
             ) : null}
           </div>
 
-          {!isEditing && detail.environment === "sandbox" && detail.status === "active" ? (
+          {!isEditing && showProductionCta ? (
             <Link
               href={productionHref}
               className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[246px]"
@@ -233,7 +234,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
           ) : null}
         </div>
 
-        {isEditing ? (
+        {isEditing && detail.environment !== "production" ? (
           <div className="mt-6">
             <AppEditForm
               app={detail}
