@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
 import { SlidingIndicator, useSlidingIndicator } from "@/components/ui/sliding-indicator";
@@ -13,11 +14,27 @@ import { ProfileRequests } from "./profile-requests";
 
 type TabId = "datos" | "solicitudes" | "facturacion";
 
+function tabFromQuery(value: string | null): TabId | null {
+  if (value === "datos" || value === "solicitudes" || value === "facturacion") {
+    return value;
+  }
+
+  return null;
+}
+
 export function ProfilePage() {
   const t = useTranslations("Profile");
+  const searchParams = useSearchParams();
   const { apps, ready: appsReady } = useDeveloperApps();
-  const [activeTab, setActiveTab] = useState<TabId>("datos");
+  const [activeTab, setActiveTab] = useState<TabId>(() => tabFromQuery(searchParams.get("tab")) ?? "datos");
   const showBillingTab = appsReady && hasProductionApps(apps);
+
+  useEffect(() => {
+    const next = tabFromQuery(searchParams.get("tab"));
+    if (next) {
+      setActiveTab(next);
+    }
+  }, [searchParams]);
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "datos", label: t("tabs.data") },
     { id: "solicitudes", label: t("tabs.requests") },
