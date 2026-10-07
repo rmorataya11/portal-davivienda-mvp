@@ -1054,6 +1054,11 @@
       "products": "Products:",
       "productOfInterest": "Product of interest:"
     },
+    "sections": {
+      "company": "Company",
+      "request": "Request",
+      "contact": "Contact"
+    },
     "fields": {
       "companyName": "Legal name / Company name",
       "companyNamePlaceholder": "My Company S.A. de C.V.",

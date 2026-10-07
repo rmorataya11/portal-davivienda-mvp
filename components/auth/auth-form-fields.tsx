@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { useEffect, useId, useRef, useState, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 
 const controlClassName =
   "h-12 w-full rounded-[10px] border bg-white px-4 text-[15px] text-[#141F25] outline-none transition-[border-color,box-shadow] placeholder:text-[#A8AEB5] hover:border-[#B8BFC6] focus:border-[#E1251B] focus:shadow-[0_0_0_3px_rgba(225,37,27,0.12)] disabled:cursor-not-allowed disabled:bg-[#F5F6F8] disabled:text-[#6A7178] disabled:hover:border-[#D5DAE0] read-only:bg-[#F5F6F8] read-only:hover:border-[#D5DAE0]";
@@ -71,7 +71,7 @@ export function TextField({
   return (
     <div
       className={`${
-        isRow ? "grid gap-2 sm:grid-cols-[220px_minmax(0,1fr)] sm:items-start sm:gap-8" : ""
+        isRow ? "grid gap-2 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-start sm:gap-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-8" : ""
       } ${className}`}
     >
       <FieldLabel htmlFor={id} required={required} tone={isRow ? "muted" : "default"} className={isRow ? "sm:pt-3" : ""}>
@@ -229,12 +229,143 @@ export function SelectField({
   );
 }
 
+export function MenuSelectField({
+  id,
+  name,
+  label,
+  required,
+  error,
+  placeholder,
+  orientation = "stack",
+  value,
+  onChange,
+  options,
+  className = "",
+}: {
+  id: string;
+  name: string;
+  label: string;
+  required?: boolean;
+  error?: string;
+  placeholder?: string;
+  orientation?: "stack" | "row";
+  value: string;
+  onChange: (value: string) => void;
+  options: Array<{ value: string; label: string }>;
+  className?: string;
+}) {
+  const t = useTranslations("Auth.common");
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+  const errorId = `${id}-error`;
+  const selectPlaceholder = placeholder ?? t("selectPlaceholder");
+  const isRow = orientation === "row";
+  const current = options.find((option) => option.value === value);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div
+      className={`${
+        isRow ? "grid gap-2 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-start sm:gap-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-8" : ""
+      } ${className}`}
+    >
+      <FieldLabel htmlFor={id} required={required} tone={isRow ? "muted" : "default"} className={isRow ? "sm:pt-3" : ""}>
+        {label}
+      </FieldLabel>
+      <div>
+        <input type="hidden" name={name} value={value} />
+        <div ref={rootRef} className={`relative ${isRow ? "" : "mt-2"}`}>
+          <button
+            type="button"
+            id={id}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            aria-controls={menuId}
+            onClick={() => setOpen((currentOpen) => !currentOpen)}
+            className={`${controlClassName} flex items-center justify-between gap-3 pr-4 text-left ${fieldBorder(error)} ${
+              current ? "" : "text-[#A8AEB5]"
+            }`}
+          >
+            <span className="min-w-0 truncate">{current?.label ?? selectPlaceholder}</span>
+            <svg
+              className={`h-4 w-4 shrink-0 text-[#6A7178] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          {open ? (
+            <div
+              id={menuId}
+              role="listbox"
+              className="absolute top-full right-0 left-0 z-30 mt-2 overflow-hidden rounded-[12px] border border-[#E7EAEE] bg-white py-1 shadow-[0_16px_40px_rgba(20,31,37,0.16)]"
+            >
+              {options.map((option) => {
+                const selected = option.value === value;
+
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    role="option"
+                    aria-selected={selected}
+                    onClick={() => {
+                      onChange(option.value);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full px-3 py-2.5 text-left text-[14px] font-medium transition-colors ${
+                      selected ? "bg-[#FFF1F0] text-[#E1251B]" : "text-[#404040] hover:bg-[#F8F9FB]"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
+        <FieldError id={errorId} message={error} />
+      </div>
+    </div>
+  );
+}
+
 export function TextAreaField({
   id,
   label,
   hint,
   required,
   error,
+  orientation = "stack",
   className = "",
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -242,29 +373,42 @@ export function TextAreaField({
   hint?: string;
   required?: boolean;
   error?: string;
+  orientation?: "stack" | "row";
 }) {
   const errorId = id ? `${id}-error` : undefined;
   const hintId = id ? `${id}-hint` : undefined;
+  const isRow = orientation === "row";
 
   return (
-    <div className={className}>
-      <FieldLabel htmlFor={id} required={required}>
+    <div
+      className={`${
+        isRow ? "grid gap-2 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-start sm:gap-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-8" : ""
+      } ${className}`}
+    >
+      <FieldLabel htmlFor={id} required={required} tone={isRow ? "muted" : "default"} className={isRow ? "sm:pt-3" : ""}>
         {label}
       </FieldLabel>
-      {hint ? (
-        <p id={hintId} className="mt-1 text-[14px] leading-6 text-[#8A9096]">
-          {hint}
-        </p>
-      ) : null}
-      <textarea
-        id={id}
-        required={required}
-        aria-invalid={Boolean(error)}
-        aria-describedby={[hint ? hintId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") || undefined}
-        className={`mt-2 min-h-[148px] ${controlClassName} h-auto py-3 ${fieldBorder(error)}`}
-        {...props}
-      />
-      <FieldError id={errorId ?? ""} message={error} />
+      <div>
+        {hint && !isRow ? (
+          <p id={hintId} className="mt-1 text-[14px] leading-6 text-[#8A9096]">
+            {hint}
+          </p>
+        ) : null}
+        <textarea
+          id={id}
+          required={required}
+          aria-invalid={Boolean(error)}
+          aria-describedby={[hint ? hintId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") || undefined}
+          className={`${isRow ? "" : "mt-2 "}min-h-[148px] ${controlClassName} h-auto py-3 ${fieldBorder(error)}`}
+          {...props}
+        />
+        {hint && isRow ? (
+          <p id={hintId} className="mt-1.5 text-[13px] leading-5 text-[#8E8E8E]">
+            {hint}
+          </p>
+        ) : null}
+        <FieldError id={errorId ?? ""} message={error} />
+      </div>
     </div>
   );
 }
