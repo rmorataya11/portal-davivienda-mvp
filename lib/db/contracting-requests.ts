@@ -1,5 +1,5 @@
 import { query } from './client';
-import { getDeveloperProfile } from './developers';
+import { resolveDeveloperId } from './developers';
 
 export type CreateContractingRequestInput = {
   developerId: string;
@@ -90,15 +90,10 @@ function mapContractingRequest(row: ContractingRequestRow): ContractingRequest {
   };
 }
 
-async function resolveDeveloperId(developerId: string) {
-  const developer = await getDeveloperProfile(developerId);
-  return developer?.id ?? null;
-}
-
 export async function createContractingRequest(
   data: CreateContractingRequestInput,
 ): Promise<ContractingRequest> {
-  const developerId = await resolveDeveloperId(data.developerId);
+  const developerId = await resolveDeveloperId({ developerId: data.developerId });
 
   if (!developerId) {
     throw new Error('No se encontró el developer para crear la solicitud.');
@@ -166,7 +161,7 @@ export async function createContractingRequest(
 export async function getContractingRequestsByDeveloper(
   developerId: string,
 ): Promise<ContractingRequest[]> {
-  const resolvedId = await resolveDeveloperId(developerId);
+  const resolvedId = await resolveDeveloperId({ developerId });
 
   if (!resolvedId) {
     return [];

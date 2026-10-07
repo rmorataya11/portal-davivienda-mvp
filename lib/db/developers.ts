@@ -213,6 +213,48 @@ export async function findDeveloperIdByIdentityUid(identityUid: string): Promise
   return typeof id === 'string' ? id : null;
 }
 
+export async function findDeveloperIdByEmail(email: string): Promise<string | null> {
+  const result = await query(`SELECT id FROM developers WHERE lower(email) = lower($1) LIMIT 1`, [
+    email,
+  ]);
+  const id = result.rows[0]?.id;
+  return typeof id === 'string' ? id : null;
+}
+
+export async function resolveDeveloperId(lookup: {
+  developerId?: string | null;
+  identityUid?: string | null;
+  email?: string | null;
+}): Promise<string | null> {
+  const identityUid = lookup.identityUid?.trim() || '';
+  if (identityUid) {
+    const fromIdentity = await findDeveloperIdByIdentityUid(identityUid);
+    if (fromIdentity) {
+      return fromIdentity;
+    }
+  }
+
+  const developerId = lookup.developerId?.trim() || '';
+  if (developerId) {
+    const profile = await getDeveloperProfile(developerId);
+    if (profile) {
+      return profile.id;
+    }
+
+    const fromIdentity = await findDeveloperIdByIdentityUid(developerId);
+    if (fromIdentity) {
+      return fromIdentity;
+    }
+  }
+
+  const email = lookup.email?.trim() || '';
+  if (email) {
+    return findDeveloperIdByEmail(email);
+  }
+
+  return null;
+}
+
 export async function getDeveloperProfile(developerId: string): Promise<DeveloperProfile | null> {
   const result = await query(
     `SELECT id, identity_uid, email, full_name, company_name, document_type, document_id, phone, notify_before_expiration

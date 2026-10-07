@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 
+import { getRequestSession } from '@/lib/auth/server';
 import { catalogApiSlugExists, getCatalogApiBySlug } from '@/lib/catalog/queries';
 import {
   createContractingRequest,
   getContractingRequestsByDeveloper,
 } from '@/lib/db/contracting-requests';
+import { resolveDeveloperId } from '@/lib/db/developers';
 import { sendNotificationEmail } from '@/lib/email/mailer';
 import { renderContractingRequestEmail } from '@/lib/email/templates';
 import {
@@ -45,7 +47,13 @@ type ContractingRequestBody = {
 
 export async function GET(request: Request) {
   try {
-    const developerId = new URL(request.url).searchParams.get('developerId')?.trim() ?? '';
+    const session = await getRequestSession(request);
+    const queryDeveloperId = new URL(request.url).searchParams.get('developerId')?.trim() ?? '';
+    const developerId = await resolveDeveloperId({
+      identityUid: session?.uid,
+      developerId: queryDeveloperId,
+      email: session?.email,
+    });
 
     if (!developerId) {
       return NextResponse.json({ message: 'developerId es obligatorio.' }, { status: 400 });
@@ -64,8 +72,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const session = await getRequestSession(request);
     const body = (await request.json()) as ContractingRequestBody;
-    const developerId = readTrimmedString(body.developerId);
+    const developerId = await resolveDeveloperId({
+      identityUid: session?.uid,
+      developerId: readTrimmedString(body.developerId),
+      email: session?.email,
+    });
     const razonSocial = readTrimmedString(body.razonSocial);
     const nit = readTrimmedString(body.nit);
     const industria = readTrimmedString(body.industria);
@@ -84,8 +97,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'app_id no es un identificador válido.' }, { status: 400 });
     }
 
+    if (!developerId) {
+      return NextResponse.json(
+        {
+          message: session
+            ? 'No hay un perfil de developer asociado a esta sesión.'
+            : 'Debe iniciar sesión para enviar la solicitud.',
+        },
+        { status: session ? 403 : 401 },
+      );
+    }
+
     if (
-      !developerId ||
       !razonSocial ||
       !nit ||
       !industria ||

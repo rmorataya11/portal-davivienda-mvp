@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { useCatalogViews } from "@/components/catalog/catalog-provider";
+import { getSessionIdToken } from "@/lib/auth/session";
 import { formatCalendarDate } from "@/lib/format/date";
 
 type RequestRow = {
@@ -94,7 +95,12 @@ export function ProfileRequests() {
 
     let cancelled = false;
 
-    fetch(`/api/contracting-requests?developerId=${encodeURIComponent(lookupId)}`)
+    getSessionIdToken()
+      .then((token) =>
+        fetch(`/api/contracting-requests?developerId=${encodeURIComponent(lookupId)}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        }),
+      )
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(t("loadFailed"));

@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
 import { useAuth } from "@/components/auth/auth-provider";
+import { getSessionIdToken } from "@/lib/auth/session";
 import { MenuSelectField, TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { useCatalogView, useCatalogViews } from "@/components/catalog/catalog-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
@@ -224,9 +225,18 @@ export function ContractingRequestForm({
     setIsSubmitting(true);
 
     try {
+      const token = await getSessionIdToken();
+      if (!token) {
+        setFormError(t("errors.loginRequired"));
+        return;
+      }
+
       const response = await fetch("/api/contracting-requests", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           developerId: lookupId,
           razonSocial: String(formData.get("companyName") ?? "").trim(),
