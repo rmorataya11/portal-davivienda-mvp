@@ -73,6 +73,66 @@ html {
   animation: tab-panel-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+.docs-ide {
+  --docs-shell: #ffffff;
+  --docs-sidebar: #fafbfc;
+  --docs-tabbar: #f7f8fa;
+  --docs-panel: #ffffff;
+  --docs-border: #e7eaee;
+  --docs-border-soft: #eef1f4;
+  --docs-input: #ffffff;
+  --docs-input-border: #e3e7ec;
+  --docs-hover: #eef1f4;
+  --docs-tree-hover: #f1f4f7;
+  --docs-active: #fff1f0;
+  --docs-text: #202a31;
+  --docs-title: #404040;
+  --docs-heading: #141f25;
+  --docs-muted: #6a7178;
+  --docs-soft: #8e8e8e;
+  --docs-desc: #707070;
+  --docs-chip: #f2f3f5;
+  --docs-chip-text: #6a7178;
+  --docs-required: #ffeaea;
+  --docs-required-text: #a11b1b;
+  --docs-code: #f8f9fb;
+  --docs-code-bar: #f2f3f5;
+  --docs-empty-icon: #fff1f0;
+  --docs-tab-active: #ffffff;
+  --docs-method-post: #1b2833;
+  color-scheme: light;
+}
+
+.docs-ide[data-theme="dark"] {
+  --docs-shell: #141f25;
+  --docs-sidebar: #10161b;
+  --docs-tabbar: #1a2228;
+  --docs-panel: #141f25;
+  --docs-border: #2a3239;
+  --docs-border-soft: #243038;
+  --docs-input: #1a2228;
+  --docs-input-border: #2a3239;
+  --docs-hover: #1e262c;
+  --docs-tree-hover: #1e262c;
+  --docs-active: #3a1c1c;
+  --docs-text: #e7eaee;
+  --docs-title: #e7eaee;
+  --docs-heading: #f2f3f5;
+  --docs-muted: #9aa3a9;
+  --docs-soft: #8e8e8e;
+  --docs-desc: #a8b0b6;
+  --docs-chip: #1e262c;
+  --docs-chip-text: #9aa3a9;
+  --docs-required: #3a1c1c;
+  --docs-required-text: #ff8a80;
+  --docs-code: #0f1519;
+  --docs-code-bar: #1a2228;
+  --docs-empty-icon: #3a1c1c;
+  --docs-tab-active: #141f25;
+  --docs-method-post: #c9d1d9;
+  color-scheme: dark;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tab-panel-in {
     animation: none;

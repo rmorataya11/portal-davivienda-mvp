@@ -713,6 +713,8 @@
       "emptyDescription": "Seleccione {endpoint} en el explorador de la izquierda para ver la documentación.",
       "copy": "Copiar",
       "copied": "Copiado",
+      "themeToDark": "Cambiar a tema oscuro",
+      "themeToLight": "Cambiar a tema claro",
       "languages": {
         "json": "JSON",
         "curl": "cURL",

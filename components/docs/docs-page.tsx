@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
 import { DocsRequestCode, DocsStatusCode } from "@/components/docs/docs-code-block";
+import { DocsThemeProvider, DocsThemeToggle, useDocsTheme } from "@/components/docs/docs-theme";
 import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import {
   findLocalizedDocsEndpoint,
@@ -19,7 +20,7 @@ import type { CatalogEndpoint } from "@/lib/catalog/queries";
 
 function methodIconClass(method: DocsHttpMethod) {
   if (method === "POST") {
-    return "text-[#1B2833]";
+    return "text-[var(--docs-method-post)]";
   }
 
   if (method === "PUT") {
@@ -61,7 +62,16 @@ function docsStateFromApis(apiParam: string | null, apis: DocsApi[]) {
 }
 
 export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
+  return (
+    <DocsThemeProvider>
+      <DocsExplorer endpoint={endpoint} />
+    </DocsThemeProvider>
+  );
+}
+
+function DocsExplorer({ endpoint }: { endpoint: CatalogEndpoint | null }) {
   const t = useTranslations("Documentacion.explorer");
+  const { theme } = useDocsTheme();
   const products = useCatalogViews();
   const locale = useLocale();
   const searchParams = useSearchParams();
@@ -172,9 +182,12 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
           <h1 className="mb-4 text-[22px] font-bold tracking-[0.2px] text-[#404040]">
             {t("title")}
           </h1>
-          <div className="flex min-h-[640px] overflow-hidden rounded-[24px] border border-[#E7EAEE] bg-white lg:h-[calc(100dvh-168px)] lg:min-h-[680px]">
+          <div
+            data-theme={theme}
+            className="docs-ide flex min-h-[640px] overflow-hidden rounded-[24px] border border-[var(--docs-border)] bg-[var(--docs-shell)] transition-colors duration-300 lg:h-[calc(100dvh-168px)] lg:min-h-[680px]"
+          >
             <aside
-              className={`hidden shrink-0 overflow-hidden border-[#E7EAEE] bg-[#FAFBFC] transition-[width] duration-300 lg:flex ${
+              className={`hidden shrink-0 overflow-hidden border-[var(--docs-border)] bg-[var(--docs-sidebar)] transition-[width,background-color,border-color] duration-300 lg:flex ${
                 desktopSidebarOpen ? "w-[280px] border-r" : "w-0 border-r-0"
               }`}
             >
@@ -195,11 +208,11 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
             </aside>
 
             <div className="flex min-w-0 flex-1 flex-col">
-              <div className="flex h-11 shrink-0 items-center border-b border-[#E7EAEE] bg-[#F7F8FA]">
+              <div className="flex h-11 shrink-0 items-center border-b border-[var(--docs-border)] bg-[var(--docs-tabbar)]">
                 <button
                   type="button"
                   onClick={() => setMobileSidebarOpen(true)}
-                  className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-[#E7EAEE] bg-white text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:hidden"
+                  className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-[10px] border border-[var(--docs-border)] bg-[var(--docs-input)] text-[var(--docs-text)] transition-colors hover:bg-[var(--docs-hover)] lg:hidden"
                   aria-label={t("openExplorer")}
                 >
                   <ExplorerIcon />
@@ -207,7 +220,7 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
                 <button
                   type="button"
                   onClick={() => setDesktopSidebarOpen((current) => !current)}
-                  className="hidden h-11 w-11 items-center justify-center text-[#404040] transition-colors hover:bg-[#EEF1F4] lg:inline-flex"
+                  className="hidden h-11 w-11 items-center justify-center text-[var(--docs-text)] transition-colors hover:bg-[var(--docs-hover)] lg:inline-flex"
                   aria-label={desktopSidebarOpen ? t("hideExplorer") : t("showExplorer")}
                 >
                   <ExplorerIcon />
@@ -225,14 +238,16 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
                     return (
                       <div
                         key={tabId}
-                        className={`group flex shrink-0 items-center border-r border-[#E7EAEE] ${
-                          isActive ? "border-b-2 border-b-[#E1251B] bg-white" : "border-b-2 border-b-transparent bg-transparent"
+                        className={`group flex shrink-0 items-center border-r border-[var(--docs-border)] ${
+                          isActive
+                            ? "border-b-2 border-b-[#E1251B] bg-[var(--docs-tab-active)]"
+                            : "border-b-2 border-b-transparent bg-transparent"
                         }`}
                       >
                         <button
                           type="button"
                           onClick={() => setActiveTabId(tabId)}
-                          className={`flex items-center gap-2 px-3 py-2 text-left ${isActive ? "text-[#141F25]" : "text-[#6A7178]"}`}
+                          className={`flex items-center gap-2 px-3 py-2 text-left ${isActive ? "text-[var(--docs-heading)]" : "text-[var(--docs-muted)]"}`}
                         >
                           <MethodFileIcon method={match.endpoint.method} />
                           <span className="font-mono text-[12px]">{match.endpoint.name}</span>
@@ -241,7 +256,7 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
                           <button
                             type="button"
                             onClick={() => closeTab(tabId)}
-                            className="mr-1 inline-flex h-6 w-6 items-center justify-center rounded-[6px] text-[#8E8E8E] transition-colors hover:bg-[#EEF1F4] hover:text-[#141F25]"
+                            className="mr-1 inline-flex h-6 w-6 items-center justify-center rounded-[6px] text-[var(--docs-soft)] transition-colors hover:bg-[var(--docs-hover)] hover:text-[var(--docs-heading)]"
                             aria-label={t("closeTab", { name: match.endpoint.name })}
                           >
                             <CloseIcon />
@@ -251,9 +266,10 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
                     );
                   })}
                 </div>
+                <DocsThemeToggle className="border-l border-[var(--docs-border)]" />
               </div>
 
-              <div className="min-h-0 flex-1 overflow-y-auto bg-white">
+              <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--docs-panel)]">
                 {activeMatch ? (
                   <EndpointPanel
                     key={activeMatch.endpoint.id}
@@ -270,19 +286,19 @@ export function DocsPage({ endpoint }: { endpoint: CatalogEndpoint | null }) {
       </section>
 
       {mobileSidebarOpen ? (
-        <div className="fixed inset-0 z-[60] lg:hidden">
+        <div data-theme={theme} className="docs-ide fixed inset-0 z-[60] lg:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-[#141F25]/45"
             aria-label={t("closeExplorer")}
             onClick={() => setMobileSidebarOpen(false)}
           />
-          <aside className="relative flex h-full w-[min(280px,86vw)] flex-col bg-[#FAFBFC] shadow-[0_18px_50px_rgba(20,31,37,0.18)]">
-            <div className="flex items-center justify-end border-b border-[#E7EAEE] px-3 py-3">
+          <aside className="relative flex h-full w-[min(280px,86vw)] flex-col bg-[var(--docs-sidebar)] shadow-[0_18px_50px_rgba(20,31,37,0.18)]">
+            <div className="flex items-center justify-end border-b border-[var(--docs-border)] px-3 py-3">
               <button
                 type="button"
                 onClick={() => setMobileSidebarOpen(false)}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] text-[#6A7178] hover:bg-[#EEF1F4]"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-[8px] text-[var(--docs-muted)] hover:bg-[var(--docs-hover)]"
                 aria-label={t("closeExplorer")}
               >
                 <CloseIcon />
@@ -330,8 +346,8 @@ function ExplorerTree({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-[#E7EAEE] px-3 py-3">
-        <label className="flex h-10 items-center rounded-[12px] border border-[#E3E7EC] bg-white px-3 text-[#8E8E8E] transition-colors focus-within:border-[#CBD2D9]">
+      <div className="border-b border-[var(--docs-border)] px-3 py-3">
+        <label className="flex h-10 items-center rounded-[12px] border border-[var(--docs-input-border)] bg-[var(--docs-input)] px-3 text-[var(--docs-soft)] transition-colors focus-within:border-[var(--docs-muted)]">
           <SearchIcon />
           <span className="sr-only">{t("searchLabel")}</span>
           <input
@@ -339,14 +355,14 @@ function ExplorerTree({
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder={t("searchPlaceholder")}
-            className="ml-2 h-full w-full bg-transparent text-[13px] text-[#30383F] outline-none placeholder:text-[#8E8E8E]"
+            className="ml-2 h-full w-full bg-transparent text-[13px] text-[var(--docs-text)] outline-none placeholder:text-[var(--docs-soft)]"
           />
         </label>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-2 py-3">
         {filteredApis.length === 0 ? (
-          <p className="px-3 py-6 text-[13px] leading-6 text-[#6A7178]">{t("noResults")}</p>
+          <p className="px-3 py-6 text-[13px] leading-6 text-[var(--docs-muted)]">{t("noResults")}</p>
         ) : (
           <ul className="space-y-1">
             {filteredApis.map((api) => {
@@ -357,7 +373,7 @@ function ExplorerTree({
                   <button
                     type="button"
                     onClick={() => onToggleApi(api.apiId)}
-                    className="flex w-full items-center gap-2 rounded-[10px] px-2 py-2 text-left text-[13px] font-medium text-[#202A31] transition-colors hover:bg-[#F1F4F7]"
+                    className="flex w-full items-center gap-2 rounded-[10px] px-2 py-2 text-left text-[13px] font-medium text-[var(--docs-text)] transition-colors hover:bg-[var(--docs-tree-hover)]"
                     aria-expanded={expanded}
                   >
                     <ChevronIcon open={expanded} />
@@ -365,7 +381,7 @@ function ExplorerTree({
                     <span className="truncate">{api.apiName}</span>
                   </button>
                   {expanded ? (
-                    <ul className="mt-0.5 ml-2 space-y-0.5 border-l border-[#E7EAEE] pl-3">
+                    <ul className="mt-0.5 ml-2 space-y-0.5 border-l border-[var(--docs-border)] pl-3">
                       {api.endpoints.map((endpoint) => {
                         const isActive = endpoint.id === activeTabId;
 
@@ -376,8 +392,8 @@ function ExplorerTree({
                               onClick={() => onOpenEndpoint(endpoint.id)}
                               className={`flex w-full items-center gap-2 rounded-[10px] px-2 py-2 text-left transition-colors ${
                                 isActive
-                                  ? "bg-[#FFF1F0] text-[#141F25]"
-                                  : "text-[#30383F] hover:bg-[#F1F4F7]"
+                                  ? "bg-[var(--docs-active)] text-[var(--docs-heading)]"
+                                  : "text-[var(--docs-text)] hover:bg-[var(--docs-tree-hover)]"
                               }`}
                             >
                               <MethodFileIcon method={endpoint.method} />
@@ -404,7 +420,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
 
   return (
     <div className="px-5 py-6 sm:px-7 sm:py-8">
-      <p className="font-mono text-[12px] tracking-[0.2px] text-[#8E8E8E] sm:text-[13px]">
+      <p className="font-mono text-[12px] tracking-[0.2px] text-[var(--docs-soft)] sm:text-[13px]">
         {apiName}
         <span className="px-2">/</span>
         {endpoint.name.replace(/\.(get|post|put|delete)$/i, "")}
@@ -414,16 +430,16 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         <span className={`inline-flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-[13px] font-bold ${methodBadgeClass(endpoint.method)}`}>
           {endpoint.method}
         </span>
-        <code className="min-w-0 text-[15px] font-medium leading-6 tracking-[0.1px] text-[#202A31] sm:text-[18px]">
+        <code className="min-w-0 text-[15px] font-medium leading-6 tracking-[0.1px] text-[var(--docs-text)] sm:text-[18px]">
           <BreakablePath value={endpoint.httpUrl} />
         </code>
       </div>
 
-      <p className="mt-5 text-[15px] leading-7 text-[#707070]">{endpoint.description}</p>
+      <p className="mt-5 text-[15px] leading-7 text-[var(--docs-desc)]">{endpoint.description}</p>
 
       <div className="mt-10">
-        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">{t("parameters")}</h2>
-        <div className="mt-3 overflow-x-auto rounded-[18px] border border-[#E7EAEE]">
+        <h2 className="text-[18px] font-medium text-[var(--docs-title)] sm:text-[20px]">{t("parameters")}</h2>
+        <div className="mt-3 overflow-x-auto rounded-[18px] border border-[var(--docs-border)]">
           <table className="w-full table-fixed border-collapse text-left">
             <colgroup>
               <col className="w-[22%]" />
@@ -432,7 +448,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
               <col className="w-[36%]" />
             </colgroup>
             <thead>
-              <tr className="bg-[#F7F8FA] text-[11px] font-medium uppercase tracking-[0.14em] text-[#8E8E8E]">
+              <tr className="bg-[var(--docs-tabbar)] text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--docs-soft)]">
                 <th className="px-4 py-3 font-medium">{t("name")}</th>
                 <th className="px-4 py-3 font-medium">{t("type")}</th>
                 <th className="px-4 py-3 font-medium">{t("usage")}</th>
@@ -441,25 +457,27 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
             </thead>
             <tbody>
               {endpoint.parameters.map((parameter, index) => (
-                <tr key={`${parameter.name}-${index}`} className="border-t border-[#EEF1F4]">
-                  <td className="min-w-0 px-4 py-3.5 align-middle font-mono text-[13px] font-semibold text-[#202A31]">
+                <tr key={`${parameter.name}-${index}`} className="border-t border-[var(--docs-border-soft)]">
+                  <td className="min-w-0 px-4 py-3.5 align-middle font-mono text-[13px] font-semibold text-[var(--docs-text)]">
                     <BreakablePath value={parameter.name} />
                   </td>
                   <td className="min-w-0 px-4 py-3.5 align-middle">
-                    <span className="inline-flex min-h-7 max-w-full items-center whitespace-normal rounded-full bg-[#F2F3F5] px-2.5 py-1 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-[#6A7178]">
+                    <span className="inline-flex min-h-7 max-w-full items-center whitespace-normal rounded-full bg-[var(--docs-chip)] px-2.5 py-1 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--docs-chip-text)]">
                       {parameter.type}
                     </span>
                   </td>
                   <td className="min-w-0 px-4 py-3.5 align-middle">
                     <span
                       className={`inline-flex min-h-7 max-w-full items-center rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.08em] ${
-                        parameter.required ? "bg-[#FFEAEA] text-[#A11B1B]" : "bg-[#F2F3F5] text-[#6A7178]"
+                        parameter.required
+                          ? "bg-[var(--docs-required)] text-[var(--docs-required-text)]"
+                          : "bg-[var(--docs-chip)] text-[var(--docs-chip-text)]"
                       }`}
                     >
                       {parameter.required ? t("required") : t("optional")}
                     </span>
                   </td>
-                  <td className="min-w-0 px-4 py-3.5 align-middle text-[13px] leading-6 [overflow-wrap:normal] [word-break:normal] text-[#6A7178]">
+                  <td className="min-w-0 px-4 py-3.5 align-middle text-[13px] leading-6 [overflow-wrap:normal] [word-break:normal] text-[var(--docs-muted)]">
                     {parameter.description}
                   </td>
                 </tr>
@@ -470,7 +488,7 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
       </div>
 
       <div className="mt-10">
-        <h2 className="text-[18px] font-medium text-[#404040] sm:text-[20px]">{t("requestExample")}</h2>
+        <h2 className="text-[18px] font-medium text-[var(--docs-title)] sm:text-[20px]">{t("requestExample")}</h2>
         <div className="mt-3">
           <DocsRequestCode examples={endpoint.requestExamples} />
         </div>
@@ -480,10 +498,10 @@ function EndpointPanel({ apiName, endpoint }: { apiName: string; endpoint: DocsE
         <button
           type="button"
           onClick={() => setResponseOpen((current) => !current)}
-          className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[#E7EAEE] bg-[#F8F9FB] px-4 py-3 text-left"
+          className="flex w-full items-center justify-between gap-3 rounded-[14px] border border-[var(--docs-border)] bg-[var(--docs-code)] px-4 py-3 text-left"
           aria-expanded={responseOpen}
         >
-          <span className="text-[16px] font-medium text-[#404040]">{t("responseExample")}</span>
+          <span className="text-[16px] font-medium text-[var(--docs-title)]">{t("responseExample")}</span>
           <ChevronIcon open={responseOpen} />
         </button>
         {responseOpen ? (
@@ -501,11 +519,11 @@ function EmptyState() {
 
   return (
     <div className="flex min-h-[420px] flex-col items-center justify-center px-6 py-16 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-[16px] bg-[#FFF1F0] text-[#E1251B]">
+      <div className="flex h-14 w-14 items-center justify-center rounded-[16px] bg-[var(--docs-empty-icon)] text-[#E1251B]">
         <CodeIcon />
       </div>
-      <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[#141F25]">{t("emptyTitle")}</h2>
-      <p className="mt-3 max-w-[420px] text-[15px] leading-7 text-[#6A7178]">
+      <h2 className="mt-5 text-[20px] font-bold tracking-[0.2px] text-[var(--docs-heading)]">{t("emptyTitle")}</h2>
+      <p className="mt-3 max-w-[420px] text-[15px] leading-7 text-[var(--docs-muted)]">
         {t("emptyDescription", { endpoint: "consulta-movimientos" })}
       </p>
     </div>
@@ -546,7 +564,7 @@ function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
       viewBox="0 0 16 16"
-      className={`h-3.5 w-3.5 shrink-0 text-[#8E8E8E] transition-transform duration-300 ${open ? "rotate-90" : ""}`}
+      className={`h-3.5 w-3.5 shrink-0 text-[var(--docs-soft)] transition-transform duration-300 ${open ? "rotate-90" : ""}`}
       fill="none"
       aria-hidden="true"
     >
