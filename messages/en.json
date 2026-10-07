@@ -438,6 +438,8 @@
     },
     "chart": {
       "title": "This week's activity",
+      "filterLabel": "Application",
+      "filterAll": "All apps",
       "calls": "{count} calls",
       "noTraffic": "No traffic yet",
       "peak": "Peak on {day}",

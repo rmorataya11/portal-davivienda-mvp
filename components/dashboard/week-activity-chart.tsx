@@ -1,14 +1,33 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState, type ReactNode } from "react";
 
 const WEEK_DAY_KEYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
-const EMPTY_BAR_HEIGHT = 6;
+const EMPTY_BAR_SCALE = 0.03;
 
-export function WeekActivityChart({ values }: { values: number[] }) {
+export function WeekActivityChart({
+  values,
+  filter,
+  filterKey,
+}: {
+  values: number[];
+  filter?: ReactNode;
+  filterKey?: string;
+}) {
   const t = useTranslations("Dashboard.chart");
   const locale = useLocale();
   const numberLocale = locale === "en" ? "en-US" : "es";
+  const [grown, setGrown] = useState(false);
+
+  useEffect(() => {
+    setGrown(false);
+    const frame = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => setGrown(true));
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [filterKey]);
   const dataMax = Math.max(...values, 0);
   const maxValue = Math.max(dataMax, 2);
   const midValue = Math.round(maxValue / 2);
@@ -28,9 +47,12 @@ export function WeekActivityChart({ values }: { values: number[] }) {
             {t("calls", { count: total.toLocaleString(numberLocale) })}
           </p>
         </div>
-        <p className="max-w-[148px] text-right text-[12px] leading-5 text-[#8E8E8E]">
-          {total === 0 ? t("noTraffic") : t("peak", { day: t(`days.${WEEK_DAY_KEYS[peakIndex]}`) })}
-        </p>
+        <div className="flex min-w-0 flex-col items-end gap-2">
+          {filter}
+          <p className="max-w-[220px] text-right text-[12px] leading-5 text-[#8E8E8E]">
+            {total === 0 ? t("noTraffic") : t("peak", { day: t(`days.${WEEK_DAY_KEYS[peakIndex]}`) })}
+          </p>
+        </div>
       </div>
 
       <div className="mt-6 flex min-h-0 flex-1 gap-3">
@@ -50,20 +72,23 @@ export function WeekActivityChart({ values }: { values: number[] }) {
           <div className="flex h-[calc(100%-28px)] items-end">
             {WEEK_DAY_KEYS.map((day, index) => {
               const value = values[index] ?? 0;
-              const height = value === 0 ? EMPTY_BAR_HEIGHT : Math.max((value / maxValue) * 100, EMPTY_BAR_HEIGHT);
-              const isToday = index === todayIndex && value > 0;
+              const target = value === 0 ? EMPTY_BAR_SCALE : Math.max(value / maxValue, EMPTY_BAR_SCALE);
+              const scale = grown ? target : 0;
+              const isToday = index === todayIndex;
 
               return (
                 <div key={day} className="group relative flex h-full flex-1 items-end justify-center">
                   <div className="pointer-events-none absolute -top-8 left-1/2 z-10 -translate-x-1/2 rounded-md bg-[#2C2C2C] px-2 py-1 text-[11px] font-medium whitespace-nowrap text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
                     {t("calls", { count: value.toLocaleString(numberLocale) })}
                   </div>
-                  <div
-                    className={`w-[70px] max-w-full rounded-[4px] transition-colors ${
-                      isToday ? "bg-[#E1251B]" : "bg-[#8E8E8E]"
-                    }`}
-                    style={{ height: value === 0 ? `${EMPTY_BAR_HEIGHT}px` : `${height}%` }}
-                  />
+                  <div className="relative h-full w-[70px] max-w-full">
+                    <div
+                      className={`absolute inset-x-0 bottom-0 h-full origin-bottom rounded-[4px] transition-transform duration-700 ease-out ${
+                        isToday ? "bg-[#E1251B]" : "bg-[#8E8E8E]"
+                      }`}
+                      style={{ transform: `scaleY(${scale})` }}
+                    />
+                  </div>
                 </div>
               );
             })}

@@ -1,10 +1,10 @@
 "use client";
 
-import { Rocket } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
+import { mockCalls30, mockWeekActivity } from "@/components/mock/mockAppActivity";
 import { hasProductionApps, isProductionApp, isSandboxGroupApp } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -18,9 +18,18 @@ const createAppButtonClassName =
 export function DashboardHome() {
   const { apps, ready, loadError } = useDeveloperApps();
   const t = useTranslations("Dashboard.home");
+  const chartT = useTranslations("Dashboard.chart");
+  const statusT = useTranslations("Dashboard.status");
   const errorsT = useTranslations("Dashboard.errors");
   const locale = useLocale();
   const numberLocale = locale === "en" ? "en-US" : "es";
+  const [appFilter, setAppFilter] = useState("all");
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 30_000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   if (!ready) {
     return <div className="h-[370px] animate-pulse rounded-2xl bg-white" />;
@@ -29,7 +38,9 @@ export function DashboardHome() {
   const productionApps = apps.filter(isProductionApp);
   const sandboxGroupApps = apps.filter(isSandboxGroupApp);
   const showBillingSummary = hasProductionApps(apps);
-  const weekActivity = [0, 0, 0, 0, 0, 0, 0];
+  const clock = new Date(now);
+  const weekActivity = mockWeekActivity(apps, appFilter, clock);
+  const calls30 = mockCalls30(apps, appFilter, clock);
   const sandboxCount = apps.filter((app) => app.environment === "sandbox").length;
 
   return (
@@ -55,17 +66,42 @@ export function DashboardHome() {
           </div>
         ) : null}
         <div className="min-h-0 flex-1">
-          <WeekActivityChart values={weekActivity} />
+          <WeekActivityChart
+            values={weekActivity}
+            filterKey={appFilter}
+            filter={
+              apps.length > 0 ? (
+                <>
+                  <label className="sr-only" htmlFor="dashboard-app-filter">
+                    {chartT("filterLabel")}
+                  </label>
+                  <select
+                    id="dashboard-app-filter"
+                    value={appFilter}
+                    onChange={(event) => setAppFilter(event.target.value)}
+                    className="h-10 max-w-[240px] truncate rounded-full border border-[#D5DAE0] bg-white px-4 text-[13px] font-medium text-[#404040]"
+                  >
+                    <option value="all">{chartT("filterAll")}</option>
+                    {apps.map((app) => (
+                      <option key={app.id} value={app.id}>
+                        {app.name} · {statusT(app.environment)}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              ) : null
+            }
+          />
         </div>
       </section>
 
       {loadError ? <p className="mt-5 text-[14px] leading-6 text-[#E1251B]">{errorsT("loadFailed")}</p> : null}
 
-      <div className="relative mt-[84px] py-8 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
+      <div className="relative mt-[84px] py-8 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:max-w-[100vw] before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
         <div className="relative grid h-full grid-cols-1 items-center gap-4 md:grid-cols-3">
           <MiniStat label={t("applications")} value={String(apps.length)} />
           <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
-          <MiniStat label={t("calls30")} value={(0).toLocaleString(numberLocale)} />
+          <MiniStat label={t("calls30")} value={calls30.toLocaleString(numberLocale)} />
         </div>
       </div>
 
@@ -120,9 +156,7 @@ export function DashboardHome() {
                 <AppGrid apps={productionApps} />
               ) : (
                 <div className="flex min-h-[220px] flex-col items-center justify-center rounded-[16px] border border-dashed border-[#D5DAE0] bg-white px-8 py-12 text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#F5F6F8]">
-                    <Rocket className="h-8 w-8 text-[#8E8E8E]" strokeWidth={1.5} aria-hidden="true" />
-                  </div>
+                  <img src="/miss_apps/apps_prod.svg" alt="" className="h-[160px] w-[160px] object-contain" />
                   <p className="mt-5 max-w-[420px] text-[15px] leading-7 text-[#6A7178]">{t("emptyProduction")}</p>
                   <Link
                     href="/solicitud-contratacion"
