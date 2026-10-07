@@ -13,14 +13,23 @@ function fieldBorder(error?: string) {
 export function FieldLabel({
   htmlFor,
   required,
+  tone = "default",
+  className = "",
   children,
 }: {
   htmlFor?: string;
   required?: boolean;
+  tone?: "default" | "muted";
+  className?: string;
   children: ReactNode;
 }) {
+  const toneClassName =
+    tone === "muted"
+      ? "text-[14px] font-medium text-[#8E8E8E]"
+      : "text-[15px] font-bold tracking-[0.2px] text-[#141F25]";
+
   return (
-    <label htmlFor={htmlFor} className="text-[15px] font-bold tracking-[0.2px] text-[#141F25]">
+    <label htmlFor={htmlFor} className={`${toneClassName} ${className}`}>
       {children}
       {required ? <span className="text-[#E1251B]"> *</span> : null}
     </label>
@@ -44,29 +53,46 @@ export function TextField({
   label,
   required,
   error,
+  hint,
+  orientation = "stack",
   className = "",
   ...props
 }: InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   required?: boolean;
   error?: string;
+  hint?: string;
+  orientation?: "stack" | "row";
 }) {
   const errorId = id ? `${id}-error` : undefined;
+  const hintId = id ? `${id}-hint` : undefined;
+  const isRow = orientation === "row";
 
   return (
-    <div className={className}>
-      <FieldLabel htmlFor={id} required={required}>
+    <div
+      className={`${
+        isRow ? "grid gap-2 sm:grid-cols-[220px_minmax(0,1fr)] sm:items-start sm:gap-8" : ""
+      } ${className}`}
+    >
+      <FieldLabel htmlFor={id} required={required} tone={isRow ? "muted" : "default"} className={isRow ? "sm:pt-3" : ""}>
         {label}
       </FieldLabel>
-      <input
-        id={id}
-        required={required}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? errorId : undefined}
-        className={`mt-2 ${controlClassName} ${fieldBorder(error)}`}
-        {...props}
-      />
-      <FieldError id={errorId ?? ""} message={error} />
+      <div>
+        <input
+          id={id}
+          required={required}
+          aria-invalid={Boolean(error)}
+          aria-describedby={[hint ? hintId : undefined, error ? errorId : undefined].filter(Boolean).join(" ") || undefined}
+          className={`${isRow ? "" : "mt-2 "}${controlClassName} ${fieldBorder(error)}`}
+          {...props}
+        />
+        {hint ? (
+          <p id={hintId} className="mt-1.5 text-[13px] leading-5 text-[#8E8E8E]">
+            {hint}
+          </p>
+        ) : null}
+        <FieldError id={errorId ?? ""} message={error} />
+      </div>
     </div>
   );
 }
@@ -150,6 +176,7 @@ export function SelectField({
   required,
   error,
   placeholder,
+  orientation = "stack",
   children,
   className = "",
   ...props
@@ -158,38 +185,46 @@ export function SelectField({
   required?: boolean;
   error?: string;
   placeholder?: string;
+  orientation?: "stack" | "row";
 }) {
   const t = useTranslations("Auth.common");
   const errorId = id ? `${id}-error` : undefined;
   const selectPlaceholder = placeholder ?? t("selectPlaceholder");
+  const isRow = orientation === "row";
 
   return (
-    <div className={className}>
-      <FieldLabel htmlFor={id} required={required}>
+    <div
+      className={`${
+        isRow ? "grid gap-2 sm:grid-cols-[220px_minmax(0,1fr)] sm:items-start sm:gap-8" : ""
+      } ${className}`}
+    >
+      <FieldLabel htmlFor={id} required={required} tone={isRow ? "muted" : "default"} className={isRow ? "sm:pt-3" : ""}>
         {label}
       </FieldLabel>
-      <div className="relative mt-2">
-        <select
-          id={id}
-          required={required}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? errorId : undefined}
-          className={`${controlClassName} appearance-none pr-11 ${fieldBorder(error)}`}
-          {...props}
-        >
-          <option value="">{selectPlaceholder}</option>
-          {children}
-        </select>
-        <svg
-          className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6A7178]"
-          viewBox="0 0 16 16"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+      <div>
+        <div className={`relative ${isRow ? "" : "mt-2"}`}>
+          <select
+            id={id}
+            required={required}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
+            className={`${controlClassName} appearance-none pr-11 ${fieldBorder(error)}`}
+            {...props}
+          >
+            <option value="">{selectPlaceholder}</option>
+            {children}
+          </select>
+          <svg
+            className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6A7178]"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <FieldError id={errorId ?? ""} message={error} />
       </div>
-      <FieldError id={errorId ?? ""} message={error} />
     </div>
   );
 }

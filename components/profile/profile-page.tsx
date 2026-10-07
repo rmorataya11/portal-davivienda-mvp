@@ -9,7 +9,6 @@ import { hasProductionApps } from "@/lib/developer-apps/labels";
 
 import { ProfileBilling } from "./profile-billing";
 import { ProfileDataForm } from "./profile-data-form";
-import { ProfilePasswordCard } from "./profile-password-card";
 import { ProfileRequests } from "./profile-requests";
 
 type TabId = "datos" | "solicitudes" | "facturacion";
@@ -57,14 +56,7 @@ export function ProfilePage() {
       </div>
 
       <div key={resolvedTab} className="tab-panel-in mt-6">
-        {resolvedTab === "datos" ? (
-          <div className="space-y-5">
-            <ProfileDataForm />
-            <div className="grid gap-5 lg:grid-cols-2">
-              <ProfilePasswordCard />
-            </div>
-          </div>
-        ) : null}
+        {resolvedTab === "datos" ? <ProfileDataForm /> : null}
         {resolvedTab === "solicitudes" ? <ProfileRequests /> : null}
         {resolvedTab === "facturacion" && showBillingTab ? <ProfileBilling /> : null}
       </div>

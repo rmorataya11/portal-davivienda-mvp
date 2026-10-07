@@ -9,7 +9,8 @@ import { formatCalendarDate } from "@/lib/format/date";
 type RequestRow = {
   id: string;
   folio: string;
-  product: string;
+  useCase: string;
+  environment: string;
   submittedAt: string;
   status: string;
 };
@@ -38,6 +39,8 @@ function folioFromId(id: string) {
 export function ProfileRequests() {
   const { user, developerId } = useAuth();
   const t = useTranslations("Profile.requests");
+  const fieldT = useTranslations("Contratacion.fields");
+  const environmentT = useTranslations("Contratacion.environments");
   const locale = useLocale();
   const [rows, setRows] = useState<RequestRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,6 +62,14 @@ export function ProfileRequests() {
     }
 
     return { label: t("inReview"), className: "bg-[#FFF6E8] text-[#A15C12]" };
+  }
+
+  function environmentLabel(value: string) {
+    if (value === "pruebas-extendidas" || value === "produccion") {
+      return environmentT(value);
+    }
+
+    return value || "—";
   }
 
   useEffect(() => {
@@ -87,7 +98,8 @@ export function ProfileRequests() {
         const next = requests.map((item) => ({
           id: item.id,
           folio: folioFromId(item.id),
-          product: item.casoUso?.trim() || item.industria?.trim() || "—",
+          useCase: item.casoUso?.trim() || item.industria?.trim() || "—",
+          environment: item.ambienteDestino?.trim() || "",
           submittedAt: item.createdAt ?? "",
           status: item.status || "pending",
         }));
@@ -111,7 +123,7 @@ export function ProfileRequests() {
   }, [developerId, t, user]);
 
   if (loading) {
-    return <div className="h-48 animate-pulse rounded-[18px] bg-[#F2F3F5]" />;
+    return <div className="h-48 animate-pulse rounded-2xl bg-white" />;
   }
 
   if (error) {
@@ -120,21 +132,22 @@ export function ProfileRequests() {
 
   if (rows.length === 0) {
     return (
-      <div className="rounded-[24px] border border-[#E7EAEE] bg-white px-6 py-10 text-center">
-        <h3 className="text-[20px] font-bold text-[#404040]">{t("emptyTitle")}</h3>
-        <p className="mx-auto mt-2 max-w-[440px] text-[15px] leading-7 text-[#707070]">{t("emptyDescription")}</p>
+      <div className="rounded-2xl bg-white px-5 py-8 sm:px-6">
+        <h3 className="text-[16px] font-semibold text-[#404040]">{t("emptyTitle")}</h3>
+        <p className="mt-2 max-w-[520px] text-[14px] leading-6 text-[#707070]">{t("emptyDescription")}</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-[24px] border border-[#E7EAEE] bg-white">
+    <div className="overflow-x-auto rounded-2xl bg-white">
       <table className="min-w-full text-left text-[14px]">
-        <thead className="bg-[#F8F9FB] text-[12px] font-medium uppercase tracking-[0.16em] text-[#8E8E8E]">
+        <thead className="text-[13px] font-medium text-[#8E8E8E]">
           <tr>
             <th className="px-5 py-3 font-medium">{t("folio")}</th>
-            <th className="px-5 py-3 font-medium">{t("api")}</th>
+            <th className="px-5 py-3 font-medium">{fieldT("useCase")}</th>
             <th className="px-5 py-3 font-medium">{t("date")}</th>
+            <th className="px-5 py-3 font-medium">{fieldT("environment")}</th>
             <th className="px-5 py-3 font-medium">{t("status")}</th>
           </tr>
         </thead>
@@ -144,10 +157,11 @@ export function ProfileRequests() {
 
             return (
               <tr key={row.id} className="border-t border-[#E7EAEE]">
-                <td className="px-5 py-4 font-semibold text-[#141F25]">{row.folio}</td>
-                <td className="px-5 py-4 text-[#404040]">{row.product}</td>
-                <td className="px-5 py-4 text-[#6A7178]">{formatDate(row.submittedAt, locale)}</td>
-                <td className="px-5 py-4">
+                <td className="px-5 py-3.5 font-mono text-[13px] font-semibold text-[#404040]">{row.folio}</td>
+                <td className="px-5 py-3.5 text-[#404040]">{row.useCase}</td>
+                <td className="px-5 py-3.5 whitespace-nowrap text-[#707070]">{formatDate(row.submittedAt, locale)}</td>
+                <td className="px-5 py-3.5 text-[#707070]">{environmentLabel(row.environment)}</td>
+                <td className="px-5 py-3.5">
                   <span className={`inline-flex items-center rounded-full px-3 py-1 text-[12px] font-medium ${status.className}`}>
                     {status.label}
                   </span>

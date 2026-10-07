@@ -46,31 +46,30 @@ export function ProfilePasswordCard() {
   }
 
   return (
-    <section className="flex h-full flex-col rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">
-      <h3 className="text-[18px] font-bold tracking-[0.2px] text-[#404040]">{t("title")}</h3>
-      <p className="mt-2 text-[15px] leading-7 text-[#707070]">
+    <div>
+      <p className="text-[14px] leading-6 text-[#707070]">
         {t("description", { email: user?.email ?? t("descriptionFallback") })}
       </p>
-      <div className="mt-auto pt-5">
+      <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2">
         <button
           type="button"
           onClick={handlePasswordReset}
           disabled={resetState === "sending" || !user?.email}
-          className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-5 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
+          className="text-[14px] font-semibold text-[#E1251B] transition-colors hover:text-[#C01F16] disabled:text-[#C9CED4]"
         >
           {resetState === "sending" ? t("sending") : t("submit")}
         </button>
-        {resetState === "sent" ? <p className="mt-3 text-[14px] text-[#347659]">{t("sent")}</p> : null}
-        {resetError ? <p className="mt-3 text-[14px] text-[#E1251B]">{resetError}</p> : null}
         <button
           type="button"
           onClick={handleSignOut}
           disabled={signingOut}
-          className="mt-4 block text-[13px] font-medium text-[#6A7178] transition-colors hover:text-[#E1251B] disabled:opacity-60"
+          className="text-[14px] font-medium text-[#8E8E8E] transition-colors hover:text-[#E1251B] disabled:opacity-60"
         >
           {signingOut ? t("signingOut") : t("signOut")}
         </button>
       </div>
-    </section>
+      {resetState === "sent" ? <p className="mt-2 text-[14px] text-[#347659]">{t("sent")}</p> : null}
+      {resetError ? <p className="mt-2 text-[14px] text-[#E1251B]">{resetError}</p> : null}
+    </div>
   );
 }

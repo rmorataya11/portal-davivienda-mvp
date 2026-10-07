@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 
-import { FieldLabel, SelectField, TextField } from "@/components/auth/auth-form-fields";
+import { SelectField, TextField } from "@/components/auth/auth-form-fields";
 import { identificationTypes } from "@/components/auth/content/create-account";
 import { useAuth } from "@/components/auth/auth-provider";
 import { accountInitials } from "@/lib/account/display";
 
 import { AccountAvatar } from "./account-avatar";
+import { ProfilePasswordCard } from "./profile-password-card";
 
 const PHONE_PATTERN = /^[+()\s.-]*\d[\d+()\s.-]{6,}$/;
 
@@ -34,14 +35,6 @@ function identificationNumberCopy(idType: string, t: (key: string) => string) {
   return { label: t("idNumber"), placeholder: "00000000-0" };
 }
 
-function SectionTitle({ children }: { children: ReactNode }) {
-  return <h3 className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#8E8E8E]">{children}</h3>;
-}
-
-function ProfileCard({ children }: { children: ReactNode }) {
-  return <section className="rounded-[24px] border border-[#E7EAEE] bg-white px-5 py-6 sm:px-6">{children}</section>;
-}
-
 export function ProfileDataForm() {
   const t = useTranslations("Profile.data");
   const authT = useTranslations("Auth");
@@ -63,6 +56,7 @@ export function ProfileDataForm() {
 
   const idNumberCopy = identificationNumberCopy(idType, t);
   const avatarInitials = accountInitials(companyName, accountName, user?.email);
+  const headerName = companyName.trim() || accountName.trim() || user?.email || "—";
   const isDirty = useMemo(() => {
     if (!initial) {
       return false;
@@ -76,6 +70,15 @@ export function ProfileDataForm() {
       phone !== initial.phone
     );
   }, [accountName, companyName, idNumber, idType, initial, phone]);
+
+  useEffect(() => {
+    if (!saved || isDirty) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => setSaved(false), 2500);
+    return () => window.clearTimeout(timer);
+  }, [isDirty, saved]);
 
   useEffect(() => {
     const lookupId = developerId ?? user?.uid;
@@ -284,167 +287,168 @@ export function ProfileDataForm() {
   }
 
   return (
-    <form className="space-y-5" noValidate onSubmit={handleSubmit}>
-      <ProfileCard>
-        <SectionTitle>{t("identity")}</SectionTitle>
-        <div className="mt-4 flex items-start gap-4">
-          <div className="mt-8 shrink-0">
-            <AccountAvatar name={avatarInitials} size="lg" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <TextField
-              id="displayName"
-              name="displayName"
-              label={t("displayName")}
-              required
-              autoComplete="name"
-              placeholder={t("displayNamePlaceholder")}
-              value={accountName}
-              error={errors.displayName}
-              onChange={(event) => {
-                setAccountName(event.currentTarget.value);
-                clearError("displayName");
-                setSaved(false);
-              }}
-            />
-            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">{t("displayNameHint")}</p>
-          </div>
+    <form noValidate onSubmit={handleSubmit}>
+      <div className="flex items-center gap-4">
+        <AccountAvatar name={avatarInitials} size="lg" />
+        <div className="min-w-0">
+          <p className="truncate text-[22px] font-bold tracking-[0.2px] text-[#404040]">{headerName}</p>
+          {user?.email ? <p className="mt-1 truncate text-[14px] text-[#8E8E8E]">{user.email}</p> : null}
         </div>
-      </ProfileCard>
+      </div>
 
-      <ProfileCard>
-        <SectionTitle>{t("company")}</SectionTitle>
-        <div className="mt-4 space-y-4">
-          <TextField
-            id="companyName"
-            name="companyName"
-            label={t("companyName")}
-            required
-            autoComplete="organization"
-            placeholder={t("companyNamePlaceholder")}
-            value={companyName}
-            error={errors.companyName}
-            onChange={(event) => {
-              setCompanyName(event.currentTarget.value);
-              clearError("companyName");
-              setSaved(false);
-            }}
-          />
-          <div className="grid gap-6 md:grid-cols-2">
-            <SelectField
-              id="idType"
-              name="idType"
-              label={t("idType")}
-              required
-              value={idType}
-              error={errors.idType}
-              onChange={(event) => {
-                setIdType(event.currentTarget.value);
-                clearError("idType");
-                setSaved(false);
-              }}
-            >
-              {identificationTypes.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {authT(`signup.idTypes.${option.value}`)}
-                </option>
-              ))}
-            </SelectField>
-            <TextField
-              id="idNumber"
-              name="idNumber"
-              label={idNumberCopy.label}
-              required
-              inputMode="numeric"
-              placeholder={idNumberCopy.placeholder}
-              value={idNumber}
-              error={errors.idNumber}
-              onChange={(event) => {
-                setIdNumber(event.currentTarget.value);
-                clearError("idNumber");
-                setSaved(false);
-              }}
-            />
-          </div>
-        </div>
-      </ProfileCard>
-
-      <ProfileCard>
-        <SectionTitle>{t("contact")}</SectionTitle>
-        <div className="mt-4 grid gap-6 md:grid-cols-2">
-          <div>
-            <FieldLabel>{t("email")}</FieldLabel>
-            <p className="mt-2 flex h-12 items-center rounded-[10px] bg-[#F8F9FB] px-4 text-[15px] text-[#707070]">
-              {user?.email ?? "—"}
-            </p>
-            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">{t("emailLocked")}</p>
-          </div>
-          <div>
-            <TextField
-              id="phone"
-              name="phone"
-              type="tel"
-              label={t("phone")}
-              autoComplete="tel"
-              placeholder={t("phonePlaceholder")}
-              value={phone}
-              error={errors.phone}
-              onChange={(event) => {
-                setPhone(event.currentTarget.value);
-                clearError("phone");
-                setSaved(false);
-              }}
-            />
-            <p className="mt-1.5 text-[13px] leading-5 text-[#707070]">{t("phoneOptional")}</p>
-          </div>
-        </div>
-      </ProfileCard>
-
-      <ProfileCard>
-        <SectionTitle>{t("preferences")}</SectionTitle>
-        <div className="mt-4 flex items-center justify-between gap-3 rounded-[12px] bg-[#F8F9FB] px-4 py-3">
-          <p id="notify-expiration-label" className="text-[14px] leading-5 text-[#404040]">
-            {t("notifyExpiration")}
-          </p>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={notifyBeforeExpiration}
-            aria-labelledby="notify-expiration-label"
-            disabled={notifySaving}
-            onClick={handleNotifyToggle}
-            className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full p-0 transition-colors duration-300 ${
-              notifyBeforeExpiration ? "bg-[#E1251B]" : "bg-[#D5DAE0]"
-            } disabled:opacity-60`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform duration-300 ${
-                notifyBeforeExpiration ? "translate-x-5" : "translate-x-0"
-              }`}
-            />
-          </button>
-        </div>
-        {notifyError ? <p className="mt-3 text-[14px] text-[#E1251B]">{notifyError}</p> : null}
-      </ProfileCard>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="submit"
-          disabled={isSubmitting || !isDirty}
-          className="inline-flex h-12 items-center justify-center rounded-full bg-[#E1251B] px-7 text-[15px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
+      <div className="mt-6 rounded-2xl bg-white px-5 py-2 sm:px-6">
+        <TextField
+          id="displayName"
+          name="displayName"
+          orientation="row"
+          label={t("displayName")}
+          required
+          autoComplete="name"
+          placeholder={t("displayNamePlaceholder")}
+          hint={t("displayNameHint")}
+          value={accountName}
+          error={errors.displayName}
+          className="border-b border-[#E7EAEE] py-4"
+          onChange={(event) => {
+            setAccountName(event.currentTarget.value);
+            clearError("displayName");
+            setSaved(false);
+          }}
+        />
+        <TextField
+          id="companyName"
+          name="companyName"
+          orientation="row"
+          label={t("companyName")}
+          required
+          autoComplete="organization"
+          placeholder={t("companyNamePlaceholder")}
+          value={companyName}
+          error={errors.companyName}
+          className="border-b border-[#E7EAEE] py-4"
+          onChange={(event) => {
+            setCompanyName(event.currentTarget.value);
+            clearError("companyName");
+            setSaved(false);
+          }}
+        />
+        <SelectField
+          id="idType"
+          name="idType"
+          orientation="row"
+          label={t("idType")}
+          required
+          value={idType}
+          error={errors.idType}
+          className="border-b border-[#E7EAEE] py-4"
+          onChange={(event) => {
+            setIdType(event.currentTarget.value);
+            clearError("idType");
+            setSaved(false);
+          }}
         >
-          {isSubmitting ? t("saving") : saved && !isDirty ? t("saved") : t("save")}
-        </button>
-        {isDirty ? (
-          <button
-            type="button"
-            onClick={discardChanges}
-            className="inline-flex h-12 items-center justify-center rounded-full px-5 text-[15px] font-medium text-[#707070] transition-colors hover:text-[#404040]"
-          >
-            {t("discard")}
-          </button>
+          {identificationTypes.map((option) => (
+            <option key={option.value} value={option.value}>
+              {authT(`signup.idTypes.${option.value}`)}
+            </option>
+          ))}
+        </SelectField>
+        <TextField
+          id="idNumber"
+          name="idNumber"
+          orientation="row"
+          label={idNumberCopy.label}
+          required
+          inputMode="numeric"
+          placeholder={idNumberCopy.placeholder}
+          value={idNumber}
+          error={errors.idNumber}
+          className="border-b border-[#E7EAEE] py-4"
+          onChange={(event) => {
+            setIdNumber(event.currentTarget.value);
+            clearError("idNumber");
+            setSaved(false);
+          }}
+        />
+        <div className="grid gap-2 border-b border-[#E7EAEE] py-4 sm:grid-cols-[220px_minmax(0,1fr)] sm:items-start sm:gap-8">
+          <p className="text-[14px] font-medium text-[#8E8E8E] sm:pt-0.5">{t("email")}</p>
+          <div>
+            <p className="text-[15px] leading-6 text-[#404040]">{user?.email ?? "—"}</p>
+            <p className="mt-1 text-[13px] leading-5 text-[#8E8E8E]">{t("emailLocked")}</p>
+          </div>
+        </div>
+        <TextField
+          id="phone"
+          name="phone"
+          type="tel"
+          orientation="row"
+          label={t("phone")}
+          autoComplete="tel"
+          placeholder={t("phonePlaceholder")}
+          hint={t("phoneOptional")}
+          value={phone}
+          error={errors.phone}
+          className="py-4"
+          onChange={(event) => {
+            setPhone(event.currentTarget.value);
+            clearError("phone");
+            setSaved(false);
+          }}
+        />
+
+        <div className="border-t border-[#E7EAEE] py-4">
+          <div className="flex items-center justify-between gap-4">
+            <p id="notify-expiration-label" className="text-[14px] leading-6 text-[#404040]">
+              {t("notifyExpiration")}
+            </p>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={notifyBeforeExpiration}
+              aria-labelledby="notify-expiration-label"
+              disabled={notifySaving}
+              onClick={handleNotifyToggle}
+              className={`relative h-7 w-12 shrink-0 overflow-hidden rounded-full p-0 transition-colors duration-300 ${
+                notifyBeforeExpiration ? "bg-[#E1251B]" : "bg-[#D5DAE0]"
+              } disabled:opacity-60`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform duration-300 ${
+                  notifyBeforeExpiration ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </button>
+          </div>
+          {notifyError ? <p className="mt-2 text-[14px] text-[#E1251B]">{notifyError}</p> : null}
+        </div>
+
+        <div className="border-t border-[#E7EAEE] py-4">
+          <ProfilePasswordCard />
+        </div>
+
+        {isDirty || isSubmitting || formError ? (
+          <div className="flex flex-wrap items-center gap-3 border-t border-[#E7EAEE] py-4">
+            <button
+              type="submit"
+              disabled={isSubmitting || !isDirty}
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16] disabled:bg-[#C9CED4]"
+            >
+              {isSubmitting ? t("saving") : t("save")}
+            </button>
+            {isDirty ? (
+              <button
+                type="button"
+                onClick={discardChanges}
+                className="inline-flex h-11 items-center justify-center rounded-full px-4 text-[14px] font-medium text-[#707070] transition-colors hover:text-[#404040]"
+              >
+                {t("discard")}
+              </button>
+            ) : null}
+            {formError ? <p className="text-[14px] text-[#E1251B]">{formError}</p> : null}
+          </div>
+        ) : saved ? (
+          <p className="border-t border-[#E7EAEE] py-4 text-[14px] text-[#347659]">{t("saved")}</p>
         ) : null}
-        {formError ? <p className="text-[14px] text-[#E1251B]">{formError}</p> : null}
       </div>
     </form>
   );
