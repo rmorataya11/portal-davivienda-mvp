@@ -7,6 +7,7 @@ import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { Reveal } from "@/components/ui/reveal";
 import { formatAppDate } from "@/lib/developer-apps/labels";
 import { getLoginHref, getSignupHref } from "@/lib/navigation/safe-path";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
@@ -74,8 +75,10 @@ export function ApiLinkedApps({
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {linkedApps.map((app) => (
-        <ApiAppRow key={app.id} app={app} />
+      {linkedApps.map((app, index) => (
+        <Reveal key={app.id} delay={(index % 2) * 80} className="h-full">
+          <ApiAppRow app={app} />
+        </Reveal>
       ))}
     </div>
   );

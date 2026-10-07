@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { mockCalls30, mockWeekActivity } from "@/components/mock/mockAppActivity";
+import { Reveal } from "@/components/ui/reveal";
 import { hasProductionApps, isProductionApp, isSandboxGroupApp } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
@@ -99,9 +100,15 @@ export function DashboardHome() {
 
       <div className="relative mt-[84px] py-8 before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:max-w-[100vw] before:-translate-x-1/2 before:bg-[#404040] md:h-[201px] md:py-0">
         <div className="relative grid h-full grid-cols-1 items-center gap-4 md:grid-cols-3">
-          <MiniStat label={t("applications")} value={String(apps.length)} />
-          <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
-          <MiniStat label={t("calls30")} value={calls30.toLocaleString(numberLocale)} />
+          <Reveal delay={0} className="h-full">
+            <MiniStat label={t("applications")} value={String(apps.length)} />
+          </Reveal>
+          <Reveal delay={80} className="h-full">
+            <MiniStat label={t("inSandbox")} value={String(sandboxCount)} />
+          </Reveal>
+          <Reveal delay={160} className="h-full">
+            <MiniStat label={t("calls30")} value={calls30.toLocaleString(numberLocale)} />
+          </Reveal>
         </div>
       </div>
 
@@ -206,8 +213,10 @@ function EnvironmentSection({
 function AppGrid({ apps }: { apps: DeveloperApp[] }) {
   return (
     <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
-      {apps.map((app) => (
-        <AppCard key={app.id} app={app} />
+      {apps.map((app, index) => (
+        <Reveal key={app.id} delay={(index % 3) * 80} className="h-full">
+          <AppCard app={app} />
+        </Reveal>
       ))}
     </div>
   );

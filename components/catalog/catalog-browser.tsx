@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { Reveal } from "@/components/ui/reveal";
+
 import { useCatalogViews } from "./catalog-provider";
 import { ApiCard } from "./api-card";
 import { CatalogGlyph } from "./catalog-glyph";
@@ -90,8 +92,10 @@ export function CatalogBrowser() {
 
       {filteredItems.length > 0 ? (
         <div className="grid gap-[15px] md:grid-cols-2 xl:grid-cols-3">
-          {filteredItems.map((api) => (
-            <ApiCard key={api.slug || api.name} api={api} />
+          {filteredItems.map((api, index) => (
+            <Reveal key={api.slug || api.name} delay={(index % 3) * 80} className="h-full">
+              <ApiCard api={api} />
+            </Reveal>
           ))}
         </div>
       ) : (

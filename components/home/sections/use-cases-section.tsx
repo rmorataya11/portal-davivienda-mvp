@@ -1,5 +1,7 @@
 import { useTranslations } from "next-intl";
 
+import { Reveal } from "@/components/ui/reveal";
+
 import { UseCaseCard } from "../cards/use-case-card";
 import { useCaseCardDefinitions } from "../content/use-cases";
 
@@ -23,8 +25,10 @@ export function UseCasesSection() {
         </div>
 
         <div className="inspire-grid">
-          {useCaseCards.map((card) => (
-            <UseCaseCard key={card.title} card={card} />
+          {useCaseCards.map((card, index) => (
+            <Reveal key={card.title} delay={(index % 3) * 80} className="h-full">
+              <UseCaseCard card={card} />
+            </Reveal>
           ))}
         </div>
       </div>
