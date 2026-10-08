@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { AuthReturnLink } from "@/components/auth/auth-return-link";
@@ -14,6 +15,9 @@ export function LockedContentPanel({
   titleTag: TitleTag = "h1",
   preview = "docs",
   className = "",
+  title,
+  actionHref,
+  actionLabel,
 }: {
   description: string;
   returnTo: string;
@@ -21,10 +25,16 @@ export function LockedContentPanel({
   titleTag?: "h1" | "h2";
   preview?: LockedPreviewKind;
   className?: string;
+  title?: string;
+  /** When set (e.g. request sandbox), replaces the sign-in CTA. */
+  actionHref?: string;
+  actionLabel?: string;
 }) {
   const t = useTranslations("Auth.gate");
 
   const pageLike = preview === "guide" || preview === "apps";
+  const ctaClassName =
+    "mt-5 inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]";
 
   return (
     <div
@@ -38,16 +48,18 @@ export function LockedContentPanel({
       <div className="absolute inset-0 flex items-center justify-center bg-[#F2F3F5]/45 px-5">
         <div className="w-full max-w-[400px] rounded-2xl border border-[#E7EAEE] bg-white px-6 py-6 sm:px-7 sm:py-7">
           <TitleTag id={titleId} className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">
-            {t("lockedTitle")}
+            {title ?? t("lockedTitle")}
           </TitleTag>
           <p className="mt-2 text-[15px] leading-6 text-[#8E8E8E]">{description}</p>
-          <AuthReturnLink
-            href={getLoginHref(returnTo)}
-            returnTo={returnTo}
-            className="mt-5 inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
-          >
-            {t("signIn")}
-          </AuthReturnLink>
+          {actionHref && actionLabel ? (
+            <Link href={actionHref} className={ctaClassName}>
+              {actionLabel}
+            </Link>
+          ) : (
+            <AuthReturnLink href={getLoginHref(returnTo)} returnTo={returnTo} className={ctaClassName}>
+              {t("signIn")}
+            </AuthReturnLink>
+          )}
         </div>
       </div>
     </div>

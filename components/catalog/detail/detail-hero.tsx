@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { BreakablePath } from "@/components/ui/breakable-path";
 import type { CatalogView } from "@/lib/catalog/present";
 
@@ -48,6 +49,8 @@ function DescriptionText({ text }: { text: string }) {
 export function DetailHero({ api }: { api: CatalogView }) {
   const t = useTranslations("Catalog.detail");
   const catalogT = useTranslations("Catalog");
+  const { sandboxAccess } = useAuth();
+  const requestTipo = sandboxAccess ? "produccion" : "sandbox";
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const iconSrc = api.icon;
   const primaryEndpoint = api.endpoints[0];
@@ -107,10 +110,10 @@ export function DetailHero({ api }: { api: CatalogView }) {
           </div>
 
           <Link
-            href={`/solicitud-contratacion?producto=${api.slug}`}
+            href={`/solicitud-contratacion?tipo=${requestTipo}&producto=${api.slug}`}
             className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[246px]"
           >
-            {t("requestAccess")}
+            {sandboxAccess ? t("requestProduction") : t("requestAccess")}
           </Link>
         </div>
       </section>

@@ -1,5 +1,8 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { ContractingRequestLink } from "@/components/contracting/contracting-request-link";
 import { MarketplaceFooter } from "@/components/home/sections/marketplace-footer";
 import { MarketplaceHeader } from "@/components/home/sections/marketplace-header";
@@ -12,6 +15,10 @@ import { TechnicalTabs } from "./detail/technical-tabs";
 
 export function ApiTechnicalPage({ api }: { api: CatalogView }) {
   const t = useTranslations("Catalog");
+  const { sandboxAccess } = useAuth();
+  const requestHref = sandboxAccess
+    ? `/solicitud-contratacion?tipo=produccion&producto=${api.slug}`
+    : `/solicitud-contratacion?tipo=sandbox&producto=${api.slug}`;
 
   return (
     <main className="min-h-screen bg-[#F2F3F5]">
@@ -30,10 +37,10 @@ export function ApiTechnicalPage({ api }: { api: CatalogView }) {
                 </p>
               </div>
               <ContractingRequestLink
-                href={`/solicitud-contratacion?producto=${api.slug}`}
+                href={requestHref}
                 className="inline-flex h-[46px] w-full shrink-0 items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)] sm:w-[246px]"
               >
-                {t("technical.requestContracting")}
+                {sandboxAccess ? t("technical.requestContracting") : t("technical.requestSandbox")}
               </ContractingRequestLink>
             </div>
           </div>

@@ -5,9 +5,16 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { mockCalls30, mockWeekActivity } from "@/components/mock/mockAppActivity";
 import { Reveal } from "@/components/ui/reveal";
-import { hasProductionApps, isProductionApp, isSandboxGroupApp } from "@/lib/developer-apps/labels";
+import { PRODUCTION_REQUEST_HREF, SANDBOX_REQUEST_HREF } from "@/lib/access/sandbox";
+import {
+  displayAppName,
+  hasProductionApps,
+  isProductionApp,
+  isSandboxGroupApp,
+} from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { AppCard } from "./app-card";
@@ -19,6 +26,7 @@ const createAppButtonClassName =
 
 export function DashboardHome() {
   const { apps, ready, loadError } = useDeveloperApps();
+  const { sandboxAccess } = useAuth();
   const t = useTranslations("Dashboard.home");
   const errorsT = useTranslations("Dashboard.errors");
   const locale = useLocale();
@@ -99,7 +107,7 @@ export function DashboardHome() {
           <h2 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px] lg:text-[40px] lg:leading-[44px] lg:tracking-[0.8px]">
             {t("yourApps")}
           </h2>
-          {apps.length > 0 ? (
+          {apps.length > 0 && sandboxAccess ? (
             <Link href="/dashboard/apps/nueva" className={`${createAppButtonClassName} w-full sm:w-auto`}>
               {t("createApp")}
             </Link>
@@ -109,16 +117,16 @@ export function DashboardHome() {
           <div className="flex w-full flex-col items-center rounded-2xl bg-white px-5 py-16 sm:px-8 sm:pt-20 sm:pb-5 md:min-h-[545px]">
             <img src="/miss_apps/mis_apps.svg" alt="" className="h-[178px] w-[160px]" />
             <h3 className="mt-2 text-center text-[22px] font-bold leading-7 tracking-[0.48px] text-[#404040] sm:text-[24px]">
-              {t("emptyTitle")}
+              {sandboxAccess ? t("emptyTitle") : t("emptyPendingTitle")}
             </h3>
             <p className="mt-3 w-full max-w-[620px] text-center text-[15px] font-normal leading-6 tracking-[0.32px] text-[#8E8E8E] sm:text-left sm:text-[16px]">
-              {t("emptyDescription")}
+              {sandboxAccess ? t("emptyDescription") : t("emptyPendingDescription")}
             </p>
             <Link
-              href="/dashboard/apps/nueva"
-              className="mt-8 inline-flex h-[46px] w-full max-w-[233px] items-center justify-center rounded-[30px] bg-[#E1251B] text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
+              href={sandboxAccess ? "/dashboard/apps/nueva" : SANDBOX_REQUEST_HREF}
+              className="mt-8 inline-flex h-[46px] w-full max-w-[280px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
             >
-              {t("createApp")}
+              {sandboxAccess ? t("createApp") : t("requestSandbox")}
             </Link>
           </div>
         ) : (
@@ -150,10 +158,10 @@ export function DashboardHome() {
                   <img src="/miss_apps/apps_prod.svg" alt="" className="h-[160px] w-[160px] object-contain" />
                   <p className="mt-5 max-w-[420px] text-[15px] leading-7 text-[#6A7178]">{t("emptyProduction")}</p>
                   <Link
-                    href="/solicitud-contratacion"
+                    href={sandboxAccess ? PRODUCTION_REQUEST_HREF : SANDBOX_REQUEST_HREF}
                     className="mt-6 inline-flex h-[46px] items-center justify-center rounded-[30px] border border-[#E1251B] bg-transparent px-6 text-[14px] font-semibold text-[#E1251B] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#FFF8F8]"
                   >
-                    {t("requestContracting")}
+                    {sandboxAccess ? t("requestContracting") : t("requestSandbox")}
                   </Link>
                 </div>
               )}
@@ -183,7 +191,7 @@ function ChartAppFilter({
     { id: "all", label: chartT("filterAll"), detail: "" },
     ...apps.map((app) => ({
       id: app.id,
-      label: app.name,
+      label: displayAppName(app.name),
       detail: statusT(app.environment),
     })),
   ];

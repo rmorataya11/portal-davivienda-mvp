@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { TextAreaField, TextField } from "@/components/auth/auth-form-fields";
 import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { AppsRequestError } from "@/lib/developer-apps/api";
+import { displayAppName } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { useDeveloperApps } from "./apps-provider";
@@ -25,7 +26,7 @@ export function AppEditForm({
   const errorsT = useTranslations("Dashboard.errors");
   const product = useCatalogView(app.apiProduct);
   const productName = product?.name ?? app.apiProduct;
-  const [name, setName] = useState(app.name);
+  const [name, setName] = useState(() => displayAppName(app.name));
   const [description, setDescription] = useState(app.description ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState("");

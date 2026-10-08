@@ -10,6 +10,7 @@ import {
   requireAppDeveloper,
 } from '@/lib/apps/access';
 import { canCreateApp, createDeveloperApp, listDeveloperApps } from '@/lib/db/apps';
+import { developerHasSandboxAccess } from '@/lib/db/developers';
 
 export const runtime = 'nodejs';
 
@@ -65,6 +66,17 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { message: 'El nombre y el producto son obligatorios.' },
         { status: 400 },
+      );
+    }
+
+    const hasSandboxAccess = await developerHasSandboxAccess(auth.developerId);
+    if (!hasSandboxAccess) {
+      return NextResponse.json(
+        {
+          message:
+            'Su acceso a sandbox aún no está aprobado. Envíe una solicitud y espere la revisión del equipo.',
+        },
+        { status: 403 },
       );
     }
 

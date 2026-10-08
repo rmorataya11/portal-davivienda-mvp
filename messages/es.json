@@ -9,6 +9,7 @@
     "signIn": "Iniciar sesión",
     "myAccount": "Mi perfil",
     "requestContracting": "Solicitar contratación",
+    "requestSandbox": "Solicitar sandbox",
     "signOut": "Cerrar sesión",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
@@ -160,7 +161,8 @@
       "technicalDetail": "Detalle técnico"
     },
     "detail": {
-      "requestAccess": "Solicitar producto",
+      "requestAccess": "Solicitar sandbox",
+      "requestProduction": "Solicitar contratación",
       "summaryEyebrow": "Resumen Ejecutivo",
       "summaryTitle": "Lo esencial para evaluar esta API",
       "summaryDescription": "Contexto rápido para equipos que necesitan validar alcance, acceso y preparación técnica.",
@@ -235,6 +237,9 @@
       "title": "Explore la integración de {name}",
       "description": "Cabeceras, endpoint de prueba y credenciales. El detalle exhaustivo está en Documentación.",
       "requestContracting": "Solicitar contratación",
+      "requestSandbox": "Solicitar sandbox",
+      "sandboxTitle": "Acceso técnico pendiente",
+      "sandboxDescription": "El detalle técnico de {name} se libera cuando el equipo aprueba su solicitud de sandbox.",
       "gateLoadingEyebrow": "Técnico",
       "gateLoadingTitle": "Detalle técnico de esta API",
       "gateEyebrow": "Acceso requerido",
@@ -393,7 +398,10 @@
       "title": "Inicie sesión o cree una cuenta para ver este contenido",
       "lockedTitle": "Inicie sesión",
       "createAccount": "Crear cuenta",
-      "signIn": "Iniciar sesión"
+      "signIn": "Iniciar sesión",
+      "sandboxLockedTitle": "Acceso pendiente de aprobación",
+      "sandboxLockedDescription": "La documentación técnica se libera cuando el equipo aprueba su solicitud de sandbox.",
+      "requestSandbox": "Solicitar sandbox"
     }
   },
   "Dashboard": {
@@ -431,6 +439,9 @@
       "calls30": "Llamadas / 30 días",
       "emptyTitle": "Aún no tiene aplicaciones",
       "emptyDescription": "Cree su primera aplicación para obtener credenciales de sandbox y empezar a integrar.",
+      "emptyPendingTitle": "Primero solicite acceso a sandbox",
+      "emptyPendingDescription": "Mis apps ya está disponible. Envíe la solicitud de sandbox; cuando el equipo la apruebe, podrá crear aplicaciones y ver la documentación técnica.",
+      "requestSandbox": "Solicitar sandbox",
       "createApp": "Crear aplicación",
       "yourApps": "Sus aplicaciones",
       "appsTotal": "{count} en total",
@@ -493,7 +504,7 @@
       "notFoundDescription": "Puede que haya iniciado sesión con otra cuenta o que la app se haya creado en otro navegador.",
       "back": "Volver al dashboard",
       "eyebrow": "Aplicación",
-      "requestProduction": "Solicitar a producción",
+      "requestProduction": "Solicitar contratación",
       "moreAria": "Más opciones",
       "edit": "Editar",
       "editAria": "Editar aplicación",
@@ -685,7 +696,7 @@
     "requests": {
       "loadFailed": "No se pudieron cargar las solicitudes.",
       "emptyTitle": "Sin solicitudes todavía",
-      "emptyDescription": "Cuando envíe una solicitud de contratación, el folio y el estado aparecerán aquí.",
+      "emptyDescription": "Cuando envíe una solicitud de sandbox o producción, el folio y el estado aparecerán aquí.",
       "folio": "Folio",
       "api": "API",
       "date": "Fecha",
@@ -706,7 +717,10 @@
     },
     "gate": {
       "eyebrow": "Documentación",
-      "description": "La documentación técnica es privada: ahí están los endpoints, parámetros y ejemplos. Necesita una cuenta de desarrollador para entrar."
+      "description": "La documentación técnica es privada: ahí están los endpoints, parámetros y ejemplos. Necesita una cuenta de desarrollador para entrar.",
+      "sandboxTitle": "Documentación pendiente de aprobación",
+      "sandboxDescription": "Cuando el equipo apruebe su solicitud de sandbox, podrá consultar endpoints, parámetros y ejemplos.",
+      "requestSandbox": "Solicitar sandbox"
     },
     "explorer": {
       "title": "Explore endpoints como en su editor",
@@ -1055,19 +1069,21 @@
   },
   "Contratacion": {
     "metadata": {
-      "title": "Solicitud de contratación | Davivienda API Marketplace",
-      "description": "Solicite el paso a pruebas extendidas o producción de una API ya validada en sandbox."
+      "title": "Solicitud de acceso | Davivienda API Marketplace",
+      "description": "Solicite acceso a sandbox o producción para una API de Davivienda."
     },
     "breadcrumb": {
-      "request": "Solicitud de contratación"
+      "request": "Solicitud de acceso"
     },
     "gate": {
-      "title": "Inicie sesión para solicitar contratación",
-      "description": "Esta solicitud está disponible para cuentas de desarrollador que ya validaron una API en sandbox."
+      "title": "Inicie sesión para solicitar acceso",
+      "description": "Con una cuenta de desarrollador puede solicitar sandbox o producción. El equipo revisa y aprueba cada solicitud."
     },
     "form": {
-      "title": "Solicitud de contratación",
-      "description": "Si ya validó una API en sandbox y quiere avanzar a producción, complete estos datos. Los campos con asterisco (*) son obligatorios.",
+      "title": "Solicitud de producción",
+      "titleSandbox": "Solicitud de sandbox",
+      "description": "Si ya tiene sandbox aprobado y quiere avanzar a producción, complete estos datos. Los campos con asterisco (*) son obligatorios.",
+      "descriptionSandbox": "Complete estos datos para pedir acceso a sandbox. Cuando el equipo apruebe, se liberarán la documentación técnica y la creación de apps. Los campos con asterisco (*) son obligatorios.",
       "application": "Aplicación:",
       "products": "Productos:",
       "productOfInterest": "Producto de interés:"
@@ -1083,7 +1099,7 @@
       "taxId": "NIT / identificación fiscal",
       "taxIdPlaceholder": "0614-290191-101-3",
       "industry": "Industria / sector",
-      "apiProduct": "API para producción",
+      "apiProduct": "API de interés",
       "apiProductPlaceholder": "Seleccione una API",
       "useCase": "Caso de uso",
       "useCaseHint": "Describa de forma breve qué problema resuelve y cómo usará la API.",
@@ -1114,7 +1130,8 @@
       "gt-100000": "+100,000"
     },
     "environments": {
-      "pruebas-extendidas": "Pruebas extendidas",
+      "sandbox": "Sandbox",
+      "pruebas-extendidas": "Sandbox",
       "produccion": "Producción"
     },
     "ipWhitelist": {
@@ -1137,6 +1154,7 @@
       "useCase": "Describa brevemente el caso de uso.",
       "volume": "Seleccione el volumen estimado de transacciones.",
       "environment": "Seleccione el ambiente destino.",
+      "productionNeedsSandbox": "Primero debe tener acceso a sandbox aprobado antes de solicitar producción.",
       "needsIpWhitelist": "Indique si necesita whitelist de IPs para producción.",
       "ipRanges": "Ingrese el rango o los rangos de IP a autorizar.",
       "technicalName": "Ingrese el nombre del contacto técnico.",
@@ -1153,16 +1171,17 @@
     },
     "success": {
       "title": "Solicitud enviada",
-      "description": "Hemos recibido su solicitud de contratación. Nuestro equipo la revisará y se pondrá en contacto con usted a la brevedad para continuar con el proceso.",
+      "description": "Hemos recibido su solicitud de producción. Nuestro equipo la revisará y se pondrá en contacto con usted a la brevedad para continuar con el proceso.",
+      "descriptionSandbox": "Hemos recibido su solicitud de sandbox. Cuando el equipo la apruebe, podrá ver la documentación técnica y crear aplicaciones.",
       "cta": "Volver a Mis apps"
     },
     "terms": {
       "closeAria": "Cerrar términos y condiciones",
       "eyebrow": "Legal",
       "title": "Términos y condiciones",
-      "p1": "Esta solicitud de contratación aplica a empresas que ya tienen acceso a sandbox y desean avanzar a un ambiente de pruebas extendidas o producción sobre las APIs de Davivienda.",
+      "p1": "Esta solicitud aplica a empresas que desean acceso a sandbox o avanzar a producción sobre las APIs de Davivienda. Cada ambiente requiere aprobación del equipo.",
       "p2": "Al enviar el formulario, autoriza a Davivienda a contactar al responsable técnico declarado, validar la información de la empresa y evaluar el caso de uso, el volumen estimado y los controles de seguridad necesarios para habilitar el ambiente solicitado.",
-      "p3": "La aceptación de esta solicitud no implica la activación inmediata de producción. El alta queda sujeta a revisión comercial, cumplimiento y disponibilidad técnica.",
+      "p3": "La aceptación de esta solicitud no implica la activación inmediata. El alta queda sujeta a revisión comercial, cumplimiento y disponibilidad técnica.",
       "understood": "Entendido"
     }
   },

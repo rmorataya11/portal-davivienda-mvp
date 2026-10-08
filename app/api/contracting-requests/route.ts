@@ -6,7 +6,8 @@ import {
   createContractingRequest,
   getContractingRequestsByDeveloper,
 } from '@/lib/db/contracting-requests';
-import { resolveDeveloperId } from '@/lib/db/developers';
+import { isAccessEnvironment } from '@/lib/access/sandbox';
+import { developerHasSandboxAccess, resolveDeveloperId } from '@/lib/db/developers';
 import { sendNotificationEmail } from '@/lib/email/mailer';
 import { renderContractingRequestEmail } from '@/lib/email/templates';
 import {
@@ -113,7 +114,6 @@ export async function POST(request: Request) {
       !nit ||
       !industria ||
       !casoUso ||
-      !volumenEstimado ||
       !ambienteDestino ||
       !contactoTecnicoNombre ||
       !contactoTecnicoEmail ||
@@ -122,6 +122,20 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json(
         { message: 'Faltan campos obligatorios para crear la solicitud.' },
+        { status: 400 },
+      );
+    }
+
+    if (!isAccessEnvironment(ambienteDestino)) {
+      return NextResponse.json(
+        { message: 'Seleccione un ambiente destino válido (sandbox o producción).' },
+        { status: 400 },
+      );
+    }
+
+    if (ambienteDestino === 'produccion' && !volumenEstimado) {
+      return NextResponse.json(
+        { message: 'Seleccione el volumen estimado de transacciones.' },
         { status: 400 },
       );
     }
@@ -141,6 +155,19 @@ export async function POST(request: Request) {
       );
     }
 
+    if (ambienteDestino === 'produccion') {
+      const hasSandbox = await developerHasSandboxAccess(developerId);
+      if (!hasSandbox) {
+        return NextResponse.json(
+          {
+            message:
+              'Primero debe tener acceso a sandbox aprobado antes de solicitar producción.',
+          },
+          { status: 403 },
+        );
+      }
+    }
+
     const knownApi = await catalogApiSlugExists(apiProduct);
     if (!knownApi) {
       return NextResponse.json({ message: 'Seleccione una API válida del catálogo.' }, { status: 400 });
@@ -152,15 +179,15 @@ export async function POST(request: Request) {
       nit,
       industria,
       casoUso,
-      volumenEstimado,
+      volumenEstimado: ambienteDestino === 'produccion' ? volumenEstimado : 'no-aplica',
       ambienteDestino,
-      ipWhitelist: ipWhitelist || undefined,
+      ipWhitelist: ambienteDestino === 'produccion' && ipWhitelist ? ipWhitelist : undefined,
       contactoTecnicoNombre,
       contactoTecnicoEmail,
       contactoTecnicoTelefono,
       aceptaTerminos,
       apiProduct,
-      appId,
+      appId: ambienteDestino === 'produccion' ? appId : null,
     });
 
     let apiTitle = apiProduct;
@@ -173,8 +200,9 @@ export async function POST(request: Request) {
       apiTitle = apiProduct;
     }
 
+    const emailKind = ambienteDestino === 'sandbox' ? 'SANDBOX' : 'PRODUCCIÓN';
     await sendNotificationEmail(
-      `[CONTRATACIÓN] Nueva solicitud de contratación: ${razonSocial}`,
+      `[ACCESO ${emailKind}] Nueva solicitud: ${razonSocial}`,
       renderContractingRequestEmail({
         id: created.id,
         razonSocial: created.razonSocial,

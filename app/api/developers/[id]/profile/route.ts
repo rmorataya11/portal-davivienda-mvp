@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { getDeveloperProfile, updateDeveloperProfile } from '@/lib/db/developers';
+import {
+  developerHasSandboxAccess,
+  getDeveloperProfile,
+  updateDeveloperProfile,
+} from '@/lib/db/developers';
 import { isValidDui, isValidPhone, readTrimmedString } from '@/lib/validation/fields';
 
 export const runtime = 'nodejs';
@@ -30,7 +34,16 @@ export async function GET(_request: Request, context: RouteContext) {
       return NextResponse.json({ message: 'No se encontró el developer.' }, { status: 404 });
     }
 
-    return NextResponse.json(profile);
+    const portalDisabled = Boolean(profile.portalDisabledAt);
+    if (portalDisabled) {
+      return NextResponse.json(
+        { message: "Esta cuenta está desactivada. Contacte al administrador.", portalDisabled: true },
+        { status: 403 },
+      );
+    }
+
+    const sandboxAccess = await developerHasSandboxAccess(profile.id);
+    return NextResponse.json({ ...profile, sandboxAccess, portalDisabled: false });
   } catch (error) {
     console.error('No se pudo obtener el perfil del developer.', error);
     return NextResponse.json(

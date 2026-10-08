@@ -10,6 +10,7 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { LanguageDropdown } from "@/components/shared/language-dropdown";
 import { AccountAvatar } from "@/components/profile/account-avatar";
 import { accountInitials, accountLabel } from "@/lib/account/display";
+import { PRODUCTION_REQUEST_HREF, SANDBOX_REQUEST_HREF } from "@/lib/access/sandbox";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
 
 const buttonClassName =
@@ -19,7 +20,7 @@ const menuItemClassName =
   "block w-full px-4 py-2.5 text-left text-[14px] font-medium text-[#141F25] transition-colors hover:bg-[#F8F9FB] hover:text-[#E1251B]";
 
 export function AuthNav() {
-  const { user, loading, displayName, companyName, signOut } = useAuth();
+  const { user, loading, sandboxAccess, displayName, companyName, signOut } = useAuth();
   const t = useTranslations("Navbar");
   const router = useRouter();
   const pathname = usePathname();
@@ -109,12 +110,12 @@ export function AuthNav() {
               {t("myAccount")}
             </Link>
             <Link
-              href="/solicitud-contratacion"
+              href={sandboxAccess ? PRODUCTION_REQUEST_HREF : SANDBOX_REQUEST_HREF}
               role="menuitem"
               onClick={() => setOpen(false)}
               className={menuItemClassName}
             >
-              {t("requestContracting")}
+              {sandboxAccess ? t("requestContracting") : t("requestSandbox")}
             </Link>
             <div className="my-1 h-px bg-[#E7EAEE]" />
             <button

@@ -9,7 +9,15 @@ export function DocsAccessGate({ children }: { children: ReactNode }) {
   const t = useTranslations("Documentacion.gate");
 
   return (
-    <ContentAccessGate fallbackPath="/documentacion" description={t("description")} preview="docs">
+    <ContentAccessGate
+      fallbackPath="/documentacion"
+      description={t("description")}
+      preview="docs"
+      requireSandboxAccess
+      sandboxTitle={t("sandboxTitle")}
+      sandboxDescription={t("sandboxDescription")}
+      sandboxActionLabel={t("requestSandbox")}
+    >
       {children}
     </ContentAccessGate>
   );

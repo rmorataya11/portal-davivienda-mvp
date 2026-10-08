@@ -12,6 +12,8 @@ import { MenuSelectField, TextAreaField, TextField } from "@/components/auth/aut
 import { useCatalogView, useCatalogViews } from "@/components/catalog/catalog-provider";
 import { AppStatusBadge } from "@/components/dashboard/app-status-badge";
 import { useDeveloperApps } from "@/components/dashboard/apps-provider";
+import { isAccessEnvironment, normalizeAccessEnvironment } from "@/lib/access/sandbox";
+import { displayAppName } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import {
@@ -39,10 +41,12 @@ export function ContractingRequestForm({
 }) {
   const t = useTranslations("Contratacion");
   const searchParams = useSearchParams();
-  const { user, developerId } = useAuth();
+  const { user, developerId, sandboxAccess } = useAuth();
   const { getApp, markContracting, ready } = useDeveloperApps();
   const products = useCatalogViews();
   const appId = searchParams.get("app") ?? "";
+  const tipoParam = searchParams.get("tipo") ?? "";
+  const initialEnvironment = normalizeAccessEnvironment(tipoParam) ?? "";
   const [linkedApp, setLinkedApp] = useState<DeveloperApp | null>(null);
   const [apiProduct, setApiProduct] = useState(productSlug);
 
@@ -71,25 +75,38 @@ export function ContractingRequestForm({
     };
   }, [appId, getApp, ready]);
 
-  useEffect(() => {
-    if (linkedApp?.apiProduct) {
-      setApiProduct(linkedApp.apiProduct);
-    }
-  }, [linkedApp]);
-
   const linkedProduct = useCatalogView(linkedApp?.apiProduct ?? "");
   const displayProduct = linkedProduct?.name ?? productName;
   const apiLocked = Boolean(linkedApp);
   const [companyName, setCompanyName] = useState("");
   const [industry, setIndustry] = useState("");
   const [volume, setVolume] = useState("");
-  const [environment, setEnvironment] = useState("");
+  const [environment, setEnvironment] = useState(initialEnvironment);
   const [needsIpWhitelist, setNeedsIpWhitelist] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
   const [termsOpen, setTermsOpen] = useState(false);
+
+  useEffect(() => {
+    if (linkedApp?.apiProduct) {
+      setApiProduct(linkedApp.apiProduct);
+    }
+  }, [linkedApp]);
+
+  useEffect(() => {
+    const fromQuery = normalizeAccessEnvironment(tipoParam);
+    if (fromQuery) {
+      setEnvironment(fromQuery);
+    }
+  }, [tipoParam]);
+
+  useEffect(() => {
+    if (linkedApp?.environment === "sandbox" && !environment) {
+      setEnvironment("produccion");
+    }
+  }, [environment, linkedApp]);
 
   useEffect(() => {
     const lookupId = developerId ?? user?.uid;
@@ -164,20 +181,25 @@ export function ContractingRequestForm({
       nextErrors.useCase = t("validation.useCase");
     }
 
-    if (!form.get("volume")) {
-      nextErrors.volume = t("validation.volume");
-    }
-
-    if (!form.get("environment")) {
+    const selectedEnvironment = String(form.get("environment") ?? "").trim();
+    if (!selectedEnvironment || !isAccessEnvironment(selectedEnvironment)) {
       nextErrors.environment = t("validation.environment");
+    } else if (selectedEnvironment === "produccion" && !sandboxAccess) {
+      nextErrors.environment = t("validation.productionNeedsSandbox");
     }
 
-    if (!form.get("needsIpWhitelist")) {
-      nextErrors.needsIpWhitelist = t("validation.needsIpWhitelist");
-    }
+    if (selectedEnvironment === "produccion") {
+      if (!form.get("volume")) {
+        nextErrors.volume = t("validation.volume");
+      }
 
-    if (form.get("needsIpWhitelist") === "si" && !String(form.get("ipRanges") ?? "").trim()) {
-      nextErrors.ipRanges = t("validation.ipRanges");
+      if (!form.get("needsIpWhitelist")) {
+        nextErrors.needsIpWhitelist = t("validation.needsIpWhitelist");
+      }
+
+      if (form.get("needsIpWhitelist") === "si" && !String(form.get("ipRanges") ?? "").trim()) {
+        nextErrors.ipRanges = t("validation.ipRanges");
+      }
     }
 
     if (!String(form.get("technicalName") ?? "").trim()) {
@@ -231,6 +253,7 @@ export function ContractingRequestForm({
         return;
       }
 
+      const ambienteDestino = String(formData.get("environment") ?? "").trim();
       const response = await fetch("/api/contracting-requests", {
         method: "POST",
         headers: {
@@ -243,10 +266,11 @@ export function ContractingRequestForm({
           nit: String(formData.get("taxId") ?? "").trim(),
           industria: String(formData.get("industry") ?? "").trim(),
           casoUso: String(formData.get("useCase") ?? "").trim(),
-          volumenEstimado: String(formData.get("volume") ?? "").trim(),
-          ambienteDestino: String(formData.get("environment") ?? "").trim(),
+          volumenEstimado:
+            ambienteDestino === "produccion" ? String(formData.get("volume") ?? "").trim() : "no-aplica",
+          ambienteDestino,
           ipWhitelist:
-            formData.get("needsIpWhitelist") === "si"
+            ambienteDestino === "produccion" && formData.get("needsIpWhitelist") === "si"
               ? String(formData.get("ipRanges") ?? "").trim()
               : undefined,
           contactoTecnicoNombre: String(formData.get("technicalName") ?? "").trim(),
@@ -254,7 +278,7 @@ export function ContractingRequestForm({
           contactoTecnicoTelefono: String(formData.get("technicalPhone") ?? "").trim(),
           aceptaTerminos: formData.get("terms") === "on",
           apiProduct: String(formData.get("apiProduct") ?? "").trim(),
-          app_id: linkedApp?.id ?? null,
+          app_id: ambienteDestino === "produccion" ? (linkedApp?.id ?? null) : null,
         }),
       });
 
@@ -262,7 +286,7 @@ export function ContractingRequestForm({
         throw new Error(t("errors.submit"));
       }
 
-      if (linkedApp?.environment === "sandbox") {
+      if (ambienteDestino === "produccion" && linkedApp?.environment === "sandbox") {
         await markContracting(linkedApp.id);
       }
 
@@ -283,7 +307,9 @@ export function ContractingRequestForm({
         <h1 className="mt-6 text-[26px] font-bold tracking-[0.3px] text-[#141F25] sm:text-[32px]">
           {t("success.title")}
         </h1>
-        <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">{t("success.description")}</p>
+        <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#6A7178]">
+          {environment === "sandbox" ? t("success.descriptionSandbox") : t("success.description")}
+        </p>
         <Link
           href="/dashboard"
           className="mt-8 inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#E1111C] hover:shadow-[0_16px_36px_rgba(225,37,27,0.24)]"
@@ -293,6 +319,10 @@ export function ContractingRequestForm({
       </div>
     );
   }
+
+  const isSandboxRequest = environment === "sandbox";
+  const formTitle = isSandboxRequest ? t("form.titleSandbox") : t("form.title");
+  const formDescription = isSandboxRequest ? t("form.descriptionSandbox") : t("form.description");
 
   const industryOptions = industryValues.map((value) => ({
     value,
@@ -315,12 +345,12 @@ export function ContractingRequestForm({
     <>
       <div>
         <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">
-          {t("form.title")}
+          {formTitle}
         </h1>
-        <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">{t("form.description")}</p>
+        <p className="mt-4 text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">{formDescription}</p>
         {linkedApp ? (
           <div className="mt-5 flex flex-wrap items-center gap-2">
-            <p className="text-[15px] font-semibold text-[#404040]">{linkedApp.name}</p>
+            <p className="text-[15px] font-semibold text-[#404040]">{displayAppName(linkedApp.name)}</p>
             <AppStatusBadge environment={linkedApp.environment} />
             {displayProduct ? (
               <span className="inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-full border border-[#E7EAEE] bg-[#F8F9FB] px-2.5 py-1 text-[12px] font-medium text-[#404040]">
@@ -419,21 +449,6 @@ export function ContractingRequestForm({
             className="border-t border-[#E7EAEE] py-4"
             onChange={() => clearError("useCase")}
           />
-          <MenuSelectField
-            id="volume"
-            name="volume"
-            orientation="row"
-            label={t("fields.volume")}
-            required
-            value={volume}
-            error={errors.volume}
-            options={volumeOptions}
-            className="border-t border-[#E7EAEE] py-4"
-            onChange={(value) => {
-              setVolume(value);
-              clearError("volume");
-            }}
-          />
           <RadioGroup
             legend={t("fields.environment")}
             name="environment"
@@ -446,39 +461,65 @@ export function ContractingRequestForm({
             onChange={(value) => {
               setEnvironment(value);
               clearError("environment");
-            }}
-          />
-          <RadioGroup
-            legend={t("fields.needsIpWhitelist")}
-            name="needsIpWhitelist"
-            orientation="row"
-            required
-            error={errors.needsIpWhitelist}
-            value={needsIpWhitelist}
-            options={whitelistOptions}
-            className="border-t border-[#E7EAEE] py-4"
-            onChange={(value) => {
-              setNeedsIpWhitelist(value);
-              clearError("needsIpWhitelist");
-              if (value !== "si") {
+              if (value !== "produccion") {
+                setVolume("");
+                clearError("volume");
+                setNeedsIpWhitelist("");
+                clearError("needsIpWhitelist");
                 clearError("ipRanges");
               }
             }}
           />
-          {needsIpWhitelist === "si" ? (
-            <TextAreaField
-              id="ipRanges"
-              name="ipRanges"
-              orientation="row"
-              label={t("fields.ipRanges")}
-              required
-              rows={4}
-              hint={t("fields.ipRangesHint", { example: IP_EXAMPLE })}
-              placeholder={IP_PLACEHOLDER}
-              error={errors.ipRanges}
-              className="border-t border-[#E7EAEE] py-4"
-              onChange={() => clearError("ipRanges")}
-            />
+          {environment === "produccion" ? (
+            <>
+              <MenuSelectField
+                id="volume"
+                name="volume"
+                orientation="row"
+                label={t("fields.volume")}
+                required
+                value={volume}
+                error={errors.volume}
+                options={volumeOptions}
+                className="border-t border-[#E7EAEE] py-4"
+                onChange={(value) => {
+                  setVolume(value);
+                  clearError("volume");
+                }}
+              />
+              <RadioGroup
+                legend={t("fields.needsIpWhitelist")}
+                name="needsIpWhitelist"
+                orientation="row"
+                required
+                error={errors.needsIpWhitelist}
+                value={needsIpWhitelist}
+                options={whitelistOptions}
+                className="border-t border-[#E7EAEE] py-4"
+                onChange={(value) => {
+                  setNeedsIpWhitelist(value);
+                  clearError("needsIpWhitelist");
+                  if (value !== "si") {
+                    clearError("ipRanges");
+                  }
+                }}
+              />
+              {needsIpWhitelist === "si" ? (
+                <TextAreaField
+                  id="ipRanges"
+                  name="ipRanges"
+                  orientation="row"
+                  label={t("fields.ipRanges")}
+                  required
+                  rows={4}
+                  hint={t("fields.ipRangesHint", { example: IP_EXAMPLE })}
+                  placeholder={IP_PLACEHOLDER}
+                  error={errors.ipRanges}
+                  className="border-t border-[#E7EAEE] py-4"
+                  onChange={() => clearError("ipRanges")}
+                />
+              ) : null}
+            </>
           ) : null}
         </FormSection>
 

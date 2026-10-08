@@ -8,6 +8,14 @@ export const appStatusStyles: Record<AppEnvironment, string> = {
   production: "bg-[#EFFCF5] text-[#347659]",
 };
 
+const ENVIRONMENT_NAME_SUFFIX =
+  /\s*[·•|-]\s*(Sandbox|Producción|Production|Contratación|Contracting)\s*$/i;
+
+/** Title without the environment suffix when a badge already shows it. */
+export function displayAppName(name: string) {
+  return name.replace(ENVIRONMENT_NAME_SUFFIX, "").trim() || name.trim();
+}
+
 export function isProductionApp(app: { environment: AppEnvironment }) {
   return app.environment === "production";
 }

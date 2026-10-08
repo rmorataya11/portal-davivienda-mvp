@@ -70,8 +70,12 @@ export function ProfileRequests() {
   }
 
   function environmentLabel(value: string) {
-    if (value === "pruebas-extendidas" || value === "produccion") {
+    if (value === "sandbox" || value === "produccion") {
       return environmentT(value);
+    }
+
+    if (value === "pruebas-extendidas") {
+      return environmentT("sandbox");
     }
 
     return value || "—";

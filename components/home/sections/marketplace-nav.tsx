@@ -5,13 +5,17 @@ import { useTranslations } from "next-intl";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { SlidingIndicator, useSlidingIndicator } from "@/components/ui/sliding-indicator";
+import { filterVisibleNavItems } from "@/lib/navigation/visible-nav";
 
 import { navItems } from "../content/navigation";
 
 export function MarketplaceDesktopNav({ activeHref = "/" }: { activeHref?: string }) {
-  const { user } = useAuth();
+  const { user, sandboxAccess } = useAuth();
   const t = useTranslations("Navbar");
-  const visibleNavItems = navItems.filter((item) => item.href !== "/dashboard" || user);
+  const visibleNavItems = filterVisibleNavItems(navItems, {
+    user: Boolean(user),
+    sandboxAccess,
+  });
   const activeKey = visibleNavItems.some((item) => item.href === activeHref) ? activeHref : null;
   const labels = visibleNavItems.map((item) => t(item.key)).join();
   const { listRef, rect, ready } = useSlidingIndicator<HTMLUListElement>(activeKey, {

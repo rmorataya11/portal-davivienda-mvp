@@ -5,10 +5,13 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { SelectField, TextField } from "@/components/auth/auth-form-fields";
 import { useCatalogViews } from "@/components/catalog/catalog-provider";
 import { CredentialField } from "@/components/ui/credential-field";
+import { SANDBOX_REQUEST_HREF } from "@/lib/access/sandbox";
 import { AppsRequestError } from "@/lib/developer-apps/api";
+import { displayAppName } from "@/lib/developer-apps/labels";
 import type { CreatedAppResult } from "@/lib/developer-apps/types";
 
 import { useDeveloperApps } from "./apps-provider";
@@ -19,7 +22,9 @@ const submitClassName =
 export function CreateAppForm() {
   const searchParams = useSearchParams();
   const { createApp } = useDeveloperApps();
+  const { sandboxAccess, loading: authLoading } = useAuth();
   const t = useTranslations("Dashboard.create");
+  const homeT = useTranslations("Dashboard.home");
   const createdT = useTranslations("Dashboard.created");
   const errorsT = useTranslations("Dashboard.errors");
   const products = useCatalogViews();
@@ -102,6 +107,24 @@ export function CreateAppForm() {
       });
   }
 
+  if (authLoading) {
+    return <div className="mt-8 h-64 animate-pulse rounded-2xl bg-white" />;
+  }
+
+  if (!sandboxAccess) {
+    return (
+      <div className="mt-8 rounded-2xl bg-white px-6 py-10 sm:px-8">
+        <h1 className="text-[28px] font-bold tracking-[0.3px] text-[#404040] sm:text-[36px]">
+          {homeT("emptyPendingTitle")}
+        </h1>
+        <p className="mt-4 max-w-[560px] text-[16px] leading-7 text-[#5A5A5A]">{homeT("emptyPendingDescription")}</p>
+        <Link href={SANDBOX_REQUEST_HREF} className={`mt-8 ${submitClassName}`}>
+          {homeT("requestSandbox")}
+        </Link>
+      </div>
+    );
+  }
+
   if (created) {
     const product = products.find((item) => item.slug === created.app.apiProduct);
     const productName = product?.name ?? created.app.apiProduct;
@@ -109,7 +132,7 @@ export function CreateAppForm() {
     return (
       <div>
         <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">
-          {createdT("title", { name: created.app.name })}
+          {createdT("title", { name: displayAppName(created.app.name) })}
         </h1>
         <p className="mt-4 max-w-[640px] text-[16px] leading-7 tracking-[0.24px] text-[#5A5A5A]">
           {createdT("description", { product: productName })}

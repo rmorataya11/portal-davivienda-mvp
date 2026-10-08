@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 
@@ -8,6 +9,7 @@ import { AuthReturnLink } from "@/components/auth/auth-return-link";
 import { useAuth } from "@/components/auth/auth-provider";
 import { LockedContentPanel, type LockedPreviewKind } from "@/components/auth/locked-content-panel";
 import { SectionContainer } from "@/components/ui/layout";
+import { SANDBOX_REQUEST_HREF } from "@/lib/access/sandbox";
 import { getLoginHref } from "@/lib/navigation/safe-path";
 
 type ContentAccessGateProps = {
@@ -17,6 +19,11 @@ type ContentAccessGateProps = {
   embedded?: boolean;
   titleId?: string;
   preview?: LockedPreviewKind;
+  /** When true, logged-in users still need approved sandbox access. */
+  requireSandboxAccess?: boolean;
+  sandboxTitle?: string;
+  sandboxDescription?: string;
+  sandboxActionLabel?: string;
 };
 
 export function ContentAccessGate({
@@ -26,8 +33,12 @@ export function ContentAccessGate({
   embedded = false,
   titleId,
   preview = "docs",
+  requireSandboxAccess = false,
+  sandboxTitle,
+  sandboxDescription,
+  sandboxActionLabel,
 }: ContentAccessGateProps) {
-  const { user, loading } = useAuth();
+  const { user, loading, sandboxAccess } = useAuth();
   const t = useTranslations("Auth.gate");
   const pathname = usePathname();
   const returnTo = pathname || fallbackPath;
@@ -73,6 +84,45 @@ export function ContentAccessGate({
             returnTo={returnTo}
             titleId={titleId}
             preview={preview}
+          />
+        </SectionContainer>
+      </section>
+    );
+  }
+
+  if (requireSandboxAccess && !sandboxAccess) {
+    const pendingTitle = sandboxTitle ?? t("sandboxLockedTitle");
+    const pendingDescription = sandboxDescription ?? t("sandboxLockedDescription");
+    const pendingAction = sandboxActionLabel ?? t("requestSandbox");
+
+    if (embedded) {
+      return (
+        <div className="max-w-[420px]">
+          <h2 id={titleId} className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">
+            {pendingTitle}
+          </h2>
+          <p className="mt-2 text-[15px] leading-6 text-[#8E8E8E]">{pendingDescription}</p>
+          <Link
+            href={SANDBOX_REQUEST_HREF}
+            className="mt-5 inline-flex h-[46px] items-center justify-center rounded-[30px] bg-[#E1251B] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#C01F16]"
+          >
+            {pendingAction}
+          </Link>
+        </div>
+      );
+    }
+
+    return (
+      <section className="pt-4 pb-16">
+        <SectionContainer>
+          <LockedContentPanel
+            title={pendingTitle}
+            description={pendingDescription}
+            returnTo={returnTo}
+            titleId={titleId}
+            preview={preview}
+            actionHref={SANDBOX_REQUEST_HREF}
+            actionLabel={pendingAction}
           />
         </SectionContainer>
       </section>

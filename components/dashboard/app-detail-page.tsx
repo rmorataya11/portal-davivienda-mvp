@@ -10,7 +10,7 @@ import { useCatalogView } from "@/components/catalog/catalog-provider";
 import { catalogCategoryLabel } from "@/components/catalog/content/localize-api";
 import { CredentialField } from "@/components/ui/credential-field";
 import { AppsRequestError } from "@/lib/developer-apps/api";
-import { formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
+import { displayAppName, formatAppDate, formatAppDateTime } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { AppActionDialog, AppEditForm, messageForStatus } from "./app-edit-form";
@@ -125,7 +125,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
   }
 
   const detail = app;
-  const productionHref = `/solicitud-contratacion?app=${detail.id}&producto=${detail.apiProduct}`;
+  const productionHref = `/solicitud-contratacion?tipo=produccion&app=${detail.id}&producto=${detail.apiProduct}`;
   const created = formatAppDate(detail.createdAt, locale) || t("dates.noActivity");
   const expires = formatAppDateTime(detail.expiresAt, locale);
 
@@ -208,7 +208,9 @@ export function AppDetailPage({ appId }: { appId: string }) {
         <div className={`flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-16 ${!isEditing && detail.environment !== "production" ? "pr-14" : ""}`}>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">{detail.name}</h1>
+              <h1 className="text-[28px] font-bold leading-[1.15] tracking-[0.3px] text-[#404040] sm:text-[36px]">
+                {displayAppName(detail.name)}
+              </h1>
               <AppStatusBadge environment={detail.environment} />
             </div>
             {!isEditing ? (
@@ -251,7 +253,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
       <AppActionDialog
         open={confirmAction === "edit"}
         title={t("detail.editConfirmTitle")}
-        description={t("detail.editConfirm", { name: detail.name })}
+        description={t("detail.editConfirm", { name: displayAppName(detail.name) })}
         confirmLabel={t("detail.editYes")}
         loadingLabel={t("detail.editYes")}
         onConfirm={confirmEdit}
@@ -260,7 +262,7 @@ export function AppDetailPage({ appId }: { appId: string }) {
       <AppActionDialog
         open={confirmAction === "delete"}
         title={t("edit.deleteConfirmTitle")}
-        description={t("edit.deleteConfirm", { name: detail.name })}
+        description={t("edit.deleteConfirm", { name: displayAppName(detail.name) })}
         confirmLabel={t("edit.deleteYes")}
         loadingLabel={t("edit.deleting")}
         loading={isDeleting}

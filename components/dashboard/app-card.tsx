@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useCatalogView } from "@/components/catalog/catalog-provider";
-import { formatAppDate } from "@/lib/developer-apps/labels";
+import { displayAppName, formatAppDate } from "@/lib/developer-apps/labels";
 import type { DeveloperApp } from "@/lib/developer-apps/types";
 
 import { AppStatusBadge } from "./app-status-badge";
@@ -14,6 +14,7 @@ export function AppCard({ app }: { app: DeveloperApp }) {
   const locale = useLocale();
   const product = useCatalogView(app.apiProduct);
   const created = formatAppDate(app.createdAt, locale) || t("dates.noActivity");
+  const title = displayAppName(app.name);
 
   return (
     <Link
@@ -22,7 +23,7 @@ export function AppCard({ app }: { app: DeveloperApp }) {
     >
       <div className="flex items-start justify-between gap-2">
         <h3 className="min-w-0 text-[18px] font-bold leading-6 tracking-[0.2px] text-[#404040] [overflow-wrap:anywhere] line-clamp-2">
-          {app.name}
+          {title}
         </h3>
         <div className="shrink-0">
           <AppStatusBadge environment={app.environment} />

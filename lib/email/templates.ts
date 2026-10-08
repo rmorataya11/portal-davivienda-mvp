@@ -30,10 +30,12 @@ const VOLUME_LABELS: Record<string, string> = {
   "1000-10000": "1,000 – 10,000",
   "10000-100000": "10,000 – 100,000",
   "gt-100000": "+100,000",
+  "no-aplica": "No aplica",
 };
 
 const ENVIRONMENT_LABELS: Record<string, string> = {
-  "pruebas-extendidas": "Pruebas extendidas",
+  sandbox: "Sandbox",
+  "pruebas-extendidas": "Sandbox",
   produccion: "Producción",
 };
 
@@ -204,12 +206,16 @@ export function renderContractingRequestEmail(input: {
   contactoTecnicoEmail: string;
   contactoTecnicoTelefono: string | null;
 }) {
+  const isSandbox = input.ambienteDestino === "sandbox" || input.ambienteDestino === "pruebas-extendidas";
+
   return renderNotificationEmail({
-    eyebrow: "Contratación",
+    eyebrow: "Acceso",
     title: input.razonSocial,
-    badge: "CONTRATACIÓN",
+    badge: isSandbox ? "SANDBOX" : "PRODUCCIÓN",
     badgeColor: "#E1251B",
-    intro: "Se recibió una nueva solicitud de contratación.",
+    intro: isSandbox
+      ? "Se recibió una nueva solicitud de acceso a sandbox."
+      : "Se recibió una nueva solicitud de acceso a producción.",
     fields: [
       { label: "ID de la solicitud", value: input.id },
       { label: "API", value: input.apiProduct },
@@ -217,9 +223,13 @@ export function renderContractingRequestEmail(input: {
       { label: "NIT", value: input.nit },
       { label: "Industria", value: labelFor(input.industria, INDUSTRY_LABELS) },
       { label: "Caso de uso", value: input.casoUso },
-      { label: "Volumen estimado", value: labelFor(input.volumenEstimado, VOLUME_LABELS) },
       { label: "Ambiente destino", value: labelFor(input.ambienteDestino, ENVIRONMENT_LABELS) },
-      { label: "IP whitelist", value: input.ipWhitelist || "No aplica" },
+      ...(isSandbox
+        ? []
+        : [
+            { label: "Volumen estimado", value: labelFor(input.volumenEstimado, VOLUME_LABELS) },
+            { label: "IP whitelist", value: input.ipWhitelist || "No aplica" },
+          ]),
       { label: "Contacto técnico", value: input.contactoTecnicoNombre },
       { label: "Email técnico", value: input.contactoTecnicoEmail },
       { label: "Teléfono técnico", value: input.contactoTecnicoTelefono || "No indicado" },

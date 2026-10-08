@@ -9,6 +9,7 @@
     "signIn": "Sign in",
     "myAccount": "My profile",
     "requestContracting": "Request contracting",
+    "requestSandbox": "Request sandbox",
     "signOut": "Sign out",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
@@ -160,7 +161,8 @@
       "technicalDetail": "Technical details"
     },
     "detail": {
-      "requestAccess": "Request product",
+      "requestAccess": "Request sandbox",
+      "requestProduction": "Request contracting",
       "summaryEyebrow": "Executive summary",
       "summaryTitle": "The essentials to evaluate this API",
       "summaryDescription": "A quick briefing for teams that need to validate scope, access, and technical readiness.",
@@ -235,6 +237,9 @@
       "title": "Explore the {name} integration",
       "description": "Headers, a test endpoint, and credentials. The full reference is in Documentation.",
       "requestContracting": "Request contracting",
+      "requestSandbox": "Request sandbox",
+      "sandboxTitle": "Technical access pending",
+      "sandboxDescription": "Technical details for {name} unlock when the team approves your sandbox request.",
       "gateLoadingEyebrow": "Technical",
       "gateLoadingTitle": "Technical details for this API",
       "gateEyebrow": "Access required",
@@ -393,7 +398,10 @@
       "title": "Sign in or create an account to view this content",
       "lockedTitle": "Sign in",
       "createAccount": "Create account",
-      "signIn": "Sign in"
+      "signIn": "Sign in",
+      "sandboxLockedTitle": "Access pending approval",
+      "sandboxLockedDescription": "Technical documentation unlocks when the team approves your sandbox request.",
+      "requestSandbox": "Request sandbox"
     }
   },
   "Dashboard": {
@@ -431,6 +439,9 @@
       "calls30": "Calls / 30 days",
       "emptyTitle": "You do not have any applications yet",
       "emptyDescription": "Create your first application to obtain sandbox credentials and start integrating.",
+      "emptyPendingTitle": "Request sandbox access first",
+      "emptyPendingDescription": "My apps is already available. Submit a sandbox request; once the team approves it, you can create applications and open the technical documentation.",
+      "requestSandbox": "Request sandbox",
       "createApp": "Create application",
       "yourApps": "Your applications",
       "appsTotal": "{count} in total",
@@ -493,7 +504,7 @@
       "notFoundDescription": "You may have signed in with a different account, or the app may have been created in another browser.",
       "back": "Back to the dashboard",
       "eyebrow": "Application",
-      "requestProduction": "Request production",
+      "requestProduction": "Request contracting",
       "moreAria": "More options",
       "edit": "Edit",
       "editAria": "Edit application",
@@ -685,7 +696,7 @@
     "requests": {
       "loadFailed": "The requests could not be loaded.",
       "emptyTitle": "No requests yet",
-      "emptyDescription": "When you submit a contracting request, the reference number and status will appear here.",
+      "emptyDescription": "When you submit a sandbox or production request, the reference number and status will appear here.",
       "folio": "Reference",
       "api": "API",
       "date": "Date",
@@ -706,7 +717,10 @@
     },
     "gate": {
       "eyebrow": "Documentation",
-      "description": "Technical documentation is private: it holds the endpoints, parameters, and examples. You need a developer account to enter."
+      "description": "Technical documentation is private: it holds the endpoints, parameters, and examples. You need a developer account to enter.",
+      "sandboxTitle": "Documentation pending approval",
+      "sandboxDescription": "Once the team approves your sandbox request, you can review endpoints, parameters, and examples.",
+      "requestSandbox": "Request sandbox"
     },
     "explorer": {
       "title": "Explore endpoints the way you do in your editor",
@@ -1055,19 +1069,21 @@
   },
   "Contratacion": {
     "metadata": {
-      "title": "Contracting request | Davivienda API Marketplace",
-      "description": "Request access to extended testing or production for an API already validated in sandbox."
+      "title": "Access request | Davivienda API Marketplace",
+      "description": "Request sandbox or production access for a Davivienda API."
     },
     "breadcrumb": {
-      "request": "Contracting request"
+      "request": "Access request"
     },
     "gate": {
-      "title": "Sign in to submit a contracting request",
-      "description": "This request is available to developer accounts that have already validated an API in sandbox."
+      "title": "Sign in to request access",
+      "description": "With a developer account you can request sandbox or production. The team reviews and approves each request."
     },
     "form": {
-      "title": "Contracting request",
-      "description": "If you have already validated an API in sandbox and want to move to production, complete these details. Fields marked with an asterisk (*) are required.",
+      "title": "Production request",
+      "titleSandbox": "Sandbox request",
+      "description": "If you already have approved sandbox access and want to move to production, complete these details. Fields marked with an asterisk (*) are required.",
+      "descriptionSandbox": "Complete these details to request sandbox access. When the team approves, technical documentation and app creation unlock. Fields marked with an asterisk (*) are required.",
       "application": "Application:",
       "products": "Products:",
       "productOfInterest": "Product of interest:"
@@ -1083,7 +1099,7 @@
       "taxId": "NIT / tax ID",
       "taxIdPlaceholder": "0614-290191-101-3",
       "industry": "Industry / sector",
-      "apiProduct": "API for production",
+      "apiProduct": "API of interest",
       "apiProductPlaceholder": "Select an API",
       "useCase": "Use case",
       "useCaseHint": "Briefly describe the problem you are solving and how you will use the API.",
@@ -1114,7 +1130,8 @@
       "gt-100000": "+100,000"
     },
     "environments": {
-      "pruebas-extendidas": "Extended testing",
+      "sandbox": "Sandbox",
+      "pruebas-extendidas": "Sandbox",
       "produccion": "Production"
     },
     "ipWhitelist": {
@@ -1137,6 +1154,7 @@
       "useCase": "Briefly describe the use case.",
       "volume": "Select the estimated transaction volume.",
       "environment": "Select the target environment.",
+      "productionNeedsSandbox": "You must have approved sandbox access before requesting production.",
       "needsIpWhitelist": "Indicate whether you need an IP whitelist for production.",
       "ipRanges": "Enter the IP range or ranges to authorize.",
       "technicalName": "Enter the technical contact name.",
@@ -1153,16 +1171,17 @@
     },
     "success": {
       "title": "Request submitted",
-      "description": "We have received your contracting request. Our team will review it and contact you shortly to continue the process.",
+      "description": "We have received your production request. Our team will review it and contact you shortly to continue the process.",
+      "descriptionSandbox": "We have received your sandbox request. Once the team approves it, you can open the technical documentation and create applications.",
       "cta": "Back to My apps"
     },
     "terms": {
       "closeAria": "Close terms and conditions",
       "eyebrow": "Legal",
       "title": "Terms and conditions",
-      "p1": "This contracting request applies to companies that already have sandbox access and want to move to an extended-testing or production environment on Davivienda APIs.",
+      "p1": "This request applies to companies seeking sandbox access or moving to production on Davivienda APIs. Each environment requires team approval.",
       "p2": "By submitting the form, you authorize Davivienda to contact the declared technical contact, validate the company information, and assess the use case, estimated volume, and security controls required to enable the requested environment.",
-      "p3": "Acceptance of this request does not imply immediate production activation. Onboarding remains subject to commercial review, compliance, and technical availability.",
+      "p3": "Acceptance of this request does not imply immediate activation. Onboarding remains subject to commercial review, compliance, and technical availability.",
       "understood": "Got it"
     }
   },

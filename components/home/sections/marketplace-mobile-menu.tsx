@@ -11,7 +11,9 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { LanguageDropdown } from "@/components/shared/language-dropdown";
 import { AccountAvatar } from "@/components/profile/account-avatar";
 import { accountInitials, accountLabel } from "@/lib/account/display";
+import { PRODUCTION_REQUEST_HREF, SANDBOX_REQUEST_HREF } from "@/lib/access/sandbox";
 import { getApiContextFromPath, getAuthHrefs } from "@/lib/navigation/safe-path";
+import { filterVisibleNavItems } from "@/lib/navigation/visible-nav";
 
 import { DaviviendaLogo } from "../shared/davivienda-logo";
 import { navItems } from "../content/navigation";
@@ -28,7 +30,7 @@ export function MarketplaceMobileMenu({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading, displayName, companyName, signOut } = useAuth();
+  const { user, loading, sandboxAccess, displayName, companyName, signOut } = useAuth();
   const t = useTranslations("Navbar");
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -36,7 +38,10 @@ export function MarketplaceMobileMenu({
   const dialogId = useId();
   const { loginHref, signupHref } = getAuthHrefs(pathname);
   const returnTo = getApiContextFromPath(pathname)?.returnTo;
-  const visibleNavItems = navItems.filter((item) => item.href !== "/dashboard" || user);
+  const visibleNavItems = filterVisibleNavItems(navItems, {
+    user: Boolean(user),
+    sandboxAccess,
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -176,12 +181,12 @@ export function MarketplaceMobileMenu({
                   {t("myAccount")}
                 </Link>
                 <Link
-                  href="/solicitud-contratacion"
+                  href={sandboxAccess ? PRODUCTION_REQUEST_HREF : SANDBOX_REQUEST_HREF}
                   tabIndex={open ? 0 : -1}
                   onClick={closeMenu}
                   className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/60 px-5 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-white/10"
                 >
-                  {t("requestContracting")}
+                  {sandboxAccess ? t("requestContracting") : t("requestSandbox")}
                 </Link>
                 <button
                   type="button"

@@ -8,12 +8,16 @@ type DeveloperProfileResponse = {
   id: string;
   fullName?: string;
   companyName?: string;
+  sandboxAccessGrantedAt?: string | null;
+  sandboxAccess?: boolean;
 };
 
 type AuthContextValue = {
   user: AuthUser | null;
   developerId: string | null;
   loading: boolean;
+  /** True when docs / detalle técnico / crear apps sandbox están unlocked. */
+  sandboxAccess: boolean;
   displayName: string;
   companyName: string;
   setDisplayName: (name: string) => void;
@@ -27,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [developerId, setDeveloperId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sandboxAccess, setSandboxAccess] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [companyName, setCompanyName] = useState("");
 
@@ -37,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!nextUser) {
         setDeveloperId(null);
+        setSandboxAccess(false);
         setDisplayName("");
         setCompanyName("");
       }
@@ -52,6 +58,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     fetch(`/api/developers/${user.uid}/profile`)
       .then(async (response) => {
+        if (response.status === 403) {
+          await signOutUser();
+          return null;
+        }
+
         if (!response.ok) {
           return null;
         }
@@ -66,6 +77,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setDeveloperId(profile.id);
         setDisplayName(profile.fullName ?? "");
         setCompanyName(profile.companyName ?? "");
+        setSandboxAccess(
+          profile.sandboxAccess === true || Boolean(profile.sandboxAccessGrantedAt),
+        );
       })
       .catch(() => {
         // El menú puede mostrar un nombre genérico hasta que el usuario lo configure.
@@ -81,13 +95,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       developerId,
       loading,
+      sandboxAccess,
       displayName,
       companyName,
       setDisplayName,
       setCompanyName,
       signOut: () => signOutUser(),
     }),
-    [companyName, developerId, displayName, loading, user],
+    [companyName, developerId, displayName, loading, sandboxAccess, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

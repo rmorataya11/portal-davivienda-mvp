@@ -46,6 +46,10 @@ export type DeveloperProfile = {
   dui: string;
   phone: string;
   notifyBeforeExpiration: boolean;
+  /** ISO timestamp when sandbox/docs access was granted; null if not yet. */
+  sandboxAccessGrantedAt: string | null;
+  /** ISO timestamp when the admin disabled portal access; null if active. */
+  portalDisabledAt: string | null;
 };
 
 type UpdateDeveloperProfileInput = {
@@ -67,10 +71,12 @@ type DeveloperRow = {
   dui: string | null;
   phone: string | null;
   notify_before_expiration: boolean;
+  sandbox_access_granted_at: Date | string | null;
+  portal_disabled_at: Date | string | null;
 };
 
 const PROFILE_COLUMNS =
-  'id, identity_uid, email, full_name, company_name, document_type, document_id, dui, phone, notify_before_expiration';
+  'id, identity_uid, email, full_name, company_name, document_type, document_id, dui, phone, notify_before_expiration, sandbox_access_granted_at, portal_disabled_at';
 
 function mapDeveloperProfile(row: DeveloperRow): DeveloperProfile {
   return {
@@ -84,6 +90,8 @@ function mapDeveloperProfile(row: DeveloperRow): DeveloperProfile {
     dui: row.dui ?? '',
     phone: row.phone ?? '',
     notifyBeforeExpiration: row.notify_before_expiration === true,
+    sandboxAccessGrantedAt: toIso(row.sandbox_access_granted_at),
+    portalDisabledAt: toIso(row.portal_disabled_at),
   };
 }
 
@@ -271,6 +279,55 @@ export async function getDeveloperProfile(developerId: string): Promise<Develope
 
   const row = result.rows[0] as DeveloperRow | undefined;
   return row ? mapDeveloperProfile(row) : null;
+}
+
+/** True when the developer may see docs/detalle técnico and create sandbox apps. */
+export async function developerHasSandboxAccess(developerId: string): Promise<boolean> {
+  const resolvedId = await resolveDeveloperId({ developerId });
+  if (!resolvedId) {
+    return false;
+  }
+
+  const result = await query(
+    `SELECT
+       (
+         d.portal_disabled_at IS NULL
+         AND (
+           d.sandbox_access_granted_at IS NOT NULL
+           OR EXISTS (SELECT 1 FROM apps a WHERE a.developer_id = d.id)
+           OR EXISTS (
+             SELECT 1
+             FROM contracting_requests cr
+             WHERE cr.developer_id = d.id
+               AND cr.status = 'approved'
+               AND cr.ambiente_destino IN ('sandbox', 'pruebas-extendidas')
+           )
+         )
+       ) AS has_access
+     FROM developers d
+     WHERE d.id = $1
+     LIMIT 1`,
+    [resolvedId],
+  );
+
+  return result.rows[0]?.has_access === true;
+}
+
+export async function developerIsPortalDisabled(developerId: string): Promise<boolean> {
+  const resolvedId = await resolveDeveloperId({ developerId });
+  if (!resolvedId) {
+    return false;
+  }
+
+  const result = await query(
+    `SELECT portal_disabled_at IS NOT NULL AS disabled
+     FROM developers
+     WHERE id = $1
+     LIMIT 1`,
+    [resolvedId],
+  );
+
+  return result.rows[0]?.disabled === true;
 }
 
 export async function updateDeveloperProfile(
