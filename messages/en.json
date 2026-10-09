@@ -845,7 +845,7 @@
     },
     "changelog": {
       "title": "What's new",
-      "description": "Recent API changes: additions, updates, and retirements. This sample history is here so you can review the format until the live feed is connected.",
+      "description": "Recent API changes: additions, updates, and retirements. This sample history\nis here so you can review the format until the live feed is connected.",
       "types": {
         "nuevo": "New",
         "cambio": "Change",
@@ -854,7 +854,7 @@
       "entries": {
         "sandbox-dates": {
           "title": "Account-activity query with a date range in Sandbox",
-          "description": "API Tesorería now lets you filter movements by fechaInicial and fechaFinal in Sandbox. Use it to test reconciliation without requesting the full history."
+          "description": "API Tesorería now lets you filter movements by fechaInicial and fechaFinal in\nSandbox. Use it to test reconciliation without requesting the full history."
         }
       }
     },

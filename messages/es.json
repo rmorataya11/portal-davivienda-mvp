@@ -845,7 +845,7 @@
     },
     "changelog": {
       "title": "Qué hay de nuevo",
-      "description": "Cambios recientes en las APIs: altas, ajustes y retiros. El historial de ejemplo sirve para revisar el formato hasta que el feed real esté conectado.",
+      "description": "Cambios recientes en las APIs: altas, ajustes y retiros. El historial de ejemplo\nsirve para revisar el formato hasta que el feed real esté conectado.",
       "types": {
         "nuevo": "Nuevo",
         "cambio": "Cambio",
@@ -854,7 +854,7 @@
       "entries": {
         "sandbox-dates": {
           "title": "Consulta de movimientos con rango de fechas en Sandbox",
-          "description": "API Tesorería ya permite filtrar movimientos por fechaInicial y fechaFinal en Sandbox. Sirve para probar conciliación sin pedir el histórico completo."
+          "description": "API Tesorería ya permite filtrar movimientos por fechaInicial y fechaFinal en\nSandbox. Sirve para probar conciliación sin pedir el histórico completo."
         }
       }
     },
