@@ -1,8 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+import { useAuth } from "@/components/auth/auth-provider";
+
 export function CatalogSignupCta() {
   const t = useTranslations("Catalog.signupCta");
+  const { user, loading } = useAuth();
+
+  if (loading || user) {
+    return null;
+  }
 
   return (
     <section className="pb-16">
