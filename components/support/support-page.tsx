@@ -253,14 +253,16 @@ export function SupportPage() {
         </SectionContainer>
       </section>
 
-      <section id="guias-integracion" className="scroll-anchor pb-16 pt-[13px] sm:pb-[125px]">
+      <section id="guias-integracion" className="scroll-anchor pb-0 pt-[13px]">
         <SectionContainer>
           <h2 className="text-[22px] font-bold tracking-[0.2px] text-[#404040]">{t("guides.sectionTitle")}</h2>
-          <p className="mt-3 mb-5 max-w-[720px] text-[15px] leading-7 text-[#707070]">
-            {t("guides.sectionDescription")}
-          </p>
-          <GuideList />
+          <p className="mt-3 max-w-[720px] text-[15px] leading-7 text-[#707070]">{t("guides.sectionDescription")}</p>
         </SectionContainer>
+        <div className="relative mt-5 py-7 before:pointer-events-none before:absolute before:inset-y-0 before:left-1/2 before:w-screen before:-translate-x-1/2 before:bg-white">
+          <SectionContainer className="relative">
+            <GuideList />
+          </SectionContainer>
+        </div>
       </section>
 
       <SupportChangelog />
